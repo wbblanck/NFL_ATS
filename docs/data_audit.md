@@ -27,7 +27,7 @@ round 1. Parsed CBS history: `scripts/audit/cbs_history_audit.py` →
 
 | Dependency | Phase | Status |
 |---|---|---|
-| Live CBS opening line | 1+ | **Available**. CBS odds page "Open" column, parsed and archived. Whether it equals the *league* line is **UNVERIFIED**; see 0.3. |
+| League line (CBS Pick'em spread) | 1+ | **Defined and verified**: CBS posts it by about 12:00 ET Tuesday, it is final for the week, and it is the same for every CBS ATS pool (CBS OPM help article, rendered; see 0.3). **Not available automatically** because it sits behind the pool login, so it is recorded by hand in `data/lines/league_lines.csv`. The CBS odds-page "Open" column is a *different* number, archived as a covariate only. |
 | Historical CBS opening lines | 2, 3, 7 | **Partial.** CBS week pages keep the odds-page "Open" column for **2025–2026** (checked: 2025 wk1 and wk10, 2026 wk1–2). **Not** for 2022 or 2018. 2023–2024 were not checked. Openers are 13–50% whole numbers per week, so they are not league lines (0.3). |
 | Historical opening-line proxy | 2, 3, 7 | **Proxied.** SBRO season pages 2007-08 to 2021-22 have `Open` and `Close` columns (book unnamed). CBS odds-page Open covers 2025+. Nothing is verified for 2022-2024. nflverse `spread_line` is **not** an opener. |
 | Live market spread at lock | 1, 3+ | **Available**: Parlay API (the user's existing key), 14 books incl. Pinnacle. Terms of use **UNVERIFIED**. |
@@ -211,10 +211,30 @@ The league is a CBS Office Pool ("BONSAI POOL 2026"). Its lines, recorded in
 | NYJ@DET | DET −6.5 | DET −6.5 | DET −6.5 to −7 |
 
 The league line matches neither the odds-page Open (LAC@BUF is 3 points off)
-nor Thursday's market (ATL@GB is 1–2 points off). **Working hypothesis, not
-yet verified:** the league line is the market at pool posting time (around
-Tuesday), moved to a half-point. It will be tested once the capture jobs have
-Tuesday and Wednesday snapshots to compare against weekly league lines.
+nor Thursday's market (ATL@GB is 1–2 points off). **Posting rule. Verified 2026-09-24** from the CBS OPM help article "How do I add
+spreads to my Pickem Pool?", rendered in headless Chromium: `evidence/rendered/20260924T234922Z/help_opm_cbssports_com_s_article_How_do_I_add_spreads_to_my_pickem_Pool.txt`. "Spreads for the
+upcoming week's NFL games in Football Pick'em are usually posted by 12:00pm
+EST on Tuesday. Once released, they're final for the week. The original
+posted spread stays fixed and won't change." The same article says ATS pools
+use "CBS Sports-provided point spreads" and "We are no longer offering the
+option to set custom spreads for games." So every CBS ATS pool, this league
+included, grades against the same CBS-posted number.
+
+This fits the table above. GB −6.5 was the line on Tuesday, and the market
+drifted to −5 by Thursday. The odds-page "Open" of BUF −4.5 predates Tuesday.
+
+**Still UNVERIFIED:** how CBS chooses the number at posting time, e.g. which
+book or consensus it uses and how it rounds to a half-point. To test it, the
+capture jobs take dense market and CBS snapshots every Tuesday from 08:00 to
+21:00 UTC. Those snapshots will be compared with the league lines recorded
+each week.
+
+**Consequence for backtests (0.4):** the ideal historical proxy is the
+market line at **noon ET Tuesday**. No verified historical source has
+Tuesday-noon lines. SBRO `Open` is an earlier opener and `Close` is at
+kickoff; nflverse is at close. Which one tracks the Tuesday-noon line better
+will be measured on 2026 weeks where all three exist, before any backtest
+uses a proxy.
 
 ## 0.4 Best documented proxy for historical openers; how it differs from CBS; whole-number counts
 

@@ -5,6 +5,7 @@ name: Capture CBS openers
 on:
   schedule:
     - cron: '17 */3 * * *'
+    - cron: '7,37 12-21 * * 2'     # Tuesday posting window: every 30 min
   workflow_dispatch:
 
 permissions:

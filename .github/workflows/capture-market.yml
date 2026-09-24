@@ -12,6 +12,10 @@ on:
     - cron: '*/30 22-23 * * 1'   # Mon night
     - cron: '*/30 0-1 * * 2'
     - cron: '41 15 * * *'        # daily snapshot of all upcoming games
+    # Tuesday league-line posting (~12:00 ET = 16:00 UTC in EDT). Dense all-games
+    # snapshots before/around posting to learn how CBS sets the line. Cron runs
+    # hours late, so the window starts early; each row keeps its true captured_at.
+    - cron: '*/30 8-20 * * 2'
   workflow_dispatch:
     inputs:
       all_games:
@@ -40,7 +44,7 @@ jobs:
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
         run: |
-          if [ "${{ github.event.schedule }}" = "41 15 * * *" ] || [ "${{ inputs.all_games }}" = "true" ]; then
+          if [ "${{ github.event.schedule }}" = "41 15 * * *" ] || [ "${{ github.event.schedule }}" = "*/30 8-20 * * 2" ] || [ "${{ inputs.all_games }}" = "true" ]; then
             python -m engine capture-market --all-games
           else
             python -m engine capture-market

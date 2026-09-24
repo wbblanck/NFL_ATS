@@ -1,6 +1,11 @@
 # League rules. Every rule the code enforces is read from here; nothing is hard-coded.
 grading_line: cbs_open          # CBS Sports opening spread only
 line_frozen: true               # the league line never changes after posting
+line_posting:
+  # CBS OPM help ("How do I add spreads to my pick'em Pool", relayed by the user
+  # 2026-09-24): spreads posted by ~12:00 ET Tuesday; once released they are final.
+  weekday: Tuesday
+  time_local: "12:00"
 pick_every_game: true           # every available game is picked
 lock:
   buffer_minutes: 15            # picks lock 15 min before each game's kickoff (per game)

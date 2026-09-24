@@ -17,7 +17,7 @@ complex must beat it out of sample.
 
 | Rule | Value |
 |---|---|
-| Grading line | CBS Sports opening spread only; frozen after posting |
+| Grading line | CBS Pick'em spread, posted by about 12:00 ET Tuesday and final for the week. Recorded in `data/lines/league_lines.csv` |
 | Games picked | Every regular-season game (postseason excluded) |
 | Lock | 15 min before each game's kickoff, per game |
 | Spread format | Always x.5, so no pushes. Whole numbers are rejected and flagged for manual review |
