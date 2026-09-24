@@ -1,0 +1,1019 @@
+[
+ {
+  "id": "8543f94e07f56612f6275a3f5f935bf0",
+  "sport_key": "americanfootball_nfl",
+  "sport_title": "NFL",
+  "commence_time": "2026-09-25T00:15:00Z",
+  "home_team": "Green Bay Packers",
+  "away_team": "Atlanta Falcons",
+  "bookmakers": [
+   {
+    "key": "betrivers",
+    "title": "BetRivers",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:41:14Z",
+      "outcomes": [
+       {
+        "name": "Green Bay Packers",
+        "price": 1.917,
+        "point": -5.0
+       },
+       {
+        "name": "Atlanta Falcons",
+        "price": 1.893,
+        "point": 5.0
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "fanduel",
+    "title": "FanDuel",
+    "last_update": "2026-09-24T19:42:52Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:42:11Z",
+      "outcomes": [
+       {
+        "name": "Green Bay Packers",
+        "price": 1.847,
+        "point": -4.5
+       },
+       {
+        "name": "Atlanta Falcons",
+        "price": 1.962,
+        "point": 4.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278972159,
+    "stale_seconds": 0.45
+   },
+   {
+    "key": "betonline",
+    "title": "BetOnline",
+    "last_update": "2026-09-24T19:42:28Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:42:28Z",
+      "outcomes": [
+       {
+        "name": "Green Bay Packers",
+        "price": 1.87,
+        "point": -4.5
+       },
+       {
+        "name": "Atlanta Falcons",
+        "price": 1.952,
+        "point": 4.5
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790278948994,
+    "stale_seconds": 23.61
+   },
+   {
+    "key": "hardrock",
+    "title": "Hard Rock Bet",
+    "last_update": "2026-09-24T19:42:43Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:42:43Z",
+      "outcomes": [
+       {
+        "name": "Green Bay Packers",
+        "price": 1.909,
+        "point": -5.5
+       },
+       {
+        "name": "Atlanta Falcons",
+        "price": 1.909,
+        "point": 5.5
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790278963737,
+    "stale_seconds": 8.87
+   },
+   {
+    "key": "fliff",
+    "title": "Fliff",
+    "last_update": "2026-09-24T18:57:43Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T18:57:43Z",
+      "outcomes": [
+       {
+        "name": "Green Bay Packers",
+        "price": 1.909,
+        "point": -5.5
+       },
+       {
+        "name": "Atlanta Falcons",
+        "price": 1.87,
+        "point": 5.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790276263822,
+    "stale_seconds": 2708.78
+   },
+   {
+    "key": "prophetx",
+    "title": "ProphetX",
+    "last_update": "2026-09-24T19:42:23Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:34:13Z",
+      "outcomes": [
+       {
+        "name": "Green Bay Packers",
+        "price": 1.917,
+        "point": -4.5
+       },
+       {
+        "name": "Atlanta Falcons",
+        "price": 2.05,
+        "point": 4.5
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790278943962,
+    "stale_seconds": 28.64
+   },
+   {
+    "key": "draftkings",
+    "title": "DraftKings",
+    "last_update": "2026-09-24T19:42:50Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:40:50Z",
+      "outcomes": [
+       {
+        "name": "Green Bay Packers",
+        "price": 1.87,
+        "point": -4.5
+       },
+       {
+        "name": "Atlanta Falcons",
+        "price": 1.952,
+        "point": 4.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278970906,
+    "stale_seconds": 1.7
+   },
+   {
+    "key": "bet365",
+    "title": "bet365",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:28:35Z",
+      "outcomes": [
+       {
+        "name": "Green Bay Packers",
+        "price": 1.87,
+        "point": -4.5
+       },
+       {
+        "name": "Atlanta Falcons",
+        "price": 1.952,
+        "point": 4.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "betmgm",
+    "title": "BetMGM",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T18:53:00Z",
+      "outcomes": [
+       {
+        "name": "Green Bay Packers",
+        "price": 1.926,
+        "point": -5.0
+       },
+       {
+        "name": "Atlanta Falcons",
+        "price": 1.909,
+        "point": 5.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "bovada",
+    "title": "Bovada",
+    "last_update": "2026-09-24T19:42:46Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:07:42Z",
+      "outcomes": [
+       {
+        "name": "Green Bay Packers",
+        "price": 1.952,
+        "point": -5.5
+       },
+       {
+        "name": "Atlanta Falcons",
+        "price": 1.87,
+        "point": 5.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278966271,
+    "stale_seconds": 6.33
+   },
+   {
+    "key": "caesars",
+    "title": "Caesars",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:13:22Z",
+      "outcomes": [
+       {
+        "name": "Green Bay Packers",
+        "price": 1.87,
+        "point": -4.5
+       },
+       {
+        "name": "Atlanta Falcons",
+        "price": 1.952,
+        "point": 4.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "fanatics",
+    "title": "Fanatics",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:07:40Z",
+      "outcomes": [
+       {
+        "name": "Green Bay Packers",
+        "price": 1.952,
+        "point": -5.5
+       },
+       {
+        "name": "Atlanta Falcons",
+        "price": 1.87,
+        "point": 5.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   }
+  ],
+  "canonical_event_id": "d6a5107426f1e434",
+  "commence_time_reported": true
+ },
+ {
+  "id": "1712b6158bd78db6cb961cc96884ce71",
+  "sport_key": "americanfootball_nfl",
+  "sport_title": "NFL",
+  "commence_time": "2026-09-27T17:00:00Z",
+  "home_team": "Buffalo Bills",
+  "away_team": "Los Angeles Chargers",
+  "bookmakers": [
+   {
+    "key": "betrivers",
+    "title": "BetRivers",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:41:14Z",
+      "outcomes": [
+       {
+        "name": "Buffalo Bills",
+        "price": 1.877,
+        "point": -7.0
+       },
+       {
+        "name": "Los Angeles Chargers",
+        "price": 1.935,
+        "point": 7.0
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "fanduel",
+    "title": "FanDuel",
+    "last_update": "2026-09-24T19:42:52Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:42:11Z",
+      "outcomes": [
+       {
+        "name": "Buffalo Bills",
+        "price": 1.98,
+        "point": -7.5
+       },
+       {
+        "name": "Los Angeles Chargers",
+        "price": 1.833,
+        "point": 7.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278972159,
+    "stale_seconds": 0.45
+   },
+   {
+    "key": "betonline",
+    "title": "BetOnline",
+    "last_update": "2026-09-24T19:42:28Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:42:28Z",
+      "outcomes": [
+       {
+        "name": "Buffalo Bills",
+        "price": 2.0,
+        "point": -7.5
+       },
+       {
+        "name": "Los Angeles Chargers",
+        "price": 1.833,
+        "point": 7.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278948994,
+    "stale_seconds": 23.61
+   },
+   {
+    "key": "hardrock",
+    "title": "Hard Rock Bet",
+    "last_update": "2026-09-24T19:42:43Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:42:43Z",
+      "outcomes": [
+       {
+        "name": "Buffalo Bills",
+        "price": 1.952,
+        "point": -7.5
+       },
+       {
+        "name": "Los Angeles Chargers",
+        "price": 1.87,
+        "point": 7.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278963856,
+    "stale_seconds": 8.75
+   },
+   {
+    "key": "prophetx",
+    "title": "ProphetX",
+    "last_update": "2026-09-24T19:27:14Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T18:59:49Z",
+      "outcomes": [
+       {
+        "name": "Buffalo Bills",
+        "price": 1.917,
+        "point": -7.0
+       },
+       {
+        "name": "Los Angeles Chargers",
+        "price": 2.08,
+        "point": 7.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278034793,
+    "stale_seconds": 937.81
+   },
+   {
+    "key": "draftkings",
+    "title": "DraftKings",
+    "last_update": "2026-09-24T19:42:50Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:40:50Z",
+      "outcomes": [
+       {
+        "name": "Buffalo Bills",
+        "price": 1.87,
+        "point": -7.0
+       },
+       {
+        "name": "Los Angeles Chargers",
+        "price": 1.952,
+        "point": 7.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278970906,
+    "stale_seconds": 1.7
+   },
+   {
+    "key": "bet365",
+    "title": "bet365",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:03:01Z",
+      "outcomes": [
+       {
+        "name": "Buffalo Bills",
+        "price": 2.0,
+        "point": -7.5
+       },
+       {
+        "name": "Los Angeles Chargers",
+        "price": 1.833,
+        "point": 7.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "betmgm",
+    "title": "BetMGM",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:09:46Z",
+      "outcomes": [
+       {
+        "name": "Buffalo Bills",
+        "price": 1.87,
+        "point": -7.0
+       },
+       {
+        "name": "Los Angeles Chargers",
+        "price": 1.952,
+        "point": 7.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "bovada",
+    "title": "Bovada",
+    "last_update": "2026-09-24T19:42:46Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T18:57:37Z",
+      "outcomes": [
+       {
+        "name": "Buffalo Bills",
+        "price": 2.0,
+        "point": -7.5
+       },
+       {
+        "name": "Los Angeles Chargers",
+        "price": 1.833,
+        "point": 7.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278966271,
+    "stale_seconds": 6.33
+   },
+   {
+    "key": "caesars",
+    "title": "Caesars",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:28:35Z",
+      "outcomes": [
+       {
+        "name": "Buffalo Bills",
+        "price": 1.877,
+        "point": -7.0
+       },
+       {
+        "name": "Los Angeles Chargers",
+        "price": 1.943,
+        "point": 7.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "fanatics",
+    "title": "Fanatics",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:23:34Z",
+      "outcomes": [
+       {
+        "name": "Buffalo Bills",
+        "price": 1.87,
+        "point": -7.0
+       },
+       {
+        "name": "Los Angeles Chargers",
+        "price": 1.952,
+        "point": 7.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "parx",
+    "title": "Parx Casino",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:12:47Z",
+      "outcomes": [
+       {
+        "name": "Buffalo Bills",
+        "price": 1.877,
+        "point": -7.0
+       },
+       {
+        "name": "Los Angeles Chargers",
+        "price": 1.935,
+        "point": 7.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "fliff",
+    "title": "Fliff",
+    "last_update": "2026-09-24T18:57:43Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T18:57:43Z",
+      "outcomes": [
+       {
+        "name": "Buffalo Bills",
+        "price": 1.952,
+        "point": -7.5
+       },
+       {
+        "name": "Los Angeles Chargers",
+        "price": 1.833,
+        "point": 7.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790276263822,
+    "stale_seconds": 2708.78
+   }
+  ],
+  "canonical_event_id": "70b733b660ae2d4a",
+  "commence_time_reported": true
+ },
+ {
+  "id": "ac3b0d0fd1e9215707897b5ecf853bdd",
+  "sport_key": "americanfootball_nfl",
+  "sport_title": "NFL",
+  "commence_time": "2026-09-27T17:00:00Z",
+  "home_team": "Cleveland Browns",
+  "away_team": "Carolina Panthers",
+  "bookmakers": [
+   {
+    "key": "betrivers",
+    "title": "BetRivers",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:41:14Z",
+      "outcomes": [
+       {
+        "name": "Cleveland Browns",
+        "price": 1.952,
+        "point": 2.5
+       },
+       {
+        "name": "Carolina Panthers",
+        "price": 1.855,
+        "point": -2.5
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "fanduel",
+    "title": "FanDuel",
+    "last_update": "2026-09-24T19:42:52Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:42:11Z",
+      "outcomes": [
+       {
+        "name": "Cleveland Browns",
+        "price": 1.952,
+        "point": 2.5
+       },
+       {
+        "name": "Carolina Panthers",
+        "price": 1.87,
+        "point": -2.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278972159,
+    "stale_seconds": 0.45
+   },
+   {
+    "key": "betonline",
+    "title": "BetOnline",
+    "last_update": "2026-09-24T19:42:28Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:42:28Z",
+      "outcomes": [
+       {
+        "name": "Cleveland Browns",
+        "price": 1.962,
+        "point": 2.5
+       },
+       {
+        "name": "Carolina Panthers",
+        "price": 1.862,
+        "point": -2.5
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790278948994,
+    "stale_seconds": 23.61
+   },
+   {
+    "key": "hardrock",
+    "title": "Hard Rock Bet",
+    "last_update": "2026-09-24T19:42:43Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:42:43Z",
+      "outcomes": [
+       {
+        "name": "Cleveland Browns",
+        "price": 2.0,
+        "point": 2.5
+       },
+       {
+        "name": "Carolina Panthers",
+        "price": 1.833,
+        "point": -2.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278963928,
+    "stale_seconds": 8.68
+   },
+   {
+    "key": "prophetx",
+    "title": "ProphetX",
+    "last_update": "2026-09-24T19:42:23Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:10:55Z",
+      "outcomes": [
+       {
+        "name": "Cleveland Browns",
+        "price": 2.24,
+        "point": 1.0
+       },
+       {
+        "name": "Carolina Panthers",
+        "price": 1.775,
+        "point": -1.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278943962,
+    "stale_seconds": 28.64
+   },
+   {
+    "key": "draftkings",
+    "title": "DraftKings",
+    "last_update": "2026-09-24T19:42:21Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:40:50Z",
+      "outcomes": [
+       {
+        "name": "Cleveland Browns",
+        "price": 1.98,
+        "point": 2.5
+       },
+       {
+        "name": "Carolina Panthers",
+        "price": 1.847,
+        "point": -2.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278941611,
+    "stale_seconds": 30.99
+   },
+   {
+    "key": "bet365",
+    "title": "bet365",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T18:52:29Z",
+      "outcomes": [
+       {
+        "name": "Cleveland Browns",
+        "price": 1.952,
+        "point": 2.5
+       },
+       {
+        "name": "Carolina Panthers",
+        "price": 1.87,
+        "point": -2.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "betmgm",
+    "title": "BetMGM",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:28:35Z",
+      "outcomes": [
+       {
+        "name": "Cleveland Browns",
+        "price": 1.952,
+        "point": 2.5
+       },
+       {
+        "name": "Carolina Panthers",
+        "price": 1.87,
+        "point": -2.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "bovada",
+    "title": "Bovada",
+    "last_update": "2026-09-24T19:42:46Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:07:42Z",
+      "outcomes": [
+       {
+        "name": "Cleveland Browns",
+        "price": 2.0,
+        "point": 2.5
+       },
+       {
+        "name": "Carolina Panthers",
+        "price": 1.833,
+        "point": -2.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278966271,
+    "stale_seconds": 6.33
+   },
+   {
+    "key": "caesars",
+    "title": "Caesars",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:28:35Z",
+      "outcomes": [
+       {
+        "name": "Cleveland Browns",
+        "price": 1.98,
+        "point": 2.5
+       },
+       {
+        "name": "Carolina Panthers",
+        "price": 1.847,
+        "point": -2.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "fanatics",
+    "title": "Fanatics",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T19:28:35Z",
+      "outcomes": [
+       {
+        "name": "Cleveland Browns",
+        "price": 2.0,
+        "point": 2.5
+       },
+       {
+        "name": "Carolina Panthers",
+        "price": 1.833,
+        "point": -2.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "parx",
+    "title": "Parx Casino",
+    "last_update": "2026-09-24T19:42:51Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T18:53:00Z",
+      "outcomes": [
+       {
+        "name": "Cleveland Browns",
+        "price": 1.952,
+        "point": 2.5
+       },
+       {
+        "name": "Carolina Panthers",
+        "price": 1.855,
+        "point": -2.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790278971206,
+    "stale_seconds": 1.4
+   },
+   {
+    "key": "fliff",
+    "title": "Fliff",
+    "last_update": "2026-09-24T18:57:43Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-09-24T18:57:43Z",
+      "outcomes": [
+       {
+        "name": "Cleveland Browns",
+        "price": 2.0,
+        "point": 2.5
+       },
+       {
+        "name": "Carolina Panthers",
+        "price": 1.8,
+        "point": -2.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790276263822,
+    "stale_seconds": 2708.78
+   }
+  ],
+  "canonical_event_id": "78c2b23edc745f86",
+  "commence_time_reported": true
+ }
+]

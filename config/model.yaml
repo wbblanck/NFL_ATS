@@ -1,0 +1,8 @@
+# Model configuration. Phase 0/1 only: no model is fitted yet.
+model_version: "0.0.0-phase1"
+feature_version: "none"
+seed: 20260924
+phase_gates:
+  phase0_data_audit: complete_pending_user_review
+  phase1_ingestion: in_progress
+  phase2_baselines: not_started

@@ -1,0 +1,11 @@
+# League rules. Every rule the code enforces is read from here; nothing is hard-coded.
+grading_line: cbs_open          # CBS Sports opening spread only
+line_frozen: true               # the league line never changes after posting
+pick_every_game: true           # every available game is picked
+lock:
+  buffer_minutes: 15            # picks lock 15 min before each game's kickoff (per game)
+spread:
+  half_point_only: true         # league lines are always x.5; whole numbers are rejected
+season_scope:
+  game_types: [REG]             # regular season only (nflverse game_type codes)
+timezone: America/New_York      # nflverse gametime is Eastern (verified: nflreadr dictionary)

@@ -1,0 +1,292 @@
+[
+  {
+    "name": "cbs_nfl_odds",
+    "url": "https://www.cbssports.com/nfl/odds/",
+    "status": 200,
+    "bytes": 1218650,
+    "content_type": "text/html; charset=UTF-8",
+    "final_url": "https://www.cbssports.com/nfl/odds/",
+    "last_modified": null,
+    "saved": "cbs_nfl_odds.html"
+  },
+  {
+    "name": "cbs_nfl_odds_spread",
+    "url": "https://www.cbssports.com/nfl/odds/spread/",
+    "status": 404,
+    "bytes": 425620,
+    "content_type": "text/html; charset=UTF-8",
+    "final_url": "https://www.cbssports.com/nfl/odds/spread/",
+    "last_modified": null,
+    "saved": "cbs_nfl_odds_spread.html"
+  },
+  {
+    "name": "cbs_pickem",
+    "url": "https://picks.cbssports.com/football/pickem/",
+    "status": 200,
+    "bytes": 446883,
+    "content_type": "text/html; charset=UTF-8",
+    "final_url": "https://www.cbssports.com/fantasy/games/",
+    "last_modified": null,
+    "saved": "cbs_pickem.html"
+  },
+  {
+    "name": "cbs_ats_experts",
+    "url": "https://www.cbssports.com/nfl/picks/experts/against-the-spread/",
+    "status": 404,
+    "bytes": 423605,
+    "content_type": "text/html; charset=UTF-8",
+    "final_url": "https://www.cbssports.com/nfl/picks/experts/against-the-spread/",
+    "last_modified": null,
+    "saved": "cbs_ats_experts.html"
+  },
+  {
+    "name": "espn_scoreboard",
+    "url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+    "status": 403,
+    "bytes": 442,
+    "content_type": "text/html",
+    "final_url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+    "last_modified": null,
+    "saved": "espn_scoreboard.json"
+  },
+  {
+    "name": "parlay_sports",
+    "url": "https://parlay-api.com/v1/sports?apiKey=***",
+    "status": 200,
+    "bytes": 117058,
+    "content_type": "application/json",
+    "final_url": "https://parlay-api.com/v1/sports?apiKey=***",
+    "last_modified": null,
+    "saved": "parlay_sports.json"
+  },
+  {
+    "name": "parlay_nfl_spreads",
+    "url": "https://parlay-api.com/v1/sports/americanfootball_nfl/odds?apiKey=***&markets=spreads&regions=us",
+    "status": 200,
+    "bytes": 94076,
+    "content_type": "application/json",
+    "final_url": "https://parlay-api.com/v1/sports/americanfootball_nfl/odds?apiKey=***&markets=spreads&regions=us",
+    "last_modified": null,
+    "saved": "parlay_nfl_spreads.json"
+  },
+  {
+    "name": "the_odds_api_nokey",
+    "url": "https://api.the-odds-api.com/v4/sports/americanfootball_nfl/odds?regions=us&markets=spreads",
+    "status": 401,
+    "bytes": 152,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.the-odds-api.com/v4/sports/americanfootball_nfl/odds?regions=us&markets=spreads",
+    "last_modified": null,
+    "saved": "the_odds_api_nokey.json"
+  },
+  {
+    "name": "aussportsbetting_nfl_xlsx",
+    "url": "https://www.aussportsbetting.com/historical_data/nfl.xlsx",
+    "status": 403,
+    "bytes": 5742,
+    "content_type": "text/html; charset=UTF-8",
+    "final_url": "https://www.aussportsbetting.com/historical_data/nfl.xlsx",
+    "last_modified": null,
+    "saved": "aussportsbetting_nfl.xlsx"
+  },
+  {
+    "name": "aussportsbetting_page",
+    "url": "https://www.aussportsbetting.com/data/historical-nfl-results-and-odds-data/",
+    "status": 403,
+    "bytes": 5818,
+    "content_type": "text/html; charset=UTF-8",
+    "final_url": "https://www.aussportsbetting.com/data/historical-nfl-results-and-odds-data/",
+    "last_modified": null,
+    "saved": "aussportsbetting_page.html"
+  },
+  {
+    "name": "sbro_archive_page",
+    "url": "https://www.sportsbookreviewsonline.com/scoresoddsarchives/nfl/nfloddsarchives.htm",
+    "status": 200,
+    "bytes": 43444,
+    "content_type": "text/html; charset=UTF-8",
+    "final_url": "https://www.sportsbookreviewsonline.com/scoresoddsarchives/nfl/nfloddsarchives.htm",
+    "last_modified": null,
+    "saved": "sbro_archive_page.html"
+  },
+  {
+    "name": "open_meteo_forecast",
+    "url": "https://api.open-meteo.com/v1/forecast?latitude=39.0489&longitude=-94.4839&hourly=temperature_2m,wind_speed_10m,precipitation&wind_speed_unit=mph&temperature_unit=fahrenheit&forecast_days=3",
+    "status": 200,
+    "bytes": 2736,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.open-meteo.com/v1/forecast?latitude=39.0489&longitude=-94.4839&hourly=temperature_2m,wind_speed_10m,precipitation&wind_speed_unit=mph&temperature_unit=fahrenheit&forecast_days=3",
+    "last_modified": null,
+    "saved": "open_meteo_forecast.json"
+  },
+  {
+    "name": "open_meteo_archive",
+    "url": "https://archive-api.open-meteo.com/v1/archive?latitude=39.0489&longitude=-94.4839&start_date=2015-12-20&end_date=2015-12-20&hourly=temperature_2m,wind_speed_10m,precipitation&wind_speed_unit=mph&temperature_unit=fahrenheit",
+    "status": 200,
+    "bytes": 1166,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://archive-api.open-meteo.com/v1/archive?latitude=39.0489&longitude=-94.4839&start_date=2015-12-20&end_date=2015-12-20&hourly=temperature_2m,wind_speed_10m,precipitation&wind_speed_unit=mph&temperature_unit=fahrenheit",
+    "last_modified": null,
+    "saved": "open_meteo_archive.json"
+  },
+  {
+    "name": "open_meteo_historical_forecast",
+    "url": "https://historical-forecast-api.open-meteo.com/v1/forecast?latitude=39.0489&longitude=-94.4839&start_date=2024-12-21&end_date=2024-12-21&hourly=temperature_2m,wind_speed_10m",
+    "status": 200,
+    "bytes": 977,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://historical-forecast-api.open-meteo.com/v1/forecast?latitude=39.0489&longitude=-94.4839&start_date=2024-12-21&end_date=2024-12-21&hourly=temperature_2m,wind_speed_10m",
+    "last_modified": null,
+    "saved": "open_meteo_historical_forecast.json"
+  },
+  {
+    "name": "nws_points",
+    "url": "https://api.weather.gov/points/39.0489,-94.4839",
+    "status": 200,
+    "bytes": 3919,
+    "content_type": "application/geo+json",
+    "final_url": "https://api.weather.gov/points/39.0489,-94.4839",
+    "last_modified": null,
+    "saved": "nws_points.json"
+  },
+  {
+    "name": "gh_release_schedules",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/schedules",
+    "status": 200,
+    "bytes": 14825,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/schedules",
+    "last_modified": "Thu, 24 Sep 2026 19:07:00 GMT",
+    "saved": "gh_release_schedules.json"
+  },
+  {
+    "name": "gh_release_injuries",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/injuries",
+    "status": 200,
+    "bytes": 138870,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/injuries",
+    "last_modified": "Thu, 24 Sep 2026 12:41:58 GMT",
+    "saved": "gh_release_injuries.json"
+  },
+  {
+    "name": "gh_release_depth_charts",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/depth_charts",
+    "status": 200,
+    "bytes": 198936,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/depth_charts",
+    "last_modified": "Thu, 24 Sep 2026 12:42:20 GMT",
+    "saved": "gh_release_depth_charts.json"
+  },
+  {
+    "name": "gh_release_pbp",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/pbp",
+    "status": 200,
+    "bytes": 288573,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/pbp",
+    "last_modified": "Thu, 24 Sep 2026 14:12:32 GMT",
+    "saved": "gh_release_pbp.json"
+  },
+  {
+    "name": "gh_release_rosters",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/rosters",
+    "status": 200,
+    "bytes": 779929,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/rosters",
+    "last_modified": "Thu, 24 Sep 2026 12:44:20 GMT",
+    "saved": "gh_release_rosters.json"
+  },
+  {
+    "name": "gh_release_weekly_rosters",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/weekly_rosters",
+    "status": 200,
+    "bytes": 190083,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/weekly_rosters",
+    "last_modified": "Thu, 24 Sep 2026 12:44:18 GMT",
+    "saved": "gh_release_weekly_rosters.json"
+  },
+  {
+    "name": "gh_release_snap_counts",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/snap_counts",
+    "status": 200,
+    "bytes": 140542,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/snap_counts",
+    "last_modified": "Thu, 24 Sep 2026 12:50:32 GMT",
+    "saved": "gh_release_snap_counts.json"
+  },
+  {
+    "name": "gh_release_player_stats",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/player_stats",
+    "status": 200,
+    "bytes": 3177000,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/player_stats",
+    "last_modified": "Tue, 09 Jun 2026 15:56:26 GMT",
+    "saved": "gh_release_player_stats.json"
+  },
+  {
+    "name": "gh_release_stats_team",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/stats_team",
+    "status": 200,
+    "bytes": 1001628,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/stats_team",
+    "last_modified": "Thu, 24 Sep 2026 14:14:19 GMT",
+    "saved": "gh_release_stats_team.json"
+  },
+  {
+    "name": "gh_release_officials",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/officials",
+    "status": 200,
+    "bytes": 14490,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/officials",
+    "last_modified": "Wed, 02 Sep 2026 11:48:30 GMT",
+    "saved": "gh_release_officials.json"
+  },
+  {
+    "name": "gh_release_pfr_advstats",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/pfr_advstats",
+    "status": 200,
+    "bytes": 365012,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/pfr_advstats",
+    "last_modified": "Thu, 24 Sep 2026 17:03:47 GMT",
+    "saved": "gh_release_pfr_advstats.json"
+  },
+  {
+    "name": "gh_release_nextgen_stats",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/nextgen_stats",
+    "status": 200,
+    "bytes": 167298,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/nextgen_stats",
+    "last_modified": "Thu, 24 Sep 2026 12:28:20 GMT",
+    "saved": "gh_release_nextgen_stats.json"
+  },
+  {
+    "name": "gh_release_ftn_charting",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/ftn_charting",
+    "status": 200,
+    "bytes": 39274,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/ftn_charting",
+    "last_modified": "Wed, 23 Sep 2026 21:03:59 GMT",
+    "saved": "gh_release_ftn_charting.json"
+  },
+  {
+    "name": "gh_release_pbp_participation",
+    "url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/pbp_participation",
+    "status": 200,
+    "bytes": 83703,
+    "content_type": "application/json; charset=utf-8",
+    "final_url": "https://api.github.com/repos/nflverse/nflverse-data/releases/tags/pbp_participation",
+    "last_modified": "Tue, 10 Feb 2026 18:54:08 GMT",
+    "saved": "gh_release_pbp_participation.json"
+  }
+]
