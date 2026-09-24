@@ -229,6 +229,17 @@ capture jobs take dense market and CBS snapshots every Tuesday from 08:00 to
 21:00 UTC. Those snapshots will be compared with the league lines recorded
 each week.
 
+**Public source for the posted spreads: none found (2026-09-24).** A headless
+browser on a hosted runner loaded the CBS Pick'em pages without logging in and
+logged every XHR/fetch request (`scripts/audit/sniff_network.py`, evidence
+`evidence/network/20260924T235406Z/requests.jsonl`). `picks.cbssports.com/football/pickem` and `/challenge`
+redirect logged-out users to `cbssports.com/fantasy/games/`. The lobby calls
+`picks.cbssports.com/graphql` (Apollo persisted queries), but only for a
+global message. No logged-out request returned Pick'em spreads. The only
+spreads served were Sportradar market widgets (`sg-platform.cbssports.com`),
+which are market lines. Automatic capture of the league line would therefore
+need a logged-in CBS session, which has not been tried.
+
 **Consequence for backtests (0.4):** the ideal historical proxy is the
 market line at **noon ET Tuesday**. No verified historical source has
 Tuesday-noon lines. SBRO `Open` is an earlier opener and `Close` is at
