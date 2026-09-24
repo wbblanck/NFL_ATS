@@ -1,0 +1,31 @@
+name: Audit network sniff
+on:
+  workflow_dispatch:
+  push:
+    paths: ['scripts/audit/sniff_urls.txt', 'scripts/audit/sniff_network.py', '.github/workflows/audit-sniff.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-commit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sniff:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install playwright && python -m playwright install --with-deps chromium
+      - run: python scripts/audit/sniff_network.py
+      - name: Commit evidence
+        run: |
+          git config user.name "nfl-ats-engine"
+          git config user.email "nfl-ats-engine@users.noreply.github.com"
+          git add docs/evidence/network
+          git commit -m "audit: network sniff evidence" || exit 0
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep 5; done
