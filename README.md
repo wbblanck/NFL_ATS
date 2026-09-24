@@ -90,8 +90,9 @@ failures, with standard errors.
 ## Known limitations
 
 - The league's exact CBS line source is unconfirmed (audit 0.3).
-- No historical CBS openers exist before 2026-09-24. Backtests before then
-  must use a proxy (audit 0.4).
+- Historical CBS odds-page openers exist only for 2025–2026, and 31% of them
+  are whole numbers. Earlier backtests need a proxy: SBRO open/close for
+  2007–2021, nflverse close for 1999+. See audit 0.3 and 0.4.
 - nflverse injuries have no timestamps. Point-in-time depth charts exist
   only from 2025.
 - Hosted-runner cron is hours late (audit 0.10).

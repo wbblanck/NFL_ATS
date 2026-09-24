@@ -13,14 +13,13 @@ So there were two ways to collect evidence:
 | Method | What | Evidence |
 |---|---|---|
 | Local, via `nflreadpy` 0.1.5 (reads nflverse GitHub releases) | nflverse datasets | `scripts/audit/nflverse_audit.py` → `evidence/nflverse_audit.json`; `scripts/audit/spread_proxy_audit.py` → `evidence/spread_proxy_whole_numbers.csv` |
-| GitHub-hosted runner (open internet) | CBS, Parlay API, The Odds API, ESPN, SBRO, AusSportsBetting, Open-Meteo, NWS, nflverse release metadata | `scripts/audit/network_probe.py` → `evidence/probe/20260924T194249Z/` (raw responses + `summary.json`) |
+| GitHub-hosted runner (open internet) | CBS, Parlay API, The Odds API, ESPN, SBRO, AusSportsBetting, Open-Meteo, NWS, nflverse release metadata | `scripts/audit/network_probe.py` → `evidence/probe/20260924T194249Z/` (round 1) and `evidence/probe/20260924T233924Z/` (round 2: historical CBS pages, CBS Pick'em rules, SBRO season page, nfl.com injuries). Each holds raw responses plus `summary.json`. |
 | GitHub Actions API | Scheduled-workflow start delays | `evidence/gha_schedule_runs.json`, `scripts/audit/gha_schedule_latency.py` |
 
-`network_probe.py` has a second round of probes that have **not run yet**:
-CBS pages for past weeks and seasons, the CBS Pick'em rules and help pages,
-an SBRO season page, and nfl.com injuries. They run automatically on the
-first push to this repository (see `audit-probe.yml`). Items that depend on
-them are marked **PENDING PROBE**.
+Round 2 ran from this repository, which has no `PARLAY_API_KEY` secret yet,
+so the Parlay calls were skipped in round 2. The Parlay evidence is from
+round 1. Parsed CBS history: `scripts/audit/cbs_history_audit.py` →
+`evidence/cbs_history_open_column.csv`.
 
 ---
 
@@ -29,8 +28,8 @@ them are marked **PENDING PROBE**.
 | Dependency | Phase | Status |
 |---|---|---|
 | Live CBS opening line | 1+ | **Available**. CBS odds page "Open" column, parsed and archived. Whether it equals the *league* line is **UNVERIFIED**; see 0.3. |
-| Historical CBS opening lines | 2, 3, 7 | **Unavailable today.** Possibly available from CBS week pages (PENDING PROBE). |
-| Historical opening-line proxy | 2, 3, 7 | **Proxied, weakly.** SBRO archive has seasons 2007-08 through 2021-22 (format PENDING PROBE). nflverse `spread_line` is **not** an opener. |
+| Historical CBS opening lines | 2, 3, 7 | **Partial.** CBS week pages keep the odds-page "Open" column for **2025–2026** (checked: 2025 wk1 and wk10, 2026 wk1–2). **Not** for 2022 or 2018. 2023–2024 were not checked. Openers are 13–50% whole numbers per week, so they are not league lines (0.3). |
+| Historical opening-line proxy | 2, 3, 7 | **Proxied.** SBRO season pages 2007-08 to 2021-22 have `Open` and `Close` columns (book unnamed). CBS odds-page Open covers 2025+. Nothing is verified for 2022-2024. nflverse `spread_line` is **not** an opener. |
 | Live market spread at lock | 1, 3+ | **Available**: Parlay API (the user's existing key), 14 books incl. Pinnacle. Terms of use **UNVERIFIED**. |
 | Historical closing lines | 3, 7 | **Proxied**: nflverse `spread_line` (last value before kickoff, from an unnamed source), 1999-2026. |
 | Scores, schedule, kickoff, rest | all | **Available**: nflverse schedules 1999-2026. |
@@ -151,7 +150,23 @@ secondary sources, those spreads "always end in half-points" and are
 "released on Wednesday morning and fixed". That product needs a login:
 `picks.cbssports.com/football/pickem/` returned the logged-out landing page
 with no lines. Its posting time, source, and half-point policy are
-**UNVERIFIED**. The CBS rules and help pages are queued as PENDING PROBE.
+**UNVERIFIED**.
+
+The official rules of CBS's national **Pro Football Pick'em contest** were
+fetched in round 2 (`cbs_pickem_rules.html`). They say:
+- Each game gets a "**Winning Margin** … by CBSI, at its sole discretion."
+- "Pro Football Game match-ups will be posted no later than 1:00 pm ET on
+  Tuesdays."
+- "Each game listed within the Weekly Contest will lock at the scheduled
+  gametime."
+
+The rules do **not** say that margins are half-points, and they do not say
+the margin equals the odds-page Open. The lock rule (scheduled gametime) also
+differs from this league's kickoff −15 min, so the league may be a
+commissioner-run Office Pool with its own settings. The Office Pool help
+center page rendered client-side, with 8 lines of text and no rule content,
+so its contents are **UNVERIFIED**. **The league's line source remains
+UNVERIFIED and needs the user's confirmation.**
 
 What the capture job does about it:
 - It archives the odds-page Open column on every run. Whole-number values
@@ -162,21 +177,35 @@ What the capture job does about it:
   week of league lines with `cbs_open_frozen.csv`. Until then, all CBS-line
   results carry that caveat.
 
-**Historical, before 2026-09-24:** **UNAVAILABLE as of this audit.** The CBS
-page's week dropdown links to
-`/nfl/odds/{season}/regular/week-{n}/` for 2026. Whether past weeks or past
-seasons still show the "Open" column is PENDING PROBE: the probe fetches
-2026 wk1–2, 2025 wk1 and wk10, 2022, 2018 and 2012. If they do, those pages
-would be the best historical CBS source, but they would still be the
-odds-page Open, not the league line.
+**Historical, before 2026-09-24:** partly available from CBS week pages
+`/nfl/odds/{season}/regular/week-{n}/`. Evidence:
+`evidence/cbs_history_open_column.csv`.
+
+| Page | Games | With Open | Whole-number opens |
+|---|---|---|---|
+| 2026 wk 1 | 16 | 16 | 4 |
+| 2026 wk 2 | 16 | 16 | 8 |
+| 2025 wk 1 | 16 | 16 | 5 |
+| 2025 wk 10 | 14 | 14 | 2 |
+| 2022 wk 5 | 16 | **0** (shown as "—") | – |
+| 2018 wk 5 | 15 | **0** | – |
+| 2012 wk 5 | 0 (no games rendered) | – | – |
+
+So the odds-page Open exists for at least 2025–2026. The first season with it
+lies between 2023 and 2025 and has not been checked. Across these four weeks,
+19 of 62 odds-page openers (31%) are whole numbers. That is further evidence
+that this column is **not** the league line. It remains usable as a *CBS
+market opener* covariate, and it may be the nearest historical proxy if the
+league line is set from it and rounded. Any such rounding rule is
+**UNVERIFIED**.
 
 ## 0.4 Best documented proxy for historical openers; how it differs from CBS; whole-number counts
 
 | Candidate | Status | Evidence |
 |---|---|---|
-| **SBRO** (sportsbookreviewsonline.com) NFL odds archive | Index page returned HTTP 200. It links season pages **2007-08 through 2021-22**. Whether those pages carry an opening line, and from which book, is PENDING PROBE, as is anything after 2021-22 (none linked). | `probe/.../sbro_archive_page.html` |
+| **SBRO** (sportsbookreviewsonline.com) NFL odds archive | **Verified format.** The index links season pages **2007-08 through 2021-22**, none later. The 2021-22 page is an HTML table with columns `Date, Rot, VH, Team, 1st–4th, Final, Open, Close, ML, 2H`. The favorite's row holds the spread and the other row holds the total, e.g. TB `Open 7 / Close 10`, DAL `52.5 / 52.5`. **The source book is not named: UNVERIFIED.** | `probe/20260924T194249Z/sbro_archive_page.html`, `probe/20260924T233924Z/sbro_2021_22.html` |
 | AusSportsBetting `nfl.xlsx` | HTTP 403 (Cloudflare challenge) from the hosted runner: **UNVERIFIED**. The user could download it manually. | `probe/.../aussportsbetting_*` |
-| CBS week pages, historical | PENDING PROBE (see 0.3) | |
+| CBS week pages, historical | **2025–2026 only** (see 0.3). 31% whole numbers. | `evidence/cbs_history_open_column.csv` |
 | nflverse `spread_line` | **Not an opener** (0.2). Usable as a closing proxy only. | |
 
 **How a proxy differs from CBS.** Every candidate is a market or book
@@ -218,8 +247,8 @@ fanduel, fliff, hardrock, parx, pinnacle, prophetx`. Each book carries a
 - **nflverse `spread_line`**: last pre-game value, 1999–2026 (0.2). The
   source book and exact capture time are **UNVERIFIED**, so "closing" is an
   approximation.
-- **SBRO** season pages (2007-08 to 2021-22) are believed to carry a close
-  column: PENDING PROBE.
+- **SBRO** season pages (2007-08 to 2021-22) carry a `Close` column
+  (verified format, 2021-22; book unnamed).
 - **Going forward**, the engine's own `market_captures.csv` archives
   lock-time and near-lock lines, which will measure lock versus close
   directly (spec Phase 3).
@@ -232,7 +261,9 @@ bettingpunter.com, and an nfl.com news article on COVID-era replacement of
 late inactives. The primary NFL rulebook text was not retrieved, so this is
 **UNVERIFIED (primary)**. **No structured, machine-readable inactives feed was
 verified.** nflverse `injuries` holds practice and game-status reports, not
-inactives (0.8). nfl.com/injuries is PENDING PROBE. Consequence: the final
+inactives (0.8). nfl.com/injuries returned 200. It shows weekly injury
+reports and links to editorial "inactives" articles, but no structured
+inactives table was found. Consequence: the final
 pick window is kickoff −90 min to kickoff −15 min.
 
 ## 0.8 Which nflverse datasets are point-in-time, and which reflect final or report-date states?
