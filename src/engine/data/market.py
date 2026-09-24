@@ -58,9 +58,14 @@ def parse_events(events: list[dict]) -> list[dict]:
             for m in b.get("markets", []):
                 if m.get("key") != "spreads":
                     continue
-                hp = [o for o in m.get("outcomes", []) if o.get("name") == e["home_team"]]
-                if not hp or hp[0].get("point") is None:
+                hp = [o for o in m.get("outcomes", [])
+                      if o.get("name") == e["home_team"] and o.get("point") is not None]
+                if not hp:
                     continue
+                # Some books also list alternate spreads (observed 2026-09-24: betrivers,
+                # draftkings, fanduel had a second BUF line). Keep the main line: the
+                # home price closest to even money.
+                hp.sort(key=lambda o: abs(float(o.get("price") or 0) - 1.91))
                 out.append({"provider_event_id": e.get("id"), "commence_time": e.get("commence_time"),
                             "home_team": home, "away_team": away, "book": b.get("key"),
                             "home_spread": float(hp[0]["point"]), "home_price_decimal": hp[0].get("price"),

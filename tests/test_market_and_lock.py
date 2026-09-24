@@ -46,3 +46,15 @@ def test_market_at_lock_has_no_lookahead(tmp_root, week3_schedule):
     assert dt.datetime.fromisoformat(m["captured_at"]) <= lock
     m2 = market.market_at_lock(caps, "2026_03_ATL_GB", as_of=lock + dt.timedelta(hours=1))
     assert m2["median"] == -99.5
+
+
+def test_alternate_spreads_keep_main_line():
+    ev = [{"id": "x", "commence_time": "2026-09-27T17:00:00Z", "home_team": "Buffalo Bills",
+           "away_team": "Los Angeles Chargers", "bookmakers": [{"key": "betrivers", "markets": [{
+               "key": "spreads", "outcomes": [
+                   {"name": "Buffalo Bills", "point": -5.5, "price": 1.55},
+                   {"name": "Los Angeles Chargers", "point": 5.5, "price": 2.45},
+                   {"name": "Buffalo Bills", "point": -7.0, "price": 1.89},
+                   {"name": "Los Angeles Chargers", "point": 7.0, "price": 1.93}]}]}]}]
+    rows = market.parse_events(ev)
+    assert len(rows) == 1 and rows[0]["home_spread"] == -7.0

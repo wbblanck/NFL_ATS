@@ -199,6 +199,23 @@ market opener* covariate, and it may be the nearest historical proxy if the
 league line is set from it and rounded. Any such rounding rule is
 **UNVERIFIED**.
 
+**Update 2026-09-24 (user screenshot of the league pool, 4 of 16 week-3 games).**
+The league is a CBS Office Pool ("BONSAI POOL 2026"). Its lines, recorded in
+`data/lines/league_lines.csv`, compared with this audit's captures:
+
+| Game | League line | CBS odds-page Open | Market, Thu 19:42Z (Parlay, main lines) |
+|---|---|---|---|
+| ATL@GB | GB −6.5 | GB −6.5 | GB −4.5 to −5.5 |
+| LAC@BUF | BUF −7.5 | BUF −4.5 | BUF −7 to −7.5 |
+| CAR@CLE | CAR −2.5 | CAR −2.5 | CAR −2.5 |
+| NYJ@DET | DET −6.5 | DET −6.5 | DET −6.5 to −7 |
+
+The league line matches neither the odds-page Open (LAC@BUF is 3 points off)
+nor Thursday's market (ATL@GB is 1–2 points off). **Working hypothesis, not
+yet verified:** the league line is the market at pool posting time (around
+Tuesday), moved to a half-point. It will be tested once the capture jobs have
+Tuesday and Wednesday snapshots to compare against weekly league lines.
+
 ## 0.4 Best documented proxy for historical openers; how it differs from CBS; whole-number counts
 
 | Candidate | Status | Evidence |
