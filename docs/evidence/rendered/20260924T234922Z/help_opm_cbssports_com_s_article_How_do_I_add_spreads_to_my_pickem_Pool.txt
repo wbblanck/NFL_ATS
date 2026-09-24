@@ -1,0 +1,47 @@
+URL: https://help.opm.cbssports.com/s/article/How-do-I-add-spreads-to-my-pickem-Pool
+FINAL: https://help.opm.cbssports.com/s/article/How-do-I-add-spreads-to-my-pickem-Pool
+
+""
+Skip to Main Content
+Office Pool Manager Help Center - Home
+HOME
+GO TO CBSSPORTS.COM
+CONTACT US
+Expand search
+GO BACK HOME
+How do I add spreads to my Pickem Pool?
+
+The Against the Spread game format allows you to set your pool to use CBS Sports-provided point spreads under the NFL, College, or NFL & College game types. This can be set from a computer or mobile device.
+
+Spreads for the upcoming week's NFL games in Football Pick'em are usually posted by 12:00pm EST on Tuesday. Once released, they're final for the week. The original posted spread stays fixed and won't change.
+
+If you need to update your game format from Straight Up to Against the Spread, click on Settings, then Pool Settings. From the following page, click the settings icon, then Edit Pool Settings. Scroll down to the Game Format section and select Against the Spread. Click OK to save your changes. We are no longer offering the option to set custom spreads for games.
+
+Note: Once a player has saved picks, but prior to the start of the pool, this setting will be locked. You can unlock this setting by clearing out your pool's picks. Please see our How can I unlock my pool's settings? article by clicking here. If a setting is changed, an email will be sent to all pool members regarding the change. If standings have run for the first week of your pool, you will not be able to edit the Game Format setting.
+
+Was this article helpful?
+Like
+Dislike
+RELATED ARTICLES
+When are games for the upcoming week available in Football Pick'em?
+
+
+Where do I find my pick'em pool on the CBS Sports app?
+
+
+Where can I set up weights for my Pick-em Pool?
+
+
+How do I set up a tiebreaker for my Pick-em Pool?
+
+
+How do I add offline players to my Office Pool?
+TRENDING ARTICLES
+How do I make picks?
+Where do I find my pick'em pool on the CBS Sports app?
+Is there an app for CBS Sports Pick'em and Bracket Games?
+How do I change my CBSSports.com Name or ID?
+What is a Survivor Pool?
+Privacy Policy | Terms of Use | Your Privacy Choices | California Notice
+2026 ™ & © CBS Interactive Inc., a Paramount company. All rights reserved.
+How do I add spreads to my Pickem Pool?
