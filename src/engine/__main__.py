@@ -10,8 +10,11 @@
                      opening-line source -> data/backtests/, docs/phase2_baselines.md
   drift              Phase 3: drift (open->close) strategies, pre-registered test
                      -> data/backtests/phase3_*.csv, docs/phase3_results.md
-  run --game ID      final pick for one game (manual fallback) -- modeling not
-                     built yet (Phase 0/1); exits non-zero with an explanation
+  lock-run [--window-minutes N]
+                     final picks for games locking within N minutes (default 25):
+                     capture market, drift vs league line, immutable prediction row
+  run --game ID      manual fallback: final pick for one game now (flagged
+                     LATE_AFTER_LOCK if run after its lock)
 """
 from __future__ import annotations
 
@@ -30,17 +33,14 @@ def main(argv=None) -> int:
     m.add_argument("--all-games", action="store_true")
     sub.add_parser("baselines")
     sub.add_parser("drift")
+    lr = sub.add_parser("lock-run")
+    lr.add_argument("--window-minutes", type=int, default=25)
     c = sub.add_parser("check-league-lines")
     c.add_argument("--season", type=int)
     c.add_argument("--week", type=int)
     r = sub.add_parser("run")
     r.add_argument("--game", required=True)
     a = ap.parse_args(argv)
-
-    if a.cmd == "run":
-        print(f"run --game {a.game}: no model exists yet. The spec gates modeling behind "
-              "Phases 2-7; Phase 0/1 deliver the audit and line capture only.", file=sys.stderr)
-        return 2
 
     from engine.data import cbs_lines, market, nflverse
 
@@ -65,6 +65,19 @@ def main(argv=None) -> int:
         return 0
 
     sched, sid = nflverse.regular_season_schedule(save=False)
+    if a.cmd in ("lock-run", "run"):
+        from engine.picks import final
+        if a.cmd == "run" and a.game in final.existing_game_ids():
+            print(f"{a.game}: final prediction already exists (immutable); see data/predictions/")
+            return 0
+        out = final.run(sched, window_minutes=getattr(a, "window_minutes", 25), snapshot_id=sid,
+                        game_id=getattr(a, "game", None))
+        for r in out:
+            print(f"{r['away_team']}@{r['home_team']} lock {r['lock_utc']} ({r['minutes_to_lock']} min): "
+                  f"line {r['league_line']} market {r['market_at_lock']} drift {r['drift']} -> "
+                  f"{r['pick_team']} [{r['data_status']} {r['flags']}]")
+        print(f"{len(out)} final predictions written")
+        return 0
     if a.cmd == "check-league-lines":
         from engine.data import league_lines
         rows = league_lines.load()

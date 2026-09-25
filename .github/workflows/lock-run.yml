@@ -1,0 +1,49 @@
+name: Lock run (final picks)
+# Triggered by an EXTERNAL timer via the workflow_dispatch API (see docs/scheduling.md).
+# GitHub's own cron starts hours late (audit 0.10); dispatch started in seconds
+# (measured 2026-09-25: request 03:41:46Z -> job 03:41:54Z -> capture 03:42:14Z).
+on:
+  workflow_dispatch:
+    inputs:
+      window_minutes:
+        description: 'Pick games whose lock is within this many minutes'
+        default: '25'
+      game_id:
+        description: 'Manual fallback: pick this one game now (optional)'
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lock-run-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  pick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -e .
+      - name: Final picks
+        env:
+          PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+        run: |
+          if [ -n "${{ inputs.game_id }}" ]; then
+            python -m engine run --game "${{ inputs.game_id }}"
+          else
+            python -m engine lock-run --window-minutes "${{ inputs.window_minutes || '25' }}"
+          fi
+      - name: Commit predictions
+        if: always()
+        run: |
+          git config user.name "nfl-ats-engine"
+          git config user.email "nfl-ats-engine@users.noreply.github.com"
+          git add data/predictions data/lines
+          git commit -m "picks: lock run $(date -u +%Y-%m-%dT%H:%MZ)" || exit 0
+          for i in 1 2 3 4; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep $((i*3)); done

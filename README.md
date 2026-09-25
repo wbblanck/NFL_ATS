@@ -76,6 +76,17 @@ login. No public copy exists (audit 0.3). Each Tuesday afternoon:
    every line is a half-point, matches the schedule, and that no game is
    missing.
 
+## Final picks at lock
+
+`lock-run.yml` makes the final pick for every game 15–25 minutes before its
+lock. An **external timer** triggers it through the GitHub API; setup is in
+`docs/scheduling.md`. Current pick rule: follow the market's move from the
+league line to the market at lock, and pick away when there is no move. This
+is the Phase 3 rule, `phase3-drift-D0full`. Picks are appended, never edited,
+to `data/predictions/predictions.csv`. A readable weekly slate is written to
+`data/predictions/slate_<season>_wNN.md`. Probabilities show `UNAVAILABLE`
+until Phase 4/5.
+
 ## Automation (`.github/workflows/`)
 
 | Workflow | Trigger | Purpose |
