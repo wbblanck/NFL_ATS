@@ -8,6 +8,8 @@
                      match) and list games of that week still missing a line
   baselines          Phase 2: always home/away/favorite/underdog vs every
                      opening-line source -> data/backtests/, docs/phase2_baselines.md
+  drift              Phase 3: drift (open->close) strategies, pre-registered test
+                     -> data/backtests/phase3_*.csv, docs/phase3_results.md
   run --game ID      final pick for one game (manual fallback) -- modeling not
                      built yet (Phase 0/1); exits non-zero with an explanation
 """
@@ -27,6 +29,7 @@ def main(argv=None) -> int:
     m.add_argument("--window-minutes", type=int, default=None)
     m.add_argument("--all-games", action="store_true")
     sub.add_parser("baselines")
+    sub.add_parser("drift")
     c = sub.add_parser("check-league-lines")
     c.add_argument("--season", type=int)
     c.add_argument("--week", type=int)
@@ -47,6 +50,14 @@ def main(argv=None) -> int:
         res = phase2.run(config.ROOT / "docs" / "phase2_baselines.md")
         for k, t in res.items():
             print(k); print(t)
+        return 0
+    if a.cmd == "drift":
+        from engine import config
+        from engine.backtest import phase3
+        r = phase3.run(config.ROOT / "docs" / "phase3_results.md")
+        print("D0", r["d0"]); print("D0-full", r["d0_full"])
+        print("z vs bar", round(r["z_vs_bar"], 2), "PASS" if r["passed"] else "FAIL")
+        print(r["buckets"]); print(r["logit"]); print(r["key_numbers"]); print(r["walk_forward_pooled"])
         return 0
     if a.cmd == "freeze-cbs":
         out = cbs_lines.freeze()
