@@ -45,6 +45,7 @@ def main(argv=None) -> int:
     sub.add_parser("features")
     sub.add_parser("backtest")
     sub.add_parser("grade")
+    sub.add_parser("holdout2025")
     lr = sub.add_parser("lock-run")
     lr.add_argument("--window-minutes", type=int, default=25)
     c = sub.add_parser("check-league-lines")
@@ -97,6 +98,15 @@ def main(argv=None) -> int:
         r = walk_forward.run(config.ROOT / "docs" / "phase7_results.md")
         print(r["pooled"]); print("z vs bar", round(r["z_vs_bar"], 2), "PASS" if r["passed"] else "FAIL")
         print(r["per_season"]); print(r["subgroups"])
+        return 0
+    if a.cmd == "holdout2025":
+        from engine import config
+        from engine.backtest import holdout2025
+        r = holdout2025.run(config.ROOT / "docs" / "holdout2025_results.md")
+        for k, v in r.items():
+            if k != "per_week":
+                print(k, v)
+        print(r["per_week"])
         return 0
     if a.cmd == "freeze-cbs":
         out = cbs_lines.freeze()
