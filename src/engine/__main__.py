@@ -13,6 +13,8 @@
   lock-run [--window-minutes N]
                      final picks for games locking within N minutes (default 25):
                      capture market, drift vs league line, immutable prediction row
+  coverprob          Phase 4: walk-forward cover-probability evaluation
+                     -> docs/phase4_results.md, data/backtests/phase4_*.csv
   run --game ID      manual fallback: final pick for one game now (flagged
                      LATE_AFTER_LOCK if run after its lock)
 """
@@ -33,6 +35,7 @@ def main(argv=None) -> int:
     m.add_argument("--all-games", action="store_true")
     sub.add_parser("baselines")
     sub.add_parser("drift")
+    sub.add_parser("coverprob")
     lr = sub.add_parser("lock-run")
     lr.add_argument("--window-minutes", type=int, default=25)
     c = sub.add_parser("check-league-lines")
@@ -58,6 +61,13 @@ def main(argv=None) -> int:
         print("D0", r["d0"]); print("D0-full", r["d0_full"])
         print("z vs bar", round(r["z_vs_bar"], 2), "PASS" if r["passed"] else "FAIL")
         print(r["buckets"]); print(r["logit"]); print(r["key_numbers"]); print(r["walk_forward_pooled"])
+        return 0
+    if a.cmd == "coverprob":
+        from engine import config
+        from engine.backtest import phase4
+        r = phase4.run(config.ROOT / "docs" / "phase4_results.md")
+        print(r["pooled"]); print("D0-full same games", r["d0_full_same_games"])
+        print("coinflip ll", r["coinflip_ll"], "best", r["best"], "switch", r["switch_pick_rule"], r["counts"])
         return 0
     if a.cmd == "freeze-cbs":
         out = cbs_lines.freeze()

@@ -9,7 +9,8 @@ final prediction yet:
   2. market_at_lock = median home spread across books
   3. drift = market_at_lock - league line
   4. pick = side the market moved toward; drift == 0 -> away
-     (D0-full, pre-registered in docs/phase3_preregistration.md)
+     (D0-full, pre-registered in docs/phase3_preregistration.md), or with the Phase 4
+     margin distribution: pick = higher P(cover) (pre-registered switch, docs/phase4_*)
   5. append ONE immutable row to data/predictions/predictions.csv
 
 Missing inputs never block a pick (every game is picked); they set
@@ -26,6 +27,7 @@ import polars as pl
 
 from engine import config
 from engine.data import league_lines, market, store
+from engine.models.margin_dist import MarginDist
 from engine.picks.grading import is_half_point
 
 FIELDS = [
@@ -35,8 +37,22 @@ FIELDS = [
     "pick_rule", "sim_count", "seed", "model_version", "feature_version", "data_snapshot",
     "training_period", "data_status", "missing_input", "expected_impact", "flags", "supersedes",
 ]
-MODEL_VERSION = "phase3-drift-D0full"
-TRAINING_PERIOD = "rule has no fitted parameters; validated on SBRO 2007-2021 (docs/phase3_report.md)"
+MODEL_VERSION = "phase4-shifted-empirical-argmax"
+ESTIMATOR = "shifted"   # lowest walk-forward log loss (docs/phase4_results.md)
+
+
+def fit_dist(sched: pl.DataFrame, now: dt.datetime) -> tuple[MarginDist | None, str]:
+    """Margin distribution fit ONLY on regular-season games that kicked off before `now`.
+    Returns (None, reason) if there is no history (then the Phase 3 drift rule is used)."""
+    if not {"result", "spread_line"} <= set(sched.columns):
+        return None, "no history in schedule; Phase 3 drift rule"
+    h = sched.filter(pl.col("result").is_not_null(), pl.col("spread_line").is_not_null(),
+                     pl.col("kickoff_utc") < now)
+    if h.height < 500:
+        return None, f"only {h.height} historical games; Phase 3 drift rule"
+    md = MarginDist(kind=ESTIMATOR).fit(-h["spread_line"].to_numpy(), h["result"].to_numpy())
+    period = f"{h['season'].min()}-{h['season'].max()} REG, {h.height} games, kickoff < {now.isoformat()}"
+    return md, period
 
 
 def predictions_path():
@@ -52,8 +68,11 @@ def _cbs_frozen() -> dict[str, float]:
     return {r["game_id"]: float(r["spread"]) for r in rows if r.get("spread")}
 
 
-def decide(league_line: float | None, market_at_lock: float | None, cbs_open: float | None) -> dict:
-    """Pure decision logic (tested). Returns pick fields + status fields."""
+def decide(league_line: float | None, market_at_lock: float | None, cbs_open: float | None,
+           dist: MarginDist | None = None) -> dict:
+    """Pure decision logic (tested). Returns pick fields + status fields.
+    With a distribution: pick = higher cover probability (Phase 4, pre-registered switch).
+    Without one: D0-full drift rule (Phase 3)."""
     missing, flags, impact = [], [], []
     line = league_line
     if line is None:
@@ -66,14 +85,20 @@ def decide(league_line: float | None, market_at_lock: float | None, cbs_open: fl
     if market_at_lock is None:
         missing.append("market_at_lock")
         flags.append("NO_MARKET")
+    p_home = p_away = None
     if line is not None and market_at_lock is not None:
         drift = market_at_lock - line
-        pick = "home" if drift < 0 else "away"
-        rule = "drift" if drift != 0 else "no_move_fallback_away"
+        if dist is not None:
+            p_home, p_away = dist.cover_probs(market_at_lock, line)
+            pick, rule = ("home" if p_home > 0.5 else "away"), "argmax_cover_prob"
+        else:
+            pick = "home" if drift < 0 else "away"
+            rule = "drift" if drift != 0 else "no_move_fallback_away"
     else:
         drift, pick, rule = None, "away", "missing_input_fallback_away"
         impact.append("pick is the Phase 2 fallback (always away, ~51% historically)")
     return {"drift": drift, "pick": pick, "pick_rule": rule, "line_used": line,
+            "p_home": p_home, "p_away": p_away,
             "data_status": "incomplete" if missing else "complete",
             "missing_input": ";".join(missing), "expected_impact": "; ".join(impact),
             "flags": ";".join(flags)}
@@ -97,11 +122,13 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
     caps = market.capture(due, now=now, window_minutes=window_minutes, events=events, all_games=True)
     ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
     cbs = _cbs_frozen()
+    dist, period = fit_dist(sched, now)
     out = []
     for g in due.sort("kickoff_utc").to_dicts():
         rows = [r for r in caps if r.get("game_id") == g["game_id"] and r.get("status") == "ok"]
         cons = market.consensus(rows)
-        d = decide(ll.get(g["game_id"]), cons["median"], cbs.get(g["game_id"]))
+        d = decide(ll.get(g["game_id"]), cons["median"], cbs.get(g["game_id"]), dist)
+        mkt = cons["median"]
         mtl = (g["lock_utc"] - now).total_seconds() / 60
         flags = [f for f in d["flags"].split(";") if f]
         if mtl <= 0:
@@ -115,16 +142,37 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
             "minutes_to_lock": round(mtl, 1),
             "league_line": ll.get(g["game_id"]), "cbs_open": cbs.get(g["game_id"]),
             "market_at_lock": cons["median"], "market_books": cons["n_books"], "drift": d["drift"],
-            "model_margin": "UNAVAILABLE", "p_home_cover": "UNAVAILABLE", "p_away_cover": "UNAVAILABLE",
+            "model_margin": "UNAVAILABLE" if mkt is None or dist is None else f"{-mkt:+.1f} / {dist.median_margin(mkt):+.0f}",
+            "p_home_cover": "UNAVAILABLE" if d["p_home"] is None else round(d["p_home"], 4),
+            "p_away_cover": "UNAVAILABLE" if d["p_away"] is None else round(d["p_away"], 4),
             "pick": d["pick"], "pick_team": pick_team, "pick_rule": d["pick_rule"],
-            "sim_count": 0, "seed": config.model().get("seed"), "model_version": MODEL_VERSION,
-            "feature_version": "none", "data_snapshot": snapshot_id, "training_period": TRAINING_PERIOD,
+            "sim_count": 0, "seed": config.model().get("seed"),
+            "model_version": MODEL_VERSION if dist is not None else "phase3-drift-D0full",
+            "feature_version": "none", "data_snapshot": snapshot_id, "training_period": period,
             "data_status": d["data_status"], "missing_input": d["missing_input"],
             "expected_impact": d["expected_impact"], "flags": ";".join(flags), "supersedes": "",
         })
     store.append_rows(predictions_path(), FIELDS, out)
+    if dist is not None:
+        _append_sensitivity(out, dist)
     write_slates({(r["season"], r["week"]) for r in out})
     return out
+
+
+def _append_sensitivity(preds: list[dict], dist: MarginDist) -> None:
+    """Diagnostic: P(cover) for lines around the league line (spec Phase 4)."""
+    for r in preds:
+        line = r["league_line"] if r["league_line"] is not None else r["cbs_open"]
+        if line is None or r["market_at_lock"] is None or not is_half_point(float(line)):
+            continue
+        f = config.path("predictions") / f"sensitivity_{r['season']}_w{int(r['week']):02d}.md"
+        rows = dist.sensitivity(float(r["market_at_lock"]), float(line))
+        txt = [f"\n## {r['away_team']} @ {r['home_team']} — market {r['market_at_lock']}, "
+               f"league line {line} (created {r['created_at'][:16]})\n",
+               "| home line | P(home covers) | P(away covers) |", "|---|---|---|"]
+        txt += [f"| {x['line']:+.1f} | {x['p_home']:.3f} | {x['p_away']:.3f} |" for x in rows]
+        with open(f, "a") as fh:
+            fh.write("\n".join(txt) + "\n")
 
 
 def write_slates(weeks: set[tuple]) -> None:
@@ -136,10 +184,11 @@ def write_slates(weeks: set[tuple]) -> None:
         lines = [f"# Slate — {season} week {week}\n",
                  f"Updated {dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')}. "
                  f"Model {MODEL_VERSION}. Each row froze at its game's lock and is never changed.\n",
-                 "Spread = home team's line (negative = home favored). Drift = market at lock − league line; "
-                 "the pick follows the market's move (no move → away).\n",
+                 "Spread = home team's line (negative = home favored). Drift = market at lock − league line. "
+                 "P = probability of covering the league line (not yet calibrated: Phase 5); "
+                 "pick = higher-probability side.\n",
                  "| Game | Kickoff (UTC) | League line | CBS odds-page open | Market at lock | Drift | "
-                 "Model margin | P(home) / P(away) | Pick | Flags / status |",
+                 "Model margin (exp / median) | P(home) / P(away) | Pick | Flags / status |",
                  "|---|---|---|---|---|---|---|---|---|---|"]
         for r in wk:
             flags = r["flags"] or ""
@@ -147,6 +196,6 @@ def write_slates(weeks: set[tuple]) -> None:
                 f"| {r['away_team']} @ {r['home_team']} | {r['kickoff_utc'][:16]} | "
                 f"{r['league_line'] or 'MISSING'} | {r['cbs_open'] or '—'} | "
                 f"{r['market_at_lock'] or 'UNAVAILABLE'} ({r['market_books']} books) | {r['drift'] or '—'} | "
-                f"{r['model_margin']} | {r['p_home_cover']} | **{r['pick_team']}** | "
+                f"{r['model_margin']} | {r['p_home_cover']} / {r['p_away_cover']} | **{r['pick_team']}** | "
                 f"{r['data_status']} {flags} |")
         (config.path("predictions") / f"slate_{season}_w{int(week):02d}.md").write_text("\n".join(lines) + "\n")

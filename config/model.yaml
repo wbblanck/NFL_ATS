@@ -1,5 +1,5 @@
 # Model configuration. Phase 0/1 only: no model is fitted yet.
-model_version: "0.0.0-phase1"
+model_version: "phase4-shifted-empirical-argmax"
 feature_version: "none"
 seed: 20260924
 phase_gates:
@@ -7,4 +7,5 @@ phase_gates:
   phase1_ingestion: running
   phase2_baselines: pass    # docs/phase2_report.md
   phase3_drift: pass_on_proxy   # docs/phase3_report.md
-  phase4_cover_prob: not_started
+  phase4_cover_prob: pass   # docs/phase4_report.md (probabilities uncalibrated)
+  phase5_calibration: not_started
