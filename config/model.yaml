@@ -10,4 +10,5 @@ phase_gates:
   phase3_drift: pass_on_proxy   # docs/phase3_report.md
   phase4_cover_prob: pass   # docs/phase4_report.md (probabilities uncalibrated)
   phase5_calibration: pass_report_raw_kept   # docs/phase5_report.md
-  phase6_residual_features: not_started
+  phase6_residual_features: pass_none_kept   # docs/phase6_report.md
+  phase7_walk_forward: not_started

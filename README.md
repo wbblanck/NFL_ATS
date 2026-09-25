@@ -47,6 +47,7 @@ pytest -q
 
 ```bash
 python -m engine capture-cbs        # fetch CBS odds pages (this and next week), append captures, refresh frozen openers
+python -m engine features           # Phase 6 ablation -> docs/phase6_results.md
 python -m engine calibrate          # Phase 5 report -> docs/phase5_results.md
 python -m engine coverprob          # Phase 4 report -> docs/phase4_results.md
 python -m engine drift              # Phase 3 report -> docs/phase3_results.md, data/backtests/
@@ -136,6 +137,13 @@ calibrated**. Key-number probabilities (3 and 7) are known to be biased.
 chronologically. None beat the raw probabilities on both out-of-sample log
 loss and calibration error, so none was adopted. The raw extremes are
 overconfident: a stated 60%+ has hit about 55%.
+
+**Phase 6 (residual features): no group survived.** See
+`docs/phase6_report.md`. QB change, rest and opponent-adjusted EPA efficiency
+each made out-of-sample results worse once the market line was known. The
+efficiency rating correlates 0.79 with the spread but only 0.02 with what the
+spread missed. The model stays market-only. Weather was not tested, because
+its historical data is post-game.
 
 Later phases are gated per the spec:
 Phase 2 baselines → 3 drift → 4 cover probability → 5 calibration → 6 residual
