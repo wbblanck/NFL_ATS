@@ -1,0 +1,12 @@
+# Live record vs the league line
+
+Updated 2026-09-25T19:15:53+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+
+**0-0** (0 graded). Pending: 0. Ungradable (no league line recorded): 0. Late picks included: 0.
+
+No skill claim is made: fewer than 256 graded games (pre-registered).
+
+Shadow key-number estimator (recorded, not used to pick): 0-0; it disagreed with the live pick 0 times and won 0 of those.
+
+| Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |
+|---|---|---|---|---|---|---|---|
