@@ -17,6 +17,7 @@
                      -> docs/phase4_results.md, data/backtests/phase4_*.csv
   calibrate          Phase 5: chronological calibration report
                      -> docs/phase5_results.md, data/backtests/phase5_*.csv
+  features           Phase 6: residual feature ablation -> docs/phase6_results.md
   run --game ID      manual fallback: final pick for one game now (flagged
                      LATE_AFTER_LOCK if run after its lock)
 """
@@ -39,6 +40,7 @@ def main(argv=None) -> int:
     sub.add_parser("drift")
     sub.add_parser("coverprob")
     sub.add_parser("calibrate")
+    sub.add_parser("features")
     lr = sub.add_parser("lock-run")
     lr.add_argument("--window-minutes", type=int, default=25)
     c = sub.add_parser("check-league-lines")
@@ -78,6 +80,12 @@ def main(argv=None) -> int:
         r = phase5.run(config.ROOT / "docs" / "phase5_results.md")
         print(r["pooled"]); print("chosen", r["chosen"], "use calibrated pick", r["use_calibrated_pick"])
         print(r["coefs"])
+        return 0
+    if a.cmd == "features":
+        from engine import config
+        from engine.backtest import phase6
+        r = phase6.run(config.ROOT / "docs" / "phase6_results.md")
+        print(r["table"]); print("kept", r["kept"]); print(r["feature_means"])
         return 0
     if a.cmd == "freeze-cbs":
         out = cbs_lines.freeze()
