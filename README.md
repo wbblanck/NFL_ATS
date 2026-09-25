@@ -47,6 +47,7 @@ pytest -q
 
 ```bash
 python -m engine capture-cbs        # fetch CBS odds pages (this and next week), append captures, refresh frozen openers
+python -m engine drift              # Phase 3 report -> docs/phase3_results.md, data/backtests/
 python -m engine baselines          # Phase 2 report -> docs/phase2_baselines.md, data/backtests/
 python -m engine freeze-cbs         # re-derive data/lines/cbs_open_frozen.csv from the capture archive
 PARLAY_API_KEY=... python -m engine capture-market                  # games locking within 90 min
@@ -100,6 +101,14 @@ opening line for 2007–2021 (3,722 decided games), the best fixed strategy is
 *always away* at **51.37% ± 0.82 pp**. That is not distinguishable from 50%
 (z = 1.67), and it is the bar later models must clear. No league-line games
 have been graded yet.
+
+**Phase 3 (drift): passed on the historical proxy.** See
+`docs/phase3_report.md` (pre-registered in `docs/phase3_preregistration.md`).
+Picking the side the market moved toward between the open and the close,
+graded against the frozen open, won **54.84% ± 0.90 pp** (N = 3,060, z = 5.38
+vs 50%, z = 2.85 vs the Phase 2 bar). It was above 50% in all 15 seasons. The
+edge against the actual CBS Tuesday line is expected to be smaller and is not
+yet measured.
 
 Later phases are gated per the spec:
 Phase 2 baselines → 3 drift → 4 cover probability → 5 calibration → 6 residual

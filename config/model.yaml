@@ -6,4 +6,5 @@ phase_gates:
   phase0_data_audit: complete_pending_user_review
   phase1_ingestion: running
   phase2_baselines: pass    # docs/phase2_report.md
-  phase3_drift: not_started
+  phase3_drift: pass_on_proxy   # docs/phase3_report.md
+  phase4_cover_prob: not_started
