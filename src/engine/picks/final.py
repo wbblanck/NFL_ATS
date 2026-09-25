@@ -185,7 +185,8 @@ def write_slates(weeks: set[tuple]) -> None:
                  f"Updated {dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')}. "
                  f"Model {MODEL_VERSION}. Each row froze at its game's lock and is never changed.\n",
                  "Spread = home team's line (negative = home favored). Drift = market at lock − league line. "
-                 "P = probability of covering the league line (not yet calibrated: Phase 5); "
+                 "P = probability of covering the league line (raw: no calibrator improved it out of sample, "
+                 "docs/phase5_report.md; extremes have been overconfident, treat as a lean); "
                  "pick = higher-probability side.\n",
                  "| Game | Kickoff (UTC) | League line | CBS odds-page open | Market at lock | Drift | "
                  "Model margin (exp / median) | P(home) / P(away) | Pick | Flags / status |",

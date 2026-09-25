@@ -47,6 +47,7 @@ pytest -q
 
 ```bash
 python -m engine capture-cbs        # fetch CBS odds pages (this and next week), append captures, refresh frozen openers
+python -m engine calibrate          # Phase 5 report -> docs/phase5_results.md
 python -m engine coverprob          # Phase 4 report -> docs/phase4_results.md
 python -m engine drift              # Phase 3 report -> docs/phase3_results.md, data/backtests/
 python -m engine baselines          # Phase 2 report -> docs/phase2_baselines.md, data/backtests/
@@ -86,8 +87,8 @@ probability of covering the league line, given the market at lock
 (`phase4-shifted-empirical-argmax`). Without a margin distribution it falls
 back to the Phase 3 drift rule. Picks are appended, never edited, to
 `data/predictions/predictions.csv`, with a weekly slate in
-`data/predictions/slate_<season>_wNN.md`. Probabilities are uncalibrated
-until Phase 5.
+`data/predictions/slate_<season>_wNN.md`. Probabilities are raw (Phase 5
+found no calibrator that helps) and overconfident at the extremes.
 
 ## Automation (`.github/workflows/`)
 
@@ -129,6 +130,12 @@ market spread (the shifted-empirical estimator, which had the lowest
 walk-forward log loss). The pick is the higher-probability side. The
 probabilities are weak, 90% between 0.40 and 0.60, and **not yet
 calibrated**. Key-number probabilities (3 and 7) are known to be biased.
+
+**Phase 5 (calibration): report done, probabilities stay raw.** See
+`docs/phase5_report.md`. Platt, isotonic and Platt-with-key-numbers were fitted
+chronologically. None beat the raw probabilities on both out-of-sample log
+loss and calibration error, so none was adopted. The raw extremes are
+overconfident: a stated 60%+ has hit about 55%.
 
 Later phases are gated per the spec:
 Phase 2 baselines → 3 drift → 4 cover probability → 5 calibration → 6 residual
