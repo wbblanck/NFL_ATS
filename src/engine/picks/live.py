@@ -34,7 +34,11 @@ def grade(sched: pl.DataFrame) -> dict:
             continue
         res = grade_league(g["home_score"], g["away_score"], line)
         won = (p["pick"] == "home") == (res is Result.HOME_COVER)
+        sh = p.get("shadow_pick_keynum") or ""
+        home = p["home_team"]
+        sh_won = None if not sh else ((sh == home) == (res is Result.HOME_COVER))
         rows.append({"season": p["season"], "week": p["week"], "game_id": p["game_id"], "pick": p["pick_team"],
+                     "shadow_pick": sh, "shadow_result": "" if sh_won is None else ("W" if sh_won else "L"),
                      "league_line": line, "score": f"{g['away_score']}-{g['home_score']}",
                      "result": "W" if won else "L", "late": "LATE_AFTER_LOCK" in (p["flags"] or "")})
     w = sum(r["result"] == "W" for r in rows); n = len(rows)
@@ -44,6 +48,11 @@ def grade(sched: pl.DataFrame) -> dict:
                "ungradable_no_league_line": no_line,
                "late_picks": sum(r["late"] for r in rows),
                "claim_allowed": n >= MIN_GAMES_FOR_CLAIM}
+    dis = [r for r in rows if r["shadow_pick"] and r["shadow_pick"] != r["pick"]]
+    summary["shadow_keynum"] = {"W": sum(r["shadow_result"] == "W" for r in rows if r["shadow_result"]),
+                                "L": sum(r["shadow_result"] == "L" for r in rows if r["shadow_result"]),
+                                "disagreements": len(dis),
+                                "keynum_wins_in_disagreements": sum(r["shadow_result"] == "W" for r in dis)}
     _write(rows, summary)
     return summary
 
@@ -57,7 +66,10 @@ def _write(rows, s):
            f"Late picks included: {s['late_picks']}.\n",
          ("No skill claim is made: fewer than 256 graded games (pre-registered)." if not s["claim_allowed"]
           else "256+ games graded: the record can be compared with 50% and the 51.37% bar."),
-         "\n| Season | Week | Game | Pick | League line (home) | Score (away-home) | Result |", "|---|---|---|---|---|---|---|"]
+         f"\nShadow key-number estimator (recorded, not used to pick): {s['shadow_keynum']['W']}-"
+         f"{s['shadow_keynum']['L']}; it disagreed with the live pick {s['shadow_keynum']['disagreements']} times "
+         f"and won {s['shadow_keynum']['keynum_wins_in_disagreements']} of those.",
+         "\n| Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |", "|---|---|---|---|---|---|---|---|"]
     L += [f"| {r['season']} | {r['week']} | {r['game_id']} | {r['pick']} | {r['league_line']:+.1f} | {r['score']} | "
-          f"{r['result']}{' (late)' if r['late'] else ''} |" for r in rows]
+          f"{r['result']}{' (late)' if r['late'] else ''} | {r['shadow_pick']} {r['shadow_result']} |" for r in rows]
     (config.path("predictions") / "live_record.md").write_text("\n".join(L) + "\n")
