@@ -27,7 +27,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: data-commit-${{ github.ref }}
+  group: capture-market-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
