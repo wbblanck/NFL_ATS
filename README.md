@@ -47,6 +47,7 @@ pytest -q
 
 ```bash
 python -m engine capture-cbs        # fetch CBS odds pages (this and next week), append captures, refresh frozen openers
+python -m engine coverprob          # Phase 4 report -> docs/phase4_results.md
 python -m engine drift              # Phase 3 report -> docs/phase3_results.md, data/backtests/
 python -m engine baselines          # Phase 2 report -> docs/phase2_baselines.md, data/backtests/
 python -m engine freeze-cbs         # re-derive data/lines/cbs_open_frozen.csv from the capture archive
@@ -80,12 +81,13 @@ login. No public copy exists (audit 0.3). Each Tuesday afternoon:
 
 `lock-run.yml` makes the final pick for every game 15–25 minutes before its
 lock. An **external timer** triggers it through the GitHub API; setup is in
-`docs/scheduling.md`. Current pick rule: follow the market's move from the
-league line to the market at lock, and pick away when there is no move. This
-is the Phase 3 rule, `phase3-drift-D0full`. Picks are appended, never edited,
-to `data/predictions/predictions.csv`. A readable weekly slate is written to
-`data/predictions/slate_<season>_wNN.md`. Probabilities show `UNAVAILABLE`
-until Phase 4/5.
+`docs/scheduling.md`. Current pick rule: the side with the higher
+probability of covering the league line, given the market at lock
+(`phase4-shifted-empirical-argmax`). Without a margin distribution it falls
+back to the Phase 3 drift rule. Picks are appended, never edited, to
+`data/predictions/predictions.csv`, with a weekly slate in
+`data/predictions/slate_<season>_wNN.md`. Probabilities are uncalibrated
+until Phase 5.
 
 ## Automation (`.github/workflows/`)
 
@@ -120,6 +122,13 @@ graded against the frozen open, won **54.84% ± 0.90 pp** (N = 3,060, z = 5.38
 vs 50%, z = 2.85 vs the Phase 2 bar). It was above 50% in all 15 seasons. The
 edge against the actual CBS Tuesday line is expected to be smaller and is not
 yet measured.
+
+**Phase 4 (cover probabilities): done.** See `docs/phase4_report.md`.
+P(cover) comes from the empirical distribution of the final margin around the
+market spread (the shifted-empirical estimator, which had the lowest
+walk-forward log loss). The pick is the higher-probability side. The
+probabilities are weak, 90% between 0.40 and 0.60, and **not yet
+calibrated**. Key-number probabilities (3 and 7) are known to be biased.
 
 Later phases are gated per the spec:
 Phase 2 baselines → 3 drift → 4 cover probability → 5 calibration → 6 residual
