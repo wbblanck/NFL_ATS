@@ -11,4 +11,4 @@ phase_gates:
   phase4_cover_prob: pass   # docs/phase4_report.md (probabilities uncalibrated)
   phase5_calibration: pass_report_raw_kept   # docs/phase5_report.md
   phase6_residual_features: pass_none_kept   # docs/phase6_report.md
-  phase7_walk_forward: not_started
+  phase7_walk_forward: pass_on_proxy   # docs/phase7_report.md; live test pending
