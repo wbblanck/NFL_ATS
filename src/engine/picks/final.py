@@ -36,7 +36,10 @@ FIELDS = [
     "market_books", "drift", "model_margin", "p_home_cover", "p_away_cover", "pick", "pick_team",
     "pick_rule", "sim_count", "seed", "model_version", "feature_version", "data_snapshot",
     "training_period", "data_status", "missing_input", "expected_impact", "flags", "supersedes",
+    "shadow_p_home_keynum", "shadow_pick_keynum",
 ]
+# Shadow estimator: recorded for every pick, never used to pick (docs/keynumber_report.md).
+SHADOW = "keynum"
 MODEL_VERSION = "phase4-shifted-empirical-argmax"
 ESTIMATOR = "shifted"   # lowest walk-forward log loss (docs/phase4_results.md)
 
@@ -123,6 +126,9 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
     ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
     cbs = _cbs_frozen()
     dist, period = fit_dist(sched, now)
+    shadow = None
+    if dist is not None:
+        shadow = MarginDist(kind=SHADOW).fit(dist.c, dist.m)
     out = []
     for g in due.sort("kickoff_utc").to_dicts():
         rows = [r for r in caps if r.get("game_id") == g["game_id"] and r.get("status") == "ok"]
@@ -134,6 +140,10 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
         if mtl <= 0:
             flags.append("LATE_AFTER_LOCK")
         pick_team = g["home_team"] if d["pick"] == "home" else g["away_team"]
+        sh_p = sh_pick = ""
+        if shadow is not None and d["line_used"] is not None and mkt is not None and is_half_point(float(d["line_used"])):
+            sh_p = round(shadow.cover_probs(mkt, d["line_used"])[0], 4)
+            sh_pick = g["home_team"] if sh_p > 0.5 else g["away_team"]
         out.append({
             "prediction_id": str(uuid.uuid4()), "created_at": now.isoformat(),
             "season": g["season"], "week": g["week"], "game_id": g["game_id"],
@@ -151,6 +161,7 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
             "feature_version": "none", "data_snapshot": snapshot_id, "training_period": period,
             "data_status": d["data_status"], "missing_input": d["missing_input"],
             "expected_impact": d["expected_impact"], "flags": ";".join(flags), "supersedes": "",
+            "shadow_p_home_keynum": sh_p, "shadow_pick_keynum": sh_pick,
         })
     store.append_rows(predictions_path(), FIELDS, out)
     if dist is not None:

@@ -51,3 +51,16 @@ def test_live_grading(tmp_root, week3_schedule):
     # GB won by 3 vs league -6.5 -> ATL covers; pick was ATL -> W
     assert (s["W"], s["L"], s["N"]) == (1, 0, 1) and s["claim_allowed"] is False
     assert (tmp_root / "data" / "predictions" / "live_record.md").exists()
+
+
+def test_shadow_keynum_recorded_and_graded(tmp_root, week3_schedule):
+    _league(tmp_root, "2026_03_ATL_GB,2026,3,GB,ATL,-6.5,GB,test,x\n")
+    sched = _with_history(week3_schedule)
+    r = final.run(sched, now=LOCK - dt.timedelta(minutes=20), events=EVENTS)[0]
+    assert r["shadow_pick_keynum"] in ("GB", "ATL") and 0 < r["shadow_p_home_keynum"] < 1
+    played = sched.with_columns(
+        pl.when(pl.col("game_id") == "2026_03_ATL_GB").then(24).otherwise(None).alias("home_score"),
+        pl.when(pl.col("game_id") == "2026_03_ATL_GB").then(21).otherwise(None).alias("away_score"),
+        pl.when(pl.col("game_id") == "2026_03_ATL_GB").then(3).otherwise(pl.col("result")).alias("result"))
+    s = live.grade(played)
+    assert s["shadow_keynum"]["W"] + s["shadow_keynum"]["L"] == 1

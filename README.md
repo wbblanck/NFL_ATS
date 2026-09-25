@@ -156,6 +156,12 @@ independent**: the same seasons informed the design. The independent test is
 live 2026 play, graded in `data/predictions/live_record.md`, with no skill
 claim before 256 graded games.
 
+**Key-number fix: failed its pre-registered test; now running as a live shadow.**
+See `docs/keynumber_report.md`. Over 2007–2021 it lost to the live estimator
+(54.57% vs 54.89%). In 2025 it won 144-123 vs 130-137. Both estimators are
+recorded on every live pick. The switch rule is pre-registered for the end of
+2026.
+
 **Historical ATS performance does not guarantee future performance.**
 
 Later phases are gated per the spec:

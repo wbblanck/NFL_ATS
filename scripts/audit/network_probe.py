@@ -96,9 +96,9 @@ def main() -> int:
               "cbs_ats_experts.html")
     html_notes("cbs_ats_experts", r)
 
-    # Round 3 (2026-09-25): all 2025 regular-season CBS week pages for the
-    # pre-registered 2025 holdout (docs/holdout2025_preregistration.md).
-    for season, week in [(2025, w) for w in range(1, 19)]:
+    # Round 4 (2026-09-25): 2023 and 2024 CBS week pages, confirmation seasons for
+    # docs/keynumber_preregistration.md (used only if they show opening lines).
+    for season, week in [(y, w) for y in (2023, 2024) for w in range(1, 19)]:
         name = f"cbs_odds_{season}_w{week}"
         r = fetch(name, f"https://www.cbssports.com/nfl/odds/{season}/regular/week-{week}/", f"{name}.html")
         html_notes(name, r)

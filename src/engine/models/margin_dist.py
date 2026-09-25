@@ -26,7 +26,7 @@ def _ncdf(x):
 
 @dataclass
 class MarginDist:
-    kind: str = "kernel"          # normal | shifted | kernel | kernel_sym
+    kind: str = "kernel"          # normal | shifted | kernel | kernel_sym | keynum
     h: float = 1.0
     c: np.ndarray = field(default_factory=lambda: np.zeros(0))
     m: np.ndarray = field(default_factory=lambda: np.zeros(0))
@@ -38,13 +38,48 @@ class MarginDist:
             c, m = np.concatenate([c, -c]), np.concatenate([m, -m])
         self.c, self.m = c, m
         self.sigma = float(np.std(m + c))
+        if self.kind == "keynum":
+            self._fit_keys()
         return self
+
+    KMAX = 20
+    GRID = np.arange(-80, 81)
+
+    def _base_pmf(self, c: np.ndarray) -> np.ndarray:
+        """Discretized normal pmf over integer margins GRID, one row per c."""
+        k = self.GRID[None, :]
+        cc = np.asarray(c, float)[:, None]
+        return _ncdf((k + 0.5 + cc) / self.sigma) - _ncdf((k - 0.5 + cc) / self.sigma)
+
+    def _fit_keys(self) -> None:
+        """w_|k| = observed count of |margin|=|k| / expected count under the base (training only)."""
+        expected = np.zeros(self.KMAX + 1)
+        for chunk in np.array_split(np.arange(self.c.size), max(1, self.c.size // 2000)):
+            b = self._base_pmf(self.c[chunk]).sum(0)
+            a = np.abs(self.GRID)
+            for j in range(self.KMAX + 1):
+                expected[j] += b[a == j].sum()
+        am = np.abs(np.round(self.m)).astype(int)
+        observed = np.array([(am == j).sum() for j in range(self.KMAX + 1)], float)
+        self.w = np.where(expected > 0, observed / np.maximum(expected, 1e-12), 1.0)
+
+    def pmf(self, c: np.ndarray) -> np.ndarray:
+        """keynum: p(k | c) proportional to base(k | c) * w_|k|, renormalized."""
+        b = self._base_pmf(c)
+        a = np.abs(self.GRID)
+        wk = np.ones(self.GRID.size)
+        wk[a <= self.KMAX] = self.w[a[a <= self.KMAX]]
+        p = b * wk[None, :]
+        return p / p.sum(1, keepdims=True)
 
     def sf(self, t: np.ndarray, c: np.ndarray) -> np.ndarray:
         """P(margin > t | c), vectorized over paired arrays t, c."""
         t, c = np.atleast_1d(np.asarray(t, float)), np.atleast_1d(np.asarray(c, float))
         if self.kind == "normal":
             p = 1 - _ncdf((t + c) / self.sigma)
+        elif self.kind == "keynum":
+            pm = self.pmf(c)
+            p = (pm * (self.GRID[None, :] > t[:, None])).sum(1)
         elif self.kind == "shifted":
             r = np.sort(self.m + self.c)
             p = 1 - np.searchsorted(r, t + c, side="right") / r.size

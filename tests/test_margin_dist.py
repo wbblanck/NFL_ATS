@@ -49,3 +49,15 @@ def test_key_number_mass_kept_by_kernel():
 
 def test_log_loss_coinflip():
     assert abs(log_loss(np.full(10, 0.5), np.array([0, 1] * 5)) - np.log(2)) < 1e-12
+
+
+def test_keynum_reproduces_key_mass_and_sums_to_one():
+    rng = np.random.default_rng(3)
+    c = rng.choice(np.arange(-10, 10.5, 0.5), 6000)
+    m = np.round(-c + rng.normal(0, 13, 6000))
+    m[rng.uniform(size=6000) < 0.08] = 3          # inject a key-number spike at 3
+    md = MarginDist(kind="keynum").fit(c, m)
+    pm = md.pmf(np.array([-3.0]))[0]
+    assert abs(pm.sum() - 1) < 1e-9 and md.w[3] > 1.5
+    ph, pa = md.cover_probs(-3.0, -2.5)
+    assert abs(ph + pa - 1) < 1e-12
