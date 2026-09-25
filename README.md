@@ -47,6 +47,7 @@ pytest -q
 
 ```bash
 python -m engine capture-cbs        # fetch CBS odds pages (this and next week), append captures, refresh frozen openers
+python -m engine baselines          # Phase 2 report -> docs/phase2_baselines.md, data/backtests/
 python -m engine freeze-cbs         # re-derive data/lines/cbs_open_frozen.csv from the capture archive
 PARLAY_API_KEY=... python -m engine capture-market                  # games locking within 90 min
 PARLAY_API_KEY=... python -m engine capture-market --all-games      # snapshot of every upcoming game
@@ -94,7 +95,13 @@ variables → Actions).
 
 ## Methodology, backtests, calibration
 
-Not started. They are gated per the spec:
+**Phase 2 (baselines): done.** See `docs/phase2_report.md`. Against the SBRO
+opening line for 2007–2021 (3,722 decided games), the best fixed strategy is
+*always away* at **51.37% ± 0.82 pp**. That is not distinguishable from 50%
+(z = 1.67), and it is the bar later models must clear. No league-line games
+have been graded yet.
+
+Later phases are gated per the spec:
 Phase 2 baselines → 3 drift → 4 cover probability → 5 calibration → 6 residual
 features → 7 walk-forward. Results will be reported here, including
 failures, with standard errors.
