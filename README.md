@@ -87,7 +87,7 @@ login. No public copy exists (audit 0.3). Each Tuesday afternoon:
 lock. An **external timer** triggers it through the GitHub API; setup is in
 `docs/scheduling.md`. Current pick rule: the side with the higher
 probability of covering the league line, given the market at lock
-(`phase4-shifted-empirical-argmax`). Without a margin distribution it falls
+(`total-shifted-empirical-argmax`; the margin width scales with the market total). Without a margin distribution it falls
 back to the Phase 3 drift rule. Picks are appended, never edited, to
 `data/predictions/predictions.csv`, with a weekly slate in
 `data/predictions/slate_<season>_wNN.md`. Probabilities are raw (Phase 5
@@ -161,6 +161,12 @@ See `docs/keynumber_report.md`. Over 2007–2021 it lost to the live estimator
 (54.57% vs 54.89%). In 2025 it won 144-123 vs 130-137. Both estimators are
 recorded on every live pick. The switch rule is pre-registered for the end of
 2026.
+
+**Game-total fix: adopted, but it changes no picks.** See
+`docs/total_report.md`. Scaling the margin distribution's width by the market
+total improved log loss (0.68603 vs 0.68623) with identical picks, so the
+probabilities are slightly better and there are no extra wins. The live model
+is `total-shifted-empirical-argmax`, with the market total captured at lock.
 
 **Historical ATS performance does not guarantee future performance.**
 

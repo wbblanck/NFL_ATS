@@ -1,0 +1,1045 @@
+[
+ {
+  "id": "synthetic-atl-gb",
+  "sport_key": "americanfootball_nfl",
+  "sport_title": "NFL",
+  "commence_time": "2026-09-25T00:15:00Z",
+  "home_team": "Green Bay Packers",
+  "away_team": "Atlanta Falcons",
+  "bookmakers": [
+   {
+    "key": "betrivers",
+    "title": "BetRivers",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T16:59:45Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 43.5
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 43.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "fanduel",
+    "title": "FanDuel",
+    "last_update": "2026-09-25T17:45:07Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:42:35Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.952,
+        "point": 43.5
+       },
+       {
+        "name": "Under",
+        "price": 1.87,
+        "point": 43.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358307072,
+    "stale_seconds": 0.78
+   },
+   {
+    "key": "pinnacle",
+    "title": "Pinnacle",
+    "last_update": "2026-09-25T17:45:01Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:06:34Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.935,
+        "point": 43.5
+       },
+       {
+        "name": "Under",
+        "price": 1.935,
+        "point": 43.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358301740,
+    "stale_seconds": 6.11
+   },
+   {
+    "key": "betonline",
+    "title": "BetOnline",
+    "last_update": "2026-09-25T17:44:30Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:44:30Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 43.5
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 43.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358270741,
+    "stale_seconds": 37.11
+   },
+   {
+    "key": "hardrock",
+    "title": "Hard Rock Bet",
+    "last_update": "2026-09-25T17:44:44Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:44:44Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 43.5
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 43.5
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790358284117,
+    "stale_seconds": 23.74
+   },
+   {
+    "key": "bet365",
+    "title": "bet365",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:03:05Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.952,
+        "point": 43.5
+       },
+       {
+        "name": "Under",
+        "price": 1.87,
+        "point": 43.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "betmgm",
+    "title": "BetMGM",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:03:05Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 43.5
+       },
+       {
+        "name": "Under",
+        "price": 1.926,
+        "point": 43.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "bovada",
+    "title": "Bovada",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:35:50Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 43.5
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 43.5
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "caesars",
+    "title": "Caesars",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:14:44Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.893,
+        "point": 43.5
+       },
+       {
+        "name": "Under",
+        "price": 1.926,
+        "point": 43.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "draftkings",
+    "title": "DraftKings",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:03:05Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.952,
+        "point": 43.5
+       },
+       {
+        "name": "Under",
+        "price": 1.87,
+        "point": 43.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "fanatics",
+    "title": "Fanatics",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:03:05Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 43.5
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 43.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "parx",
+    "title": "Parx Casino",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:04:40Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 43.5
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 43.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "prophetx",
+    "title": "ProphetX",
+    "last_update": "2026-09-25T17:44:31Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T16:51:16Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 2.0,
+        "point": 43.5
+       },
+       {
+        "name": "Under",
+        "price": 1.952,
+        "point": 43.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358271498,
+    "stale_seconds": 36.35
+   }
+  ],
+  "canonical_event_id": "70b733b660ae2d4a",
+  "commence_time_reported": true
+ },
+ {
+  "id": "1712b6158bd78db6cb961cc96884ce71",
+  "sport_key": "americanfootball_nfl",
+  "sport_title": "NFL",
+  "commence_time": "2026-09-27T17:00:00Z",
+  "home_team": "Buffalo Bills",
+  "away_team": "Los Angeles Chargers",
+  "bookmakers": [
+   {
+    "key": "betrivers",
+    "title": "BetRivers",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T16:59:45Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 50.0
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 50.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "fanduel",
+    "title": "FanDuel",
+    "last_update": "2026-09-25T17:45:07Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:42:35Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.952,
+        "point": 50.5
+       },
+       {
+        "name": "Under",
+        "price": 1.87,
+        "point": 50.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358307072,
+    "stale_seconds": 0.78
+   },
+   {
+    "key": "pinnacle",
+    "title": "Pinnacle",
+    "last_update": "2026-09-25T17:45:01Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:06:34Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.935,
+        "point": 50.0
+       },
+       {
+        "name": "Under",
+        "price": 1.935,
+        "point": 50.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358301740,
+    "stale_seconds": 6.11
+   },
+   {
+    "key": "betonline",
+    "title": "BetOnline",
+    "last_update": "2026-09-25T17:44:30Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:44:30Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 50.0
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 50.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358270741,
+    "stale_seconds": 37.11
+   },
+   {
+    "key": "hardrock",
+    "title": "Hard Rock Bet",
+    "last_update": "2026-09-25T17:44:44Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:44:44Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 50.0
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 50.0
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790358284117,
+    "stale_seconds": 23.74
+   },
+   {
+    "key": "bet365",
+    "title": "bet365",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:03:05Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.952,
+        "point": 50.5
+       },
+       {
+        "name": "Under",
+        "price": 1.87,
+        "point": 50.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "betmgm",
+    "title": "BetMGM",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:03:05Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 50.0
+       },
+       {
+        "name": "Under",
+        "price": 1.926,
+        "point": 50.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "bovada",
+    "title": "Bovada",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:35:50Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 50.0
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 50.0
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "caesars",
+    "title": "Caesars",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:14:44Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.893,
+        "point": 50.0
+       },
+       {
+        "name": "Under",
+        "price": 1.926,
+        "point": 50.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "draftkings",
+    "title": "DraftKings",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:03:05Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.952,
+        "point": 50.5
+       },
+       {
+        "name": "Under",
+        "price": 1.87,
+        "point": 50.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "fanatics",
+    "title": "Fanatics",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:03:05Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 50.0
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 50.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "parx",
+    "title": "Parx Casino",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:04:40Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 50.0
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 50.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "prophetx",
+    "title": "ProphetX",
+    "last_update": "2026-09-25T17:44:31Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T16:51:16Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 2.0,
+        "point": 50.0
+       },
+       {
+        "name": "Under",
+        "price": 1.952,
+        "point": 50.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358271498,
+    "stale_seconds": 36.35
+   }
+  ],
+  "canonical_event_id": "70b733b660ae2d4a",
+  "commence_time_reported": true
+ },
+ {
+  "id": "ac3b0d0fd1e9215707897b5ecf853bdd",
+  "sport_key": "americanfootball_nfl",
+  "sport_title": "NFL",
+  "commence_time": "2026-09-27T17:00:00Z",
+  "home_team": "Cleveland Browns",
+  "away_team": "Carolina Panthers",
+  "bookmakers": [
+   {
+    "key": "betrivers",
+    "title": "BetRivers",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:09:59Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.917,
+        "point": 42.5
+       },
+       {
+        "name": "Under",
+        "price": 1.893,
+        "point": 42.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "fanduel",
+    "title": "FanDuel",
+    "last_update": "2026-09-25T17:45:07Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:42:35Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.87,
+        "point": 41.5
+       },
+       {
+        "name": "Under",
+        "price": 1.952,
+        "point": 41.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358307072,
+    "stale_seconds": 0.78
+   },
+   {
+    "key": "pinnacle",
+    "title": "Pinnacle",
+    "last_update": "2026-09-25T17:45:01Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:36:45Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 42.0
+       },
+       {
+        "name": "Under",
+        "price": 1.962,
+        "point": 42.0
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790358301740,
+    "stale_seconds": 6.11
+   },
+   {
+    "key": "betonline",
+    "title": "BetOnline",
+    "last_update": "2026-09-25T17:44:30Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:44:30Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.87,
+        "point": 42.0
+       },
+       {
+        "name": "Under",
+        "price": 1.952,
+        "point": 42.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358270741,
+    "stale_seconds": 37.11
+   },
+   {
+    "key": "hardrock",
+    "title": "Hard Rock Bet",
+    "last_update": "2026-09-25T17:44:44Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:44:44Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 42.0
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 42.0
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790358284117,
+    "stale_seconds": 23.74
+   },
+   {
+    "key": "bet365",
+    "title": "bet365",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:14:44Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.952,
+        "point": 42.5
+       },
+       {
+        "name": "Under",
+        "price": 1.87,
+        "point": 42.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "betmgm",
+    "title": "BetMGM",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:38:33Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.926,
+        "point": 42.5
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 42.5
+       }
+      ]
+     }
+    ],
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "bovada",
+    "title": "Bovada",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:33:26Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.87,
+        "point": 42.0
+       },
+       {
+        "name": "Under",
+        "price": 1.952,
+        "point": 42.0
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "caesars",
+    "title": "Caesars",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:23:28Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.943,
+        "point": 42.5
+       },
+       {
+        "name": "Under",
+        "price": 1.877,
+        "point": 42.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "draftkings",
+    "title": "DraftKings",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:03:05Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.926,
+        "point": 42.5
+       },
+       {
+        "name": "Under",
+        "price": 1.893,
+        "point": 42.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "fanatics",
+    "title": "Fanatics",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:04:40Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.909,
+        "point": 42.5
+       },
+       {
+        "name": "Under",
+        "price": 1.909,
+        "point": 42.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "parx",
+    "title": "Parx Casino",
+    "last_update": "2026-09-25T17:45:05Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:04:40Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.917,
+        "point": 42.5
+       },
+       {
+        "name": "Under",
+        "price": 1.893,
+        "point": 42.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358305283,
+    "stale_seconds": 2.57
+   },
+   {
+    "key": "prophetx",
+    "title": "ProphetX",
+    "last_update": "2026-09-25T17:44:31Z",
+    "markets": [
+     {
+      "key": "totals",
+      "last_update": "2026-09-25T17:04:50Z",
+      "outcomes": [
+       {
+        "name": "Over",
+        "price": 1.926,
+        "point": 41.5
+       },
+       {
+        "name": "Under",
+        "price": 2.04,
+        "point": 41.5
+       }
+      ]
+     }
+    ],
+    "topped_up": true,
+    "last_update_ms": 1790358271498,
+    "stale_seconds": 36.35
+   }
+  ],
+  "canonical_event_id": "78c2b23edc745f86",
+  "commence_time_reported": true
+ }
+]

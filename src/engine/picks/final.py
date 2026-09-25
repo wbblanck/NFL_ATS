@@ -27,7 +27,7 @@ import polars as pl
 
 from engine import config
 from engine.data import league_lines, market, store
-from engine.models.margin_dist import MarginDist
+from engine.models.margin_dist import MarginDist, TotalDist
 from engine.picks.grading import is_half_point
 
 FIELDS = [
@@ -36,12 +36,13 @@ FIELDS = [
     "market_books", "drift", "model_margin", "p_home_cover", "p_away_cover", "pick", "pick_team",
     "pick_rule", "sim_count", "seed", "model_version", "feature_version", "data_snapshot",
     "training_period", "data_status", "missing_input", "expected_impact", "flags", "supersedes",
-    "shadow_p_home_keynum", "shadow_pick_keynum",
+    "shadow_p_home_keynum", "shadow_pick_keynum", "market_total", "market_total_books",
 ]
 # Shadow estimator: recorded for every pick, never used to pick (docs/keynumber_report.md).
 SHADOW = "keynum"
-MODEL_VERSION = "phase4-shifted-empirical-argmax"
-ESTIMATOR = "shifted"   # lowest walk-forward log loss (docs/phase4_results.md)
+MODEL_VERSION = "total-shifted-empirical-argmax"
+ESTIMATOR = "shifted"   # fallback when no total is available (docs/phase4_results.md)
+# Adopted per docs/total_report.md: width of the margin distribution depends on the market total.
 
 
 def fit_dist(sched: pl.DataFrame, now: dt.datetime) -> tuple[MarginDist | None, str]:
@@ -58,6 +59,17 @@ def fit_dist(sched: pl.DataFrame, now: dt.datetime) -> tuple[MarginDist | None, 
     return md, period
 
 
+def fit_total_dist(sched: pl.DataFrame, now: dt.datetime) -> TotalDist | None:
+    if "total_line" not in sched.columns or "result" not in sched.columns:
+        return None
+    h = sched.filter(pl.col("result").is_not_null(), pl.col("spread_line").is_not_null(),
+                     pl.col("total_line").is_not_null(), pl.col("kickoff_utc") < now)
+    if h.height < 500:
+        return None
+    return TotalDist("shifted_total").fit(-h["spread_line"].to_numpy(), h["result"].to_numpy(),
+                                          h["total_line"].to_numpy())
+
+
 def predictions_path():
     return config.path("predictions") / "predictions.csv"
 
@@ -72,7 +84,7 @@ def _cbs_frozen() -> dict[str, float]:
 
 
 def decide(league_line: float | None, market_at_lock: float | None, cbs_open: float | None,
-           dist: MarginDist | None = None) -> dict:
+           dist=None) -> dict:
     """Pure decision logic (tested). Returns pick fields + status fields.
     With a distribution: pick = higher cover probability (Phase 4, pre-registered switch).
     Without one: D0-full drift rule (Phase 3)."""
@@ -92,7 +104,7 @@ def decide(league_line: float | None, market_at_lock: float | None, cbs_open: fl
     if line is not None and market_at_lock is not None:
         drift = market_at_lock - line
         if dist is not None:
-            p_home, p_away = dist.cover_probs(market_at_lock, line)
+            p_home, p_away = dist(market_at_lock, line) if callable(dist) else dist.cover_probs(market_at_lock, line)
             pick, rule = ("home" if p_home > 0.5 else "away"), "argmax_cover_prob"
         else:
             pick = "home" if drift < 0 else "away"
@@ -108,7 +120,8 @@ def decide(league_line: float | None, market_at_lock: float | None, cbs_open: fl
 
 
 def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int = 25,
-        events: list[dict] | None = None, snapshot_id: str = "", game_id: str | None = None) -> list[dict]:
+        events: list[dict] | None = None, snapshot_id: str = "", game_id: str | None = None,
+        totals: list[dict] | None = None) -> list[dict]:
     """game_id set = manual fallback for one game, regardless of window (late runs are flagged)."""
     now = now or dt.datetime.now(dt.timezone.utc)
     if game_id:
@@ -126,6 +139,13 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
     ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
     cbs = _cbs_frozen()
     dist, period = fit_dist(sched, now)
+    tdist = fit_total_dist(sched, now)
+    try:
+        tot = market.parse_totals(totals if totals is not None else market.fetch_totals())
+    except Exception:
+        tot = {}
+    sched_tot = {r["game_id"]: r["total_line"] for r in sched.select("game_id", "total_line").to_dicts()} \
+        if "total_line" in sched.columns else {}
     shadow = None
     if dist is not None:
         shadow = MarginDist(kind=SHADOW).fit(dist.c, dist.m)
@@ -133,12 +153,20 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
     for g in due.sort("kickoff_utc").to_dicts():
         rows = [r for r in caps if r.get("game_id") == g["game_id"] and r.get("status") == "ok"]
         cons = market.consensus(rows)
-        d = decide(ll.get(g["game_id"]), cons["median"], cbs.get(g["game_id"]), dist)
+        mt = tot.get((g["home_team"], g["away_team"]))
+        total, t_books, t_flag = (mt["median"], mt["n_books"], None) if mt else (sched_tot.get(g["game_id"]), 0, "TOTAL_FROM_SCHEDULE")
+        use_total = tdist is not None and total is not None
+        prob = (lambda mk, ln, T=total: tdist.cover_probs(mk, ln, T)) if use_total else dist
+        d = decide(ll.get(g["game_id"]), cons["median"], cbs.get(g["game_id"]), prob)
         mkt = cons["median"]
         mtl = (g["lock_utc"] - now).total_seconds() / 60
         flags = [f for f in d["flags"].split(";") if f]
         if mtl <= 0:
             flags.append("LATE_AFTER_LOCK")
+        if use_total and t_flag:
+            flags.append(t_flag)
+        if not use_total and dist is not None:
+            flags.append("NO_TOTAL_SHIFTED_FALLBACK")
         pick_team = g["home_team"] if d["pick"] == "home" else g["away_team"]
         sh_p = sh_pick = ""
         if shadow is not None and d["line_used"] is not None and mkt is not None and is_half_point(float(d["line_used"])):
@@ -152,16 +180,20 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
             "minutes_to_lock": round(mtl, 1),
             "league_line": ll.get(g["game_id"]), "cbs_open": cbs.get(g["game_id"]),
             "market_at_lock": cons["median"], "market_books": cons["n_books"], "drift": d["drift"],
-            "model_margin": "UNAVAILABLE" if mkt is None or dist is None else f"{-mkt:+.1f} / {dist.median_margin(mkt):+.0f}",
+            "model_margin": "UNAVAILABLE" if mkt is None or dist is None else (
+                f"{-mkt:+.1f} / {tdist.median_margin(mkt, total):+.1f}" if use_total
+                else f"{-mkt:+.1f} / {dist.median_margin(mkt):+.0f}"),
             "p_home_cover": "UNAVAILABLE" if d["p_home"] is None else round(d["p_home"], 4),
             "p_away_cover": "UNAVAILABLE" if d["p_away"] is None else round(d["p_away"], 4),
             "pick": d["pick"], "pick_team": pick_team, "pick_rule": d["pick_rule"],
             "sim_count": 0, "seed": config.model().get("seed"),
-            "model_version": MODEL_VERSION if dist is not None else "phase3-drift-D0full",
+            "model_version": (MODEL_VERSION if use_total else "phase4-shifted-empirical-argmax")
+            if dist is not None else "phase3-drift-D0full",
             "feature_version": "none", "data_snapshot": snapshot_id, "training_period": period,
             "data_status": d["data_status"], "missing_input": d["missing_input"],
             "expected_impact": d["expected_impact"], "flags": ";".join(flags), "supersedes": "",
             "shadow_p_home_keynum": sh_p, "shadow_pick_keynum": sh_pick,
+            "market_total": total if total is not None else "", "market_total_books": t_books,
         })
     store.append_rows(predictions_path(), FIELDS, out)
     if dist is not None:

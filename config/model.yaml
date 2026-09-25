@@ -1,5 +1,5 @@
 # Model configuration. Phase 0/1 only: no model is fitted yet.
-model_version: "phase4-shifted-empirical-argmax"
+model_version: "total-shifted-empirical-argmax"   # docs/total_report.md
 feature_version: "none"
 calibration: raw          # Phase 5: no calibrator improved OOS log loss AND ECE
 seed: 20260924

@@ -135,3 +135,45 @@ def choose_h(train_c, train_m, train_season, kind="kernel") -> float:
         if ll < best_ll - 1e-12:
             best, best_ll = h, ll
     return best
+
+
+@dataclass
+class TotalDist:
+    """Margin distribution whose width depends on the market total T (docs/total_preregistration.md).
+    s(T) = sigma * (alpha + beta*T) / mean|r|, fit by least squares of |r| on T (training only)."""
+    kind: str = "shifted_total"   # shifted_total | normal_total
+    alpha: float = 0.0
+    beta: float = 0.0
+    sigma: float = 13.0
+    mean_abs: float = 10.0
+    z: np.ndarray = field(default_factory=lambda: np.zeros(0))
+
+    def scale(self, T):
+        return self.sigma * (self.alpha + self.beta * np.asarray(T, float)) / self.mean_abs
+
+    def fit(self, close, margin, total) -> "TotalDist":
+        c, m, T = (np.asarray(x, float) for x in (close, margin, total))
+        r = m + c
+        a = np.abs(r)
+        X = np.column_stack([np.ones_like(T), T])
+        self.alpha, self.beta = np.linalg.lstsq(X, a, rcond=None)[0]
+        self.sigma, self.mean_abs = float(np.std(r)), float(a.mean())
+        self.z = np.sort(r / self.scale(T))
+        return self
+
+    def sf(self, t, c, T):
+        t, c, T = (np.atleast_1d(np.asarray(x, float)) for x in (t, c, T))
+        q = (t + c) / self.scale(T)
+        if self.kind == "normal_total":
+            p = 1 - _ncdf(q)
+        else:
+            p = 1 - np.searchsorted(self.z, q, side="right") / self.z.size
+        return np.clip(p, EPS, 1 - EPS)
+
+    def cover_probs(self, market_home_spread: float, league_line: float, total: float) -> tuple[float, float]:
+        s = validate_league_line(league_line)
+        ph = float(self.sf([-s], [market_home_spread], [total])[0])
+        return ph, 1.0 - ph
+
+    def median_margin(self, market_home_spread: float, total: float) -> float:
+        return float(-market_home_spread + np.median(self.z) * self.scale(total))
