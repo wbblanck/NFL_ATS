@@ -1,0 +1,6 @@
+# Pages whose network traffic is logged (CBS Pick'em spread source discovery)
+https://picks.cbssports.com/football/pickem
+https://picks.cbssports.com/football/pickem/challenge
+https://picks.cbssports.com/football/lobby
+https://www.cbssports.com/fantasy/football/games/pickem/
+https://www.cbssports.com/nfl/odds/

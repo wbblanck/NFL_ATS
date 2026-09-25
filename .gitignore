@@ -1,0 +1,7 @@
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.venv/
+# large / re-derivable nflverse pulls and the query DB
+data/raw/nflverse/
+data/processed/*.duckdb

@@ -1,0 +1,59 @@
+name: Capture market spreads
+# Game-day windows (UTC). Captures games whose lock is within 90 minutes.
+# Hosted cron is late by hours (audit 0.10); every capture records its true
+# minutes_to_lock so lateness is measured. Lock-time precision needs the
+# external trigger / local scheduler described in README ("Scheduling").
+on:
+  schedule:
+    - cron: '*/30 22-23 * * 4'   # Thu night
+    - cron: '*/30 0-1 * * 5'
+    - cron: '*/30 12-23 * * 0'   # Sun (incl. international morning games)
+    - cron: '*/30 0-1 * * 1'
+    - cron: '*/30 22-23 * * 1'   # Mon night
+    - cron: '*/30 0-1 * * 2'
+    - cron: '41 15 * * *'        # daily snapshot of all upcoming games
+    # Tuesday league-line posting (~12:00 ET = 16:00 UTC in EDT). Dense all-games
+    # snapshots before/around posting to learn how CBS sets the line. Cron runs
+    # hours late, so the window starts early; each row keeps its true captured_at.
+    - cron: '*/30 8-20 * * 2'
+  workflow_dispatch:
+    inputs:
+      all_games:
+        description: 'Capture every upcoming game (not just near lock)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-commit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - name: Capture
+        env:
+          PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+        run: |
+          if [ "${{ github.event.schedule }}" = "41 15 * * *" ] || [ "${{ github.event.schedule }}" = "*/30 8-20 * * 2" ] || [ "${{ inputs.all_games }}" = "true" ]; then
+            python -m engine capture-market --all-games
+          else
+            python -m engine capture-market
+          fi
+      - name: Commit captures
+        if: always()
+        run: |
+          git config user.name "nfl-ats-engine"
+          git config user.email "nfl-ats-engine@users.noreply.github.com"
+          git add data/lines
+          git commit -m "lines: market capture $(date -u +%Y-%m-%dT%H:%MZ)" || exit 0
+          for i in 1 2 3 4; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep $((i*4)); done

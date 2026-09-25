@@ -1,0 +1,2 @@
+# One URL per line. Pages rendered client-side (e.g. CBS OPM help center, Salesforce).
+https://help.opm.cbssports.com/s/article/How-do-I-add-spreads-to-my-pickem-Pool

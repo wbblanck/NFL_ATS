@@ -1,0 +1,30 @@
+paths:
+  raw: data/raw
+  processed: data/processed
+  lines: data/lines
+  predictions: data/predictions
+  backtests: data/backtests
+  duckdb: data/processed/engine.duckdb
+
+cbs:
+  # Verified 2026-09-24 by live fetch (docs/evidence/probe/20260924T194249Z/cbs_nfl_odds.html):
+  # page renders one table.OddsBlock-game per game with an "Open" column.
+  odds_url: https://www.cbssports.com/nfl/odds/
+  # Week URL pattern appears in the page's week dropdown (same evidence file).
+  week_url: https://www.cbssports.com/nfl/odds/{season}/regular/week-{week}/
+  weeks_ahead: 1                # also capture next week's page so early openers are not missed
+  save_raw_html: true           # gzip the raw page when its parsed content changes
+  user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+  timeout_seconds: 45
+
+market:
+  # Parlay API (odds-api-compatible schema). Verified 2026-09-24: americanfootball_nfl spreads,
+  # 14 books incl. pinnacle, per-book last_update timestamps. Key comes from env PARLAY_API_KEY.
+  provider: parlay_api
+  base_url: https://parlay-api.com/v1
+  sport_key: americanfootball_nfl
+  api_key_env: PARLAY_API_KEY
+  regions: us
+  reference_book: pinnacle      # reported separately; consensus = median across books
+  lock_window_minutes: 90       # capture games whose lock falls within this many minutes
+  timeout_seconds: 45
