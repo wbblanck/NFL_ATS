@@ -2,13 +2,14 @@ name: Audit network sniff
 on:
   workflow_dispatch:
   push:
+    branches-ignore: [main]   # evidence probes run from work branches, not on merge
     paths: ['scripts/audit/sniff_urls.txt', 'scripts/audit/sniff_network.py', '.github/workflows/audit-sniff.yml']
 
 permissions:
   contents: write
 
 concurrency:
-  group: data-commit-${{ github.ref }}
+  group: audit-sniff-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:

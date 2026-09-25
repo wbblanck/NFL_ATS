@@ -4,13 +4,14 @@ name: Audit probe
 on:
   workflow_dispatch:
   push:
+    branches-ignore: [main]   # evidence probes run from work branches, not on merge
     paths: ['scripts/audit/network_probe.py', '.github/workflows/audit-probe.yml']
 
 permissions:
   contents: write
 
 concurrency:
-  group: data-commit-${{ github.ref }}
+  group: audit-probe-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:

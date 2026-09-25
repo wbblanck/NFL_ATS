@@ -4,13 +4,14 @@ name: Audit render
 on:
   workflow_dispatch:
   push:
+    branches-ignore: [main]   # evidence probes run from work branches, not on merge
     paths: ['scripts/audit/render_urls.txt', 'scripts/audit/render_pages.py', '.github/workflows/audit-render.yml']
 
 permissions:
   contents: write
 
 concurrency:
-  group: data-commit-${{ github.ref }}
+  group: audit-render-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
