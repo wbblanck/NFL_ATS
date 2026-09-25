@@ -6,6 +6,8 @@
   check-league-lines [--season S --week W]
                      validate data/lines/league_lines.csv (half-points, schedule
                      match) and list games of that week still missing a line
+  baselines          Phase 2: always home/away/favorite/underdog vs every
+                     opening-line source -> data/backtests/, docs/phase2_baselines.md
   run --game ID      final pick for one game (manual fallback) -- modeling not
                      built yet (Phase 0/1); exits non-zero with an explanation
 """
@@ -24,6 +26,7 @@ def main(argv=None) -> int:
     m = sub.add_parser("capture-market")
     m.add_argument("--window-minutes", type=int, default=None)
     m.add_argument("--all-games", action="store_true")
+    sub.add_parser("baselines")
     c = sub.add_parser("check-league-lines")
     c.add_argument("--season", type=int)
     c.add_argument("--week", type=int)
@@ -38,6 +41,13 @@ def main(argv=None) -> int:
 
     from engine.data import cbs_lines, market, nflverse
 
+    if a.cmd == "baselines":
+        from engine import config
+        from engine.backtest import phase2
+        res = phase2.run(config.ROOT / "docs" / "phase2_baselines.md")
+        for k, t in res.items():
+            print(k); print(t)
+        return 0
     if a.cmd == "freeze-cbs":
         out = cbs_lines.freeze()
         print(f"frozen openers: {len(out)} games")
