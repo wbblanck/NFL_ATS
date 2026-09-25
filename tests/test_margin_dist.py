@@ -61,3 +61,19 @@ def test_keynum_reproduces_key_mass_and_sums_to_one():
     assert abs(pm.sum() - 1) < 1e-9 and md.w[3] > 1.5
     ph, pa = md.cover_probs(-3.0, -2.5)
     assert abs(ph + pa - 1) < 1e-12
+
+
+def test_total_dist_width_grows_with_total():
+    from engine.models.margin_dist import TotalDist
+    rng = np.random.default_rng(4)
+    n = 8000
+    T = rng.uniform(36, 56, n)
+    c = rng.choice(np.arange(-10, 10.5, 0.5), n)
+    m = np.round(-c + rng.normal(0, 1, n) * (6 + 0.15 * T))
+    td = TotalDist("shifted_total").fit(c, m, T)
+    assert td.beta > 0
+    # same 3.5-pt gap to the line: a high-total game is closer to a coin flip
+    lo = td.cover_probs(-3.0, -6.5, 38.0)[0]
+    hi = td.cover_probs(-3.0, -6.5, 54.0)[0]
+    assert lo < hi < 0.5
+    assert abs(sum(td.cover_probs(-3.0, -6.5, 45.0)) - 1) < 1e-12

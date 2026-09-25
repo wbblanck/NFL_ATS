@@ -174,3 +174,6 @@ class TotalDist:
         s = validate_league_line(league_line)
         ph = float(self.sf([-s], [market_home_spread], [total])[0])
         return ph, 1.0 - ph
+
+    def median_margin(self, market_home_spread: float, total: float) -> float:
+        return float(-market_home_spread + np.median(self.z) * self.scale(total))
