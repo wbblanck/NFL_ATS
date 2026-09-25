@@ -18,6 +18,8 @@
   calibrate          Phase 5: chronological calibration report
                      -> docs/phase5_results.md, data/backtests/phase5_*.csv
   features           Phase 6: residual feature ablation -> docs/phase6_results.md
+  backtest           Phase 7: full-system walk-forward -> docs/phase7_results.md
+  grade              grade final predictions vs league line -> data/predictions/live_record.md
   run --game ID      manual fallback: final pick for one game now (flagged
                      LATE_AFTER_LOCK if run after its lock)
 """
@@ -41,6 +43,8 @@ def main(argv=None) -> int:
     sub.add_parser("coverprob")
     sub.add_parser("calibrate")
     sub.add_parser("features")
+    sub.add_parser("backtest")
+    sub.add_parser("grade")
     lr = sub.add_parser("lock-run")
     lr.add_argument("--window-minutes", type=int, default=25)
     c = sub.add_parser("check-league-lines")
@@ -87,6 +91,13 @@ def main(argv=None) -> int:
         r = phase6.run(config.ROOT / "docs" / "phase6_results.md")
         print(r["table"]); print("kept", r["kept"]); print(r["feature_means"])
         return 0
+    if a.cmd == "backtest":
+        from engine import config
+        from engine.backtest import walk_forward
+        r = walk_forward.run(config.ROOT / "docs" / "phase7_results.md")
+        print(r["pooled"]); print("z vs bar", round(r["z_vs_bar"], 2), "PASS" if r["passed"] else "FAIL")
+        print(r["per_season"]); print(r["subgroups"])
+        return 0
     if a.cmd == "freeze-cbs":
         out = cbs_lines.freeze()
         print(f"frozen openers: {len(out)} games")
@@ -105,6 +116,10 @@ def main(argv=None) -> int:
                   f"line {r['league_line']} market {r['market_at_lock']} drift {r['drift']} -> "
                   f"{r['pick_team']} [{r['data_status']} {r['flags']}]")
         print(f"{len(out)} final predictions written")
+        return 0
+    if a.cmd == "grade":
+        from engine.picks import live
+        print(live.grade(sched))
         return 0
     if a.cmd == "check-league-lines":
         from engine.data import league_lines

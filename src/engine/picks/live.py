@@ -1,0 +1,63 @@
+"""Live grading of final predictions against the recorded league line (Phase 7 live plan).
+No filtering; no skill claim before 256 graded games (docs/phase7_preregistration.md)."""
+from __future__ import annotations
+
+import datetime as dt
+import math
+
+import polars as pl
+
+from engine import config
+from engine.data import league_lines, store
+from engine.picks import final
+from engine.picks.grading import Result, grade_league
+
+MIN_GAMES_FOR_CLAIM = 256
+
+
+def grade(sched: pl.DataFrame) -> dict:
+    preds = store.read_rows(final.predictions_path())
+    ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
+    scores = {r["game_id"]: r for r in sched.filter(pl.col("result").is_not_null()).select(
+        "game_id", "home_score", "away_score").to_dicts()}
+    rows, pending, no_line = [], 0, 0
+    for p in preds:
+        if p.get("supersedes"):
+            continue
+        g = scores.get(p["game_id"])
+        line = ll.get(p["game_id"])
+        if g is None:
+            pending += 1
+            continue
+        if line is None:
+            no_line += 1
+            continue
+        res = grade_league(g["home_score"], g["away_score"], line)
+        won = (p["pick"] == "home") == (res is Result.HOME_COVER)
+        rows.append({"season": p["season"], "week": p["week"], "game_id": p["game_id"], "pick": p["pick_team"],
+                     "league_line": line, "score": f"{g['away_score']}-{g['home_score']}",
+                     "result": "W" if won else "L", "late": "LATE_AFTER_LOCK" in (p["flags"] or "")})
+    w = sum(r["result"] == "W" for r in rows); n = len(rows)
+    rate = w / n if n else float("nan")
+    se = math.sqrt(rate * (1 - rate) / n) if n else float("nan")
+    summary = {"W": w, "L": n - w, "N": n, "win_rate": rate, "se": se, "pending": pending,
+               "ungradable_no_league_line": no_line,
+               "late_picks": sum(r["late"] for r in rows),
+               "claim_allowed": n >= MIN_GAMES_FOR_CLAIM}
+    _write(rows, summary)
+    return summary
+
+
+def _write(rows, s):
+    L = ["# Live record vs the league line\n",
+         f"Updated {dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')} by `python -m engine grade`. "
+         "Every final prediction is graded; nothing is filtered.\n",
+         f"**{s['W']}-{s['L']}** ({s['N']} graded)" + (f", win rate {s['win_rate']:.3f} ± {s['se']:.3f} (SE)" if s["N"] else "")
+         + f". Pending: {s['pending']}. Ungradable (no league line recorded): {s['ungradable_no_league_line']}. "
+           f"Late picks included: {s['late_picks']}.\n",
+         ("No skill claim is made: fewer than 256 graded games (pre-registered)." if not s["claim_allowed"]
+          else "256+ games graded: the record can be compared with 50% and the 51.37% bar."),
+         "\n| Season | Week | Game | Pick | League line (home) | Score (away-home) | Result |", "|---|---|---|---|---|---|---|"]
+    L += [f"| {r['season']} | {r['week']} | {r['game_id']} | {r['pick']} | {r['league_line']:+.1f} | {r['score']} | "
+          f"{r['result']}{' (late)' if r['late'] else ''} |" for r in rows]
+    (config.path("predictions") / "live_record.md").write_text("\n".join(L) + "\n")

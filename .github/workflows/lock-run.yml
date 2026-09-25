@@ -39,6 +39,9 @@ jobs:
           else
             python -m engine lock-run --window-minutes "${{ inputs.window_minutes || '25' }}"
           fi
+      - name: Grade finished games (live record)
+        if: always()
+        run: python -m engine grade || true
       - name: Commit predictions
         if: always()
         run: |

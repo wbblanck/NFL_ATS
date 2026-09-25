@@ -47,6 +47,8 @@ pytest -q
 
 ```bash
 python -m engine capture-cbs        # fetch CBS odds pages (this and next week), append captures, refresh frozen openers
+python -m engine backtest           # Phase 7 walk-forward -> docs/phase7_results.md
+python -m engine grade              # live record vs league line -> data/predictions/live_record.md
 python -m engine features           # Phase 6 ablation -> docs/phase6_results.md
 python -m engine calibrate          # Phase 5 report -> docs/phase5_results.md
 python -m engine coverprob          # Phase 4 report -> docs/phase4_results.md
@@ -144,6 +146,17 @@ each made out-of-sample results worse once the market line was known. The
 efficiency rating correlates 0.79 with the spread but only 0.02 with what the
 spread missed. The model stays market-only. Weather was not tested, because
 its historical data is post-game.
+
+**Phase 7 (full-system walk-forward): kill criterion passed on the historical
+proxy.** See `docs/phase7_report.md`. For 2007–2021 (3,722 decided games) the
+record is 2043-1679, **54.89% ± 0.82 pp**, z = 3.04 vs the 51.37% bar. It was
+above 50% in all 15 seasons, with a worst season of 50.8%. The edge is
+concentrated in games where the market moved ≥ 1 point (57.3%). This is **not
+independent**: the same seasons informed the design. The independent test is
+live 2026 play, graded in `data/predictions/live_record.md`, with no skill
+claim before 256 graded games.
+
+**Historical ATS performance does not guarantee future performance.**
 
 Later phases are gated per the spec:
 Phase 2 baselines → 3 drift → 4 cover probability → 5 calibration → 6 residual
