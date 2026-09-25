@@ -62,6 +62,18 @@ Files in `data/lines/`:
 | `market_captures.csv` | Append-only, one row per game × book, with `minutes_to_lock` |
 | `raw_cbs/` | Gzipped raw CBS HTML, saved whenever the parsed openers change |
 
+## Weekly routine: recording the league line
+
+CBS posts the league spreads by about 12:00 ET Tuesday, behind the pool
+login. No public copy exists (audit 0.3). Each Tuesday afternoon:
+
+1. Screenshot the pool's Picks screen, scrolling to cover all games, and send
+   the screenshots.
+2. The lines are transcribed into `data/lines/league_lines.csv`.
+3. `python -m engine check-league-lines --season 2026 --week N` confirms that
+   every line is a half-point, matches the schedule, and that no game is
+   missing.
+
 ## Automation (`.github/workflows/`)
 
 | Workflow | Trigger | Purpose |

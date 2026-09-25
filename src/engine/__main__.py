@@ -3,6 +3,9 @@
   capture-cbs        fetch CBS odds pages, archive opening lines (append-only)
   freeze-cbs         derive frozen openers (first valid capture per game)
   capture-market     archive current market spreads for games near lock
+  check-league-lines [--season S --week W]
+                     validate data/lines/league_lines.csv (half-points, schedule
+                     match) and list games of that week still missing a line
   run --game ID      final pick for one game (manual fallback) -- modeling not
                      built yet (Phase 0/1); exits non-zero with an explanation
 """
@@ -21,6 +24,9 @@ def main(argv=None) -> int:
     m = sub.add_parser("capture-market")
     m.add_argument("--window-minutes", type=int, default=None)
     m.add_argument("--all-games", action="store_true")
+    c = sub.add_parser("check-league-lines")
+    c.add_argument("--season", type=int)
+    c.add_argument("--week", type=int)
     r = sub.add_parser("run")
     r.add_argument("--game", required=True)
     a = ap.parse_args(argv)
@@ -38,6 +44,17 @@ def main(argv=None) -> int:
         return 0
 
     sched, sid = nflverse.regular_season_schedule(save=False)
+    if a.cmd == "check-league-lines":
+        from engine.data import league_lines
+        rows = league_lines.load()
+        probs = league_lines.check_against_schedule(rows, sched)
+        for p in probs:
+            print("PROBLEM:", p)
+        if a.season and a.week:
+            miss = league_lines.missing_games(rows, sched, a.season, a.week)
+            print(f"{a.season} week {a.week}: {len(miss)} games missing a league line", *miss, sep="\n  ")
+        print(f"{len(rows)} league lines OK" if not probs else f"{len(probs)} problems")
+        return 1 if probs else 0
     if a.cmd == "capture-cbs":
         rows = cbs_lines.capture(sched)
         print(f"schedule snapshot {sid}; rows={len(rows)} by status:",
