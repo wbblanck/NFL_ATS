@@ -46,6 +46,13 @@ def main(argv=None) -> int:
     sub.add_parser("backtest")
     sub.add_parser("grade")
     sub.add_parser("holdout2025")
+    pv = sub.add_parser("preview")
+    pv.add_argument("--season", type=int, required=True)
+    pv.add_argument("--week", type=int, required=True)
+    db = sub.add_parser("dashboard")
+    db.add_argument("--season", type=int, required=True)
+    db.add_argument("--week", type=int, required=True)
+    db.add_argument("--out", default=None)
     lr = sub.add_parser("lock-run")
     lr.add_argument("--window-minutes", type=int, default=25)
     c = sub.add_parser("check-league-lines")
@@ -130,6 +137,26 @@ def main(argv=None) -> int:
     if a.cmd == "grade":
         from engine.picks import live
         print(live.grade(sched))
+        return 0
+    if a.cmd == "preview":
+        from engine.picks import preview
+        rows = preview.build(sched, a.season, a.week)
+        print(preview.write_md(rows, a.season, a.week))
+        for r in rows:
+            print(r["away"], "@", r["home"], r["league_line"], r["market"], r["drift"], r["p_home"], r["pick"], r["status"])
+        return 0
+    if a.cmd == "dashboard":
+        import datetime as _dt
+        from engine import config
+        from engine.picks import dashboard, live, preview
+        rows = preview.build(sched, a.season, a.week)
+        try:
+            lv = live.grade(sched)
+        except Exception:
+            lv = {"N": 0, "W": 0, "L": 0}
+        out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
+        open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc)))
+        print(out)
         return 0
     if a.cmd == "check-league-lines":
         from engine.data import league_lines
