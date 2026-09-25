@@ -1,6 +1,7 @@
 # Model configuration. Phase 0/1 only: no model is fitted yet.
 model_version: "phase4-shifted-empirical-argmax"
 feature_version: "none"
+calibration: raw          # Phase 5: no calibrator improved OOS log loss AND ECE
 seed: 20260924
 phase_gates:
   phase0_data_audit: complete_pending_user_review
@@ -8,4 +9,5 @@ phase_gates:
   phase2_baselines: pass    # docs/phase2_report.md
   phase3_drift: pass_on_proxy   # docs/phase3_report.md
   phase4_cover_prob: pass   # docs/phase4_report.md (probabilities uncalibrated)
-  phase5_calibration: not_started
+  phase5_calibration: pass_report_raw_kept   # docs/phase5_report.md
+  phase6_residual_features: not_started

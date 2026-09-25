@@ -15,6 +15,8 @@
                      capture market, drift vs league line, immutable prediction row
   coverprob          Phase 4: walk-forward cover-probability evaluation
                      -> docs/phase4_results.md, data/backtests/phase4_*.csv
+  calibrate          Phase 5: chronological calibration report
+                     -> docs/phase5_results.md, data/backtests/phase5_*.csv
   run --game ID      manual fallback: final pick for one game now (flagged
                      LATE_AFTER_LOCK if run after its lock)
 """
@@ -36,6 +38,7 @@ def main(argv=None) -> int:
     sub.add_parser("baselines")
     sub.add_parser("drift")
     sub.add_parser("coverprob")
+    sub.add_parser("calibrate")
     lr = sub.add_parser("lock-run")
     lr.add_argument("--window-minutes", type=int, default=25)
     c = sub.add_parser("check-league-lines")
@@ -68,6 +71,13 @@ def main(argv=None) -> int:
         r = phase4.run(config.ROOT / "docs" / "phase4_results.md")
         print(r["pooled"]); print("D0-full same games", r["d0_full_same_games"])
         print("coinflip ll", r["coinflip_ll"], "best", r["best"], "switch", r["switch_pick_rule"], r["counts"])
+        return 0
+    if a.cmd == "calibrate":
+        from engine import config
+        from engine.backtest import phase5
+        r = phase5.run(config.ROOT / "docs" / "phase5_results.md")
+        print(r["pooled"]); print("chosen", r["chosen"], "use calibrated pick", r["use_calibrated_pick"])
+        print(r["coefs"])
         return 0
     if a.cmd == "freeze-cbs":
         out = cbs_lines.freeze()
