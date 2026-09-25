@@ -98,7 +98,7 @@ def main() -> int:
 
     # Round 4 (2026-09-25): 2023 and 2024 CBS week pages, confirmation seasons for
     # docs/keynumber_preregistration.md (used only if they show opening lines).
-    for season, week in [(y, w) for y in (2023, 2024) for w in range(1, 19)]:
+    for season, week in []:  # round 5 (2026-09-25): totals check only
         name = f"cbs_odds_{season}_w{week}"
         r = fetch(name, f"https://www.cbssports.com/nfl/odds/{season}/regular/week-{week}/", f"{name}.html")
         html_notes(name, r)
@@ -138,6 +138,9 @@ def main() -> int:
     key = os.environ.get("PARLAY_API_KEY")
     if key:
         fetch("parlay_sports", f"https://parlay-api.com/v1/sports?apiKey={key}", "parlay_sports.json")
+        fetch("parlay_nfl_totals",
+              f"https://parlay-api.com/v1/sports/americanfootball_nfl/odds?apiKey={key}&markets=totals&regions=us",
+              "parlay_nfl_totals.json")
         fetch("parlay_nfl_spreads",
               f"https://parlay-api.com/v1/sports/americanfootball_nfl/odds?apiKey={key}&markets=spreads&regions=us",
               "parlay_nfl_spreads.json")

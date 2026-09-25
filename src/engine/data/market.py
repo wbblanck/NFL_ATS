@@ -44,6 +44,43 @@ def fetch_spreads() -> list[dict]:
     return r.json()
 
 
+def fetch_totals() -> list[dict]:
+    """Market totals (separate request so a totals failure can never break spreads).
+    Verified 2026-09-25 by probe: see docs/total_report.md."""
+    c = config.data()["market"]
+    key = os.environ.get(c["api_key_env"])
+    if not key:
+        raise MissingKey(f"env {c['api_key_env']} not set")
+    url = f"{c['base_url']}/sports/{c['sport_key']}/odds"
+    r = requests.get(url, params={"apiKey": key, "markets": "totals", "regions": c["regions"]},
+                     timeout=c["timeout_seconds"], headers={"User-Agent": "nfl-ats-engine/0.1"})
+    r.raise_for_status()
+    return r.json()
+
+
+def parse_totals(events: list[dict]) -> dict[tuple[str, str], dict]:
+    """(home, away) -> {"median": total, "n_books": n}. Uses the Over outcome's point per book."""
+    out = {}
+    for e in events:
+        try:
+            home, away = to_canonical(e["home_team"]), to_canonical(e["away_team"])
+        except (UnknownTeam, KeyError):
+            continue
+        pts = []
+        for b in e.get("bookmakers", []):
+            for m in b.get("markets", []):
+                if m.get("key") != "totals":
+                    continue
+                over = [o for o in m.get("outcomes", []) if str(o.get("name", "")).lower() == "over"
+                        and o.get("point") is not None]
+                if over:
+                    over.sort(key=lambda o: abs(float(o.get("price") or 0) - 1.91))
+                    pts.append(float(over[0]["point"]))
+        if pts:
+            out[(home, away)] = {"median": statistics.median(pts), "n_books": len(pts)}
+    return out
+
+
 def parse_events(events: list[dict]) -> list[dict]:
     """One row per event x book with the HOME spread (canonical sign: negative = home favored;
     odds-api 'point' is already from the named team's perspective)."""
