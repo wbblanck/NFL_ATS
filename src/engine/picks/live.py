@@ -53,18 +53,29 @@ def grade(sched: pl.DataFrame) -> dict:
                                 "L": sum(r["shadow_result"] == "L" for r in rows if r["shadow_result"]),
                                 "disagreements": len(dis),
                                 "keynum_wins_in_disagreements": sum(r["shadow_result"] == "W" for r in dis)}
-    projs = {r["game_id"]: r for r in store.read_rows(final.projections_path())}
-    pw = pl_ = 0
-    for r in rows:
-        pj = projs.get(r["game_id"])
-        if not pj or not pj.get("proj_pick"):
-            continue
-        g = scores[r["game_id"]]
-        res = grade_league(g["home_score"], g["away_score"], r["league_line"])
-        won = (pj["proj_pick"] == pj["home_team"]) == (res is Result.HOME_COVER)
-        pw += won; pl_ += (not won)
-        r["proj_pick"], r["proj_result"] = pj["proj_pick"], "W" if won else "L"
-    summary["projection_model"] = {"W": pw, "L": pl_}
+    # Projection models, graded per version. For proj-players-v3, rows whose game-status injury report was not
+    # published at the run (INJ_STATUS_MISSING) are excluded from its score and counted separately (fixed in
+    # docs/players_v3_report.md before any 2026 v3 result existed).
+    projs: dict = {}
+    for r in store.read_rows(final.projections_path()):
+        projs.setdefault(r.get("model_version") or "proj-poisson-v1", {})[r["game_id"]] = r
+    summary["projection_models"] = {}
+    for version, by_game in sorted(projs.items()):
+        w_ = l_ = flagged = 0
+        for r in rows:
+            pj = by_game.get(r["game_id"])
+            if not pj or not pj.get("proj_pick"):
+                continue
+            if "INJ_STATUS_MISSING" in (pj.get("inputs") or ""):
+                flagged += 1
+                continue
+            g = scores[r["game_id"]]
+            res = grade_league(g["home_score"], g["away_score"], r["league_line"])
+            won = (pj["proj_pick"] == pj["home_team"]) == (res is Result.HOME_COVER)
+            w_ += won; l_ += (not won)
+            r[f"proj_{version}"] = f"{pj['proj_pick']} {'W' if won else 'L'}"
+        summary["projection_models"][version] = {"W": w_, "L": l_, "excluded_inj_status_missing": flagged}
+    summary["projection_model"] = summary["projection_models"].get("proj-poisson-v1", {"W": 0, "L": 0})
     _write(rows, summary)
     return summary
 
@@ -81,8 +92,10 @@ def _write(rows, s):
          f"\nShadow key-number estimator (recorded, not used to pick): {s['shadow_keynum']['W']}-"
          f"{s['shadow_keynum']['L']}; it disagreed with the live pick {s['shadow_keynum']['disagreements']} times "
          f"and won {s['shadow_keynum']['keynum_wins_in_disagreements']} of those.",
-         f"\nScore-projection model (tracked comparison, not used to pick): "
-         f"{s.get('projection_model', {}).get('W', 0)}-{s.get('projection_model', {}).get('L', 0)}.",
+         "\nScore-projection models (tracked comparisons, not used to pick): " + ("; ".join(
+             f"{v} {x['W']}-{x['L']}" + (f" ({x['excluded_inj_status_missing']} excluded: injury statuses not yet published)"
+                                         if x.get("excluded_inj_status_missing") else "")
+             for v, x in s.get("projection_models", {}).items()) or "none graded yet") + ".",
          "\n| Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |", "|---|---|---|---|---|---|---|---|"]
     L += [f"| {r['season']} | {r['week']} | {r['game_id']} | {r['pick']} | {r['league_line']:+.1f} | {r['score']} | "
           f"{r['result']}{' (late)' if r['late'] else ''} | {r['shadow_pick']} {r['shadow_result']} |" for r in rows]

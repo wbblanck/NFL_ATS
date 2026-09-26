@@ -35,7 +35,8 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                       "drift": r["drift"] if r["drift"] not in ("", None) else None, "pick": r.get("pick"),
                       "pick_p": pick_p, "status": r["status"], "sig": sig_k, "sig_label": sig_l,
                       "books": r.get("market_books"), "mtime": (r.get("market_time") or "")[:16],
-                      "ph": r.get("proj_home"), "pa": r.get("proj_away"), "ppick": r.get("proj_pick")})
+                      "ph": r.get("proj_home"), "pa": r.get("proj_away"), "ppick": r.get("proj_pick"),
+                      "pver": r.get("proj_version"), "pflags": r.get("proj_flags")})
     data = json.dumps({"games": games, "season": season, "week": week, "record": rec, "live": live,
                        "updated": updated.astimezone(ET).strftime("%a %b %-d, %-I:%M %p ET")})
     return TEMPLATE.replace("__DATA__", data).replace("__TITLE__", html.escape(f"Week {week} Picks"))
@@ -107,7 +108,7 @@ tr:last-child td{border-bottom:0}
     <div class="tablebox"><table>
       <thead><tr><th>Game</th><th>League line</th><th>Market now</th><th>Market move</th><th>Pick</th><th>Cover chance</th><th>Projected score</th><th>Status</th></tr></thead>
       <tbody id="rows"></tbody></table></div>
-    <p class="note">Lines are the home team's spread (negative = home favored). <b>Provisional</b> picks use the latest market snapshot and can flip before lock; the official pick is locked 15–25 minutes before each game and never changes. Win rates quoted are 2007–2021 history; the 2025 holdout was weaker (52% on 1+ pt moves). <b>Projected scores</b> come from a separate team-strength model tracked for comparison only: it went 50.8% over 2007–2021 against 54.9% for the live model, and does not make the pick.</p>
+    <p class="note">Lines are the home team's spread (negative = home favored). <b>Provisional</b> picks use the latest market snapshot and can flip before lock; the official pick is locked 15–25 minutes before each game and never changes. Win rates quoted are 2007–2021 history; the 2025 holdout was weaker (52% on 1+ pt moves). <b>Projected scores</b> come from the player model (proj-players-v3): team scoring strength adjusted for the starting quarterback, injured starters weighted by snaps, rest, travel and roof. It is tracked for comparison only and does not make the pick: it projects scores better than the team-only model, but against the market it was a coin flip in 2022–2025 testing (docs/players_v3_report.md). "Injury report pending" means the Friday game statuses were not yet published, so injuries are not reflected.</p>
   </section>
 </div>
 <script>
@@ -130,7 +131,7 @@ function draw(onlyStrong){
       <td><span class="chip ${x.sig}">${x.sig_label}</span></td>
       <td class="pick">${x.pick||'—'}</td>
       <td>${pct==null?'—':`<span class="num">${pct.toFixed(1)}%</span><div class="bar"><i style="width:${Math.max(0,Math.min(100,(pct-40)*5))}%"></i></div>`}</td>
-      <td>${x.ph==null?'—':`<span class="num">${x.away} ${x.pa.toFixed(1)} – ${x.home} ${x.ph.toFixed(1)}</span><div class="status">Projection picks ${x.ppick||'—'}${x.ppick&&x.ppick!==x.pick?' (differs)':''}</div>`}</td>
+      <td>${x.ph==null?'—':`<span class="num">${x.away} ${x.pa.toFixed(1)} – ${x.home} ${x.ph.toFixed(1)}</span><div class="status">Projection picks ${x.ppick||'—'}${x.ppick&&x.ppick!==x.pick?' (differs)':''}${x.pver&&x.pver!=='proj-players-v3'?' · team-only model':''}${(x.pflags||'').includes('INJ_STATUS_MISSING')?' · injury report pending':''}</div>`}</td>
       <td class="status">${status[x.status]||x.status}</td></tr>`}).join('');
 }
 function setF(s){$('f-all').setAttribute('aria-pressed',!s);$('f-strong').setAttribute('aria-pressed',s);draw(s);}

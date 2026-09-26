@@ -3,6 +3,7 @@ import json
 
 import numpy as np
 import polars as pl
+import pytest
 
 from engine.backtest import walk_forward
 from engine.data import store
@@ -90,3 +91,71 @@ def test_projection_recorded_and_graded(tmp_root, week3_schedule):
         pl.when(pl.col("game_id") == "2026_03_ATL_GB").then(3).otherwise(pl.col("result")).alias("result"))
     s = live.grade(played)
     assert s["projection_model"]["W"] + s["projection_model"]["L"] == 1
+
+
+def _v3_model():
+    from engine.features import players_v3 as V
+    beta = {"intercept": {"td": 0.0, "fg": 0.0}, **{f: {"td": 0.0, "fg": 0.0} for f in V.FEATURES}}
+    beta["qb_delta"] = {"td": 2.0, "fg": 0.0}
+    return {"version": "proj-players-v3", "D": 365, "k": 500, "prior": -0.07, "features": V.FEATURES,
+            "beta": beta, "trained_on": "test"}
+
+
+def _v3_row(team, qb_delta, published):
+    from engine.features import players_v3 as V
+    r = {f: 0.0 for f in V.FEATURES}
+    r.update(game_id="2026_03_ATL_GB", team=team, qb_delta=qb_delta, starter="00-1", qb_wdropbacks=500.0,
+             snapshot="2026-09-24T12:00:00Z", qb1_out=False, n_injury_rows=0, dome_estimated=False,
+             injury_status_published=published)
+    return r
+
+
+@pytest.mark.parametrize("published", [True, False])
+def test_players_v3_recorded_flagged_and_graded(tmp_root, week3_schedule, published):
+    _league(tmp_root, "2026_03_ATL_GB,2026,3,GB,ATL,-6.5,GB,test,x\n")
+    sched = _with_history(week3_schedule)
+    rng = np.random.default_rng(5)
+    rows = []
+    for t in range(2000):
+        a, b = rng.choice(["GB", "ATL", "CHI", "DET"], 2, replace=False)
+        for team, opp, home in ((a, b, 1), (b, a, 0)):
+            td, fg = rng.poisson(2.4), rng.poisson(1.6)
+            rows.append({"game_id": f"x{t}", "season": 2020 + t // 400, "week": 1 + (t % 400) // 25,
+                         "gameday": "2020-01-01", "team": team, "opp": opp, "home": home,
+                         "pts": 7 * td + 3 * fg, "td": td, "fg": fg, "pat": td, "saf": 0})
+    games = pl.DataFrame(rows).with_columns((pl.col("season") * 25 + pl.col("week")).alias("t"))
+    feats = pl.DataFrame([_v3_row("GB", -0.2, published), _v3_row("ATL", 0.0, published)])
+    seen = []
+
+    def loader(ids):
+        seen.extend(ids)
+        return {"model": _v3_model(), "features": feats}
+
+    final.run(sched, now=LOCK - dt.timedelta(minutes=20), events=EVENTS, proj_games=games, v3=loader)
+    assert seen == ["2026_03_ATL_GB"]
+    pj = {r["model_version"]: r for r in store.read_rows(final.projections_path())}
+    assert set(pj) == {"proj-poisson-v1", "proj-players-v3"}
+    # a backup-level home QB (qb_delta -0.2, beta 2.0) lowers the home projection
+    assert float(pj["proj-players-v3"]["proj_home_pts"]) < float(pj["proj-poisson-v1"]["proj_home_pts"])
+    info = json.loads(pj["proj-players-v3"]["inputs"])
+    assert info["home"]["qb_delta"] == -0.2
+    assert info["flags"] == ([] if published else ["INJ_STATUS_MISSING"])
+    played = sched.with_columns(
+        pl.when(pl.col("game_id") == "2026_03_ATL_GB").then(24).otherwise(None).alias("home_score"),
+        pl.when(pl.col("game_id") == "2026_03_ATL_GB").then(21).otherwise(None).alias("away_score"),
+        pl.when(pl.col("game_id") == "2026_03_ATL_GB").then(3).otherwise(pl.col("result")).alias("result"))
+    s = live.grade(played)["projection_models"]
+    assert s["proj-poisson-v1"]["W"] + s["proj-poisson-v1"]["L"] == 1
+    v3 = s["proj-players-v3"]
+    assert (v3["W"] + v3["L"], v3["excluded_inj_status_missing"]) == ((1, 0) if published else (0, 1))
+
+
+def test_players_v3_loader_failure_never_blocks_picks(tmp_root, week3_schedule):
+    _league(tmp_root, "2026_03_ATL_GB,2026,3,GB,ATL,-6.5,GB,test,x\n")
+    sched = _with_history(week3_schedule)
+
+    def broken(ids):
+        raise RuntimeError("nflverse down")
+
+    out = final.run(sched, now=LOCK - dt.timedelta(minutes=20), events=EVENTS, proj_games=None, v3=broken)
+    assert len(out) == 1 and store.read_rows(final.predictions_path())

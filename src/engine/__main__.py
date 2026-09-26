@@ -58,6 +58,8 @@ def main(argv=None) -> int:
     c = sub.add_parser("check-league-lines")
     c.add_argument("--season", type=int)
     c.add_argument("--week", type=int)
+    pv3 = sub.add_parser("players-v3")
+    pv3.add_argument("--cache", default=None)
     r = sub.add_parser("run")
     r.add_argument("--game", required=True)
     a = ap.parse_args(argv)
@@ -99,6 +101,22 @@ def main(argv=None) -> int:
         r = phase6.run(config.ROOT / "docs" / "phase6_results.md")
         print(r["table"]); print("kept", r["kept"]); print(r["feature_means"])
         return 0
+    if a.cmd == "players-v3":
+        import json
+        from engine import config
+        from engine.backtest import players_v3_eval as E
+        ctx = E.prepare(a.cache)
+        tu = E.tune(ctx)
+        va = E.validate(ctx, tu["D"], tu["k"])
+        if not va["pass"]:
+            print("validation failed; test seasons not scored"); print(json.dumps(va, indent=1, default=str))
+            return 1
+        te, _ = E.test(ctx, tu["D"], tu["k"])
+        se = E.sensitivity_weekly_depth(ctx, tu["D"], tu["k"])
+        E.write_results(tu, va, te, se, config.ROOT / "docs" / "players_v3_results.md")
+        out = config.ROOT / "data" / "backtests" / "players_v3.json"
+        out.write_text(json.dumps({"tuning": tu, "validation": va, "test": te, "sensitivity": se}, indent=1, default=str))
+        return 0
     if a.cmd == "backtest":
         from engine import config
         from engine.backtest import walk_forward
@@ -122,10 +140,12 @@ def main(argv=None) -> int:
 
     sched, sid = nflverse.regular_season_schedule(save=False)
     if a.cmd in ("lock-run", "run"):
+        from engine.models import players_v3_live as _v3_live
         from engine.picks import final
         if a.cmd == "run" and a.game in final.existing_game_ids():
             print(f"{a.game}: final prediction already exists (immutable); see data/predictions/")
             return 0
+        _all = None
         try:
             import nflreadpy as _nfl
             from engine.models import projection as _P
@@ -134,8 +154,10 @@ def main(argv=None) -> int:
         except Exception as e:
             print("projection comparison unavailable:", e, file=sys.stderr)
             proj_games = None
+
         out = final.run(sched, window_minutes=getattr(a, "window_minutes", 25), snapshot_id=sid,
-                        game_id=getattr(a, "game", None), proj_games=proj_games)
+                        game_id=getattr(a, "game", None), proj_games=proj_games,
+                        v3=_v3_live.loader(sched, _all))
         for r in out:
             print(f"{r['away_team']}@{r['home_team']} lock {r['lock_utc']} ({r['minutes_to_lock']} min): "
                   f"line {r['league_line']} market {r['market_at_lock']} drift {r['drift']} -> "
@@ -164,7 +186,9 @@ def main(argv=None) -> int:
             _pg = _P.team_games(_nfl.load_team_stats(seasons=list(range(1999, 2027))), _all)
         except Exception:
             _pg = None
-        rows = preview.build(sched, a.season, a.week, proj_games=_pg)
+        from engine.models import players_v3_live as _v3_live
+        rows = preview.build(sched, a.season, a.week, proj_games=_pg,
+                             v3=_v3_live.loader(sched, _all if _pg is not None else None))
         try:
             lv = live.grade(sched)
         except Exception:
