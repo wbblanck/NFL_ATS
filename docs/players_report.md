@@ -1,5 +1,21 @@
 # Player-Availability Projection (v2): Report
 
+> **CORRECTION (2026-09-26): this test is invalid. Do not rely on its
+> results.**
+>
+> The `qb_backup` flag marked a QB as a "backup" whenever he was not the
+> team's most frequent starter over its previous 4 games. That wrongly flags:
+> - **offseason and new starters:** 20 of 31 games in 2025 weeks 1–2 were
+>   flagged, e.g. Cam Ward (TEN) and Daniel Jones (IND);
+> - **starters returning from injury:** e.g. Brock Purdy in 2025 week 4 was
+>   flagged as a "backup" because Mac Jones had started the games before.
+>
+> The injury counts also weighted every starter equally and ignored
+> Questionable players. **The fitted "−11% TDs for a backup QB" mixes real
+> backups with new and returning starters.** A rebuilt test (v3), with a QB
+> quality rating and snap-weighted injuries, replaces this one:
+> `docs/players_v3_preregistration.md`.
+
 The rules were pre-registered in `docs/players_preregistration.md` (commit
 `0037885`) before any result. The raw numbers are in
 `data/backtests/players2025_results.json` and `players2025_games.csv`, from
