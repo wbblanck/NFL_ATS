@@ -168,6 +168,7 @@ def simulate(mu_h: dict, mu_a: dict, p_xp: float, p_2: float, model: DriveModel,
     pts = np.zeros((sims, 2), int)
     cnt = np.zeros((sims, 4), int)
     ndr = np.zeros((sims, 2), int)
+    ndr_half = np.zeros((sims, 2), int)             # regulation drives by half (both teams)
     cells_seen = np.zeros(N_CELLS, int)
     first = rng.integers(0, 2, sims)                 # 0 = home receives the opening kickoff
 
@@ -203,6 +204,7 @@ def simulate(mu_h: dict, mu_a: dict, p_xp: float, p_2: float, model: DriveModel,
     while active.any():
         idx = np.flatnonzero(active)
         np.add.at(ndr, (idx, poss[idx]), 1)
+        np.add.at(ndr_half, (idx, half[idx] - 1), 1)
         off_ = poss[idx]
         np.add.at(cells_seen, cell_index(pts[idx, off_] - pts[idx, 1 - off_], half[idx], clock[idx]), 1)
         o, dur, scorer = drive(idx, poss, half, clock)
@@ -244,7 +246,9 @@ def simulate(mu_h: dict, mu_a: dict, p_xp: float, p_2: float, model: DriveModel,
             poss[idx] = np.where(o == 3, 1 - poss[idx], 1 - scorer)
             live[idx[end]] = False
             del before
-    return SimResult(pts[:, 0] - pts[:, 1], ndr, cells_seen, cnt, pts[:, 0], pts[:, 1])
+    out = SimResult(pts[:, 0] - pts[:, 1], ndr, cells_seen, cnt, pts[:, 0], pts[:, 1])
+    out.drives_by_half = ndr_half
+    return out
 
 
 def margin_pmf(res: SimResult) -> np.ndarray:
