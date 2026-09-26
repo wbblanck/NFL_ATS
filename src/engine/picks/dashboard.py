@@ -34,7 +34,8 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                       "line": r["league_line"], "market": r["market"] if r["market"] not in ("", None) else None,
                       "drift": r["drift"] if r["drift"] not in ("", None) else None, "pick": r.get("pick"),
                       "pick_p": pick_p, "status": r["status"], "sig": sig_k, "sig_label": sig_l,
-                      "books": r.get("market_books"), "mtime": (r.get("market_time") or "")[:16]})
+                      "books": r.get("market_books"), "mtime": (r.get("market_time") or "")[:16],
+                      "ph": r.get("proj_home"), "pa": r.get("proj_away"), "ppick": r.get("proj_pick")})
     data = json.dumps({"games": games, "season": season, "week": week, "record": rec, "live": live,
                        "updated": updated.astimezone(ET).strftime("%a %b %-d, %-I:%M %p ET")})
     return TEMPLATE.replace("__DATA__", data).replace("__TITLE__", html.escape(f"Week {week} Picks"))
@@ -71,7 +72,7 @@ h2{font:700 24px/1.1 var(--display);margin:0}
 .filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .filters button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .tablebox{overflow-x:auto;background:var(--panel);border:1px solid var(--rule);border-radius:6px}
-table{border-collapse:collapse;width:100%;min-width:720px;font-variant-numeric:tabular-nums}
+table{border-collapse:collapse;width:100%;min-width:880px;font-variant-numeric:tabular-nums}
 th{font:500 11px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule)}
 td{padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:middle}
 tr:last-child td{border-bottom:0}
@@ -104,9 +105,9 @@ tr:last-child td{border-bottom:0}
     </div>
     <div class="legend"><span class="chip strong">Moved 1+ pt</span> historically 57% · <span class="chip lean">Moved ½ pt</span> ~51% · <span class="chip flat">No move</span> ~52%, near a coin flip</div>
     <div class="tablebox"><table>
-      <thead><tr><th>Game</th><th>League line</th><th>Market now</th><th>Market move</th><th>Pick</th><th>Cover chance</th><th>Status</th></tr></thead>
+      <thead><tr><th>Game</th><th>League line</th><th>Market now</th><th>Market move</th><th>Pick</th><th>Cover chance</th><th>Projected score</th><th>Status</th></tr></thead>
       <tbody id="rows"></tbody></table></div>
-    <p class="note">Lines are the home team's spread (negative = home favored). <b>Provisional</b> picks use the latest market snapshot and can flip before lock; the official pick is locked 15–25 minutes before each game and never changes. Win rates quoted are 2007–2021 history; the 2025 holdout was weaker (52% on 1+ pt moves).</p>
+    <p class="note">Lines are the home team's spread (negative = home favored). <b>Provisional</b> picks use the latest market snapshot and can flip before lock; the official pick is locked 15–25 minutes before each game and never changes. Win rates quoted are 2007–2021 history; the 2025 holdout was weaker (52% on 1+ pt moves). <b>Projected scores</b> come from a separate team-strength model tracked for comparison only: it went 50.8% over 2007–2021 against 54.9% for the live model, and does not make the pick.</p>
   </section>
 </div>
 <script>
@@ -129,6 +130,7 @@ function draw(onlyStrong){
       <td><span class="chip ${x.sig}">${x.sig_label}</span></td>
       <td class="pick">${x.pick||'—'}</td>
       <td>${pct==null?'—':`<span class="num">${pct.toFixed(1)}%</span><div class="bar"><i style="width:${Math.max(0,Math.min(100,(pct-40)*5))}%"></i></div>`}</td>
+      <td>${x.ph==null?'—':`<span class="num">${x.away} ${x.pa.toFixed(1)} – ${x.home} ${x.ph.toFixed(1)}</span><div class="status">Projection picks ${x.ppick||'—'}${x.ppick&&x.ppick!==x.pick?' (differs)':''}</div>`}</td>
       <td class="status">${status[x.status]||x.status}</td></tr>`}).join('');
 }
 function setF(s){$('f-all').setAttribute('aria-pressed',!s);$('f-strong').setAttribute('aria-pressed',s);draw(s);}
