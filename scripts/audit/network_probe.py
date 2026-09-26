@@ -144,6 +144,12 @@ def main() -> int:
         fetch("parlay_nfl_spreads",
               f"https://parlay-api.com/v1/sports/americanfootball_nfl/odds?apiKey={key}&markets=spreads&regions=us",
               "parlay_nfl_spreads.json")
+        # Historical snapshots (odds-api-style /historical endpoint): needed to reconstruct the market at the
+        # CBS pool's Tuesday posting time (12:00 ET = 16:00Z) for past weeks. Support is UNVERIFIED until this runs.
+        for tag, when in (("2026w3_tue", "2026-09-22T16:00:00Z"), ("2025w2_tue", "2025-09-16T16:00:00Z")):
+            fetch(f"parlay_hist_{tag}",
+                  f"https://parlay-api.com/v1/historical/sports/americanfootball_nfl/odds?apiKey={key}"
+                  f"&markets=spreads&regions=us&date={when}", f"parlay_hist_{tag}.json")
     else:
         print("PARLAY_API_KEY not set; skipped")
 

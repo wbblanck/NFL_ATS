@@ -58,3 +58,18 @@ def test_alternate_spreads_keep_main_line():
                    {"name": "Los Angeles Chargers", "point": 7.0, "price": 1.93}]}]}]}]
     rows = market.parse_events(ev)
     assert len(rows) == 1 and rows[0]["home_spread"] == -7.0
+
+
+def test_historical_snapshot_archived_at_snapshot_time(tmp_root, week3_schedule):
+    """Backfilled Tuesday snapshots keep the time the prices describe, are marked 'hist-', and are usable by
+    market_at_lock only from that time on (no look-ahead)."""
+    ts = "2026-09-22T16:00:00Z"
+    rows = market.capture_historical(week3_schedule, ts, events=EVENTS, snapshot_ts=ts)
+    assert rows and all(r["capture_id"] == "hist-20260922T160000Z" for r in rows)
+    assert all(r["captured_at"].startswith("2026-09-22T16:00:00") for r in rows)
+    assert all(r["reason"].startswith("historical snapshot, retrieved") for r in rows)
+    from engine import config
+    caps = store.read_rows(config.path("lines") / "market_captures.csv")
+    before = market.market_at_lock(caps, "2026_03_ATL_GB", dt.datetime(2026, 9, 22, 15, 59, tzinfo=UTC))
+    after = market.market_at_lock(caps, "2026_03_ATL_GB", dt.datetime(2026, 9, 22, 16, 1, tzinfo=UTC))
+    assert before["median"] is None and after["median"] is not None

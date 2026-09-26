@@ -1,0 +1,50 @@
+name: Backfill Tuesday market snapshots
+# The CBS pool line is posted ~12:00 ET Tuesday. Hosted cron runs hours late (audit 0.10), so the live Tuesday
+# captures can miss the posting moment. The provider's historical endpoint keeps 48 h on this plan
+# (docs/evidence/probe/20260926T223855Z), so on Wednesday we fetch exact Tuesday snapshots at 15:00-19:00 UTC
+# (11:00-15:00 ET in EDT). Rows are archived as 'hist-' captures with captured_at = the snapshot time.
+on:
+  schedule:
+    - cron: '13 12 * * 3'      # Wednesday; even hours late it is well inside the 48 h window
+  workflow_dispatch:
+    inputs:
+      times:
+        description: 'Space-separated ISO UTC times (default: last Tuesday 15:00-19:00Z)'
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backfill-market-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - name: Backfill
+        env:
+          PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+        run: |
+          TIMES="${{ inputs.times }}"
+          if [ -z "$TIMES" ]; then
+            TUE=$(python -c "import datetime as d; t=d.datetime.now(d.timezone.utc).date(); print(t-d.timedelta(days=(t.weekday()-1)%7))")
+            TIMES="${TUE}T15:00:00Z ${TUE}T16:00:00Z ${TUE}T17:00:00Z ${TUE}T18:00:00Z ${TUE}T19:00:00Z"
+          fi
+          ARGS=""; for t in $TIMES; do ARGS="$ARGS --at $t"; done
+          python -m engine capture-market-historical $ARGS
+      - name: Commit captures
+        if: always()
+        run: |
+          git config user.name "nfl-ats-engine"
+          git config user.email "nfl-ats-engine@users.noreply.github.com"
+          git add data/lines
+          git commit -m "lines: historical market backfill $(date -u +%Y-%m-%dT%H:%MZ)" || exit 0
+          for i in 1 2 3 4; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep $((i*4)); done

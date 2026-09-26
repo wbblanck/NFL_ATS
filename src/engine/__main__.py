@@ -3,9 +3,12 @@
   capture-cbs        fetch CBS odds pages, archive opening lines (append-only)
   freeze-cbs         derive frozen openers (first valid capture per game)
   capture-market     archive current market spreads for games near lock
+  capture-market-historical --at ISO [--at ISO ...]
+                     archive past snapshots (provider keeps 48 h) as 'hist-' captures
   check-league-lines [--season S --week W]
                      validate data/lines/league_lines.csv (half-points, schedule
                      match) and list games of that week still missing a line
+  cbs-lines          CBS pool line-setting analysis -> docs/cbs_lines_report.md
   baselines          Phase 2: always home/away/favorite/underdog vs every
                      opening-line source -> data/backtests/, docs/phase2_baselines.md
   drift              Phase 3: drift (open->close) strategies, pre-registered test
@@ -38,6 +41,9 @@ def main(argv=None) -> int:
     m = sub.add_parser("capture-market")
     m.add_argument("--window-minutes", type=int, default=None)
     m.add_argument("--all-games", action="store_true")
+    mh = sub.add_parser("capture-market-historical")
+    mh.add_argument("--at", action="append", required=True, help="ISO UTC snapshot time (repeatable; last 48 h only)")
+    sub.add_parser("cbs-lines")
     sub.add_parser("baselines")
     sub.add_parser("drift")
     sub.add_parser("coverprob")
@@ -215,6 +221,22 @@ def main(argv=None) -> int:
         cbs_lines.freeze()
         bad = [r for r in rows if r.get("status") in ("fetch_error", "no_games")]
         return 1 if bad and len(bad) == len(rows) else 0
+    if a.cmd == "cbs-lines":
+        from engine import config
+        from engine.backtest import cbs_lines
+        r = cbs_lines.run(sched, config.ROOT / "docs" / "cbs_lines_report.md")
+        print(f"{r['games_with_league_lines']} games with pool lines; weeks: {list(r['weeks'])}")
+        return 0
+    if a.cmd == "capture-market-historical":
+        n = 0
+        for when in a.at:
+            try:
+                rows = market.capture_historical(sched, when)
+                n += len(rows)
+                print(f"{when}: {len(rows)} rows")
+            except Exception as e:                      # one bad snapshot must not stop the others
+                print(f"{when}: failed {e!r}", file=sys.stderr)
+        return 0 if n else 1
     if a.cmd == "capture-market":
         rows = market.capture(sched, window_minutes=a.window_minutes, all_games=a.all_games)
         print(f"schedule snapshot {sid}; market rows={len(rows)} by status:",
