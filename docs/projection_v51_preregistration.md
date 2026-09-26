@@ -75,3 +75,24 @@ As in v5 (`docs/projection_v5_preregistration.md`):
 - v5.1 becomes the displayed projection if its Test A margin log-likelihood beats v3's;
 - the live verdict comes after 256 graded games;
 - the live pick changes only if v5.1 beats the live model with z ≥ 1.96 **and** has lower log loss on live games.
+
+## Amendment (committed before the v5.1 validation run; no validation check had been run)
+
+These implementation changes were made during development smoke tests on **training seasons only** (150 games).
+
+1. **Loop order bug.** When the first half ended, simulations were switched to half 2 *before* the check for
+   finished second halves, so the second half was never played. Fixed.
+2. **Drive-duration sampling.** The cell-level duration pools gave too many second-half drives:
+   12.04–12.14 simulated vs 11.39 real per game. Two variants were tried:
+
+   | Variant | First half | Second half |
+   |---|---|---|
+   | Fraction of the remaining clock in the final 2:00 | 10.98 | 11.56 |
+   | 20-second start-clock bins in the final 2:00 | 11.31 | 12.14 |
+
+   The final implementation draws each drive's duration from training drives with the same outcome, side
+   (trailing / tied / leading) and half, and a start clock within ±15 s (widened until ≥ 30 drives), capped
+   at the clock remaining. Smoke test: **11.85 / 12.08 drives per half vs 11.32 / 11.39 real**. The excess sits
+   in the final 2:00 of each half: 2.12 vs 1.63, and 1.83 vs 1.18.
+3. **No further changes.** The pre-registered validation is run on this implementation, and the stop rule
+   applies.
