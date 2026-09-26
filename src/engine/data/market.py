@@ -58,6 +58,33 @@ def fetch_totals() -> list[dict]:
     return r.json()
 
 
+def fetch_historical(when: str) -> tuple[str, list[dict]]:
+    """Market snapshot as of `when` (ISO UTC) from the historical endpoint. The user's plan serves the last 48 h
+    only (probe 2026-09-26, docs/evidence/probe/20260926T223855Z). Returns (snapshot timestamp, events)."""
+    c = config.data()["market"]
+    key = os.environ.get(c["api_key_env"])
+    if not key:
+        raise MissingKey(f"env {c['api_key_env']} not set")
+    url = f"{c['base_url']}/historical/sports/{c['sport_key']}/odds"
+    r = requests.get(url, params={"apiKey": key, "markets": "spreads", "regions": c["regions"], "date": when},
+                     timeout=c["timeout_seconds"], headers={"User-Agent": "nfl-ats-engine/0.1"})
+    r.raise_for_status()
+    j = r.json()
+    return j.get("timestamp") or when, j.get("data", [])
+
+
+def capture_historical(sched: pl.DataFrame, when: str, events: list[dict] | None = None,
+                       snapshot_ts: str | None = None) -> list[dict]:
+    """Archive a historical snapshot exactly like a live all-games capture, with captured_at = the snapshot
+    time (the moment the prices describe). capture_id is prefixed 'hist-' and reason records the retrieval."""
+    retrieved = dt.datetime.now(dt.timezone.utc)
+    if events is None:
+        snapshot_ts, events = fetch_historical(when)
+    ts = dt.datetime.fromisoformat((snapshot_ts or when).replace("Z", "+00:00"))
+    return capture(sched, now=ts, events=events, all_games=True, capture_prefix="hist-",
+                   reason=f"historical snapshot, retrieved {retrieved.isoformat(timespec='seconds')}")
+
+
 def parse_totals(events: list[dict]) -> dict[tuple[str, str], dict]:
     """(home, away) -> {"median": total, "n_books": n}. Uses the Over outcome's point per book."""
     out = {}
@@ -119,14 +146,15 @@ def consensus(rows: list[dict], reference_book: str | None = None) -> dict:
 
 
 def capture(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int | None = None,
-            events: list[dict] | None = None, all_games: bool = False) -> list[dict]:
+            events: list[dict] | None = None, all_games: bool = False, capture_prefix: str = "",
+            reason: str = "") -> list[dict]:
     """Capture market spreads for games whose lock is within `window_minutes` from now
     (or every upcoming game if all_games). Late captures are recorded with their true
     minutes_to_lock (negative = after lock) so timing error is measured, not hidden."""
     now = now or dt.datetime.now(dt.timezone.utc)
     c = config.data()["market"]
     window = window_minutes if window_minutes is not None else c["lock_window_minutes"]
-    capture_id = now.strftime("%Y%m%dT%H%M%SZ")
+    capture_id = capture_prefix + now.strftime("%Y%m%dT%H%M%SZ")
     try:
         events = events if events is not None else fetch_spreads()
     except Exception as e:
@@ -152,6 +180,8 @@ def capture(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes:
         if not all_games and not (-60 <= mtl <= window):
             continue
         p.pop("commence_time", None)
+        if reason:
+            p["reason"] = reason
         rows.append({**p, "capture_id": capture_id, "captured_at": now.isoformat(),
                      "game_id": g["game_id"], "season": g["season"], "week": g["week"],
                      "kickoff_utc": g["kickoff_utc"].isoformat(), "lock_utc": g["lock_utc"].isoformat(),
