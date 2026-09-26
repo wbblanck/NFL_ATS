@@ -8,7 +8,7 @@ The rules are in `docs/projection_v4_preregistration.md` (commit `77af4d6`). The
 | Check | Result | Verdict |
 |---|---|---|
 | TD reconciliation, 1999–2025 | 99.87% of 13,912 team-games reconcile with pbp TDs, against 96.8% with `team_stats`. The 18 exceptions are 16 in 2001–02 and 2 in 2011 | Pass |
-| Neutral sites | 71 neutral REG games; none carries home = 1 | Pass |
+| Neutral sites | 67 completed neutral REG games; none carries home = 1 | Pass |
 | Point-in-time | 13 games rebuilt; max difference 2 × 10⁻¹⁶; same starters | Pass |
 | Do the problems exist in training? | TD dispersion 0.77; cross-team TD residual correlation +0.16; the Poisson 50% interval holds 61.7% of results | Yes, so fix 3 applies |
 | **Drive-model fit** | 50% interval holds **54.3%** (required 46–54%). Cross-team TD correlation implied **0.066** vs observed 0.157 (required within ±0.07) | **Fail** |
