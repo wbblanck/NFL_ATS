@@ -58,6 +58,8 @@ def main(argv=None) -> int:
     c = sub.add_parser("check-league-lines")
     c.add_argument("--season", type=int)
     c.add_argument("--week", type=int)
+    pv3 = sub.add_parser("players-v3")
+    pv3.add_argument("--cache", default=None)
     r = sub.add_parser("run")
     r.add_argument("--game", required=True)
     a = ap.parse_args(argv)
@@ -98,6 +100,22 @@ def main(argv=None) -> int:
         from engine.backtest import phase6
         r = phase6.run(config.ROOT / "docs" / "phase6_results.md")
         print(r["table"]); print("kept", r["kept"]); print(r["feature_means"])
+        return 0
+    if a.cmd == "players-v3":
+        import json
+        from engine import config
+        from engine.backtest import players_v3_eval as E
+        ctx = E.prepare(a.cache)
+        tu = E.tune(ctx)
+        va = E.validate(ctx, tu["D"], tu["k"])
+        if not va["pass"]:
+            print("validation failed; test seasons not scored"); print(json.dumps(va, indent=1, default=str))
+            return 1
+        te, _ = E.test(ctx, tu["D"], tu["k"])
+        se = E.sensitivity_weekly_depth(ctx, tu["D"], tu["k"])
+        E.write_results(tu, va, te, se, config.ROOT / "docs" / "players_v3_results.md")
+        out = config.ROOT / "data" / "backtests" / "players_v3.json"
+        out.write_text(json.dumps({"tuning": tu, "validation": va, "test": te, "sensitivity": se}, indent=1, default=str))
         return 0
     if a.cmd == "backtest":
         from engine import config
