@@ -32,22 +32,47 @@ def latest_market(game_ids: set[str]) -> dict[str, dict]:
     return out
 
 
-def _projections(proj_games, season, week, games):
+def _projections(proj_games, season, week, games, v3=None):
+    """Tracked projection for display: proj-players-v3 when its inputs load, else v1. Returns
+    game_id -> (Projection, version, flags)."""
     if proj_games is None:
         return {}
+    import sys
     from engine.models import projection as P
     rt = P.fit(proj_games, season * 25 + week, season, final.PROJ_H, final.PROJ_LAM)
+    feats, m = {}, None
+    if v3 is not None:
+        try:
+            got = v3([g["game_id"] for g in games])
+            m = got["model"]
+            feats = {(r["game_id"], r["team"]): r for r in got["features"].iter_rows(named=True)}
+        except Exception as e:
+            print("proj-players-v3 unavailable for preview:", repr(e), file=sys.stderr)
     out = {}
     for g in games:
         try:
-            pr = P.project(rt, g["home_team"], g["away_team"])
-            out[g["game_id"]] = pr
+            h, a = P.FRANCHISE.get(g["home_team"], g["home_team"]), P.FRANCHISE.get(g["away_team"], g["away_team"])
+            q = rt.rates(h, a)
         except Exception:
-            pass
+            continue
+        fh, fa = feats.get((g["game_id"], h)), feats.get((g["game_id"], a))
+        version, flags = final.PROJ_VERSION, []
+        if m is not None and fh is not None and fa is not None and all(
+                f[c] is not None for f in (fh, fa) for c in m["features"]):
+            from engine.models import players_v3_live as L
+            q = {"home_td": q["home_td"] * L.multiplier(fh, m, "td"), "home_fg": q["home_fg"] * L.multiplier(fh, m, "fg"),
+                 "away_td": q["away_td"] * L.multiplier(fa, m, "td"), "away_fg": q["away_fg"] * L.multiplier(fa, m, "fg")}
+            version = L.VERSION
+            if not (fh.get("injury_status_published") and fa.get("injury_status_published")):
+                flags.append("INJ_STATUS_MISSING")
+        pr = P.Projection(P.points_pmf(q["home_td"], q["home_fg"], rt.p_xp, rt.p_2),
+                          P.points_pmf(q["away_td"], q["away_fg"], rt.p_xp, rt.p_2))
+        out[g["game_id"]] = (pr, version, flags)
     return out
 
 
-def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None = None, proj_games=None) -> list[dict]:
+def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None = None, proj_games=None,
+          v3=None) -> list[dict]:
     now = now or dt.datetime.now(dt.timezone.utc)
     wk = sched.filter((pl.col("season") == season) & (pl.col("week") == week)).sort("kickoff_utc")
     ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
@@ -55,18 +80,20 @@ def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None =
     mk = latest_market(set(wk["game_id"].to_list()))
     dist, _ = final.fit_dist(sched, now)
     tdist = final.fit_total_dist(sched, now)
-    projs = _projections(proj_games, season, week, wk.to_dicts())
+    projs = _projections(proj_games, season, week, wk.to_dicts(), v3)
     out = []
     for g in wk.to_dicts():
         gid = g["game_id"]
         base = {"game_id": gid, "away": g["away_team"], "home": g["home_team"],
                 "kickoff_utc": g["kickoff_utc"].isoformat(), "league_line": ll.get(gid)}
-        pr = projs.get(gid)
-        if pr is not None:
+        got = projs.get(gid)
+        if got is not None:
+            pr, version, pflags = got
             hs, as_ = pr.mean_scores()
             line = ll.get(gid)
             pp = pr.p_home_cover(line) if line is not None and is_half_point(line) else None
-            base.update(proj_home=round(hs, 1), proj_away=round(as_, 1),
+            base.update(proj_home=round(hs, 1), proj_away=round(as_, 1), proj_version=version,
+                        proj_flags=";".join(pflags),
                         proj_pick=None if pp is None else (g["home_team"] if pp > 0.5 else g["away_team"]))
         if gid in finals:
             f = finals[gid]

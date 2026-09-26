@@ -26,6 +26,7 @@ TEST_B = 2025
 GRID_D = (180, 365, 730)
 GRID_K = (100, 250, 500)
 MG = np.arange(-P.MAXP, P.MAXP + 1)
+PIT_TOL = 1e-12        # floating-point summation order only; any leak would move a feature by far more
 
 
 # ---------------------------------------------------------------- data
@@ -300,12 +301,10 @@ def test(ctx: dict, D: float, k: float) -> tuple[dict, pl.DataFrame]:
     return out, d
 
 
-def coverage(data, sched, d) -> dict:
-    tg = V.team_game_frame(sched).filter(pl.col("season").is_between(TRAIN[0], TEST_B))
-    qbg = V.qb_games(data["dropbacks"])
-    known = set(qbg["qb"].to_list())
-    tg = tg.with_columns(pl.col("qb_recorded").is_in(list(known)).alias("qb_has_history"))
-    reps = V.injury_reports(data["injuries"], tg)
+def coverage(data, sched, f) -> dict:
+    """f: the feature frame (one row per team-game), which carries the starter's weighted prior dropbacks."""
+    tg = f.filter(pl.col("season").is_between(TRAIN[0], TEST_B))
+    reps = V.injury_reports(data["injuries"], V.team_game_frame(sched))
     snaps = V.snap_table(data["snaps"], data["players"])
     rows = []
     for s in range(TRAIN[0], TEST_B + 1):
@@ -313,11 +312,11 @@ def coverage(data, sched, d) -> dict:
         r = reps.filter(pl.col("season") == s)
         sn = snaps.filter(_season(pl.col("game_id")) == s)
         rows.append({"season": s, "team_games": t.height,
-                     "starter_with_prior_dropbacks": float(t["qb_has_history"].mean()),
+                     "starter_with_prior_dropbacks": float((t["qb_wdropbacks"] > 0).mean()),
+                     "starter_rated_at_prior_only": int((t["qb_wdropbacks"] == 0).sum()),
                      "team_games_with_injury_rows": r.select("game_id", "team").unique().height / max(t.height, 1),
                      "injury_players_in_snap_data": float(r["gsis_id"].is_in(sn["gsis_id"].drop_nulls().implode()).mean()) if r.height else None,
-                     "snap_rows_id_mapped": float(sn["gsis_id"].is_not_null().mean()) if sn.height else None,
-                     "team_games_in_design": d.filter(pl.col("season") == s).height})
+                     "snap_rows_id_mapped": float(sn["gsis_id"].is_not_null().mean()) if sn.height else None})
     return {"by_season": rows}
 
 
@@ -338,7 +337,7 @@ def validate(ctx: dict, D: float, k: float, n_pit: int = 2) -> dict:
     for s in range(TRAIN[0], TEST_B + 1):
         ids = sorted(set(reg.filter(pl.col("season") == s)["game_id"].to_list()))
         sample += [ids[i] for i in rng.choice(len(ids), n_pit, replace=False)]
-    sample += ["2025_04_JAX_SF", "2025_01_DEN_TEN"]
+    sample += ["2025_04_JAX_SF", "2025_01_TEN_DEN"]
     sample = [g for g in dict.fromkeys(sample) if g in set(reg["game_id"].to_list())]
     pit = point_in_time_check(data, sched, D, k, const, sample)
     out["point_in_time"] = {"games": len(pit), "max_abs_diff": max(r["max_abs_diff"] for r in pit),
@@ -361,7 +360,7 @@ def validate(ctx: dict, D: float, k: float, n_pit: int = 2) -> dict:
         r = f.filter((pl.col("game_id") == gid) & (pl.col("team") == team)).row(0, named=True)
         return {"game_id": gid, "team": team, "starter": nm.get(r["starter"]), "qb_rating": r["qb_rating"],
                 "qb_baseline": r["qb_baseline"], "qb_delta": r["qb_delta"], "starter_prior_w_dropbacks": r["qb_wdropbacks"]}
-    purdy, ward = row("2025_04_JAX_SF", "SF"), row("2025_01_DEN_TEN", "TEN")
+    purdy, ward = row("2025_04_JAX_SF", "SF"), row("2025_01_TEN_DEN", "TEN")
     backup = f.filter(pl.col("season").is_between(TRAIN[0], TEST_A[1])).sort("qb_delta").row(0, named=True)
     out["known_cases"] = {"purdy_2025_w4": {**purdy, "pass": purdy["qb_delta"] > 0},
                           "ward_2025_w1": {**ward, "pass": ward["starter_prior_w_dropbacks"] == 0.0},
@@ -382,7 +381,7 @@ def validate(ctx: dict, D: float, k: float, n_pit: int = 2) -> dict:
     out["injury_timestamps"] = {
                                 "rows_2025_without_timestamp": int(inj.filter(pl.col("season") == TEST_B)["date_modified"].is_null().sum()),
                                 "rows_2025": int(inj.filter(pl.col("season") == TEST_B).height)}
-    out["pass"] = (out["point_in_time"]["max_abs_diff"] == 0 and out["point_in_time"]["all_same_starter"]
+    out["pass"] = (out["point_in_time"]["max_abs_diff"] < PIT_TOL and out["point_in_time"]["all_same_starter"]
                    and out["known_cases"]["purdy_2025_w4"]["pass"] and out["known_cases"]["ward_2025_w1"]["pass"]
                    and out["known_cases"]["most_negative_backup"]["pass"] and out["p_play"]["ordered"])
     return out
@@ -447,7 +446,8 @@ def write_results(tu: dict, va: dict, te: dict, se: dict | None, path: str) -> N
     L += ["", f"Chosen: **D = {tu['D']}, k = {tu['k']}**.", "", "## Stage 2: validation checks", ""]
     pit = va["point_in_time"]
     L += [f"1. **Point-in-time:** {pit['games']} games rebuilt after deleting everything at or after kickoff. "
-          f"Largest feature difference: {pit['max_abs_diff']}; same starter in every game: {pit['all_same_starter']}.",
+          f"Largest feature difference: {pit['max_abs_diff']:.1e} (tolerance {PIT_TOL:.0e}, floating-point summation "
+          f"order); same starter in every game: {pit['all_same_starter']}.",
           "2. **QB ratings at the end of 2023** (EPA per dropback, shrunk):", "",
           "| Rank | QB | Rating | Weighted dropbacks |", "|---|---|---|---|"]
     for i, r in enumerate(va["top10_end_2023"], 1):
@@ -467,10 +467,10 @@ def write_results(tu: dict, va: dict, te: dict, se: dict | None, path: str) -> N
     for s in STATUSES_ORDER:
         L.append(f"| {s} | {pp[s]['n']} | {pp[s]['p_play']:.4f} | {pp[s]['se']:.4f} |")
     L += ["", f"   Ordered Out < Doubtful < Questionable: {pp['ordered']}.", "", "5. **Coverage:**", "",
-          "| Season | Team-games | Starter has earlier dropbacks | Team-games with injury rows | Injured players found in snap data | Snap rows id-mapped |",
+          "| Season | Team-games | Starter has earlier dropbacks (debuts rated at the prior) | Team-games with injury rows | Injured players found in snap data | Snap rows id-mapped |",
           "|---|---|---|---|---|---|"]
     for r in va["coverage"]["by_season"]:
-        L.append(f"| {r['season']} | {r['team_games']} | {r['starter_with_prior_dropbacks']:.3f} | "
+        L.append(f"| {r['season']} | {r['team_games']} | {r['starter_with_prior_dropbacks']:.3f} ({r['starter_rated_at_prior_only']}) | "
                  f"{r['team_games_with_injury_rows']:.3f} | {_f(r['injury_players_in_snap_data'], 3)} | {_f(r['snap_rows_id_mapped'], 3)} |")
     dv = va["depth_vs_recorded_2025"]
     L += ["", f"   2025 depth-chart QB (last snapshot before lock) equals the actual starter in "

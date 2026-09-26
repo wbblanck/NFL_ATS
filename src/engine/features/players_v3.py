@@ -144,13 +144,13 @@ def team_game_frame(sched: pl.DataFrame) -> pl.DataFrame:
 
 # ---------------------------------------------------------------- starters
 
-def starters_2025(tg: pl.DataFrame, depth25: pl.DataFrame, injuries: pl.DataFrame) -> pl.DataFrame:
+def starters_from_depth(tg: pl.DataFrame, depth: pl.DataFrame, injuries: pl.DataFrame, season: int) -> pl.DataFrame:
     """QB1 on the team's last depth-chart snapshot before lock; QB2 if QB1 is Out that week."""
-    d = depth25.filter(pl.col("pos_abb") == "QB").with_columns(_fr("team").alias("team"))
+    d = depth.filter(pl.col("pos_abb") == "QB").with_columns(_fr("team").alias("team"))
     out = injuries.filter(pl.col("report_status") == "Out").with_columns(
         _fr("team").alias("team"), pl.col("season").cast(pl.Int32), pl.col("week").cast(pl.Int32))
     rows = []
-    for r in tg.filter(pl.col("season") == 2025).select("game_id", "team", "season", "week", "lock_utc").to_dicts():
+    for r in tg.filter(pl.col("season") == season).select("game_id", "team", "season", "week", "lock_utc").to_dicts():
         lock = r["lock_utc"].strftime("%Y-%m-%dT%H:%M:%SZ")
         snap = d.filter((pl.col("team") == r["team"]) & (pl.col("dt") < lock))
         if snap.height == 0:
@@ -211,6 +211,8 @@ def qb_features(tg: pl.DataFrame, qbg: pl.DataFrame, rater: QBRater, starter_col
 def injury_reports(injuries: pl.DataFrame, tg: pl.DataFrame) -> pl.DataFrame:
     """Non-QB O/D/Q entries, using the latest report row filed before the game's lock.
     Rows without a timestamp (2025 release) are kept; that is disclosed in the report."""
+    if "date_modified" not in injuries.columns:          # the 2026 release has no timestamp column
+        injuries = injuries.with_columns(pl.lit(None, pl.Datetime("us", "UTC")).alias("date_modified"))
     i = injuries.filter(pl.col("game_type") == "REG", pl.col("report_status").is_in(list(STATUSES)),
                         pl.col("position") != "QB", pl.col("gsis_id").is_not_null()).with_columns(
         _fr("team").alias("team"), pl.col("season").cast(pl.Int32), pl.col("week").cast(pl.Int32))
@@ -279,21 +281,23 @@ def injury_features(tg: pl.DataFrame, reports: pl.DataFrame, snaps: pl.DataFrame
 # ---------------------------------------------------------------- assemble
 
 def build(sched, dropbacks, injuries, snaps, players, depth25, D, k, prior, p_play,
-          targets: list[str] | None = None, depth_old: pl.DataFrame | None = None) -> pl.DataFrame:
-    """All v3 features per REG team-game. Starter: 2025 depth chart (point-in-time), else the recorded starter,
-    or (sensitivity check, when `depth_old` is given) the weekly depth-chart QB1 where one exists."""
+          targets: list[str] | None = None, depth_old: pl.DataFrame | None = None,
+          depth_season: int = 2025) -> pl.DataFrame:
+    """All v3 features per REG team-game. Starter: the `depth_season` depth chart (point-in-time snapshots;
+    2025 in evaluation, the current season live), else the recorded starter, or (sensitivity check, when
+    `depth_old` is given) the weekly depth-chart QB1 where one exists."""
     tg = team_game_frame(sched)
-    if depth25 is not None and tg.filter(pl.col("season") == 2025).height:
-        st = starters_2025(tg, depth25, injuries)
+    if depth25 is not None and tg.filter(pl.col("season") == depth_season).height:
+        st = starters_from_depth(tg, depth25, injuries, depth_season)
         tg = tg.join(st, on=["game_id", "team"], how="left")
     else:
         tg = tg.with_columns(pl.lit(None, pl.Utf8).alias("qb_depth"), pl.lit(None, pl.Boolean).alias("qb1_out"),
                              pl.lit(None, pl.Utf8).alias("snapshot"))
-    tg = tg.with_columns(pl.when(pl.col("season") == 2025).then(pl.coalesce("qb_depth", "qb_recorded"))
+    tg = tg.with_columns(pl.when(pl.col("season") == depth_season).then(pl.coalesce("qb_depth", "qb_recorded"))
                          .otherwise(pl.col("qb_recorded")).alias("starter"))
     if depth_old is not None:
         tg = tg.join(starters_weekly(depth_old), on=["season", "week", "team"], how="left").with_columns(
-            pl.when(pl.col("season") < 2025).then(pl.coalesce("qb_weekly", "qb_recorded"))
+            pl.when(pl.col("season") < depth_season).then(pl.coalesce("qb_weekly", "qb_recorded"))
             .otherwise(pl.col("starter")).alias("starter"))
     qbg = qb_games(dropbacks)
     rater = QBRater(qbg, D, k, prior)

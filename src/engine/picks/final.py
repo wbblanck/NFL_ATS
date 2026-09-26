@@ -121,7 +121,7 @@ def decide(league_line: float | None, market_at_lock: float | None, cbs_open: fl
 
 PROJ_FIELDS = ["prediction_id", "created_at", "season", "week", "game_id", "home_team", "away_team",
                "proj_home_pts", "proj_away_pts", "proj_line", "proj_median_margin", "league_line",
-               "proj_p_home_cover", "proj_pick", "model_version", "hyperparams"]
+               "proj_p_home_cover", "proj_pick", "model_version", "hyperparams", "inputs"]
 PROJ_VERSION, PROJ_H, PROJ_LAM = "proj-poisson-v1", 8, 5.0   # tuned on 1999-2006 (docs/projection_report.md)
 
 
@@ -129,32 +129,73 @@ def projections_path():
     return config.path("predictions") / "projections.csv"
 
 
-def _record_projections(preds: list[dict], proj_games, now: dt.datetime) -> None:
-    """Tracked comparison: score projections for the same games, archived separately (never picks)."""
+def _record_projections(preds: list[dict], proj_games, now: dt.datetime, v3: dict | None = None) -> None:
+    """Tracked comparison: score projections for the same games, archived separately (never picks).
+    v1 (team scoring history) and, when `v3` inputs are given, proj-players-v3 (v1 x player/context
+    multipliers, frozen model; docs/players_v3_report.md)."""
+    import json
+    import sys
     from engine.models import projection as P
+    feats = {}
+    if callable(v3):                     # built lazily for exactly the games being picked; never blocks picks
+        try:
+            v3 = v3([r["game_id"] for r in preds])
+        except Exception as e:
+            print("proj-players-v3 unavailable:", repr(e), file=sys.stderr)
+            v3 = None
+    if v3 is not None:
+        for r in v3["features"].iter_rows(named=True):
+            feats[(r["game_id"], r["team"])] = r
     rows = []
     for r in preds:
         try:
             rt = P.fit(proj_games, int(r["season"]) * 25 + int(r["week"]), int(r["season"]), PROJ_H, PROJ_LAM)
-            pr = P.project(rt, r["home_team"], r["away_team"])
+            home, away = P.FRANCHISE.get(r["home_team"], r["home_team"]), P.FRANCHISE.get(r["away_team"], r["away_team"])
+            q = rt.rates(home, away)
         except Exception:
             continue
-        h, a = pr.mean_scores()
-        line = r["league_line"]
-        ph = pr.p_home_cover(float(line)) if line is not None and is_half_point(float(line)) else None
-        rows.append({"prediction_id": r["prediction_id"], "created_at": now.isoformat(), "season": r["season"],
-                     "week": r["week"], "game_id": r["game_id"], "home_team": r["home_team"], "away_team": r["away_team"],
-                     "proj_home_pts": round(h, 1), "proj_away_pts": round(a, 1), "proj_line": round(pr.model_line(), 1),
-                     "proj_median_margin": pr.median_margin(), "league_line": line,
-                     "proj_p_home_cover": "" if ph is None else round(ph, 4),
-                     "proj_pick": "" if ph is None else (r["home_team"] if ph > 0.5 else r["away_team"]),
-                     "model_version": PROJ_VERSION, "hyperparams": f"H={PROJ_H},lambda={PROJ_LAM}"})
+        variants = [(PROJ_VERSION, f"H={PROJ_H},lambda={PROJ_LAM}", q, "")]
+        fh, fa = feats.get((r["game_id"], home)), feats.get((r["game_id"], away))
+        missing = [c for f in (fh, fa) if f is not None for c in v3["model"]["features"] if f[c] is None] if v3 else []
+        if v3 is not None and fh is not None and fa is not None and missing:
+            print(f"proj-players-v3 skipped for {r['game_id']}: missing {sorted(set(missing))}", file=sys.stderr)
+        elif v3 is not None and fh is not None and fa is not None:
+            from engine.models import players_v3_live as L
+            m = v3["model"]
+            q3 = {"home_td": q["home_td"] * L.multiplier(fh, m, "td"), "home_fg": q["home_fg"] * L.multiplier(fh, m, "fg"),
+                  "away_td": q["away_td"] * L.multiplier(fa, m, "td"), "away_fg": q["away_fg"] * L.multiplier(fa, m, "fg")}
+            info = {side: {"starter": f["starter"], "qb_delta": round(f["qb_delta"], 4),
+                           "starter_w_dropbacks": round(f["qb_wdropbacks"], 1), "depth_snapshot": f["snapshot"],
+                           "qb1_out": f["qb1_out"], "injury_rows": f["n_injury_rows"],
+                           **{g: round(f[g], 3) for g in ("ol", "skill", "opp_dl", "opp_lb", "opp_db")},
+                           **{c: f[c] for c in ("rest_diff", "tz_shift", "division", "dome")},
+                           "dome_estimated": f.get("dome_estimated", False),
+                           "injury_status_published": f.get("injury_status_published")}
+                    for side, f in (("home", fh), ("away", fa))}
+            flags = [] if fh.get("injury_status_published") and fa.get("injury_status_published") else ["INJ_STATUS_MISSING"]
+            if fh.get("snapshot") is None or fa.get("snapshot") is None:
+                flags.append("NO_DEPTH_SNAPSHOT")
+            info["flags"] = flags
+            variants.append((L.VERSION, f"D={m['D']},k={m['k']},beta={m['trained_on']}", q3, json.dumps(info)))
+        for version, hp, qq, inputs in variants:
+            pr = P.Projection(P.points_pmf(qq["home_td"], qq["home_fg"], rt.p_xp, rt.p_2),
+                              P.points_pmf(qq["away_td"], qq["away_fg"], rt.p_xp, rt.p_2))
+            h, a = pr.mean_scores()
+            line = r["league_line"]
+            ph = pr.p_home_cover(float(line)) if line is not None and is_half_point(float(line)) else None
+            rows.append({"prediction_id": r["prediction_id"], "created_at": now.isoformat(), "season": r["season"],
+                         "week": r["week"], "game_id": r["game_id"], "home_team": r["home_team"], "away_team": r["away_team"],
+                         "proj_home_pts": round(h, 1), "proj_away_pts": round(a, 1), "proj_line": round(pr.model_line(), 1),
+                         "proj_median_margin": pr.median_margin(), "league_line": line,
+                         "proj_p_home_cover": "" if ph is None else round(ph, 4),
+                         "proj_pick": "" if ph is None else (r["home_team"] if ph > 0.5 else r["away_team"]),
+                         "model_version": version, "hyperparams": hp, "inputs": inputs})
     store.append_rows(projections_path(), PROJ_FIELDS, rows)
 
 
 def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int = 25,
         events: list[dict] | None = None, snapshot_id: str = "", game_id: str | None = None,
-        totals: list[dict] | None = None, proj_games=None) -> list[dict]:
+        totals: list[dict] | None = None, proj_games=None, v3: dict | None = None) -> list[dict]:
     """game_id set = manual fallback for one game, regardless of window (late runs are flagged)."""
     now = now or dt.datetime.now(dt.timezone.utc)
     if game_id:
@@ -230,7 +271,7 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
         })
     store.append_rows(predictions_path(), FIELDS, out)
     if proj_games is not None:
-        _record_projections(out, proj_games, now)
+        _record_projections(out, proj_games, now, v3)
     if dist is not None:
         _append_sensitivity(out, dist)
     write_slates({(r["season"], r["week"]) for r in out})

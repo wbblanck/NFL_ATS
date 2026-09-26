@@ -75,3 +75,26 @@ def test_injury_share_and_play_probability():
     r = f.filter((pl.col("game_id") == "g2") & (pl.col("team") == "SEA")).row(0, named=True)
     assert r["ol"] == pytest.approx(0.25 * 0.8)
     assert f.filter((pl.col("game_id") == "g2") & (pl.col("team") == "SF"))["ol"][0] == 0.0
+
+
+def test_live_roof_uses_only_earlier_games_at_that_stadium():
+    import datetime as dt
+    from engine.models import players_v3_live as L
+    utc = dt.timezone.utc
+    sched = pl.DataFrame({"game_id": ["a", "b", "c", "d"], "stadium_id": ["IND00"] * 3 + ["RIO00"],
+                          "roof": ["closed", "open", None, None],
+                          "kickoff_utc": [dt.datetime(2025, 9, 1, tzinfo=utc), dt.datetime(2025, 10, 1, tzinfo=utc),
+                                          dt.datetime(2026, 9, 27, tzinfo=utc), dt.datetime(2026, 9, 27, tzinfo=utc)]})
+    f = pl.DataFrame({"game_id": ["c", "d"], "kickoff_utc": sched["kickoff_utc"][2:], "dome": [None, None]},
+                     schema_overrides={"dome": pl.Int8})
+    out = {r["game_id"]: r for r in L._fill_roof(f, sched).iter_rows(named=True)}
+    assert out["c"]["dome"] == 0.5 and out["c"]["dome_estimated"]
+    assert out["d"]["dome"] == 0.0                     # no history at a new open-air site
+
+
+def test_live_multiplier():
+    import math
+    from engine.models import players_v3_live as L
+    m = {"features": ["qb_delta", "dome"], "beta": {"intercept": {"td": 0.1, "fg": 0.0},
+                                                   "qb_delta": {"td": 2.0, "fg": 0.5}, "dome": {"td": 0.05, "fg": 0.0}}}
+    assert L.multiplier({"qb_delta": -0.1, "dome": 1}, m, "td") == pytest.approx(math.exp(0.1 - 0.2 + 0.05))

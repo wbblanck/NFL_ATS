@@ -48,6 +48,118 @@ by exp(β·x), where x is:
    applied to training games as well. That is standard for constants, but it means training-season features
    are not strictly point-in-time for those two constants. Test seasons are.
 
-## Results
+9. **Validation tolerance.**
+   - On the first full run, the point-in-time check failed, and by design the test seasons were not scored.
+     The check had required features to match *exactly*.
+   - The largest difference over 28 rebuilt games was 1.1 × 10⁻¹⁶. That comes from adding the same numbers in
+     a different order, not from leaked data: every starter matched, and a leaked game would move a feature by
+     orders of magnitude more.
+   - The tolerance was set to 10⁻¹² and the run repeated. This is the only change between the two runs.
+10. **Shrinkage at the edge of the grid.** Tuning chose k = 500, the largest pre-registered value. The
+    optimum may be at even stronger shrinkage. The grid was not widened after the fact, and the train
+    log-likelihood differences across the whole grid are small: −4.0095 to −4.0081 per game.
 
-_Filled in from `docs/players_v3_results.md` after stage 3._
+## Live rules (fixed before any 2026 v3 result exists)
+
+11. **Injury statuses not yet published.**
+    - nflverse sometimes carries only the midweek practice reports when a lock run happens. The Friday
+      Out/Doubtful/Questionable statuses may not be posted yet; on 2026-09-26, 12 of 290 week-3 rows had one.
+    - Injury features built then would read "nobody hurt".
+    - Every live v3 row therefore records whether each team's game statuses were published.
+    - Rows where they were not are flagged `INJ_STATUS_MISSING` and **excluded from v3's live score**.
+      They are counted separately in `live_record.md`.
+12. **Retractable roofs live.**
+    - Training used the observed open/closed value, which is decided on game day. nflverse leaves it blank
+      for future games.
+    - Live, `dome` is that stadium's share of dome/closed games among its earlier games, flagged
+      `dome_estimated`. A new site with no history gets 0; Rio 2026 is open-air.
+13. **Starter live.** The QB1 on the last depth-chart snapshot before the run (QB2 if QB1 is Out). The
+    schedule's pre-filled `home_qb_id` / `away_qb_id` for unplayed games is never used.
+14. **Frozen model.** β, D, k, the prior and the play probabilities are frozen in
+    `data/processed/players_v3_model.json`, together with the 2006–2025 QB history.
+    - Only the current season's plays, snaps, injury reports and depth charts are downloaded at each run.
+    - Run on 2025 as if live, the live code reproduces the evaluation's features for all 544 team-games:
+      same starters, differences ≤ 2 × 10⁻¹⁶.
+
+## Validation (stage 2): all checks pass
+
+- **Point-in-time:** 28 games were rebuilt after deleting all later data. The features were identical (to 10⁻¹⁶) and so were the starters.
+- **QB ratings at the end of 2023:** the top 5 is Mahomes, Purdy, Allen, Prescott, Tagovailoa. The bottom 5
+  includes Zach Wilson and Bryce Young. QBs with fewer than 100 career dropbacks sit 0.005 from the prior on
+  average.
+- **Known cases:**
+  - Purdy's return in 2025 week 4: `qb_delta` **+0.068**.
+  - Cam Ward in week 1: rated as a rookie at the replacement level, −0.007 against Tennessee's 2024 QBs.
+    He is not treated as his own backup.
+  - Chad Henne starting for Kansas City in 2020 week 17: **−0.258**.
+- **Play probabilities:** Out 0.06%, Doubtful 0.85%, Questionable 65.8%. They are ordered as required.
+- **Coverage:**
+  - 99%+ of starters have earlier dropbacks. The rest are debuts, rated at the prior.
+  - 96–98% of team-games have injury rows.
+  - 97–99% of injured players are found in the snap data.
+  - The 2025 depth-chart QB matches the actual starter in 96.0% of team-games (22 mismatches).
+
+## What the model learned (coefficients, fit on 2013–2021)
+
+**The quarterback is the only large, clearly measured effect.**
+- TD rate × exp(2.38 × `qb_delta`). The SE is 0.35, so the estimate is about 7 SEs from zero.
+- A starter 0.10 EPA per dropback worse than the team's usual QB cuts expected touchdowns by about 21%.
+- The Henne case (−0.26) cuts them by about 46%.
+- The FG effect is small and not distinguishable from zero (+0.41 ± 0.41). That is plausible: worse drives
+  stall into field-goal range rather than into the end zone.
+
+Everything else is small:
+
+| Effect | Estimate | Size relative to its SE |
+|---|---|---|
+| Dome, TD rate | +4.6% | about 2.2 SE |
+| Division game, TD rate | −3.6% | 1.9 SE |
+| Missing skill players, TD rate, per full-time starter | −6.5% | 2.4 SE |
+| Missing opponent linebackers, TD rate | +7% | 1.9 SE |
+
+| Missing offensive linemen, FG rate, per full-time starter | −6.3% | 2.1 SE |
+
+Rest, bye, short week, travel, and the other injury groups are all within about 1.5 SE of zero. With 26
+coefficients tested, a few at around 2 SE are expected by chance alone, so none of these small effects is
+treated as established.
+
+## Results (stage 3), with the pre-registered decisions applied
+
+| | Test A 2022–2024 (815 games) | Test B 2025 (272 games) |
+|---|---|---|
+| Margin log-likelihood, v3 − v1 | **+0.0065 ± 0.0036** | **+0.0156 ± 0.0078** |
+| Margin MAE: v3 / v1 / market close | 9.92 / 9.92 / **9.42** | 9.91 / 10.15 / **9.72** |
+| P(home wins) log loss: v3 / v1 / market | 0.635 / 0.643 / **0.609** | 0.620 / 0.634 / **0.610** |
+| ATS vs the close: v3 / v1 | 49.9% / 51.2% (± 1.8) | 51.3% / 49.5% (± 3.0) |
+
+**Decision 1 (tracked projection): v3 replaces v1.**
+- The rule is v3's Test A margin log-likelihood > v1's: −3.9900 > −3.9964.
+- The gain repeats on 2025, where every input is a timestamped pre-lock snapshot: +0.016 ± 0.008.
+
+**Decision 2 (live pick): no switch.**
+- Against the 2025 CBS half-point opens, v3 went 49.5% (104-106) and the live model 51.4% (108-102).
+- On the games where they disagree, v3 was right 43 times and the live model 47 (z = −0.42).
+- The rule needs z ≥ 1.96 plus lower log loss. Neither holds.
+
+## What this means
+
+1. **The player variables make the score projection better, and the QB is most of it.**
+   - v3 is a clearly better forecaster than v1 of *who wins and by how much* in both test periods.
+   - Its biggest gains are where v1 is blind: quarterback changes.
+2. **v3 still does not beat the market.**
+   - The closing line is still more accurate: 0.5 points better MAE in Test A and 0.2 in 2025.
+   - Picking against the close with v3 is a coin flip, 49.9% in Test A and 51.3% in 2025.
+   - The market already prices starting QBs, injuries and rest by kickoff. That is the same conclusion as
+     Phase 6 and v1, now shown with properly built variables.
+3. **Part of the Test A gain is hindsight.**
+   - With the weekly depth-chart QB1 in place of the after-the-fact recorded starter, the Test A gain shrinks
+     from +0.0065 ± 0.0036 to +0.0021 ± 0.0021.
+   - The 2025 result uses the real pre-lock depth chart and still shows +0.016 ± 0.008. The gain survives with
+     honest inputs, but it is smaller than the Test A headline suggests.
+4. **Where this could still help the pool.** The league line is frozen on Tuesday; the market moves after. A
+   QB change announced after Tuesday is the case where v3's information arrives *before* it is in the frozen
+   line. The live drift model already captures most of this through market movement. Whether v3 adds anything
+   on top can only be measured on 2026 games. v3 is recorded as a shadow projection at every lock for that
+   purpose (`proj-players-v3` rows in `data/predictions/projections.csv`).
+
+Full tables: `docs/players_v3_results.md`.
