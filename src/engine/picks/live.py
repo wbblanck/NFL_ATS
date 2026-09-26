@@ -53,6 +53,18 @@ def grade(sched: pl.DataFrame) -> dict:
                                 "L": sum(r["shadow_result"] == "L" for r in rows if r["shadow_result"]),
                                 "disagreements": len(dis),
                                 "keynum_wins_in_disagreements": sum(r["shadow_result"] == "W" for r in dis)}
+    projs = {r["game_id"]: r for r in store.read_rows(final.projections_path())}
+    pw = pl_ = 0
+    for r in rows:
+        pj = projs.get(r["game_id"])
+        if not pj or not pj.get("proj_pick"):
+            continue
+        g = scores[r["game_id"]]
+        res = grade_league(g["home_score"], g["away_score"], r["league_line"])
+        won = (pj["proj_pick"] == pj["home_team"]) == (res is Result.HOME_COVER)
+        pw += won; pl_ += (not won)
+        r["proj_pick"], r["proj_result"] = pj["proj_pick"], "W" if won else "L"
+    summary["projection_model"] = {"W": pw, "L": pl_}
     _write(rows, summary)
     return summary
 
@@ -69,6 +81,8 @@ def _write(rows, s):
          f"\nShadow key-number estimator (recorded, not used to pick): {s['shadow_keynum']['W']}-"
          f"{s['shadow_keynum']['L']}; it disagreed with the live pick {s['shadow_keynum']['disagreements']} times "
          f"and won {s['shadow_keynum']['keynum_wins_in_disagreements']} of those.",
+         f"\nScore-projection model (tracked comparison, not used to pick): "
+         f"{s.get('projection_model', {}).get('W', 0)}-{s.get('projection_model', {}).get('L', 0)}.",
          "\n| Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |", "|---|---|---|---|---|---|---|---|"]
     L += [f"| {r['season']} | {r['week']} | {r['game_id']} | {r['pick']} | {r['league_line']:+.1f} | {r['score']} | "
           f"{r['result']}{' (late)' if r['late'] else ''} | {r['shadow_pick']} {r['shadow_result']} |" for r in rows]

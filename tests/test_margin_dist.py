@@ -77,3 +77,21 @@ def test_total_dist_width_grows_with_total():
     hi = td.cover_probs(-3.0, -6.5, 54.0)[0]
     assert lo < hi < 0.5
     assert abs(sum(td.cover_probs(-3.0, -6.5, 45.0)) - 1) < 1e-12
+
+
+def test_projection_exact_pmf_matches_monte_carlo():
+    from engine.models import projection as P
+    h = P.points_pmf(2.6, 1.7, 0.9, 0.04)
+    a = P.points_pmf(2.2, 1.5, 0.9, 0.04)
+    pr = P.Projection(h, a)
+    rng = np.random.default_rng(6)
+    n = 50_000
+    def sim(ltd, lfg):
+        td, fg = rng.poisson(ltd, n), rng.poisson(lfg, n)
+        extra = np.array([rng.choice([0, 1, 2], k, p=[0.06, 0.9, 0.04]).sum() for k in td])
+        return 6 * td + extra + 3 * fg
+    m = sim(2.6, 1.7) - sim(2.2, 1.5)
+    p_mc = np.mean(m > 3.5)
+    se = np.sqrt(p_mc * (1 - p_mc) / n)
+    assert abs(pr.p_home_cover(-3.5) - p_mc) < 4 * se
+    assert abs(sum(h) - 1) < 1e-9 and abs(pr.margin_pmf.sum() - 1) < 1e-9

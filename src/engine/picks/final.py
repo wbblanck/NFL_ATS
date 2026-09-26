@@ -119,9 +119,42 @@ def decide(league_line: float | None, market_at_lock: float | None, cbs_open: fl
             "flags": ";".join(flags)}
 
 
+PROJ_FIELDS = ["prediction_id", "created_at", "season", "week", "game_id", "home_team", "away_team",
+               "proj_home_pts", "proj_away_pts", "proj_line", "proj_median_margin", "league_line",
+               "proj_p_home_cover", "proj_pick", "model_version", "hyperparams"]
+PROJ_VERSION, PROJ_H, PROJ_LAM = "proj-poisson-v1", 8, 5.0   # tuned on 1999-2006 (docs/projection_report.md)
+
+
+def projections_path():
+    return config.path("predictions") / "projections.csv"
+
+
+def _record_projections(preds: list[dict], proj_games, now: dt.datetime) -> None:
+    """Tracked comparison: score projections for the same games, archived separately (never picks)."""
+    from engine.models import projection as P
+    rows = []
+    for r in preds:
+        try:
+            rt = P.fit(proj_games, int(r["season"]) * 25 + int(r["week"]), int(r["season"]), PROJ_H, PROJ_LAM)
+            pr = P.project(rt, r["home_team"], r["away_team"])
+        except Exception:
+            continue
+        h, a = pr.mean_scores()
+        line = r["league_line"]
+        ph = pr.p_home_cover(float(line)) if line is not None and is_half_point(float(line)) else None
+        rows.append({"prediction_id": r["prediction_id"], "created_at": now.isoformat(), "season": r["season"],
+                     "week": r["week"], "game_id": r["game_id"], "home_team": r["home_team"], "away_team": r["away_team"],
+                     "proj_home_pts": round(h, 1), "proj_away_pts": round(a, 1), "proj_line": round(pr.model_line(), 1),
+                     "proj_median_margin": pr.median_margin(), "league_line": line,
+                     "proj_p_home_cover": "" if ph is None else round(ph, 4),
+                     "proj_pick": "" if ph is None else (r["home_team"] if ph > 0.5 else r["away_team"]),
+                     "model_version": PROJ_VERSION, "hyperparams": f"H={PROJ_H},lambda={PROJ_LAM}"})
+    store.append_rows(projections_path(), PROJ_FIELDS, rows)
+
+
 def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int = 25,
         events: list[dict] | None = None, snapshot_id: str = "", game_id: str | None = None,
-        totals: list[dict] | None = None) -> list[dict]:
+        totals: list[dict] | None = None, proj_games=None) -> list[dict]:
     """game_id set = manual fallback for one game, regardless of window (late runs are flagged)."""
     now = now or dt.datetime.now(dt.timezone.utc)
     if game_id:
@@ -196,6 +229,8 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
             "market_total": total if total is not None else "", "market_total_books": t_books,
         })
     store.append_rows(predictions_path(), FIELDS, out)
+    if proj_games is not None:
+        _record_projections(out, proj_games, now)
     if dist is not None:
         _append_sensitivity(out, dist)
     write_slates({(r["season"], r["week"]) for r in out})

@@ -32,7 +32,22 @@ def latest_market(game_ids: set[str]) -> dict[str, dict]:
     return out
 
 
-def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None = None) -> list[dict]:
+def _projections(proj_games, season, week, games):
+    if proj_games is None:
+        return {}
+    from engine.models import projection as P
+    rt = P.fit(proj_games, season * 25 + week, season, final.PROJ_H, final.PROJ_LAM)
+    out = {}
+    for g in games:
+        try:
+            pr = P.project(rt, g["home_team"], g["away_team"])
+            out[g["game_id"]] = pr
+        except Exception:
+            pass
+    return out
+
+
+def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None = None, proj_games=None) -> list[dict]:
     now = now or dt.datetime.now(dt.timezone.utc)
     wk = sched.filter((pl.col("season") == season) & (pl.col("week") == week)).sort("kickoff_utc")
     ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
@@ -40,11 +55,19 @@ def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None =
     mk = latest_market(set(wk["game_id"].to_list()))
     dist, _ = final.fit_dist(sched, now)
     tdist = final.fit_total_dist(sched, now)
+    projs = _projections(proj_games, season, week, wk.to_dicts())
     out = []
     for g in wk.to_dicts():
         gid = g["game_id"]
         base = {"game_id": gid, "away": g["away_team"], "home": g["home_team"],
                 "kickoff_utc": g["kickoff_utc"].isoformat(), "league_line": ll.get(gid)}
+        pr = projs.get(gid)
+        if pr is not None:
+            hs, as_ = pr.mean_scores()
+            line = ll.get(gid)
+            pp = pr.p_home_cover(line) if line is not None and is_half_point(line) else None
+            base.update(proj_home=round(hs, 1), proj_away=round(as_, 1),
+                        proj_pick=None if pp is None else (g["home_team"] if pp > 0.5 else g["away_team"]))
         if gid in finals:
             f = finals[gid]
             out.append({**base, "status": "final", "market": f["market_at_lock"], "drift": f["drift"],

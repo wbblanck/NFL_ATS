@@ -64,3 +64,29 @@ def test_shadow_keynum_recorded_and_graded(tmp_root, week3_schedule):
         pl.when(pl.col("game_id") == "2026_03_ATL_GB").then(3).otherwise(pl.col("result")).alias("result"))
     s = live.grade(played)
     assert s["shadow_keynum"]["W"] + s["shadow_keynum"]["L"] == 1
+
+
+def test_projection_recorded_and_graded(tmp_root, week3_schedule):
+    from engine.models import projection as P
+    _league(tmp_root, "2026_03_ATL_GB,2026,3,GB,ATL,-6.5,GB,test,x\n")
+    sched = _with_history(week3_schedule)
+    rng = np.random.default_rng(5)
+    teams = ["GB", "ATL", "CHI", "DET", "MIN", "NYG"]
+    rows = []
+    for t in range(2000):
+        a, b = rng.choice(teams, 2, replace=False)
+        for team, opp, home in ((a, b, 1), (b, a, 0)):
+            td, fg = rng.poisson(2.4), rng.poisson(1.6)
+            rows.append({"game_id": f"x{t}", "season": 2020 + t // 400, "week": 1 + (t % 400) // 25,
+                         "gameday": "2020-01-01", "team": team, "opp": opp, "home": home,
+                         "pts": 7 * td + 3 * fg, "td": td, "fg": fg, "pat": td, "saf": 0})
+    games = pl.DataFrame(rows).with_columns((pl.col("season") * 25 + pl.col("week")).alias("t"))
+    final.run(sched, now=LOCK - dt.timedelta(minutes=20), events=EVENTS, proj_games=games)
+    pj = store.read_rows(final.projections_path())
+    assert len(pj) == 1 and pj[0]["proj_pick"] in ("GB", "ATL") and float(pj[0]["proj_home_pts"]) > 0
+    played = sched.with_columns(
+        pl.when(pl.col("game_id") == "2026_03_ATL_GB").then(24).otherwise(None).alias("home_score"),
+        pl.when(pl.col("game_id") == "2026_03_ATL_GB").then(21).otherwise(None).alias("away_score"),
+        pl.when(pl.col("game_id") == "2026_03_ATL_GB").then(3).otherwise(pl.col("result")).alias("result"))
+    s = live.grade(played)
+    assert s["projection_model"]["W"] + s["projection_model"]["L"] == 1

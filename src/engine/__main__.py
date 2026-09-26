@@ -126,8 +126,16 @@ def main(argv=None) -> int:
         if a.cmd == "run" and a.game in final.existing_game_ids():
             print(f"{a.game}: final prediction already exists (immutable); see data/predictions/")
             return 0
+        try:
+            import nflreadpy as _nfl
+            from engine.models import projection as _P
+            _all, _ = nflverse.pull("schedules", save=False)
+            proj_games = _P.team_games(_nfl.load_team_stats(seasons=list(range(1999, 2027))), _all)
+        except Exception as e:
+            print("projection comparison unavailable:", e, file=sys.stderr)
+            proj_games = None
         out = final.run(sched, window_minutes=getattr(a, "window_minutes", 25), snapshot_id=sid,
-                        game_id=getattr(a, "game", None))
+                        game_id=getattr(a, "game", None), proj_games=proj_games)
         for r in out:
             print(f"{r['away_team']}@{r['home_team']} lock {r['lock_utc']} ({r['minutes_to_lock']} min): "
                   f"line {r['league_line']} market {r['market_at_lock']} drift {r['drift']} -> "
@@ -149,7 +157,14 @@ def main(argv=None) -> int:
         import datetime as _dt
         from engine import config
         from engine.picks import dashboard, live, preview
-        rows = preview.build(sched, a.season, a.week)
+        try:
+            import nflreadpy as _nfl
+            from engine.models import projection as _P
+            _all, _ = nflverse.pull("schedules", save=False)
+            _pg = _P.team_games(_nfl.load_team_stats(seasons=list(range(1999, 2027))), _all)
+        except Exception:
+            _pg = None
+        rows = preview.build(sched, a.season, a.week, proj_games=_pg)
         try:
             lv = live.grade(sched)
         except Exception:
