@@ -1,0 +1,383 @@
+{
+ "validation": {
+  "td_reconciliation": {
+   "team_games": 13912,
+   "reconciled": 0.9987061529614721,
+   "exceptions": [
+    {
+     "game_id": "2011_13_DET_NO",
+     "team": "NO",
+     "pts": 31,
+     "td": 5,
+     "pat": 4,
+     "fg": 1,
+     "saf": 0,
+     "rem": -6
+    },
+    {
+     "game_id": "2001_01_PIT_JAX",
+     "team": "PIT",
+     "pts": 3,
+     "td": 3,
+     "pat": 3,
+     "fg": 1,
+     "saf": 0,
+     "rem": -21
+    },
+    {
+     "game_id": "2001_02_TEN_JAX",
+     "team": "TEN",
+     "pts": 6,
+     "td": 1,
+     "pat": 1,
+     "fg": 4,
+     "saf": 0,
+     "rem": -13
+    },
+    {
+     "game_id": "2001_03_CLE_JAX",
+     "team": "CLE",
+     "pts": 23,
+     "td": 4,
+     "pat": 4,
+     "fg": 3,
+     "saf": 0,
+     "rem": -14
+    },
+    {
+     "game_id": "2001_06_BUF_JAX",
+     "team": "BUF",
+     "pts": 13,
+     "td": 2,
+     "pat": 2,
+     "fg": 3,
+     "saf": 0,
+     "rem": -10
+    },
+    {
+     "game_id": "2001_09_CIN_JAX",
+     "team": "CIN",
+     "pts": 13,
+     "td": 5,
+     "pat": 5,
+     "fg": 2,
+     "saf": 1,
+     "rem": -30
+    },
+    {
+     "game_id": "2001_11_BAL_JAX",
+     "team": "BAL",
+     "pts": 24,
+     "td": 6,
+     "pat": 6,
+     "fg": 1,
+     "saf": 0,
+     "rem": -21
+    },
+    {
+     "game_id": "2001_12_GB_JAX",
+     "team": "GB",
+     "pts": 28,
+     "td": 6,
+     "pat": 5,
+     "fg": 2,
+     "saf": 0,
+     "rem": -19
+    },
+    {
+     "game_id": "2001_16_KC_JAX",
+     "team": "KC",
+     "pts": 30,
+     "td": 6,
+     "pat": 6,
+     "fg": 4,
+     "saf": 1,
+     "rem": -26
+    },
+    {
+     "game_id": "2002_01_IND_JAX",
+     "team": "IND",
+     "pts": 28,
+     "td": 7,
+     "pat": 6,
+     "fg": 1,
+     "saf": 0,
+     "rem": -23
+    },
+    {
+     "game_id": "2002_04_NYJ_JAX",
+     "team": "NYJ",
+     "pts": 3,
+     "td": 4,
+     "pat": 4,
+     "fg": 1,
+     "saf": 0,
+     "rem": -28
+    },
+    {
+     "game_id": "2002_05_PHI_JAX",
+     "team": "PHI",
+     "pts": 25,
+     "td": 6,
+     "pat": 4,
+     "fg": 3,
+     "saf": 0,
+     "rem": -24
+    },
+    {
+     "game_id": "2002_08_HOU_JAX",
+     "team": "HOU",
+     "pts": 21,
+     "td": 4,
+     "pat": 3,
+     "fg": 3,
+     "saf": 1,
+     "rem": -17
+    },
+    {
+     "game_id": "2002_10_WAS_JAX",
+     "team": "WAS",
+     "pts": 7,
+     "td": 3,
+     "pat": 3,
+     "fg": 4,
+     "saf": 0,
+     "rem": -26
+    },
+    {
+     "game_id": "2002_13_PIT_JAX",
+     "team": "PIT",
+     "pts": 25,
+     "td": 4,
+     "pat": 3,
+     "fg": 7,
+     "saf": 0,
+     "rem": -23
+    },
+    {
+     "game_id": "2002_14_CLE_JAX",
+     "team": "CLE",
+     "pts": 21,
+     "td": 5,
+     "pat": 5,
+     "fg": 2,
+     "saf": 0,
+     "rem": -20
+    },
+    {
+     "game_id": "2002_16_TEN_JAX",
+     "team": "TEN",
+     "pts": 28,
+     "td": 5,
+     "pat": 5,
+     "fg": 1,
+     "saf": 0,
+     "rem": -10
+    },
+    {
+     "game_id": "2011_13_DET_NO",
+     "team": "DET",
+     "pts": 17,
+     "td": 3,
+     "pat": 2,
+     "fg": 1,
+     "saf": 0,
+     "rem": -6
+    }
+   ],
+   "n_exceptions": 18,
+   "team_stats_reconciled": 0.968372627947096
+  },
+  "neutral": {
+   "per_season": {
+    "2003": 1,
+    "2005": 1,
+    "2007": 1,
+    "2008": 2,
+    "2009": 1,
+    "2010": 2,
+    "2011": 1,
+    "2012": 1,
+    "2013": 3,
+    "2014": 4,
+    "2015": 3,
+    "2016": 4,
+    "2017": 5,
+    "2018": 3,
+    "2019": 5,
+    "2020": 3,
+    "2021": 3,
+    "2022": 6,
+    "2023": 5,
+    "2024": 5,
+    "2025": 7,
+    "2026": 1
+   },
+   "any_home_flag": 0
+  },
+  "problems_in_training": {
+   "dispersion_td": 0.7744975499398308,
+   "dispersion_fg": 0.9811310999000836,
+   "cross_team_td_corr": 0.15737526872599036,
+   "coverage_50": 0.6172413793103448,
+   "exists": true
+  },
+  "drive_model_fit": {
+   "implied_dispersion_td": 0.838980775923421,
+   "implied_dispersion_fg": 0.8996029142595368,
+   "implied_cross_team_td_corr": 0.06645465161511266,
+   "observed_dispersion_td": 0.7744975499398308,
+   "observed_dispersion_fg": 0.9811310999000836,
+   "observed_cross_team_td_corr": 0.15737526872599036,
+   "coverage_50": 0.5431034482758621,
+   "pit_deciles": [
+    0.07844827586206897,
+    0.09525862068965517,
+    0.09827586206896552,
+    0.1060344827586207,
+    0.10905172413793103,
+    0.1146551724137931,
+    0.11551724137931034,
+    0.09439655172413793,
+    0.08922413793103448,
+    0.09913793103448276
+   ],
+   "poisson_pit_deciles": [
+    0.052586206896551725,
+    0.08017241379310344,
+    0.10474137931034483,
+    0.12025862068965518,
+    0.12629310344827585,
+    0.13663793103448277,
+    0.1331896551724138,
+    0.0935344827586207,
+    0.09137931034482759,
+    0.061206896551724135
+   ],
+   "drive_mean": [
+    11.710344827586207,
+    11.606465517241377
+   ],
+   "drive_games": 2320,
+   "pass": false
+  },
+  "drives_by_season": [
+   {
+    "season": 1999,
+    "drives": 12.728744939271255
+   },
+   {
+    "season": 2000,
+    "drives": 12.3130081300813
+   },
+   {
+    "season": 2001,
+    "drives": 12.254032258064516
+   },
+   {
+    "season": 2002,
+    "drives": 12.13671875
+   },
+   {
+    "season": 2003,
+    "drives": 12.267578125
+   },
+   {
+    "season": 2004,
+    "drives": 12.1484375
+   },
+   {
+    "season": 2005,
+    "drives": 12.09765625
+   },
+   {
+    "season": 2006,
+    "drives": 12.0078125
+   },
+   {
+    "season": 2007,
+    "drives": 12.013671875
+   },
+   {
+    "season": 2008,
+    "drives": 11.76171875
+   },
+   {
+    "season": 2009,
+    "drives": 12.013671875
+   },
+   {
+    "season": 2010,
+    "drives": 12.1484375
+   },
+   {
+    "season": 2011,
+    "drives": 12.193359375
+   },
+   {
+    "season": 2012,
+    "drives": 12.115234375
+   },
+   {
+    "season": 2013,
+    "drives": 12.3984375
+   },
+   {
+    "season": 2014,
+    "drives": 11.875
+   },
+   {
+    "season": 2015,
+    "drives": 12.009765625
+   },
+   {
+    "season": 2016,
+    "drives": 11.705078125
+   },
+   {
+    "season": 2017,
+    "drives": 11.833984375
+   },
+   {
+    "season": 2018,
+    "drives": 11.478515625
+   },
+   {
+    "season": 2019,
+    "drives": 11.486328125
+   },
+   {
+    "season": 2020,
+    "drives": 11.109375
+   },
+   {
+    "season": 2021,
+    "drives": 11.066176470588236
+   },
+   {
+    "season": 2022,
+    "drives": 11.12730627306273
+   },
+   {
+    "season": 2023,
+    "drives": 11.288602941176471
+   },
+   {
+    "season": 2024,
+    "drives": 10.926470588235293
+   },
+   {
+    "season": 2025,
+    "drives": 10.715073529411764
+   }
+  ],
+  "point_in_time": {
+   "games": 13,
+   "max_abs_diff": 2.220446049250313e-16,
+   "all_same_starter": true
+  },
+  "pass": false,
+  "fix3_kept": true
+ },
+ "scored": false
+}
