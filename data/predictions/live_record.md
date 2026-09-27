@@ -1,8 +1,8 @@
 # Live record vs the league line
 
-Updated 2026-09-27T16:01:33+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+Updated 2026-09-27T19:06:42+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
 
-**0-0** (0 graded). Pending: 9. Ungradable (no league line recorded): 0. Late picks included: 0.
+**0-0** (0 graded). Pending: 13. Ungradable (no league line recorded): 0. Late picks included: 0.
 
 No skill claim is made: fewer than 256 graded games (pre-registered).
 
