@@ -66,6 +66,8 @@ def main(argv=None) -> int:
     c.add_argument("--week", type=int)
     pv3 = sub.add_parser("players-v3")
     pv3.add_argument("--cache", default=None)
+    pv6 = sub.add_parser("projection-v6")
+    pv6.add_argument("--cache", required=True)
     r = sub.add_parser("run")
     r.add_argument("--game", required=True)
     a = ap.parse_args(argv)
@@ -106,6 +108,14 @@ def main(argv=None) -> int:
         from engine.backtest import phase6
         r = phase6.run(config.ROOT / "docs" / "phase6_results.md")
         print(r["table"]); print("kept", r["kept"]); print(r["feature_means"])
+        return 0
+    if a.cmd == "projection-v6":
+        import json
+        from engine import config
+        from engine.backtest import projection_v6_eval as E6
+        out = E6.run(a.cache)
+        (config.ROOT / "data" / "backtests" / "projection_v6.json").write_text(json.dumps(out, indent=1, default=str))
+        print("validation pass", out["validation"]["pass"], "decision", out.get("test", {}).get("decision"))
         return 0
     if a.cmd == "players-v3":
         import json
