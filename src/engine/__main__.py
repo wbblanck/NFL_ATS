@@ -66,6 +66,8 @@ def main(argv=None) -> int:
     c.add_argument("--week", type=int)
     pv3 = sub.add_parser("players-v3")
     pv3.add_argument("--cache", default=None)
+    pe = sub.add_parser("efficiency-residual")
+    pe.add_argument("--cache", required=True)
     pv6 = sub.add_parser("projection-v6")
     pv6.add_argument("--cache", required=True)
     r = sub.add_parser("run")
@@ -108,6 +110,18 @@ def main(argv=None) -> int:
         from engine.backtest import phase6
         r = phase6.run(config.ROOT / "docs" / "phase6_results.md")
         print(r["table"]); print("kept", r["kept"]); print(r["feature_means"])
+        return 0
+    if a.cmd == "efficiency-residual":
+        import json
+        import polars as pl
+        from pathlib import Path
+        from engine import config
+        from engine.backtest import efficiency_residual as ER
+        from engine.backtest import projection_v6_eval as E6
+        metrics, _ = E6.load_metrics(a.cache)
+        out = ER.run(metrics)
+        (config.ROOT / "data" / "backtests" / "phase8_efficiency.json").write_text(json.dumps(out, indent=1, default=str))
+        print("kept", out["kept"], "confirmed_2025", out["confirmed_2025"])
         return 0
     if a.cmd == "projection-v6":
         import json
