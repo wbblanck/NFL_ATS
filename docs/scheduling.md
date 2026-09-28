@@ -6,7 +6,28 @@ one measurement so far (2026-09-25), the request was sent at 03:41:46Z, the
 job started at 03:41:54Z, and the market capture ran at 03:42:14Z. So an
 external timer calls the API, and `lock-run.yml` does the work.
 
-## How the lock run behaves
+## Waiting mode (used from week 3's Monday game on)
+
+Measured in week 3: the old immediate mode picked games 58–79 minutes before kickoff, because a run fired an hour
+early picked every game in its window at once. That discarded the last ~45 minutes of line movement, which is the
+signal the model uses.
+
+- **Change:** dispatch `lock-run.yml` with `wait: "true"` about 45 minutes before a slot's first lock.
+- **What the job does:** it finds the next lock group in its window and sleeps until **lead_minutes (5) before that
+  lock**, i.e. kickoff − 20 min. Then it captures the market, picks, commits and pushes, and repeats for the next
+  lock group until the window is empty.
+- **Result:** every game is picked about 5 minutes before its lock. That is 20 minutes before kickoff, so the
+  `minutes_to_lock` column should read about 5.
+- **If a pass fails,** the next pass retries the same game while it is still before lock. The `game_id` manual
+  fallback still works.
+- **Cost:** one job per slot, up to about 3 hours for the Sunday afternoon slot, i.e. billed Actions minutes for the
+  wait.
+
+The weekly scheduler (a Claude routine, Wednesday 14:47Z) creates one timer per slot for the whole week, including
+Thursday, Saturday and international games. Week 3's Thursday game was missed only because the scheduler was first
+set up on the Friday of that week.
+
+## How the lock run behaves (immediate mode, the original design)
 
 Each call picks every game whose lock (kickoff − 15 min) is **within the next
 25 minutes** and that has no prediction yet.

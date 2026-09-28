@@ -61,6 +61,9 @@ def main(argv=None) -> int:
     db.add_argument("--out", default=None)
     lr = sub.add_parser("lock-run")
     lr.add_argument("--window-minutes", type=int, default=25)
+    lr.add_argument("--wait", action="store_true",
+                    help="wait for the next lock group in the window and pick it LEAD minutes before its lock")
+    lr.add_argument("--lead-minutes", type=int, default=5)
     c = sub.add_parser("check-league-lines")
     c.add_argument("--season", type=int)
     c.add_argument("--week", type=int)
@@ -172,6 +175,22 @@ def main(argv=None) -> int:
     if a.cmd in ("lock-run", "run"):
         from engine.models import players_v3_live as _v3_live
         from engine.picks import final
+        run_window = getattr(a, "window_minutes", 25)
+        if a.cmd == "lock-run" and a.wait:
+            import datetime as _dt
+            import time as _time
+            _now = lambda: _dt.datetime.now(_dt.timezone.utc)
+            _end = _now() + _dt.timedelta(minutes=a.window_minutes)
+            lock, n = final.next_lock(sched, _now(), a.window_minutes, final.existing_game_ids())
+            if lock is None:
+                print("REMAINING 0")
+                return 0
+            target = lock - _dt.timedelta(minutes=a.lead_minutes)
+            wait_s = (target - _dt.timedelta(minutes=3) - _now()).total_seconds()
+            print(f"next lock {lock.isoformat()} ({n} game(s) due in window); picking at {target.isoformat()}", flush=True)
+            if wait_s > 0:
+                _time.sleep(wait_s)
+            run_window = a.lead_minutes + 1     # only the lock group that is now due
         if a.cmd == "run" and a.game in final.existing_game_ids():
             print(f"{a.game}: final prediction already exists (immutable); see data/predictions/")
             return 0
@@ -185,7 +204,11 @@ def main(argv=None) -> int:
             print("projection comparison unavailable:", e, file=sys.stderr)
             proj_games = None
 
-        out = final.run(sched, window_minutes=getattr(a, "window_minutes", 25), snapshot_id=sid,
+        if a.cmd == "lock-run" and a.wait:
+            rest = (target - _now()).total_seconds()
+            if rest > 0:
+                _time.sleep(rest)
+        out = final.run(sched, window_minutes=run_window, snapshot_id=sid,
                         game_id=getattr(a, "game", None), proj_games=proj_games,
                         v3=_v3_live.loader(sched, _all))
         for r in out:
@@ -193,6 +216,10 @@ def main(argv=None) -> int:
                   f"line {r['league_line']} market {r['market_at_lock']} drift {r['drift']} -> "
                   f"{r['pick_team']} [{r['data_status']} {r['flags']}]")
         print(f"{len(out)} final predictions written")
+        if a.cmd == "lock-run" and a.wait:
+            left_min = max((_end - _now()).total_seconds() / 60, 0)
+            _, left = final.next_lock(sched, _now(), left_min, final.existing_game_ids())
+            print(f"REMAINING {left}")
         return 0
     if a.cmd == "grade":
         from engine.picks import live

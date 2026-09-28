@@ -105,3 +105,18 @@ def test_total_falls_back_to_schedule_then_shifted(tmp_root, week3_schedule):
     (tmp_root / "data" / "predictions" / "predictions.csv").unlink()
     r2 = final.run(no_tot, now=LOCK - dt.timedelta(minutes=20), events=EVENTS, totals=[])[0]
     assert "NO_TOTAL_SHIFTED_FALLBACK" in r2["flags"] and r2["model_version"] == "phase4-shifted-empirical-argmax"
+
+
+def test_next_lock_finds_the_earliest_unpicked_lock_in_the_window():
+    import datetime as dt
+    import polars as pl
+    from engine.picks import final
+    t0 = dt.datetime(2026, 10, 4, 16, 0, tzinfo=dt.timezone.utc)
+    s = pl.DataFrame({"game_id": ["a", "b", "c", "d"],
+                      "lock_utc": [t0 + dt.timedelta(minutes=m) for m in (40, 45, 205, -5)]}) \
+        .with_columns(pl.col("lock_utc").cast(pl.Datetime("us", "UTC")))
+    lock, n = final.next_lock(s, t0, 240, set())
+    assert lock == t0 + dt.timedelta(minutes=40) and n == 3          # d already locked; a, b, c due
+    lock, n = final.next_lock(s, t0, 240, {"a"})
+    assert lock == t0 + dt.timedelta(minutes=45) and n == 2
+    assert final.next_lock(s, t0, 30, set()) == (None, 0)

@@ -193,6 +193,16 @@ def _record_projections(preds: list[dict], proj_games, now: dt.datetime, v3: dic
     store.append_rows(projections_path(), PROJ_FIELDS, rows)
 
 
+def next_lock(sched: pl.DataFrame, now: dt.datetime, window_minutes: int, done: set[str]) -> tuple[dt.datetime | None, int]:
+    """Earliest lock among games locking within `window_minutes` that have no final pick, and how many such games
+    there are. Used by the waiting lock run, which picks each lock group `lead` minutes before its lock."""
+    due = sched.filter((pl.col("lock_utc") > now) & (pl.col("lock_utc") <= now + dt.timedelta(minutes=window_minutes)),
+                       ~pl.col("game_id").is_in(list(done)))
+    if due.height == 0:
+        return None, 0
+    return due["lock_utc"].min(), due.height
+
+
 def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int = 25,
         events: list[dict] | None = None, snapshot_id: str = "", game_id: str | None = None,
         totals: list[dict] | None = None, proj_games=None, v3: dict | None = None) -> list[dict]:
