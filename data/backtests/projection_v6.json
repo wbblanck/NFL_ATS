@@ -1,0 +1,1011 @@
+{
+ "tuning": {
+  "grid": [
+   {
+    "h": 4,
+    "s": 0.3,
+    "inner_margin_ll": -4.030832270251559,
+    "n": 1296
+   },
+   {
+    "h": 4,
+    "s": 0.6,
+    "inner_margin_ll": -4.030507245151109,
+    "n": 1296
+   },
+   {
+    "h": 8,
+    "s": 0.3,
+    "inner_margin_ll": -4.030825380788485,
+    "n": 1296
+   },
+   {
+    "h": 8,
+    "s": 0.6,
+    "inner_margin_ll": -4.0304319627103595,
+    "n": 1296
+   },
+   {
+    "h": 16,
+    "s": 0.3,
+    "inner_margin_ll": -4.0310186708575495,
+    "n": 1296
+   },
+   {
+    "h": 16,
+    "s": 0.6,
+    "inner_margin_ll": -4.030454532550922,
+    "n": 1296
+   }
+  ],
+  "v1_inner_margin_ll": -4.032024349232704,
+  "h": 8,
+  "s": 0.6
+ },
+ "validation": {
+  "point_in_time": {
+   "games": 40,
+   "max_abs_diff": 0.0,
+   "all_two_rows": true,
+   "rows": [
+    {
+     "game_id": "2006_04_IND_NYJ",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2006_10_HOU_JAX",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2007_12_BAL_SD",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2007_01_PIT_CLE",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2008_09_JAX_CIN",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2008_08_KC_NYJ",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2009_09_MIA_NE",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2009_14_GB_CHI",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2010_01_MIA_BUF",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2010_04_SEA_STL",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2011_10_JAX_IND",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2011_11_BUF_MIA",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2012_01_ATL_KC",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2012_07_DAL_CAR",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2013_11_WAS_PHI",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2013_08_CAR_TB",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2014_05_TB_NO",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2014_08_PHI_ARI",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2015_17_SEA_ARI",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2015_02_TEN_CLE",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2016_03_HOU_NE",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2016_11_GB_WAS",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2017_03_CLE_IND",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2017_07_BAL_MIN",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2018_16_HOU_PHI",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2018_05_ATL_PIT",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2019_06_HOU_KC",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2019_17_TEN_HOU",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2020_04_JAX_CIN",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2020_02_KC_LAC",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2021_15_ATL_SF",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2021_06_GB_CHI",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2022_14_NYJ_BUF",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2022_03_PIT_CLE",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2023_18_TB_CAR",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2023_02_BAL_CIN",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2024_14_NYJ_MIA",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2024_08_BUF_SEA",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2025_04_TEN_HOU",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    },
+    {
+     "game_id": "2025_13_KC_DAL",
+     "max_abs_diff": 0.0,
+     "rows": 2
+    }
+   ]
+  },
+  "beta0_equals_v1": {
+   "games": 272,
+   "max_abs_diff": 0.0
+  },
+  "end_2023": {
+   "top5_offense_db": [
+    {
+     "team": "SF",
+     "off_db": 0.2587724225032048,
+     "def_db": -0.07528833714265064
+    },
+    {
+     "team": "MIA",
+     "off_db": 0.21596313334909195,
+     "def_db": 0.020544741601906176
+    },
+    {
+     "team": "DAL",
+     "off_db": 0.17432750406871592,
+     "def_db": 0.009388343111522177
+    },
+    {
+     "team": "CIN",
+     "off_db": 0.16145867522270962,
+     "def_db": 0.08366660281170463
+    },
+    {
+     "team": "GB",
+     "off_db": 0.14753603063946263,
+     "def_db": 0.05290419995981068
+    }
+   ],
+   "bottom5_offense_db": [
+    {
+     "team": "NYJ",
+     "off_db": -0.31043093055901416,
+     "def_db": -0.11856447677291462
+    },
+    {
+     "team": "CAR",
+     "off_db": -0.24876568911839786,
+     "def_db": -0.007646073608550352
+    },
+    {
+     "team": "NE",
+     "off_db": -0.21145936653665612,
+     "def_db": -0.033390475435802244
+    },
+    {
+     "team": "NYG",
+     "off_db": -0.1591063887270636,
+     "def_db": -0.05107380206501068
+    },
+    {
+     "team": "CLE",
+     "off_db": -0.15513208996347722,
+     "def_db": -0.198579241729095
+    }
+   ],
+   "top5_defense_db": [
+    {
+     "team": "BAL",
+     "off_db": 0.12039943966433739,
+     "def_db": -0.2797433776569821
+    },
+    {
+     "team": "CLE",
+     "off_db": -0.15513208996347722,
+     "def_db": -0.198579241729095
+    },
+    {
+     "team": "BUF",
+     "off_db": 0.09833810566789383,
+     "def_db": -0.12586253183276855
+    },
+    {
+     "team": "NYJ",
+     "off_db": -0.31043093055901416,
+     "def_db": -0.11856447677291462
+    },
+    {
+     "team": "KC",
+     "off_db": 0.03706152832199533,
+     "def_db": -0.09312152539780719
+    }
+   ],
+   "bottom5_defense_db": [
+    {
+     "team": "WAS",
+     "off_db": -0.13292735772024342,
+     "def_db": 0.22007701411303482
+    },
+    {
+     "team": "ATL",
+     "off_db": 0.07364505548482318,
+     "def_db": 0.1697933072940756
+    },
+    {
+     "team": "IND",
+     "off_db": 0.07286114062203079,
+     "def_db": 0.13908950105617307
+    },
+    {
+     "team": "ARI",
+     "off_db": -0.07863739281588566,
+     "def_db": 0.1334723185857034
+    },
+    {
+     "team": "SEA",
+     "off_db": 0.04905008623226263,
+     "def_db": 0.127510380332032
+    }
+   ]
+  },
+  "net_rating_vs_point_diff": {
+   "team_seasons": 512,
+   "corr": 0.8696933761800868,
+   "pass": true
+  },
+  "coverage": {
+   "team_games": 10398,
+   "share_with_play_data": 0.9998076553183305,
+   "missing": [
+    {
+     "game_id": "2011_14_OAK_GB",
+     "team": "GB"
+    },
+    {
+     "game_id": "2011_14_OAK_GB",
+     "team": "LV"
+    }
+   ],
+   "share_with_all_8_features": 1.0,
+   "pass": true
+  },
+  "filter_stats": [
+   {
+    "season": 1999,
+    "counted_plays": 33909,
+    "garbage_share": 0.30761744669556756,
+    "rz_drives_per_team_game": 2.9766536964980546,
+    "team_games_without_rz_drive": 8,
+    "team_games": 514
+   },
+   {
+    "season": 2000,
+    "counted_plays": 33650,
+    "garbage_share": 0.3384546805349183,
+    "rz_drives_per_team_game": 3.093385214007782,
+    "team_games_without_rz_drive": 17,
+    "team_games": 514
+   },
+   {
+    "season": 2001,
+    "counted_plays": 33498,
+    "garbage_share": 0.3132127291181563,
+    "rz_drives_per_team_game": 2.9899193548387095,
+    "team_games_without_rz_drive": 15,
+    "team_games": 496
+   },
+   {
+    "season": 2002,
+    "counted_plays": 35086,
+    "garbage_share": 0.3218662714473009,
+    "rz_drives_per_team_game": 3.162109375,
+    "team_games_without_rz_drive": 14,
+    "team_games": 512
+   },
+   {
+    "season": 2003,
+    "counted_plays": 34453,
+    "garbage_share": 0.31845229456329277,
+    "rz_drives_per_team_game": 2.978515625,
+    "team_games_without_rz_drive": 19,
+    "team_games": 512
+   },
+   {
+    "season": 2004,
+    "counted_plays": 34324,
+    "garbage_share": 0.30308239132968184,
+    "rz_drives_per_team_game": 3.056640625,
+    "team_games_without_rz_drive": 18,
+    "team_games": 512
+   },
+   {
+    "season": 2005,
+    "counted_plays": 34449,
+    "garbage_share": 0.3094429446428053,
+    "rz_drives_per_team_game": 3.03125,
+    "team_games_without_rz_drive": 12,
+    "team_games": 512
+   },
+   {
+    "season": 2006,
+    "counted_plays": 34048,
+    "garbage_share": 0.2956414473684211,
+    "rz_drives_per_team_game": 2.970703125,
+    "team_games_without_rz_drive": 21,
+    "team_games": 512
+   },
+   {
+    "season": 2007,
+    "counted_plays": 34032,
+    "garbage_share": 0.31861189468735307,
+    "rz_drives_per_team_game": 3.02734375,
+    "team_games_without_rz_drive": 20,
+    "team_games": 512
+   },
+   {
+    "season": 2008,
+    "counted_plays": 33670,
+    "garbage_share": 0.3061182061182061,
+    "rz_drives_per_team_game": 3.142578125,
+    "team_games_without_rz_drive": 14,
+    "team_games": 512
+   },
+   {
+    "season": 2009,
+    "counted_plays": 34322,
+    "garbage_share": 0.3276906940155003,
+    "rz_drives_per_team_game": 3.103515625,
+    "team_games_without_rz_drive": 17,
+    "team_games": 512
+   },
+   {
+    "season": 2010,
+    "counted_plays": 34523,
+    "garbage_share": 0.31066245691278277,
+    "rz_drives_per_team_game": 3.07421875,
+    "team_games_without_rz_drive": 19,
+    "team_games": 512
+   },
+   {
+    "season": 2011,
+    "counted_plays": 34896,
+    "garbage_share": 0.3204951856946355,
+    "rz_drives_per_team_game": 3.14453125,
+    "team_games_without_rz_drive": 12,
+    "team_games": 512
+   },
+   {
+    "season": 2012,
+    "counted_plays": 35330,
+    "garbage_share": 0.32018114916501556,
+    "rz_drives_per_team_game": 3.09765625,
+    "team_games_without_rz_drive": 9,
+    "team_games": 512
+   },
+   {
+    "season": 2013,
+    "counted_plays": 35561,
+    "garbage_share": 0.3067124096622705,
+    "rz_drives_per_team_game": 3.171875,
+    "team_games_without_rz_drive": 9,
+    "team_games": 512
+   },
+   {
+    "season": 2014,
+    "counted_plays": 35278,
+    "garbage_share": 0.32178694937354724,
+    "rz_drives_per_team_game": 3.158203125,
+    "team_games_without_rz_drive": 8,
+    "team_games": 512
+   },
+   {
+    "season": 2015,
+    "counted_plays": 35573,
+    "garbage_share": 0.31254040986141174,
+    "rz_drives_per_team_game": 3.078125,
+    "team_games_without_rz_drive": 12,
+    "team_games": 512
+   },
+   {
+    "season": 2016,
+    "counted_plays": 35281,
+    "garbage_share": 0.31444686941980104,
+    "rz_drives_per_team_game": 3.259765625,
+    "team_games_without_rz_drive": 14,
+    "team_games": 512
+   },
+   {
+    "season": 2017,
+    "counted_plays": 34967,
+    "garbage_share": 0.3088626419195241,
+    "rz_drives_per_team_game": 2.99609375,
+    "team_games_without_rz_drive": 19,
+    "team_games": 512
+   },
+   {
+    "season": 2018,
+    "counted_plays": 34745,
+    "garbage_share": 0.3307814073967477,
+    "rz_drives_per_team_game": 3.21875,
+    "team_games_without_rz_drive": 14,
+    "team_games": 512
+   },
+   {
+    "season": 2019,
+    "counted_plays": 35083,
+    "garbage_share": 0.3190719151725907,
+    "rz_drives_per_team_game": 3.1796875,
+    "team_games_without_rz_drive": 11,
+    "team_games": 512
+   },
+   {
+    "season": 2020,
+    "counted_plays": 35462,
+    "garbage_share": 0.32409339574756074,
+    "rz_drives_per_team_game": 3.421875,
+    "team_games_without_rz_drive": 8,
+    "team_games": 512
+   },
+   {
+    "season": 2021,
+    "counted_plays": 37150,
+    "garbage_share": 0.3317362045760431,
+    "rz_drives_per_team_game": 3.306985294117647,
+    "team_games_without_rz_drive": 14,
+    "team_games": 544
+   },
+   {
+    "season": 2022,
+    "counted_plays": 36742,
+    "garbage_share": 0.29432257362146863,
+    "rz_drives_per_team_game": 3.1125461254612548,
+    "team_games_without_rz_drive": 7,
+    "team_games": 542
+   },
+   {
+    "season": 2023,
+    "counted_plays": 36921,
+    "garbage_share": 0.3117196175618212,
+    "rz_drives_per_team_game": 3.1121323529411766,
+    "team_games_without_rz_drive": 16,
+    "team_games": 544
+   },
+   {
+    "season": 2024,
+    "counted_plays": 36576,
+    "garbage_share": 0.3128827646544182,
+    "rz_drives_per_team_game": 3.261029411764706,
+    "team_games_without_rz_drive": 10,
+    "team_games": 544
+   },
+   {
+    "season": 2025,
+    "counted_plays": 36025,
+    "garbage_share": 0.30764746703678003,
+    "rz_drives_per_team_game": 3.2003676470588234,
+    "team_games_without_rz_drive": 10,
+    "team_games": 544
+   }
+  ],
+  "pass": true
+ },
+ "test": {
+  "n_train_team_games": 8224,
+  "beta": [
+   {
+    "feature": "intercept",
+    "td_b": 0.010412284412924121,
+    "fg_b": -0.0019965941363309916,
+    "td_se": 0.007155403191372305,
+    "fg_se": 0.00874492556108901
+   },
+   {
+    "feature": "off_db",
+    "td_b": 0.04860204579281189,
+    "fg_b": -0.29204402196822543,
+    "td_se": 0.113562397134705,
+    "fg_se": 0.14091736878775024
+   },
+   {
+    "feature": "off_rush",
+    "td_b": -0.012752515810121844,
+    "fg_b": -0.38759889151824345,
+    "td_se": 0.15553551030683993,
+    "fg_se": 0.1949988675483617
+   },
+   {
+    "feature": "off_sr",
+    "td_b": 0.9177836438598866,
+    "fg_b": 0.2525042469392639,
+    "td_se": 0.517141985206811,
+    "fg_se": 0.6450582913169164
+   },
+   {
+    "feature": "off_rz",
+    "td_b": -0.700717841703115,
+    "fg_b": 0.9974310912801054,
+    "td_se": 0.12878297921979975,
+    "fg_se": 0.15907778687678858
+   },
+   {
+    "feature": "def_db",
+    "td_b": -0.15265801428901277,
+    "fg_b": -0.2356445948756239,
+    "td_se": 0.11324118489549047,
+    "fg_se": 0.14182492415885056
+   },
+   {
+    "feature": "def_rush",
+    "td_b": -0.04567996260529373,
+    "fg_b": -0.020077901295545847,
+    "td_se": 0.16096714462483677,
+    "fg_se": 0.20187469080600498
+   },
+   {
+    "feature": "def_sr",
+    "td_b": -0.08522442160942395,
+    "fg_b": 0.03843774535961711,
+    "td_se": 0.5465418689299546,
+    "fg_se": 0.684264545449542
+   },
+   {
+    "feature": "def_rz",
+    "td_b": -0.7808926567901582,
+    "fg_b": 1.0633498718153207,
+    "td_se": 0.1309179446362041,
+    "fg_se": 0.16125134746326153
+   }
+  ],
+  "test_a": {
+   "n_games": 815,
+   "margin_ll": {
+    "v6": {
+     "mean": -3.997621862454106,
+     "se": 0.019194159936009546,
+     "n": 815
+    },
+    "v1": {
+     "mean": -3.996442129904054,
+     "se": 0.019259014076634176,
+     "n": 815
+    },
+    "v3": {
+     "mean": -3.9899711330214016,
+     "se": 0.018844096783854163,
+     "n": 815
+    },
+    "v6_minus_v1": {
+     "mean": -0.0011797325500517675,
+     "se": 0.0022288079473850087,
+     "n": 815
+    },
+    "v6_minus_v3": {
+     "mean": -0.00765072943270395,
+     "se": 0.004438765422406092,
+     "n": 815
+    }
+   },
+   "mae": {
+    "v6": {
+     "mean": 9.910967637678764,
+     "se": 0.28932298860685823,
+     "n": 815
+    },
+    "v1": {
+     "mean": 9.924793473272416,
+     "se": 0.2876807623087434,
+     "n": 815
+    },
+    "v3": {
+     "mean": 9.921534727223262,
+     "se": 0.2786555838309947,
+     "n": 815
+    },
+    "market_close": {
+     "mean": 9.41840490797546,
+     "se": 0.28215311908361673,
+     "n": 815
+    },
+    "v6_minus_v1": {
+     "mean": -0.013825835593650034,
+     "se": 0.03425553342192806,
+     "n": 815
+    },
+    "v6_minus_v3": {
+     "mean": -0.010567089544497104,
+     "se": 0.07080195803679416,
+     "n": 815
+    },
+    "v6_minus_market": {
+     "mean": 0.49256272970330484,
+     "se": 0.11148242981594193,
+     "n": 815
+    }
+   },
+   "win_log_loss": {
+    "v6": 0.6436931980566163,
+    "v1": 0.643375586274816,
+    "v3": 0.6354470953852164,
+    "market_close": 0.6079144704352395,
+    "n": 813
+   },
+   "ats_close": {
+    "v6": {
+     "W": 405,
+     "L": 382,
+     "N": 787,
+     "win_rate": 0.5146124523506989,
+     "se": 0.01781546221892873,
+     "log_loss": 0.708075690218385
+    },
+    "v1": {
+     "W": 403,
+     "L": 384,
+     "N": 787,
+     "win_rate": 0.5120711562897078,
+     "se": 0.01781788028704718,
+     "log_loss": 0.7068794174281039
+    },
+    "v3": {
+     "W": 393,
+     "L": 394,
+     "N": 787,
+     "win_rate": 0.4993646759847522,
+     "se": 0.017823060756891107,
+     "log_loss": 0.7069725167142662
+    },
+    "paired_v6_vs_v1": {
+     "a_only": 33,
+     "b_only": 31,
+     "z": 0.25
+    },
+    "paired_v6_vs_v3": {
+     "a_only": 76,
+     "b_only": 64,
+     "z": 1.01418510567422
+    }
+   },
+   "diag": {
+    "corr_v6_minus_close_vs_margin_minus_close": -0.019707554205208994,
+    "disagree_3plus": {
+     "games": 291,
+     "v6_side_covers": 143,
+     "rate": 0.49140893470790376,
+     "se": 0.029306192160689654
+    }
+   },
+   "games_in_block": 815,
+   "games_scored": 815
+  },
+  "test_b": {
+   "n_games": 272,
+   "margin_ll": {
+    "v6": {
+     "mean": -3.9757634304259635,
+     "se": 0.029860068591430755,
+     "n": 272
+    },
+    "v1": {
+     "mean": -3.9762408451393676,
+     "se": 0.030396067443772525,
+     "n": 272
+    },
+    "v3": {
+     "mean": -3.960654039871382,
+     "se": 0.02863318400522503,
+     "n": 272
+    },
+    "v6_minus_v1": {
+     "mean": 0.00047741471340489517,
+     "se": 0.0039821473413130404,
+     "n": 272
+    },
+    "v6_minus_v3": {
+     "mean": -0.015109390554580363,
+     "se": 0.008324167690361208,
+     "n": 272
+    }
+   },
+   "mae": {
+    "v6": {
+     "mean": 10.19605736678871,
+     "se": 0.4768769226069392,
+     "n": 272
+    },
+    "v1": {
+     "mean": 10.154973392715158,
+     "se": 0.4810314046050278,
+     "n": 272
+    },
+    "v3": {
+     "mean": 9.907376534648128,
+     "se": 0.4648546743584855,
+     "n": 272
+    },
+    "market_close": {
+     "mean": 9.722426470588236,
+     "se": 0.4548071445408889,
+     "n": 272
+    },
+    "v6_minus_v1": {
+     "mean": 0.04108397407355052,
+     "se": 0.0702905839476963,
+     "n": 272
+    },
+    "v6_minus_v3": {
+     "mean": 0.2886808321405825,
+     "se": 0.1439287446476177,
+     "n": 272
+    },
+    "v6_minus_market": {
+     "mean": 0.47363089620047477,
+     "se": 0.18395890460972272,
+     "n": 272
+    }
+   },
+   "win_log_loss": {
+    "v6": 0.6385088563041,
+    "v1": 0.6335277827335666,
+    "v3": 0.6203023217280977,
+    "market_close": 0.609856384309574,
+    "n": 271
+   },
+   "ats_close": {
+    "v6": {
+     "W": 132,
+     "L": 139,
+     "N": 271,
+     "win_rate": 0.4870848708487085,
+     "se": 0.030362702858394847,
+     "log_loss": 0.7116122339687458
+    },
+    "v1": {
+     "W": 134,
+     "L": 137,
+     "N": 271,
+     "win_rate": 0.4944649446494465,
+     "se": 0.030370975849164004,
+     "log_loss": 0.7108291123509964
+    },
+    "v3": {
+     "W": 139,
+     "L": 132,
+     "N": 271,
+     "win_rate": 0.5129151291512916,
+     "se": 0.03036270285839485,
+     "log_loss": 0.6992102623132928
+    },
+    "paired_v6_vs_v1": {
+     "a_only": 17,
+     "b_only": 19,
+     "z": -0.3333333333333333
+    },
+    "paired_v6_vs_v3": {
+     "a_only": 33,
+     "b_only": 40,
+     "z": -0.819288030372914
+    }
+   },
+   "diag": {
+    "corr_v6_minus_close_vs_margin_minus_close": -0.06433938522525379,
+    "disagree_3plus": {
+     "games": 77,
+     "v6_side_covers": 32,
+     "rate": 0.4155844155844156,
+     "se": 0.056162335336866015
+    }
+   },
+   "games_in_block": 272,
+   "games_scored": 272
+  },
+  "test_b_cbs_open": {
+   "half_point_opens": {
+    "v6": {
+     "W": 101,
+     "L": 109,
+     "N": 210,
+     "win_rate": 0.48095238095238096,
+     "se": 0.03447823248484654,
+     "log_loss": 0.7183751713148397
+    },
+    "v3": {
+     "W": 104,
+     "L": 106,
+     "N": 210,
+     "win_rate": 0.49523809523809526,
+     "se": 0.03450171315712271,
+     "log_loss": 0.7049665524420442
+    },
+    "v1": {
+     "W": 107,
+     "L": 103,
+     "N": 210,
+     "win_rate": 0.5095238095238095,
+     "se": 0.03449701830125214,
+     "log_loss": 0.718870837606507
+    },
+    "live": {
+     "W": 108,
+     "L": 102,
+     "N": 210,
+     "win_rate": 0.5142857142857142,
+     "se": 0.034489192121269566,
+     "log_loss": 0.6902867104156023
+    },
+    "paired_v6_vs_live": {
+     "a_only": 43,
+     "b_only": 50,
+     "z": -0.7258661863112977
+    },
+    "paired_v6_vs_v3": {
+     "a_only": 21,
+     "b_only": 24,
+     "z": -0.4472135954999579
+    }
+   },
+   "all_opens": {
+    "v6": {
+     "W": 135,
+     "L": 132,
+     "N": 267,
+     "win_rate": 0.5056179775280899,
+     "se": 0.030597571464210483,
+     "log_loss": 0.7091474321125263
+    },
+    "v3": {
+     "W": 138,
+     "L": 129,
+     "N": 267,
+     "win_rate": 0.5168539325842697,
+     "se": 0.030582114240963774,
+     "log_loss": 0.6971727452158424
+    },
+    "v1": {
+     "W": 143,
+     "L": 124,
+     "N": 267,
+     "win_rate": 0.5355805243445693,
+     "se": 0.03052192840296671,
+     "log_loss": 0.7078144442388224
+    },
+    "live": {
+     "W": 130,
+     "L": 137,
+     "N": 267,
+     "win_rate": 0.4868913857677903,
+     "se": 0.03058898508226389,
+     "log_loss": 0.6947819636431631
+    },
+    "paired_v6_vs_live": {
+     "a_only": 62,
+     "b_only": 57,
+     "z": 0.4583492485141057
+    },
+    "paired_v6_vs_v3": {
+     "a_only": 29,
+     "b_only": 32,
+     "z": -0.3841106397986879
+    }
+   }
+  },
+  "decision": {
+   "replaces_v3_as_tracked": false
+  }
+ }
+}

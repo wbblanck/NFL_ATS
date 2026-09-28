@@ -11,6 +11,12 @@ on:
       game_id:
         description: 'Manual fallback: pick this one game now (optional)'
         default: ''
+      wait:
+        description: 'Wait and pick each lock group lead_minutes before its lock (true/false)'
+        default: 'false'
+      lead_minutes:
+        description: 'With wait: minutes before lock (kickoff - 15) to capture the market and pick'
+        default: '5'
 
 permissions:
   contents: write
@@ -22,7 +28,7 @@ concurrency:
 jobs:
   pick:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -34,8 +40,24 @@ jobs:
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
         run: |
+          git config user.name "nfl-ats-engine"
+          git config user.email "nfl-ats-engine@users.noreply.github.com"
+          commit() {
+            git add data/predictions data/lines
+            git commit -m "picks: lock run $(date -u +%Y-%m-%dT%H:%MZ)" || return 0
+            for i in 1 2 3 4; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && return 0; sleep $((i*3)); done
+            return 1
+          }
           if [ -n "${{ inputs.game_id }}" ]; then
             python -m engine run --game "${{ inputs.game_id }}"
+          elif [ "${{ inputs.wait }}" = "true" ]; then
+            # One lock group per pass: wait, pick at lock - lead, commit, repeat until the window is empty.
+            for pass in 1 2 3 4 5 6 7 8; do
+              python -m engine lock-run --wait --window-minutes "${{ inputs.window_minutes || '25' }}" \
+                --lead-minutes "${{ inputs.lead_minutes || '5' }}" | tee pass.log || echo "pass $pass failed; retrying"
+              commit
+              grep -q "^REMAINING 0" pass.log && break
+            done
           else
             python -m engine lock-run --window-minutes "${{ inputs.window_minutes || '25' }}"
           fi
