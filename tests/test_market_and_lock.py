@@ -63,13 +63,38 @@ def test_alternate_spreads_keep_main_line():
 def test_historical_snapshot_archived_at_snapshot_time(tmp_root, week3_schedule):
     """Backfilled Tuesday snapshots keep the time the prices describe, are marked 'hist-', and are usable by
     market_at_lock only from that time on (no look-ahead)."""
-    ts = "2026-09-22T16:00:00Z"
+    ts = "2026-09-24T20:00:00Z"                      # after every book update in the fixture (latest 19:42:52Z)
     rows = market.capture_historical(week3_schedule, ts, events=EVENTS, snapshot_ts=ts)
-    assert rows and all(r["capture_id"] == "hist-20260922T160000Z" for r in rows)
-    assert all(r["captured_at"].startswith("2026-09-22T16:00:00") for r in rows)
+    assert rows and all(r["capture_id"] == "hist-20260924T200000Z" for r in rows)
+    assert all(r["captured_at"].startswith("2026-09-24T20:00:00") for r in rows)
     assert all(r["reason"].startswith("historical snapshot, retrieved") for r in rows)
     from engine import config
     caps = store.read_rows(config.path("lines") / "market_captures.csv")
-    before = market.market_at_lock(caps, "2026_03_ATL_GB", dt.datetime(2026, 9, 22, 15, 59, tzinfo=UTC))
-    after = market.market_at_lock(caps, "2026_03_ATL_GB", dt.datetime(2026, 9, 22, 16, 1, tzinfo=UTC))
+    before = market.market_at_lock(caps, "2026_03_ATL_GB", dt.datetime(2026, 9, 24, 19, 59, tzinfo=UTC))
+    after = market.market_at_lock(caps, "2026_03_ATL_GB", dt.datetime(2026, 9, 24, 20, 1, tzinfo=UTC))
     assert before["median"] is None and after["median"] is not None
+
+
+def test_historical_response_shapes():
+    ev = [{"id": "x"}]
+    assert market.unwrap_historical(ev, "2026-09-28T12:00:00Z") == ("2026-09-28T12:00:00Z", ev)     # Parlay: bare list
+    assert market.unwrap_historical({"timestamp": "2026-09-28T11:55:00Z", "data": ev}, "t") == ("2026-09-28T11:55:00Z", ev)
+    import pytest
+    with pytest.raises(ValueError):
+        market.unwrap_historical({"detail": {"error": "HISTORICAL_LIMIT"}}, "t")
+
+
+def test_historical_rejects_updates_after_the_snapshot(tmp_root, week3_schedule):
+    """A 'historical' response carrying later prices must not be archived as that moment."""
+    import pytest
+    with pytest.raises(ValueError, match="not a snapshot"):
+        market.capture_historical(week3_schedule, "2026-09-22T16:00:00Z", events=EVENTS, snapshot_ts="2026-09-22T16:00:00Z")
+    ts = dt.datetime(2026, 9, 24, 19, 30, tzinfo=UTC)           # between the fixture's first and last updates
+    kept_ev, kept, dropped = market.only_before(EVENTS, ts)
+    assert kept > 0 and dropped > 0
+    for e in kept_ev:
+        for b in e["bookmakers"]:
+            assert dt.datetime.fromisoformat(b["last_update"].replace("Z", "+00:00")) <= ts + dt.timedelta(minutes=2)
+    rows = market.capture_historical(week3_schedule, "2026-09-24T19:30:00Z", events=EVENTS,
+                                     snapshot_ts="2026-09-24T19:30:00Z")
+    assert rows and "dropped for updates after the snapshot" in rows[0]["reason"]
