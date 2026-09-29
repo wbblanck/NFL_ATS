@@ -16,6 +16,14 @@ MIN_GAMES_FOR_CLAIM = 256
 
 
 def grade(sched: pl.DataFrame) -> dict:
+    """Grade every final prediction and rewrite data/predictions/live_record.md. Returns the summary."""
+    summary, rows = compute(sched)
+    _write(rows, summary)
+    return summary
+
+
+def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
+    """The graded summary and one row per graded game, with no file written (the dashboard reads this)."""
     preds = store.read_rows(final.predictions_path())
     ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
     scores = {r["game_id"]: r for r in sched.filter(pl.col("result").is_not_null()).select(
@@ -76,8 +84,7 @@ def grade(sched: pl.DataFrame) -> dict:
             r[f"proj_{version}"] = f"{pj['proj_pick']} {'W' if won else 'L'}"
         summary["projection_models"][version] = {"W": w_, "L": l_, "excluded_inj_status_missing": flagged}
     summary["projection_model"] = summary["projection_models"].get("proj-poisson-v1", {"W": 0, "L": 0})
-    _write(rows, summary)
-    return summary
+    return summary, rows
 
 
 def _write(rows, s):

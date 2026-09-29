@@ -85,7 +85,8 @@ def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None =
     for g in wk.to_dicts():
         gid = g["game_id"]
         base = {"game_id": gid, "away": g["away_team"], "home": g["home_team"],
-                "kickoff_utc": g["kickoff_utc"].isoformat(), "league_line": ll.get(gid)}
+                "kickoff_utc": g["kickoff_utc"].isoformat(), "league_line": ll.get(gid),
+                "away_score": g.get("away_score"), "home_score": g.get("home_score")}
         got = projs.get(gid)
         if got is not None:
             pr, version, pflags = got
