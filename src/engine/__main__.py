@@ -247,11 +247,13 @@ def main(argv=None) -> int:
         rows = preview.build(sched, a.season, a.week, proj_games=_pg,
                              v3=_v3_live.loader(sched, _all if _pg is not None else None))
         try:
-            lv = live.grade(sched)
+            lv, graded = live.compute(sched)         # read-only: does not rewrite live_record.md
+            lv["claim_at"] = live.MIN_GAMES_FOR_CLAIM
+            results = {r["game_id"]: r for r in graded}
         except Exception:
-            lv = {"N": 0, "W": 0, "L": 0}
+            lv, results = {"N": 0, "W": 0, "L": 0}, {}
         out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
-        open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc)))
+        open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results))
         print(out)
         return 0
     if a.cmd == "check-league-lines":
