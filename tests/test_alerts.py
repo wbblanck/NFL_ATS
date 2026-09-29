@@ -86,3 +86,30 @@ def test_missing_pick_warning_is_sent_once_and_only_close_to_lock():
 def test_label_falls_back_to_a_count_across_days():
     m = A.message([_p("a", "A", "B", "A", 1.5, _k(27, 13)), _p("b", "C", "D", "C", 1.5, _k(28, 20, 15))])
     assert m.startswith("Picks locked (2 games): ")
+
+
+def test_send_posts_the_text_to_the_topic_and_never_raises():
+    seen = {}
+
+    class R:
+        status = 200
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+
+    def ok(req, timeout):
+        seen.update(url=req.full_url, body=req.data, title=req.get_header("Title"))
+        return R()
+
+    assert A.send("Picks locked: LAC +7.5", "topic123", opener=ok) is True
+    assert seen == {"url": "https://ntfy.sh/topic123", "body": b"Picks locked: LAC +7.5", "title": "NFL picks"}
+
+    def boom(req, timeout):
+        raise OSError("network down")
+
+    assert A.send("x", "t", opener=boom) is False
+    assert A.send("x", "", opener=ok) is False and A.send("", "t", opener=ok) is False
+
+
+def test_send_uses_env_topic_and_skips_without_one(monkeypatch):
+    monkeypatch.delenv("NTFY_TOPIC", raising=False)
+    assert A.send("x", opener=lambda *a, **k: 1 / 0) is False           # no topic: nothing is attempted

@@ -1,7 +1,8 @@
 """Phone alerts for locked picks.
 
-The lock run happens on GitHub and cannot push to a phone, so the Claude session that starts each slot's timer
-watches origin/main for new pick rows and sends each alert line it prints (`python -m engine alert --watch`).
+The lock run (a GitHub Action) sends each group's alert line to ntfy right after it commits the picks
+(`python -m engine alert --local --send --since <ISO>`; topic in the NTFY_TOPIC secret). The older route, a Claude
+session watching origin/main (`alert --watch`), cannot reach a phone and is kept only for printing.
 Messages are one line of at most 200 characters (the notification limit), listing each pick with the spread it
 carries on the pool line, e.g. 'Picks locked (Sun 1:00 PM): LAC +7.5 · CLE +2.5 · NYJ +6.5'.
 """
@@ -10,7 +11,9 @@ from __future__ import annotations
 import csv
 import datetime as dt
 import io
+import os
 import subprocess
+import urllib.request
 
 import polars as pl
 
@@ -112,3 +115,28 @@ def due_games(sched: pl.DataFrame, now: dt.datetime, window_minutes: int, done: 
     d = sched.filter((pl.col("lock_utc") > now) & (pl.col("lock_utc") <= now + dt.timedelta(minutes=window_minutes)),
                      ~pl.col("game_id").is_in(list(done)))
     return d.select("game_id", "home_team", "away_team", "lock_utc").sort("lock_utc").to_dicts()
+
+
+NTFY_URL = "https://ntfy.sh/"
+
+
+def send(text: str, topic: str | None = None, opener=urllib.request.urlopen) -> bool:
+    """Post `text` to the ntfy topic (env NTFY_TOPIC when not given). False when there is no topic, no text or the
+    post fails (an alert must never fail a lock run)."""
+    topic = (topic if topic is not None else os.environ.get("NTFY_TOPIC", "")).strip()
+    if not topic or not text:
+        return False
+    req = urllib.request.Request(NTFY_URL + topic, data=text.encode("utf-8"), method="POST",
+                                 headers={"Title": "NFL picks", "Tags": "football", "Priority": "high"})
+    try:
+        with opener(req, timeout=20) as r:
+            return 200 <= r.status < 300
+    except Exception:
+        return False
+
+
+def local_predictions() -> list[dict]:
+    """predictions.csv from the working tree (the lock run has just written it)."""
+    from engine.data import store
+    from engine.picks import final
+    return store.read_rows(final.predictions_path())

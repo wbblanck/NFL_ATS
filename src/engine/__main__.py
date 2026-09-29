@@ -61,6 +61,8 @@ def main(argv=None) -> int:
     db.add_argument("--out", default=None)
     al = sub.add_parser("alert", help="print phone-alert lines for locked picks (see docs/scheduling.md)")
     al.add_argument("--since", default=None, help="ISO time; only picks created after it (default: last 30 min)")
+    al.add_argument("--local", action="store_true", help="read predictions.csv from the working tree, not origin/main")
+    al.add_argument("--send", action="store_true", help="post the alert to ntfy (topic in env NTFY_TOPIC)")
     al.add_argument("--watch", action="store_true", help="poll origin/main and print an ALERT line per new pick group")
     al.add_argument("--window-minutes", type=int, default=240, help="with --watch: games locking within this window")
     al.add_argument("--timeout-minutes", type=int, default=240)
@@ -185,7 +187,10 @@ def main(argv=None) -> int:
         now = _dt.datetime.now(_dt.timezone.utc)
         since = a.since or (now - _dt.timedelta(minutes=30)).isoformat()
         if not a.watch:
-            print(alerts.message(alerts.new_rows(alerts.origin_predictions(), since)))
+            text = alerts.message(alerts.new_rows(alerts.local_predictions() if a.local else alerts.origin_predictions(), since))
+            print(text)
+            if a.send and text:
+                print("ntfy: " + ("sent" if alerts.send(text) else "not sent"))
             return 0
         preds = alerts.origin_predictions()
         done = {p["game_id"] for p in preds if not p.get("supersedes")}

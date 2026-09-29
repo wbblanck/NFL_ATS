@@ -27,23 +27,21 @@ The weekly scheduler (a Claude routine, Wednesday 14:47Z) creates one timer per 
 Thursday, Saturday and international games. Week 3's Thursday game was missed only because the scheduler was first
 set up on the Friday of that week.
 
-## Pick alerts (built, not delivering to a phone yet)
+## Pick alerts (ntfy)
 
-`python -m engine alert` produces the alert text. Phone delivery is **not set up**.
+`lock-run.yml` sends one alert per group of picks to the ntfy topic in the `NTFY_TOPIC` GitHub secret, right after
+it commits them. It does not depend on any Claude session. Without the secret it does nothing.
 
-- **What exists:** `alert --since <ISO time>` prints one line for the picks created since then. `alert --watch`
-  polls `origin/main` (fetch + `git show`; it never touches the working tree or branch) and prints one
-  `ALERT <text>` line per new group of picks, a one-time `ALERT PICK MISSING: ...` line when a game is within 3
-  minutes of its lock with no pick, and `DONE` when every game in its window has a pick.
+- **Setup:** install the ntfy app, subscribe to the topic, and add the same topic as a repository secret named
+  `NTFY_TOPIC`. Run the **Phone alert test** workflow once to confirm a message arrives. The topic is the only
+  protection on ntfy.sh (anyone who knows it can read the alerts), so it is a random string and never committed.
+- **Command:** `python -m engine alert --local --send --since <ISO time>` prints the line for the picks created
+  since then in the working tree and posts it. A failed post is reported but never fails the lock run.
 - **The text:** one line of at most 200 characters listing each pick with its spread on the pool line, for example
   `Picks locked (Sun 1:00 PM): CLE +2.5 · PIT +3.5 · JAX −2.5 · SEA −7.5`. A pick made after its lock ends with
   `LATE`. If more picks do not fit, it ends with `· +N more`.
-- **Why nothing reaches a phone:** the Claude session's notification tool reaches a phone only through a Remote
-  Control connection to the user's own computer. The scheduler session runs in the cloud, and a test on 2026-09-29
-  did not arrive. The weekly timers therefore do not start the watcher.
-- **The route that would work:** send the `alert` line from `lock-run.yml` right after each commit to a push
-  service (ntfy, Pushover or a Telegram bot), with the topic or token in a GitHub secret. It would not depend on
-  any Claude session. The choice of service is the repo owner's, since the picks would pass through it.
+- **Not covered:** the "PICK MISSING" warning exists only in `alert --watch` (prints from a Claude session,
+  which cannot reach a phone). A game that gets no pick sends nothing.
 
 ## How the lock run behaves (immediate mode, the original design)
 
