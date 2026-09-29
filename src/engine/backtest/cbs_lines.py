@@ -158,7 +158,16 @@ def _write(res: dict, path) -> None:
             L.append(f"| {c['source']} | {c['snapshot_utc']} | {c['games']} | {c['matched']} | {c['exact']} | "
                      f"{c['hook_fav']} | {c['hook_dog']} | {c['rate']:.0%} |")
         L.append("")
-    L += ["## Q3: what the half point is worth at each key number (2006–2025, whole-number closing lines)", "",
+    L += ["## Data limits", "",
+          "- The market provider's historical endpoint cannot fill in snapshots before the first Tuesday capture. "
+          "Tested 2026-09-29: it returned only games that had already kicked off, with book updates days older than "
+          "the requested time and in-game or alternate lines, and no upcoming games. Those rows were removed.",
+          "- So Q1 uses only live captures. Before-posting coverage comes from scheduled live captures on Monday "
+          "and Tuesday morning.",
+          "- A whole-number book line counts as matched when either half-point rounding gives the pool line, so "
+          "'Rate' is generous. 'Exact' is the stricter measure. Exchanges (Novig, Fliff) post only half-points, so "
+          "they can only match exactly or miss.", "",
+          "## Q3: what the half point is worth at each key number (2006–2025, whole-number closing lines)", "",
           "| Line | Games | P(favorite wins by exactly the line) | SE | Cover chance of the side the half point favors |",
           "|---|---|---|---|---|"]
     for r in res["q3"]:
