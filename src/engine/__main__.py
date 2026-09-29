@@ -59,6 +59,12 @@ def main(argv=None) -> int:
     db.add_argument("--season", type=int, required=True)
     db.add_argument("--week", type=int, required=True)
     db.add_argument("--out", default=None)
+    al = sub.add_parser("alert", help="print phone-alert lines for locked picks (see docs/scheduling.md)")
+    al.add_argument("--since", default=None, help="ISO time; only picks created after it (default: last 30 min)")
+    al.add_argument("--watch", action="store_true", help="poll origin/main and print an ALERT line per new pick group")
+    al.add_argument("--window-minutes", type=int, default=240, help="with --watch: games locking within this window")
+    al.add_argument("--timeout-minutes", type=int, default=240)
+    al.add_argument("--poll-seconds", type=int, default=30)
     lr = sub.add_parser("lock-run")
     lr.add_argument("--window-minutes", type=int, default=25)
     lr.add_argument("--wait", action="store_true",
@@ -172,6 +178,32 @@ def main(argv=None) -> int:
         return 0
 
     sched, sid = nflverse.regular_season_schedule(save=False)
+    if a.cmd == "alert":
+        import datetime as _dt
+        import time as _time
+        from engine.picks import alerts
+        now = _dt.datetime.now(_dt.timezone.utc)
+        since = a.since or (now - _dt.timedelta(minutes=30)).isoformat()
+        if not a.watch:
+            print(alerts.message(alerts.new_rows(alerts.origin_predictions(), since)))
+            return 0
+        preds = alerts.origin_predictions()
+        done = {p["game_id"] for p in preds if not p.get("supersedes")}
+        due = alerts.due_games(sched, now, a.window_minutes, done)
+        print(f"WATCHING {len(due)} game(s): " + ", ".join(f"{g['away_team']}@{g['home_team']}" for g in due), flush=True)
+        warned: set[str] = set()
+        deadline = _time.time() + a.timeout_minutes * 60
+        while due and _time.time() < deadline:
+            lines, since, finished = alerts.watch_step(preds, since, due, warned, _dt.datetime.now(_dt.timezone.utc))
+            for ln in lines:
+                print("ALERT " + ln, flush=True)
+            if finished:
+                print("DONE all picks locked", flush=True)
+                return 0
+            _time.sleep(a.poll_seconds)
+            preds = alerts.origin_predictions()
+        print("DONE " + ("nothing to watch" if not due else "timed out"), flush=True)
+        return 0
     if a.cmd in ("lock-run", "run"):
         from engine.models import players_v3_live as _v3_live
         from engine.picks import final

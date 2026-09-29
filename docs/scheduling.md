@@ -27,6 +27,26 @@ The weekly scheduler (a Claude routine, Wednesday 14:47Z) creates one timer per 
 Thursday, Saturday and international games. Week 3's Thursday game was missed only because the scheduler was first
 set up on the Friday of that week.
 
+## Pick alerts (phone notifications)
+
+GitHub cannot push to a phone, so the Claude session that starts each slot's timer does it:
+
+1. The timer wakes the session about 45 minutes before the slot's first lock. It triggers `lock-run.yml` in waiting
+   mode and starts `python -m engine alert --watch` as a persistent monitor.
+2. The watcher fetches `origin/main` every 30 seconds (it never touches the working tree or branch) and prints one
+   `ALERT <text>` line per new group of picks. The session sends that text with `PushNotification`.
+3. The text is one line of at most 200 characters, listing each pick with its spread on the pool line, for example
+   `Picks locked (Sun 1:00 PM): CLE +2.5 · PIT +3.5 · JAX −2.5 · SEA −7.5`. A pick made after its lock ends with
+   `LATE`. If more picks do not fit, it ends with `· +N more`.
+4. If a game is within 3 minutes of its lock with no pick, the watcher prints `ALERT PICK MISSING: ...` once, and
+   the session runs the `game_id` fallback for that game.
+5. The watcher exits with `DONE` when every game in its window has a pick, or on its timeout.
+
+- **Limits:** phone delivery needs Remote Control connected to the session. When the user is actively at the
+  terminal the tool skips the notification as redundant. Nothing sends if the session is not running. In that case
+  the picks are still made and committed; only the alert is missing.
+- **Check by hand:** `python -m engine alert --since <ISO time>` prints the alert for picks created since then.
+
 ## How the lock run behaves (immediate mode, the original design)
 
 Each call picks every game whose lock (kickoff − 15 min) is **within the next
