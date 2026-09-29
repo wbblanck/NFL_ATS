@@ -32,9 +32,9 @@ def latest_market(game_ids: set[str]) -> dict[str, dict]:
     return out
 
 
-def _projections(proj_games, season, week, games, v3=None):
+def _projections(proj_games, season, week, games, v3=None, names=None):
     """Tracked projection for display: proj-players-v3 when its inputs load, else v1. Returns
-    game_id -> (Projection, version, flags)."""
+    game_id -> (Projection, version, flags, explanation)."""
     if proj_games is None:
         return {}
     import sys
@@ -48,6 +48,7 @@ def _projections(proj_games, season, week, games, v3=None):
             feats = {(r["game_id"], r["team"]): r for r in got["features"].iter_rows(named=True)}
         except Exception as e:
             print("proj-players-v3 unavailable for preview:", repr(e), file=sys.stderr)
+    from engine.picks import explain
     out = {}
     for g in games:
         try:
@@ -56,23 +57,32 @@ def _projections(proj_games, season, week, games, v3=None):
         except Exception:
             continue
         fh, fa = feats.get((g["game_id"], h)), feats.get((g["game_id"], a))
-        version, flags = final.PROJ_VERSION, []
+        version, flags, used = final.PROJ_VERSION, [], False
         if m is not None and fh is not None and fa is not None and all(
                 f[c] is not None for f in (fh, fa) for c in m["features"]):
             from engine.models import players_v3_live as L
             q = {"home_td": q["home_td"] * L.multiplier(fh, m, "td"), "home_fg": q["home_fg"] * L.multiplier(fh, m, "fg"),
                  "away_td": q["away_td"] * L.multiplier(fa, m, "td"), "away_fg": q["away_fg"] * L.multiplier(fa, m, "fg")}
-            version = L.VERSION
+            version, used = L.VERSION, True
             if not (fh.get("injury_status_published") and fa.get("injury_status_published")):
                 flags.append("INJ_STATUS_MISSING")
         pr = P.Projection(P.points_pmf(q["home_td"], q["home_fg"], rt.p_xp, rt.p_2),
                           P.points_pmf(q["away_td"], q["away_fg"], rt.p_xp, rt.p_2))
-        out[g["game_id"]] = (pr, version, flags)
+        try:
+            hs_, as_ = pr.mean_scores()
+            if used and names:
+                fh, fa = ({**f, "starter_name": names.get(f.get("starter"))} for f in (fh, fa))
+            why = explain.game(rt, h, a, fh if used else None, fa if used else None, m if used else None,
+                               shown=(round(hs_, 1), round(as_, 1)))
+        except Exception as e:
+            print("projection explanation unavailable:", repr(e), file=sys.stderr)
+            why = None
+        out[g["game_id"]] = (pr, version, flags, why)
     return out
 
 
 def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None = None, proj_games=None,
-          v3=None) -> list[dict]:
+          v3=None, names=None) -> list[dict]:
     now = now or dt.datetime.now(dt.timezone.utc)
     wk = sched.filter((pl.col("season") == season) & (pl.col("week") == week)).sort("kickoff_utc")
     ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
@@ -80,7 +90,7 @@ def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None =
     mk = latest_market(set(wk["game_id"].to_list()))
     dist, _ = final.fit_dist(sched, now)
     tdist = final.fit_total_dist(sched, now)
-    projs = _projections(proj_games, season, week, wk.to_dicts(), v3)
+    projs = _projections(proj_games, season, week, wk.to_dicts(), v3, names)
     out = []
     for g in wk.to_dicts():
         gid = g["game_id"]
@@ -89,12 +99,12 @@ def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None =
                 "away_score": g.get("away_score"), "home_score": g.get("home_score")}
         got = projs.get(gid)
         if got is not None:
-            pr, version, pflags = got
+            pr, version, pflags, why = got
             hs, as_ = pr.mean_scores()
             line = ll.get(gid)
             pp = pr.p_home_cover(line) if line is not None and is_half_point(line) else None
             base.update(proj_home=round(hs, 1), proj_away=round(as_, 1), proj_version=version,
-                        proj_flags=";".join(pflags),
+                        proj_flags=";".join(pflags), proj_why=why,
                         proj_pick=None if pp is None else (g["home_team"] if pp > 0.5 else g["away_team"]))
         if gid in finals:
             f = finals[gid]

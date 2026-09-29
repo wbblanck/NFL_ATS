@@ -67,3 +67,14 @@ def test_render_without_results_or_projection_models_still_works():
     d = _payload(D.render([_row("g1", _k(27, 13), "provisional")], 2026, 3, {"N": 0, "W": 0, "L": 0}, now))
     assert d["record"] == "0-0" and d["models"] == [{"label": "Official pick", "W": 0, "L": 0}]
     assert d["games"][0]["res"] is None and d["games"][0]["pres"] is None
+
+
+def test_render_carries_the_score_breakdown_and_its_controls():
+    now = dt.datetime(2026, 9, 27, 12, 0, tzinfo=UTC)
+    side = {"baseline": 21.8, "total": 24.0, "items": [{"key": "off", "label": "BBB offense", "pts": 2.2, "note": ""}]}
+    rows = [_row("g1", _k(27, 13), "provisional", proj_why={"home": side, "away": {**side, "total": 20.0}, "model": "v"})]
+    html = D.render(rows, 2026, 3, {"N": 0, "W": 0, "L": 0}, now)
+    assert _payload(html)["games"][0]["xp"]["home"]["total"] == 24.0
+    for needle in ("How each score was built", "How the projected score was built", "Biggest drivers", "xclose"):
+        assert needle in html
+    assert _payload(D.render([_row("g2", _k(27, 13), "provisional")], 2026, 3, {"N": 0, "W": 0, "L": 0}, now))["games"][0]["xp"] is None

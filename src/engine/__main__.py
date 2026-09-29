@@ -276,7 +276,14 @@ def main(argv=None) -> int:
         except Exception:
             _pg = None
         from engine.models import players_v3_live as _v3_live
-        rows = preview.build(sched, a.season, a.week, proj_games=_pg,
+        _nm = {}
+        try:
+            import nflreadpy as _nfl
+            _pp = _nfl.load_players().select("gsis_id", "display_name").drop_nulls()
+            _nm = dict(zip(_pp["gsis_id"].to_list(), _pp["display_name"].to_list()))
+        except Exception:
+            pass
+        rows = preview.build(sched, a.season, a.week, proj_games=_pg, names=_nm,
                              v3=_v3_live.loader(sched, _all if _pg is not None else None))
         try:
             lv, graded = live.compute(sched)         # read-only: does not rewrite live_record.md
@@ -287,13 +294,6 @@ def main(argv=None) -> int:
         try:
             import polars as _pl
             from engine.picks import game_detail
-            _nm = {}
-            try:
-                import nflreadpy as _nfl
-                _pp = _nfl.load_players().select("gsis_id", "display_name").drop_nulls()
-                _nm = dict(zip(_pp["gsis_id"].to_list(), _pp["display_name"].to_list()))
-            except Exception:
-                pass
             details = game_detail.build_from_files(
                 rows, sched.filter((_pl.col("season") == a.season) & (_pl.col("week") == a.week)), _nm)
         except Exception as e:
