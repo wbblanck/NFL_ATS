@@ -28,3 +28,6 @@ game_id,season,week,home_team,away_team,spread,favorite,source,recorded_at
 2026_04_DEN_SF,2026,4,SF,DEN,-2.5,SF,user screenshot of pool Picks screen (partial week),2026-09-29T17:11:00Z
 2026_04_DET_CAR,2026,4,CAR,DET,3.5,DET,user screenshot of pool Picks screen (partial week),2026-09-29T17:11:00Z
 2026_04_ATL_NO,2026,4,NO,ATL,-2.5,NO,user screenshot of pool Picks screen (partial week),2026-09-29T17:11:00Z
+2026_04_PIT_CLE,2026,4,CLE,PIT,2.5,PIT,user screenshot of pool Picks screen,2026-09-29T17:11:00Z
+2026_04_IND_WAS,2026,4,WAS,IND,3.5,IND,user screenshot of pool Picks screen,2026-09-29T17:11:00Z
+2026_04_NE_BUF,2026,4,BUF,NE,-6.5,BUF,user screenshot of pool Picks screen,2026-09-29T17:11:00Z
