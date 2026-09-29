@@ -67,8 +67,9 @@ def _result_char(v) -> str | None:
 
 
 def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.datetime,
-           results: dict | None = None) -> str:
-    """results: game_id -> graded row from live.compute (result, proj_<version> strings); optional."""
+           results: dict | None = None, details: dict | None = None) -> str:
+    """results: game_id -> graded row from live.compute (result, proj_<version> strings); optional.
+    details: game_id -> per-game detail from game_detail.build (book lines over time, why, inputs); optional."""
     results = results or {}
     rec = f"{live['W']}-{live['L']}" if live.get("N") else "0-0"
     kicks = {r["game_id"]: dt.datetime.fromisoformat(r["kickoff_utc"]) for r in rows}
@@ -94,7 +95,7 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
         g = results.get(r["game_id"], {})
         pres = _result_char(g.get(f"proj_{r.get('proj_version') or V3}"))
         games.append({"id": r["game_id"], "away": r["away"], "home": r["home"], "ko": ko.astimezone(ET).strftime("%a %-I:%M %p"),
-                      "slot": slot_of[r["game_id"]], "line": r["league_line"],
+                      "slot": slot_of[r["game_id"]], "ko_iso": ko.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "line": r["league_line"],
                       "market": r["market"] if r["market"] not in ("", None) else None,
                       "drift": float(r["drift"]) if r["drift"] not in ("", None, "UNAVAILABLE") else None,
                       "pick": r.get("pick"), "pick_p": pick_p, "status": r["status"], "sig": sig_k, "sig_label": sig_l,
@@ -108,7 +109,7 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
         if m:
             models.append({"label": label, "W": m["W"], "L": m["L"]})
     nxt = min(upcoming) if upcoming else None
-    data = json.dumps({"games": games, "slots": slots, "season": season, "week": week, "record": rec, "models": models,
+    data = json.dumps({"games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
                        "next_lock": None if nxt is None else {"at": _clock(nxt[0]), "game": nxt[1]},
                        "updated": updated.astimezone(ET).strftime("%a %b %-d, %-I:%M %p ET")})
@@ -127,11 +128,11 @@ TEMPLATE = r"""<title>__TITLE__</title>
    Each card reads top to bottom: teams and pick, how far the market moved off the frozen pool line, the
    cover chance, the tracked projection, and once played the score and result. */
 :root{--bg:#eef0f4;--panel:#ffffff;--panel-2:#f5f6f9;--ink:#0f1a2b;--ink-2:#41506b;--ink-3:#586580;--rule:#dbe0ea;
---flag:#ffc800;--flag-soft:#fff0b8;--on-flag:#0f1a2b;--flat-bg:#e4e8ef;
+--flag:#ffc800;--flag-soft:#fff0b8;--on-flag:#0f1a2b;--flat-bg:#e4e8ef;--band:rgba(15,26,43,.10);
 --win:#146c36;--win-bg:#e2f4e8;--loss:#b3261e;--loss-bg:#fde7e5;
 --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;--body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0a111f;--panel:#111a2c;--panel-2:#16213a;--ink:#e8edf7;--ink-2:#b3bfd4;--ink-3:#8e9bb4;--rule:#243250;--flag-soft:#4a3c08;--flat-bg:#1c2740;--win:#63d68d;--win-bg:#123322;--loss:#ff8f86;--loss-bg:#40181a}}
-:root[data-theme="dark"]{color-scheme:dark;--bg:#0a111f;--panel:#111a2c;--panel-2:#16213a;--ink:#e8edf7;--ink-2:#b3bfd4;--ink-3:#8e9bb4;--rule:#243250;--flag-soft:#4a3c08;--flat-bg:#1c2740;--win:#63d68d;--win-bg:#123322;--loss:#ff8f86;--loss-bg:#40181a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0a111f;--panel:#111a2c;--panel-2:#16213a;--ink:#e8edf7;--ink-2:#b3bfd4;--ink-3:#8e9bb4;--rule:#243250;--flag-soft:#4a3c08;--flat-bg:#1c2740;--band:rgba(232,237,247,.14);--win:#63d68d;--win-bg:#123322;--loss:#ff8f86;--loss-bg:#40181a}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0a111f;--panel:#111a2c;--panel-2:#16213a;--ink:#e8edf7;--ink-2:#b3bfd4;--ink-3:#8e9bb4;--rule:#243250;--flag-soft:#4a3c08;--flat-bg:#1c2740;--band:rgba(232,237,247,.14);--win:#63d68d;--win-bg:#123322;--loss:#ff8f86;--loss-bg:#40181a}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);padding-inline:16px;padding-block:28px 56px}
 .wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:26px}
@@ -225,6 +226,61 @@ header{display:flex;flex-direction:column;gap:10px}
 .cover{font-size:13px;color:var(--ink-2)}
 .empty{color:var(--ink-2);padding:24px 0}
 
+
+/* game view */
+.wrap[hidden]{display:none}
+.card{cursor:pointer}
+.card:hover{border-color:var(--ink-3)}
+.more{align-self:flex-start;font:500 12px var(--mono);color:var(--ink);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.more:focus-visible,.back:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:4px}
+.back{align-self:flex-start;font:500 13px var(--body);color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:999px;padding:7px 14px;cursor:pointer}
+.back:hover{border-color:var(--ink-3)}
+.d-title{display:flex;flex-direction:column;gap:10px}
+.d-match{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px 16px;font:800 clamp(44px,10vw,76px)/.95 var(--display);text-transform:uppercase}
+.d-match .at{font-size:.5em;color:var(--ink-3)}
+.d-facts{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;font-size:14px;color:var(--ink-2)}
+.d-facts b{color:var(--ink);font-weight:600}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+h3{margin:0;font:800 22px/1 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.sub{font-size:13px;color:var(--ink-2);margin:0}
+.panel ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;max-width:80ch;font-size:14px}
+.chart{position:relative;min-width:0}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart svg text{font-family:var(--mono);font-size:11px;fill:var(--ink-3)}
+.chart .c-grid{stroke:var(--rule);stroke-width:1}
+.chart .c-band{fill:var(--band)}
+.chart .c-med{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
+.chart .c-pool{stroke:var(--ink-2);stroke-width:1.5;stroke-dasharray:5 4}
+.chart .c-pt{fill:var(--panel);stroke:var(--ink);stroke-width:2}
+.chart .c-lock{fill:var(--flag);stroke:var(--ink);stroke-width:2}
+.chart .c-cross{stroke:var(--ink-3);stroke-width:1}
+.chart .c-poollab{fill:var(--ink-2)}
+.tip{position:absolute;top:4px;pointer-events:none;background:var(--ink);color:var(--bg);border-radius:6px;padding:8px 10px;font:400 12px/1.5 var(--mono);white-space:nowrap;z-index:3}
+.tip b{font-weight:500}
+.key{display:flex;flex-wrap:wrap;gap:6px 18px;font:400 12px var(--mono);color:var(--ink-2)}
+.key span{display:inline-flex;align-items:center;gap:7px}
+.k-band{width:16px;height:10px;background:var(--band);border:1px solid var(--rule)}
+.k-line{width:18px;height:0;border-top:2px solid var(--ink)}
+.k-dash{width:18px;height:0;border-top:2px dashed var(--ink-2)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--rule);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-family:var(--mono)}
+td:first-child,th:first-child{position:sticky;left:0;background:var(--panel)}
+tr.med td:first-child{background:var(--panel-2)}
+tr.med td{font-weight:600;background:var(--panel-2)}
+.m{font:500 11px var(--mono);border-radius:999px;padding:2px 7px;margin-left:6px}
+.m.same{background:var(--flag);color:var(--on-flag)}
+.m.hook{background:var(--flag-soft);color:var(--ink)}
+.m.off{background:var(--flat-bg);color:var(--ink-2)}
+.cols2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13px;margin:0}
+.kv dt{color:var(--ink-3);font:400 12px var(--mono)}
+.kv dd{margin:0;font-family:var(--mono)}
+.kv-h{font:800 26px/1 var(--display);text-transform:uppercase;margin:0 0 8px}
+
 /* notes */
 details{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:14px 18px}
 summary{cursor:pointer;font:600 14px var(--body)}
@@ -232,7 +288,7 @@ details div{display:flex;flex-direction:column;gap:10px;margin-top:12px;font-siz
 details p{margin:0}
 @media (prefers-reduced-motion:no-preference){.meter i,.gauge i{transition:width .3s}}
 </style>
-<div class="wrap">
+<div class="wrap" id="board">
   <header>
     <div class="eyebrow">Bonsai Pool 2026 · NFL_ATS</div>
     <h1 id="h1"></h1>
@@ -271,6 +327,7 @@ details p{margin:0}
     </div>
   </details>
 </div>
+<div class="wrap" id="detail" hidden></div>
 <script>
 const D=__DATA__;
 const $=id=>document.getElementById(id);
@@ -345,8 +402,8 @@ function foot(x){
 }
 function card(x){
   const pa=x.pick===x.away,ph=x.pick===x.home;
-  return `<article class="card"><div class="card-h"><span class="ko">${esc(x.ko)}</span>${stateBadge(x)}</div>
-    <div class="teams">${team(x,'a',pa)}${team(x,'h',ph)}</div>${move(x)}${meter(x)}${proj(x)}${foot(x)}</article>`;
+  return `<article class="card" data-id="${esc(x.id)}"><div class="card-h"><span class="ko">${esc(x.ko)}</span>${stateBadge(x)}</div>
+    <div class="teams">${team(x,'a',pa)}${team(x,'h',ph)}</div>${move(x)}${meter(x)}${proj(x)}${foot(x)}<button class="more" data-id="${esc(x.id)}">Book-by-book lines ›</button></article>`;
 }
 const cols=n=>n===4||n===10?2:3;      // fill the rows: 4 games make 2x2, not 3+1
 const pred={all:()=>true,strong:x=>x.sig==='strong',differs:x=>x.ppick&&x.pick&&x.ppick!==x.pick};
@@ -363,5 +420,125 @@ function draw(k){
 function setF(k){for(const n of ['all','strong','differs'])$('f-'+n).setAttribute('aria-pressed',n===k);draw(k)}
 for(const n of ['all','strong','differs'])$('f-'+n).onclick=()=>setF(n);
 draw('all');
+/* ---- game view ---- */
+const byId=Object.fromEntries(g.map(x=>[x.id,x]));
+const BOOKS={draftkings:'DraftKings',fanduel:'FanDuel',betmgm:'BetMGM',caesars:'Caesars',pinnacle:'Pinnacle',bet365:'bet365',betrivers:'BetRivers',hardrock:'Hard Rock',bovada:'Bovada',betonline:'BetOnline',fanatics:'Fanatics',prophetx:'ProphetX',novig:'Novig',fliff:'Fliff',parx:'Parx'};
+const bk=b=>BOOKS[b]||b.charAt(0).toUpperCase()+b.slice(1);
+const ET='America/New_York';
+const etTime=ms=>new Date(ms).toLocaleString('en-US',{timeZone:ET,weekday:'short',hour:'numeric',minute:'2-digit'});
+const etDay=ms=>new Date(ms).toLocaleString('en-US',{timeZone:ET,weekday:'short',month:'numeric',day:'numeric'});
+const med=a=>{const s=[...a].sort((p,q)=>p-q),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
+const diff=v=>Math.abs(v)<1e-9?'same':(v>0?'+':'−')+num(Math.abs(v),2);
+function snaps(d){
+  return d.t.map((t,i)=>{const v=Object.values(d.b).map(a=>a[i]).filter(z=>z!=null);
+    return {ms:Date.parse(t),n:v.length,lo:Math.min(...v),hi:Math.max(...v),med:med(v)}});
+}
+function chart(x,d,W){
+  const S=snaps(d),n=S.length,ko=Date.parse(x.ko_iso),pool=x.line;
+  const H=W<520?240:300,m={l:50,r:14,t:14,b:32},pw=W-m.l-m.r,ph=H-m.t-m.b;
+  const all=S.flatMap(s=>[s.lo,s.hi]).concat(pool==null?[]:[pool]);
+  let lo=Math.min(...all)-0.5,hi=Math.max(...all)+0.5;
+  if(hi-lo<3){const c=(hi+lo)/2;lo=c-1.5;hi=c+1.5}
+  const step=hi-lo>6?1:0.5,t0=n>1?S[0].ms:S[0].ms-36e5,t1=Math.max(ko,S[n-1].ms+6e4);
+  const X=ms=>m.l+(ms-t0)/(t1-t0)*pw,Y=v=>m.t+(v-lo)/(hi-lo)*ph;
+  let o='';
+  for(let v=Math.ceil(lo/step)*step;v<=hi+1e-9;v+=step)o+=`<line class="c-grid" x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${m.l-8}" y="${Y(v)+4}" text-anchor="end">${sgn(v)}</text>`;
+  // day ticks at midnight ET
+  const parts=new Intl.DateTimeFormat('en-US',{timeZone:ET,hour12:false,hour:'numeric',minute:'numeric',second:'numeric'}).formatToParts(new Date(t0)).reduce((a,p)=>(a[p.type]=+p.value,a),{});
+  let tk=t0+(((24-(parts.hour%24))*60-parts.minute)*60-parts.second)*1000,last=-99;
+  for(;tk<t1;tk+=864e5){const px=X(tk);if(px-last>70&&px<W-m.r-130&&px>m.l+20){o+=`<line class="c-grid" x1="${px}" x2="${px}" y1="${H-m.b}" y2="${H-m.b+5}"/><text x="${px}" y="${H-m.b+18}" text-anchor="middle">${esc(etDay(tk+36e5))}</text>`;last=px}}
+  o+=`<text x="${W-m.r}" y="${H-m.b+18}" text-anchor="end">Kickoff ${esc(x.ko.replace(/^\w+ /,''))}</text>`;
+  if(n>1)o+=`<polygon class="c-band" points="${S.map(s=>X(s.ms)+','+Y(s.lo)).join(' ')} ${[...S].reverse().map(s=>X(s.ms)+','+Y(s.hi)).join(' ')}"/>`;
+  else o+=`<line class="c-med" style="stroke-width:8;opacity:.18" x1="${X(S[0].ms)}" x2="${X(S[0].ms)}" y1="${Y(S[0].lo)}" y2="${Y(S[0].hi)}"/>`;
+  if(pool!=null)o+=`<line class="c-pool" x1="${m.l}" x2="${W-m.r}" y1="${Y(pool)}" y2="${Y(pool)}"/><text class="c-poollab" x="${W-m.r}" y="${Y(pool)-6}" text-anchor="end">Pool line ${sgn(pool)}</text>`;
+  if(n>1)o+=`<polyline class="c-med" points="${S.map(s=>X(s.ms)+','+Y(s.med)).join(' ')}"/>`;
+  const li=d.lock?d.lock.i:-1;
+  S.forEach((s,i)=>{if(i!==li)o+=`<circle class="c-pt" cx="${X(s.ms)}" cy="${Y(s.med)}" r="4"/>`});
+  if(li>=0)o+=`<circle class="c-lock" cx="${X(S[li].ms)}" cy="${Y(S[li].med)}" r="7"/>`;
+  o+=`<line class="c-cross" id="xh" x1="0" x2="0" y1="${m.t}" y2="${H-m.b}" hidden/>`;
+  const lbl=`Line movement for ${x.away} at ${x.home}: ${n} captures, median ${sgn(S[0].med)} to ${sgn(S[n-1].med)}`;
+  return {svg:`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" tabindex="0" aria-label="${esc(lbl)}">${o}</svg>`,S,X,Y,m,H};
+}
+function drawChart(x,d){
+  const box=$('chart');if(!box)return;
+  const W=Math.max(280,Math.floor(box.clientWidth||320)),c=chart(x,d,W);
+  box.innerHTML=c.svg+'<div class="tip" id="tip" hidden></div>';
+  const svg=box.querySelector('svg'),tip=$('tip'),xh=$('xh');
+  const show=i=>{const s=c.S[i],px=c.X(s.ms);xh.removeAttribute('hidden');xh.setAttribute('x1',px);xh.setAttribute('x2',px);
+    const dv=x.line==null?'':` · ${diff(s.med-x.line)} vs pool`;
+    tip.innerHTML=`<b>${esc(etTime(s.ms))} ET</b><br>Median ${sgn(s.med)}${dv}<br>Range ${sgn(s.lo)} to ${sgn(s.hi)} · ${s.n} books`;
+    tip.hidden=false;const tw=tip.offsetWidth;tip.style.left=Math.max(0,Math.min(W-tw,px-tw/2))+'px'};
+  const hide=()=>{tip.hidden=true;xh.setAttribute('hidden','')};
+  svg.addEventListener('pointermove',e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)*(W/r.width);
+    let b=0,bd=1e9;c.S.forEach((s,i)=>{const dd=Math.abs(c.X(s.ms)-px);if(dd<bd){bd=dd;b=i}});show(b)});
+  svg.addEventListener('pointerleave',hide);svg.addEventListener('blur',hide);
+  let k=c.S.length-1;svg.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){k=Math.max(0,k-1);show(k);e.preventDefault()}
+    else if(e.key==='ArrowRight'){k=Math.min(c.S.length-1,k+1);show(k);e.preventDefault()}else if(e.key==='Escape')hide()});
+}
+function booksTable(x,d){
+  if(!d.lock)return '<p class="sub">No book lines were captured for this game yet.</p>';
+  const L=d.lock,tue=d.tue;
+  const tueNote=tue?(()=>{const v=Object.values(tue.books),same=v.filter(b=>b.m==='same').length,hook=v.filter(b=>b.m==='hook').length;
+    return `<p class="sub">Tuesday posting window (${esc(tue.at)}): ${same} of ${v.length} books had exactly the pool line, ${hook} were a half point away.</p>`})():'';
+  const rows=L.books.map(b=>{const t=tue&&tue.books[b.book];
+    return `<tr><td>${esc(bk(b.book))}</td><td class="n">${sgn(b.spread)}</td><td class="n">${x.line==null?'—':diff(b.spread-x.line)}</td><td class="n">${diff(b.spread-L.median)}</td><td class="n">${esc(b.price)||'—'}</td><td class="n">${esc(b.upd)||'—'}</td>${tue?`<td class="n">${t?sgn(t.line)+`<span class="m ${t.m}">${t.m==='same'?'= pool':t.m==='hook'?'hook':'differs'}</span>`:'—'}</td>`:''}</tr>`}).join('');
+  return `${tueNote}<div class="tbl"><table><thead><tr><th>Book</th><th class="n">${esc(x.home)} spread</th><th class="n">vs pool</th><th class="n">vs median</th><th class="n">Price</th><th class="n">Updated</th>${tue?'<th class="n">Tuesday</th>':''}</tr></thead><tbody>
+    <tr class="med"><td>Median (model input)</td><td class="n">${sgn(L.median)}</td><td class="n">${x.line==null?'—':diff(L.median-x.line)}</td><td class="n">—</td><td class="n">—</td><td class="n">${L.n} books</td>${tue?'<td class="n"></td>':''}</tr>${rows}</tbody></table></div>`;
+}
+function inputsPanel(x,d){
+  const I=d.inputs;
+  if(!I)return `<p class="sub">Projection inputs are recorded when a pick locks. This game has not locked yet.</p>`;
+  const side=(code,s,opp)=>`<div><h4 class="kv-h">${esc(code)}</h4><dl class="kv">
+    <dt>Starting QB</dt><dd>${esc(s.starter_name||'—')}${s.qb1_out?' (QB1 out)':''}</dd>
+    <dt>QB vs team norm</dt><dd>${s.qb_delta==null?'—':(s.qb_delta>0?'+':s.qb_delta<0?'−':'')+Math.abs(s.qb_delta).toFixed(3)} EPA/dropback</dd>
+    <dt>Depth chart read</dt><dd>${s.depth_snapshot?esc(etTime(Date.parse(s.depth_snapshot)))+' ET':'—'}</dd>
+    <dt>Injury rows</dt><dd>${s.injury_rows??'—'}</dd>
+    <dt>Missing OL / skill</dt><dd>${s.ol??'—'} / ${s.skill??'—'}</dd>
+    <dt>Missing opp DL / LB / DB</dt><dd>${s.opp_dl??'—'} / ${s.opp_lb??'—'} / ${s.opp_db??'—'}</dd>
+    <dt>Rest vs opponent</dt><dd>${s.rest_diff>0?'+':''}${s.rest_diff??'—'} days</dd>
+    <dt>Time zones travelled</dt><dd>${s.tz_shift??'—'}</dd>
+    <dt>Roof</dt><dd>${s.dome?'dome / closed':'open air'}${s.dome_estimated?' (estimated)':''}</dd></dl></div>`;
+  const fl=(I.flags||[]).length?`<p class="sub">Flags: ${I.flags.map(esc).join(', ')}</p>`:'';
+  return `<div class="cols2">${side(x.away,I.away)}${side(x.home,I.home)}</div>${fl}
+    <p class="sub">It rates the depth-chart starter. If that player is also out, or the starter changes after the report, the projection does not know.</p>`;
+}
+function snapTable(d){
+  const S=snaps(d);if(!S.length)return '';
+  return `<details><summary>Captures as a table</summary><div class="tbl"><table><thead><tr><th>Time (ET)</th><th class="n">Books</th><th class="n">Low</th><th class="n">Median</th><th class="n">High</th></tr></thead><tbody>${S.map(s=>`<tr><td>${esc(etTime(s.ms))}</td><td class="n">${s.n}</td><td class="n">${sgn(s.lo)}</td><td class="n">${sgn(s.med)}</td><td class="n">${sgn(s.hi)}</td></tr>`).join('')}</tbody></table></div></details>`;
+}
+function detailHTML(x){
+  const d=(D.details||{})[x.id]||{};
+  const slot=D.slots[x.slot];
+  const res=x.hs!=null?`<span>Final <b>${esc(x.away)} ${x.as} – ${esc(x.home)} ${x.hs}</b></span>`:'';
+  const pick=x.pick?`<span>Pick <b>${esc(x.pick)}</b>${x.pick_p!=null?` · ${(x.pick_p*100).toFixed(1)}% to cover`:''}</span>`:'';
+  const has=d.t&&d.t.length;
+  return `<button class="back" id="back">← Week ${D.week}</button>
+  <section class="d-title"><div class="ko">${esc(x.ko)} ET · ${esc(slot.day)} ${esc(slot.times)}</div>
+    <div class="d-match"><span>${esc(x.away)}</span><span class="at">@</span><span>${esc(x.home)}</span></div>
+    <div class="d-facts">${stateBadge(x)}${x.line!=null?`<span>Pool line <b>${esc(x.home)} ${sgn(x.line)}</b></span>`:''}${pick}${res}${d.total!=null?`<span>Total <b>${d.total}</b></span>`:''}</div></section>
+  ${d.why&&d.why.length?`<section class="panel"><h3>Why this pick</h3><ul>${d.why.map(w=>`<li>${esc(w)}</li>`).join('')}</ul></section>`:''}
+  <section class="panel"><h3>Line movement</h3>
+    <p class="sub">Spread on ${esc(x.home)} across every book. Higher on the chart means the market favors ${esc(x.home)} more; lower favors ${esc(x.away)} more.</p>
+    ${has?`<div class="key"><span><i class="k-line"></i>Median of books</span><span><i class="k-band"></i>Range across books</span><span><i class="k-dash"></i>Pool line</span><span><i class="k-mkt"></i>${x.status==='final'?'Pick captured':'Latest capture'}</span></div><div class="chart" id="chart"></div>${snapTable(d)}`:'<p class="sub">No book lines were captured for this game yet.</p>'}
+  </section>
+  <section class="panel"><h3>Every book${d.lock?` at ${esc(d.lock.at)} ET`:''}${d.lock&&x.status!=='final'?' · latest':''}</h3>${booksTable(x,d)}</section>
+  <section class="panel"><h3>What the projection used</h3>${inputsPanel(x,d)}</section>`;
+}
+let saved=0,ro=null;
+function showGame(id){
+  const x=byId[id];if(!x)return false;
+  saved=window.scrollY;$('board').hidden=true;const el=$('detail');el.hidden=false;el.innerHTML=detailHTML(x);
+  const d=(D.details||{})[id]||{};
+  if(d.t&&d.t.length){drawChart(x,d);if(window.ResizeObserver){let w=0;ro&&ro.disconnect();ro=new ResizeObserver(es=>{const nw=Math.round(es[0].contentRect.width);if(nw&&nw!==w){w=nw;drawChart(x,d)}});ro.observe($('chart'))}}
+  $('back').onclick=()=>{try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}showBoard()};
+  window.scrollTo(0,0);$('back').focus();return true;
+}
+function showBoard(){
+  ro&&ro.disconnect();$('detail').hidden=true;$('detail').innerHTML='';$('board').hidden=false;window.scrollTo(0,saved);
+}
+function open(id){try{location.hash=id}catch(e){}showGame(id)}
+$('slots').addEventListener('click',e=>{const c=e.target.closest('.card');if(c)open(c.dataset.id)});
+function route(){const id=(location.hash||'').slice(1);if(id&&byId[id])showGame(id);else if(!$('detail').hidden)showBoard()}
+window.addEventListener('hashchange',route);route();
 </script>
 """

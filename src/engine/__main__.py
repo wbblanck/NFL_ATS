@@ -252,8 +252,24 @@ def main(argv=None) -> int:
             results = {r["game_id"]: r for r in graded}
         except Exception:
             lv, results = {"N": 0, "W": 0, "L": 0}, {}
+        try:
+            import polars as _pl
+            from engine.picks import game_detail
+            _nm = {}
+            try:
+                import nflreadpy as _nfl
+                _pp = _nfl.load_players().select("gsis_id", "display_name").drop_nulls()
+                _nm = dict(zip(_pp["gsis_id"].to_list(), _pp["display_name"].to_list()))
+            except Exception:
+                pass
+            details = game_detail.build_from_files(
+                rows, sched.filter((_pl.col("season") == a.season) & (_pl.col("week") == a.week)), _nm)
+        except Exception as e:
+            print("game detail unavailable:", repr(e), file=sys.stderr)
+            details = {}
         out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
-        open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results))
+        open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results,
+                                              details))
         print(out)
         return 0
     if a.cmd == "check-league-lines":
