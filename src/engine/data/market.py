@@ -13,6 +13,7 @@ from __future__ import annotations
 import datetime as dt
 import os
 import statistics
+import sys
 
 import polars as pl
 import requests
@@ -69,8 +70,42 @@ def fetch_historical(when: str) -> tuple[str, list[dict]]:
     r = requests.get(url, params={"apiKey": key, "markets": "spreads", "regions": c["regions"], "date": when},
                      timeout=c["timeout_seconds"], headers={"User-Agent": "nfl-ats-engine/0.1"})
     r.raise_for_status()
-    j = r.json()
-    return j.get("timestamp") or when, j.get("data", [])
+    left = r.headers.get("x-requests-remaining")
+    if left is not None:
+        print(f"historical {when}: provider reports {left} requests remaining", file=sys.stderr)
+    return unwrap_historical(r.json(), when)
+
+
+def unwrap_historical(j, when: str) -> tuple[str, list[dict]]:
+    """(snapshot timestamp, events) from a historical response. Parlay returns a bare list of events (observed
+    2026-09-29, the first successful call); an odds-api style {'timestamp', 'data'} object is also accepted."""
+    if isinstance(j, list):
+        return when, j
+    if isinstance(j, dict) and isinstance(j.get("data"), list):
+        return j.get("timestamp") or when, j["data"]
+    raise ValueError(f"unexpected historical response shape: {type(j).__name__}")
+
+
+def only_before(events: list[dict], ts: dt.datetime, slack_s: int = 120) -> tuple[list[dict], int, int]:
+    """Keep only bookmakers whose last_update is at or before the snapshot time (plus `slack_s`). A 'historical'
+    response carrying later updates is not the requested moment, so those books are dropped, never archived.
+    Returns (events, books kept, books dropped)."""
+    kept = dropped = 0
+    out = []
+    for e in events:
+        books = []
+        for b in e.get("bookmakers", []):
+            lu = b.get("last_update")
+            try:
+                ok = lu is not None and dt.datetime.fromisoformat(lu.replace("Z", "+00:00")) <= ts + dt.timedelta(seconds=slack_s)
+            except ValueError:
+                ok = False
+            if ok:
+                books.append(b); kept += 1
+            else:
+                dropped += 1
+        out.append({**e, "bookmakers": books})
+    return out, kept, dropped
 
 
 def capture_historical(sched: pl.DataFrame, when: str, events: list[dict] | None = None,
@@ -81,8 +116,12 @@ def capture_historical(sched: pl.DataFrame, when: str, events: list[dict] | None
     if events is None:
         snapshot_ts, events = fetch_historical(when)
     ts = dt.datetime.fromisoformat((snapshot_ts or when).replace("Z", "+00:00"))
+    events, kept, dropped = only_before(events, ts)
+    if kept == 0 and dropped:
+        raise ValueError(f"not a snapshot of {ts.isoformat()}: all {dropped} book updates are later")
+    note = f"; {dropped} book(s) dropped for updates after the snapshot" if dropped else ""
     return capture(sched, now=ts, events=events, all_games=True, capture_prefix="hist-",
-                   reason=f"historical snapshot, retrieved {retrieved.isoformat(timespec='seconds')}")
+                   reason=f"historical snapshot, retrieved {retrieved.isoformat(timespec='seconds')}{note}")
 
 
 def parse_totals(events: list[dict]) -> dict[tuple[str, str], dict]:

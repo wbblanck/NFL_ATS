@@ -3,9 +3,12 @@ name: Backfill Tuesday market snapshots
 # captures can miss the posting moment. The provider's historical endpoint keeps 48 h on this plan
 # (docs/evidence/probe/20260926T223855Z), so on Wednesday we fetch exact Tuesday snapshots at 15:00-19:00 UTC
 # (11:00-15:00 ET in EDT). Rows are archived as 'hist-' captures with captured_at = the snapshot time.
+#
+# DISABLED as a schedule (2026-09-29): the first real run showed the provider's historical endpoint returns only
+# games that have already kicked off, with book updates days older than the requested time and in-game or
+# alternate lines. It never contained the upcoming week, so it cannot show the market at pool-posting time.
+# Kept as a manual dispatch only; see docs/cbs_lines_report.md ("Data limits").
 on:
-  schedule:
-    - cron: '13 12 * * 3'      # Wednesday; even hours late it is well inside the 48 h window
   workflow_dispatch:
     inputs:
       times:

@@ -2,13 +2,32 @@
 
 Rules: `docs/cbs_lines_preregistration.md`. Regenerate: `python -m engine cbs-lines`.
 
-Games with a recorded pool line: **16**. A source counts as identified only with ≥ 45 games and a match rate ≥ 90%.
+Games with a recorded pool line: **32**. A source counts as identified only with ≥ 45 games and a match rate ≥ 90%.
 
 ## Q1: which source and time the pool line copies
 
 ### 2026-w03: 16 pool lines; Tuesday window 2026-09-22T12:00 to 2026-09-22T21:00 UTC
 
 No market or CBS-page snapshot inside the Tuesday window for this week (captures began after it). Not analysable for Q1/Q2.
+
+### 2026-w04: 16 pool lines; Tuesday window 2026-09-29T12:00 to 2026-09-29T21:00 UTC
+
+| Source | Snapshot (UTC) | Games | Matched | Exact | Hook to fav | Hook to dog | Rate |
+|---|---|---|---|---|---|---|---|
+| book:betrivers | 2026-09-29T14:30 | 16 | 16 | 10 | 3 | 3 | 100% |
+| book:hardrock | 2026-09-29T14:30 | 16 | 16 | 12 | 1 | 3 | 100% |
+| book:betmgm | 2026-09-29T14:30 | 16 | 16 | 9 | 2 | 5 | 100% |
+| book:caesars | 2026-09-29T14:30 | 16 | 16 | 12 | 1 | 3 | 100% |
+| book:fanatics | 2026-09-29T14:30 | 16 | 16 | 10 | 2 | 4 | 100% |
+| book:parx | 2026-09-29T14:30 | 16 | 16 | 10 | 3 | 3 | 100% |
+| book:betrivers | 2026-09-29T17:14 | 16 | 16 | 10 | 2 | 4 | 100% |
+| book:betonline | 2026-09-29T17:14 | 16 | 16 | 9 | 4 | 3 | 100% |
+
+## Data limits
+
+- The market provider's historical endpoint cannot fill in snapshots before the first Tuesday capture. Tested 2026-09-29: it returned only games that had already kicked off, with book updates days older than the requested time and in-game or alternate lines, and no upcoming games. Those rows were removed.
+- So Q1 uses only live captures. Before-posting coverage comes from scheduled live captures on Monday and Tuesday morning.
+- A whole-number book line counts as matched when either half-point rounding gives the pool line, so 'Rate' is generous. 'Exact' is the stricter measure. Exchanges (Novig, Fliff) post only half-points, so they can only match exactly or miss.
 
 ## Q3: what the half point is worth at each key number (2006–2025, whole-number closing lines)
 
@@ -27,4 +46,4 @@ If the market's whole number is fair, each side covers half of the non-push game
 
 ## Q4: market movement from the pool line to lock
 
-No locked games yet.
+15 games: mean move -0.10, mean absolute move 0.70, moves of 1+ point 47%.
