@@ -306,9 +306,15 @@ def main(argv=None) -> int:
         except Exception as e:
             print("game detail unavailable:", repr(e), file=sys.stderr)
             details = {}
+        try:
+            from engine.picks import straightup as _su
+            su_tab = _su.table(_su.rows(sched, a.season))
+        except Exception as e:
+            print("straight-up tracker unavailable:", repr(e), file=sys.stderr)
+            su_tab = []
         out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
         open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results,
-                                              details, season_tab, market.credits_left()))
+                                              details, season_tab, market.credits_left(), su_tab))
         print(out)
         return 0
     if a.cmd == "check-league-lines":
