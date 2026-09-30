@@ -33,6 +33,37 @@ class MissingKey(RuntimeError):
     pass
 
 
+USAGE_FIELDS = ["at", "endpoint", "remaining", "used", "last_cost"]
+CAPTURE_FLOOR = 150          # below this many credits, optional captures stop; lock runs always run
+
+
+def usage_path():
+    return config.path("lines") / "api_usage.csv"
+
+
+def _record_usage(r, endpoint: str) -> None:
+    """Append the provider's credit counters from the response headers (never raises)."""
+    try:
+        h = r.headers
+        row = {"at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), "endpoint": endpoint,
+               "remaining": h.get("x-requests-remaining", ""), "used": h.get("x-requests-used", ""),
+               "last_cost": h.get("x-requests-last", "")}
+        if row["remaining"] != "":
+            print(f"{endpoint}: provider reports {row['remaining']} credits remaining", file=sys.stderr)
+            store.append_rows(usage_path(), USAGE_FIELDS, [row])
+    except Exception as e:                                    # usage logging must never break a capture
+        print(f"usage logging failed: {e!r}", file=sys.stderr)
+
+
+def credits_left() -> int | None:
+    """Last recorded credits remaining, or None if never recorded."""
+    try:
+        rows = [r for r in store.read_rows(usage_path()) if r.get("remaining") not in ("", None)]
+        return int(float(rows[-1]["remaining"])) if rows else None
+    except Exception:
+        return None
+
+
 def fetch_spreads() -> list[dict]:
     c = config.data()["market"]
     key = os.environ.get(c["api_key_env"])
@@ -42,6 +73,7 @@ def fetch_spreads() -> list[dict]:
     r = requests.get(url, params={"apiKey": key, "markets": "spreads", "regions": c["regions"]},
                      timeout=c["timeout_seconds"], headers={"User-Agent": "nfl-ats-engine/0.1"})
     r.raise_for_status()
+    _record_usage(r, "spreads")
     return r.json()
 
 
@@ -56,6 +88,7 @@ def fetch_totals() -> list[dict]:
     r = requests.get(url, params={"apiKey": key, "markets": "totals", "regions": c["regions"]},
                      timeout=c["timeout_seconds"], headers={"User-Agent": "nfl-ats-engine/0.1"})
     r.raise_for_status()
+    _record_usage(r, "totals")
     return r.json()
 
 
@@ -70,9 +103,7 @@ def fetch_historical(when: str) -> tuple[str, list[dict]]:
     r = requests.get(url, params={"apiKey": key, "markets": "spreads", "regions": c["regions"], "date": when},
                      timeout=c["timeout_seconds"], headers={"User-Agent": "nfl-ats-engine/0.1"})
     r.raise_for_status()
-    left = r.headers.get("x-requests-remaining")
-    if left is not None:
-        print(f"historical {when}: provider reports {left} requests remaining", file=sys.stderr)
+    _record_usage(r, "historical")
     return unwrap_historical(r.json(), when)
 
 

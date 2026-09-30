@@ -98,3 +98,21 @@ def test_historical_rejects_updates_after_the_snapshot(tmp_root, week3_schedule)
     rows = market.capture_historical(week3_schedule, "2026-09-24T19:30:00Z", events=EVENTS,
                                      snapshot_ts="2026-09-24T19:30:00Z")
     assert rows and "dropped for updates after the snapshot" in rows[0]["reason"]
+
+
+def test_usage_is_recorded_and_floor_read(tmp_path, monkeypatch):
+    from engine.data import market as M
+
+    class R:
+        headers = {"x-requests-remaining": "642", "x-requests-used": "358", "x-requests-last": "1"}
+
+    monkeypatch.setattr(M, "usage_path", lambda: tmp_path / "api_usage.csv")
+    assert M.credits_left() is None
+    M._record_usage(R(), "spreads")
+    assert M.credits_left() == 642
+
+    class Bad:
+        headers = None                                  # malformed response: logging must not raise
+
+    M._record_usage(Bad(), "spreads")
+    assert M.credits_left() == 642

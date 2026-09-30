@@ -67,7 +67,8 @@ def _result_char(v) -> str | None:
 
 
 def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.datetime,
-           results: dict | None = None, details: dict | None = None, season_table: list | None = None) -> str:
+           results: dict | None = None, details: dict | None = None, season_table: list | None = None,
+           credits: int | None = None) -> str:
     """results: game_id -> graded row from live.compute (result, proj_<version> strings); optional.
     details: game_id -> per-game detail from game_detail.build (book lines over time, why, inputs); optional."""
     results = results or {}
@@ -116,7 +117,7 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                        "note": f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"})
     nxt = min(upcoming) if upcoming else None
     from engine.picks.season import MODELS as _SM
-    data = json.dumps({"season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
+    data = json.dumps({"credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
                        "next_lock": None if nxt is None else {"at": _clock(nxt[0]), "game": nxt[1]},
                        "updated": updated.astimezone(ET).strftime("%a %b %-d, %-I:%M %p ET")})
@@ -398,7 +399,7 @@ const FR={0:'',0.25:'¼',0.5:'½',0.75:'¾'};
 const pts=a=>{const w=Math.floor(a),f=FR[a-w]??String(a-w);const t=(w?w:'')+f;return (t===''?'0':t)+(a<=1?' pt':' pts')};
 const pct=(w,l)=>{const n=w+l;if(!n)return null;const r=w/n;return [Math.round(r*100),Math.round(Math.sqrt(r*(1-r)/n)*100)]};
 $('h1').textContent=`Week ${D.week}`;
-$('meta').textContent=`${D.season} regular season · snapshot ${D.updated}`;
+$('meta').textContent=`${D.season} regular season · snapshot ${D.updated}`+(D.credits!=null?` · odds API credits left ${D.credits}${D.credits<150?' (optional captures paused)':''}`:'');
 if(D.next_lock){$('next').hidden=false;$('next-t').textContent=`Next pick locks ${D.next_lock.at} ET · ${D.next_lock.game}`}
 const g=D.games, locked=g.filter(x=>x.status==='final').length;
 $('records').innerHTML=D.models.map(m=>{const p=pct(m.W,m.L);

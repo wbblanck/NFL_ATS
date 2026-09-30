@@ -1,0 +1,188 @@
+{
+ "n_games": 994,
+ "n_half": 379,
+ "pinnacle_vs_consensus_close": {
+  "equal": 0.9406438631790744,
+  "mean_abs_diff": 0.04074446680080483
+ },
+ "price_center_minus_pinnacle": 0.39054325955728775,
+ "pinnacle_vs_baseline_half": {
+  "N": 379,
+  "pinnacle_W": 197,
+  "baseline_W": 196,
+  "differ": 3,
+  "pinnacle_only": 2,
+  "baseline_only": 1,
+  "z": 0.5773502691896258,
+  "pinnacle_logloss": 0.6899886319163843,
+  "baseline_logloss": 0.6903918845512393
+ },
+ "pinnacle_vs_baseline_half_near": {
+  "N": 178,
+  "pinnacle_W": 78,
+  "baseline_W": 77,
+  "differ": 3,
+  "pinnacle_only": 2,
+  "baseline_only": 1,
+  "z": 0.5773502691896258,
+  "pinnacle_logloss": 0.699887442786497,
+  "baseline_logloss": 0.7006152412301306
+ },
+ "pinnacle_vs_baseline_all": {
+  "N": 994,
+  "pinnacle_W": 529,
+  "baseline_W": 528,
+  "differ": 7,
+  "pinnacle_only": 4,
+  "baseline_only": 3,
+  "z": 0.3779644730092272,
+  "pinnacle_logloss": 0.6898029548111481,
+  "baseline_logloss": 0.6902771454449547
+ },
+ "pinnacle_price_vs_baseline_half": {
+  "N": 379,
+  "pinnacle_price_W": 201,
+  "baseline_W": 196,
+  "differ": 63,
+  "pinnacle_price_only": 34,
+  "baseline_only": 29,
+  "z": 0.629940788348712,
+  "pinnacle_price_logloss": 0.690467032237253,
+  "baseline_logloss": 0.6903918845512393
+ },
+ "pinnacle_price_vs_baseline_half_near": {
+  "N": 178,
+  "pinnacle_price_W": 82,
+  "baseline_W": 77,
+  "differ": 63,
+  "pinnacle_price_only": 34,
+  "baseline_only": 29,
+  "z": 0.629940788348712,
+  "pinnacle_price_logloss": 0.7006421988511474,
+  "baseline_logloss": 0.7006152412301306
+ },
+ "pinnacle_price_vs_baseline_all": {
+  "N": 994,
+  "pinnacle_price_W": 523,
+  "baseline_W": 528,
+  "differ": 147,
+  "pinnacle_price_only": 71,
+  "baseline_only": 76,
+  "z": -0.4123930494211613,
+  "pinnacle_price_logloss": 0.6913621131886964,
+  "baseline_logloss": 0.6902771454449547
+ },
+ "worth_credits": false,
+ "first_run_with_push_bug": {
+  "n_games": 994,
+  "n_half": 379,
+  "pinnacle_vs_consensus_close": {
+   "equal": 0.9406438631790744,
+   "mean_abs_diff": 0.04074446680080483
+  },
+  "price_center_minus_pinnacle": 0.4762072434605801,
+  "pinnacle_vs_baseline_half": {
+   "N": 379,
+   "pinnacle_W": 197,
+   "baseline_W": 196,
+   "differ": 3,
+   "pinnacle_only": 2,
+   "baseline_only": 1,
+   "z": 0.5773502691896258,
+   "pinnacle_logloss": 0.6899886319163843,
+   "baseline_logloss": 0.6903918845512393
+  },
+  "pinnacle_vs_baseline_half_near": {
+   "N": 178,
+   "pinnacle_W": 78,
+   "baseline_W": 77,
+   "differ": 3,
+   "pinnacle_only": 2,
+   "baseline_only": 1,
+   "z": 0.5773502691896258,
+   "pinnacle_logloss": 0.699887442786497,
+   "baseline_logloss": 0.7006152412301306
+  },
+  "pinnacle_vs_baseline_all": {
+   "N": 994,
+   "pinnacle_W": 529,
+   "baseline_W": 528,
+   "differ": 7,
+   "pinnacle_only": 4,
+   "baseline_only": 3,
+   "z": 0.3779644730092272,
+   "pinnacle_logloss": 0.6898029548111481,
+   "baseline_logloss": 0.6902771454449547
+  },
+  "pinnacle_price_vs_baseline_half": {
+   "N": 379,
+   "pinnacle_price_W": 199,
+   "baseline_W": 196,
+   "differ": 65,
+   "pinnacle_price_only": 34,
+   "baseline_only": 31,
+   "z": 0.3721042037676254,
+   "pinnacle_price_logloss": 0.6899186026457093,
+   "baseline_logloss": 0.6903918845512393
+  },
+  "pinnacle_price_vs_baseline_half_near": {
+   "N": 178,
+   "pinnacle_price_W": 80,
+   "baseline_W": 77,
+   "differ": 65,
+   "pinnacle_price_only": 34,
+   "baseline_only": 31,
+   "z": 0.3721042037676254,
+   "pinnacle_price_logloss": 0.7007975387418056,
+   "baseline_logloss": 0.7006152412301306
+  },
+  "pinnacle_price_vs_baseline_all": {
+   "N": 994,
+   "pinnacle_price_W": 521,
+   "baseline_W": 528,
+   "differ": 177,
+   "pinnacle_price_only": 85,
+   "baseline_only": 92,
+   "z": -0.5261522196019802,
+   "pinnacle_price_logloss": 0.691555489623601,
+   "baseline_logloss": 0.6902771454449547
+  },
+  "worth_credits": false
+ },
+ "posthoc_neutral_anchored_price": {
+  "mean_abs_shift": 0.3505030181088475,
+  "half": {
+   "N": 379,
+   "variant_W": 192,
+   "baseline_W": 196,
+   "differ": 36,
+   "variant_only": 16,
+   "baseline_only": 20,
+   "z": -0.6666666666666666,
+   "ll_variant": 0.6923183941785449,
+   "ll_baseline": 0.6903918845512393
+  },
+  "all": {
+   "N": 994,
+   "variant_W": 499,
+   "baseline_W": 528,
+   "differ": 115,
+   "variant_only": 43,
+   "baseline_only": 72,
+   "z": -2.70426394389691,
+   "ll_variant": 0.6931218941695694,
+   "ll_baseline": 0.6902771454449547
+  },
+  "near_half": {
+   "N": 178,
+   "variant_W": 75,
+   "baseline_W": 77,
+   "differ": 32,
+   "variant_only": 15,
+   "baseline_only": 17,
+   "z": -0.35355339059327373,
+   "ll_variant": 0.7041027908350473,
+   "ll_baseline": 0.7006152412301306
+  }
+ }
+}

@@ -308,7 +308,7 @@ def main(argv=None) -> int:
             details = {}
         out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
         open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results,
-                                              details, season_tab))
+                                              details, season_tab, market.credits_left()))
         print(out)
         return 0
     if a.cmd == "check-league-lines":
@@ -346,6 +346,11 @@ def main(argv=None) -> int:
                 print(f"{when}: failed {e!r}", file=sys.stderr)
         return 0 if n else 1
     if a.cmd == "capture-market":
+        left = market.credits_left()
+        if left is not None and left < market.CAPTURE_FLOOR:
+            print(f"SKIPPED: {left} API credits left (floor {market.CAPTURE_FLOOR}); optional captures paused so "
+                  "lock runs keep their budget")
+            return 0
         rows = market.capture(sched, window_minutes=a.window_minutes, all_games=a.all_games)
         print(f"schedule snapshot {sid}; market rows={len(rows)} by status:",
               dict(collections.Counter(r.get("status") for r in rows)))
