@@ -68,7 +68,7 @@ def _result_char(v) -> str | None:
 
 def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.datetime,
            results: dict | None = None, details: dict | None = None, season_table: list | None = None,
-           credits: int | None = None, straightup: list | None = None) -> str:
+           credits: int | None = None) -> str:
     """results: game_id -> graded row from live.compute (result, proj_<version> strings); optional.
     details: game_id -> per-game detail from game_detail.build (book lines over time, why, inputs); optional."""
     results = results or {}
@@ -117,7 +117,7 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                        "note": f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"})
     nxt = min(upcoming) if upcoming else None
     from engine.picks.season import MODELS as _SM
-    data = json.dumps({"su": straightup or [], "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
+    data = json.dumps({"credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
                        "next_lock": None if nxt is None else {"at": _clock(nxt[0]), "game": nxt[1]},
                        "updated": updated.astimezone(ET).strftime("%a %b %-d, %-I:%M %p ET")})
@@ -361,11 +361,6 @@ details p{margin:0}
     <p class="sub" id="season-note"></p>
     <div class="tbl"><table id="season-tab"></table></div>
   </section>
-  <section class="panel" id="su-panel" hidden aria-label="Picking winners">
-    <h3>Picking winners (straight up)</h3>
-    <p class="sub" id="su-note"></p>
-    <div class="tbl"><table id="su-tab"></table></div>
-  </section>
   <section class="controls">
     <div class="filters" role="group" aria-label="Filter games">
       <button id="f-all" aria-pressed="true">All games</button>
@@ -426,19 +421,6 @@ $('ev-m').setAttribute('aria-label',`${D.graded} of ${D.claim_at} games graded`)
     +T.map(w=>row(`Week ${w.week}${w.kind==='backtest'?' <span class="m hook">backtest</span>':''}`,w.rec)).join('')
     +(live.length?row('Live total',sum(live),'med'):'')+row('Season incl. backtest',sum(T),'med')+'</tbody>';
   $('season-note').textContent=T.some(w=>w.kind==='backtest')?'Weeks marked backtest were not picked live: each model re-run as it would have been at lock, on the real pool lines from the Picks history, with the closing line as the market. Only live weeks count toward the official record.':'';
-})();
-(function(){
-  const T=D.su||[];if(!T.length)return;
-  $('su-panel').hidden=false;
-  const M=[['market','Market favorite'],['v3','Player projection'],['v1','Team-only projection']];
-  const cell=r=>r&&(r[0]+r[1])?`${r[0]}–${r[1]} <span class="sub">${Math.round(r[0]/(r[0]+r[1])*100)}%</span>`:'—';
-  const tag=k=>k==='backtest'?' <span class="m hook">backtest</span>':k==='mixed'?' <span class="m hook">incl. backtest</span>':'';
-  const tot=Object.fromEntries(M.map(([k])=>[k,T.reduce((a,w)=>[a[0]+w.rec[k][0],a[1]+w.rec[k][1]],[0,0])]));
-  const exp=T.reduce((a,w)=>a+w.expected,0);
-  const row=(lab,rec,e,cls)=>`<tr${cls?` class="${cls}"`:''}><td>${lab}</td>${M.map(([k])=>`<td class="n">${cell(rec[k])}</td>`).join('')}<td class="n">${e.toFixed(1)}</td></tr>`;
-  $('su-tab').innerHTML=`<thead><tr><th>Week</th>${M.map(([,l])=>`<th class="n">${esc(l)}</th>`).join('')}<th class="n">Market expected wins</th></tr></thead><tbody>`
-    +T.map(w=>row(`Week ${w.week}${tag(w.kind)}`,w.rec,w.expected)).join('')+row('Season',tot,exp,'med')+'</tbody>';
-  $('su-note').textContent='Tracked only; never changes the pick. The market favorite at lock wins about 66% of games over time (2010–2025). Beating the expected wins column over a season, not one week, is what would count. Backtest rows use the closing line and projections rebuilt as of each week.';
 })();
 const half=x=>{const w=Math.floor(x),f=x-w;return f===0.5?(w?w+'½':'½'):num(x,1)};
 
