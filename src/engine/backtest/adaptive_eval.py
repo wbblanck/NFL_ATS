@@ -14,7 +14,14 @@ from engine.models import adaptive as A
 from engine.models.margin_dist import TotalDist
 from engine.picks.grading import is_half_point
 
-METRICS = "/tmp/claude-0/-home-user-kmodel/a22d6978-2e78-53ca-b6cd-e3ec9edb6d03/scratchpad/v3/v6_metrics.parquet"
+
+
+def metrics(cache: str | None = None) -> pl.DataFrame:
+    """Per team-game efficiency (the v6 play-by-play metrics), built once and cached as parquet."""
+    from engine import config
+    from engine.backtest.projection_v6_eval import load_metrics
+    return load_metrics(cache or str(config.ROOT / "data" / "cache"))[0]
+
 TUNE1 = (2007, 2015)
 VAL2, CONF = (2016, 2019), (2020, 2024)
 GRID1 = {"q": (0.5, 1.0, 2.0, 4.0), "s": (0.2, 0.35, 0.5), "p0": (4.0, 16.0), "rho": (0.0, 0.5, 1.0, 2.0)}
