@@ -84,6 +84,23 @@ def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
             r[f"proj_{version}"] = f"{pj['proj_pick']} {'W' if won else 'L'}"
         summary["projection_models"][version] = {"W": w_, "L": l_, "excluded_inj_status_missing": flagged}
     summary["projection_model"] = summary["projection_models"].get("proj-poisson-v1", {"W": 0, "L": 0})
+    # Hybrid (tracked, docs/hybrid_tracking.md): live pick on 1+ pt moves, v1's pick otherwise.
+    from engine.picks import hybrid
+    by_pred = {p["game_id"]: p for p in preds if not p.get("supersedes")}
+    v1 = projs.get("proj-poisson-v1", {})
+    hw = hl = h_only = l_only = 0
+    for r in rows:
+        p = by_pred[r["game_id"]]
+        team, src = hybrid.pick(p["pick_team"], p.get("drift"), (v1.get(r["game_id"]) or {}).get("proj_pick"))
+        g = scores[r["game_id"]]
+        res = grade_league(g["home_score"], g["away_score"], r["league_line"])
+        won = (team == p["home_team"]) == (res is Result.HOME_COVER)
+        hw += won; hl += (not won)
+        if team != r["pick"]:
+            h_only += won; l_only += (not won)
+        r["hybrid"] = f"{team} {'W' if won else 'L'}"
+        r["hybrid_source"] = src
+    summary["hybrid"] = {"W": hw, "L": hl, "differ": h_only + l_only, "hybrid_only": h_only, "live_only": l_only}
     return summary, rows
 
 
@@ -103,6 +120,9 @@ def _write(rows, s):
              f"{v} {x['W']}-{x['L']}" + (f" ({x['excluded_inj_status_missing']} excluded: injury statuses not yet published)"
                                          if x.get("excluded_inj_status_missing") else "")
              for v, x in s.get("projection_models", {}).items()) or "none graded yet") + ".",
+         (f"\nHybrid (tracked, docs/hybrid_tracking.md): {s['hybrid']['W']}-{s['hybrid']['L']}; it picked "
+          f"differently from the live pick {s['hybrid']['differ']} times: hybrid right {s['hybrid']['hybrid_only']}, "
+          f"live right {s['hybrid']['live_only']}.") if s.get("hybrid") else "",
          "\n| Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |", "|---|---|---|---|---|---|---|---|"]
     L += [f"| {r['season']} | {r['week']} | {r['game_id']} | {r['pick']} | {r['league_line']:+.1f} | {r['score']} | "
           f"{r['result']}{' (late)' if r['late'] else ''} | {r['shadow_pick']} {r['shadow_result']} |" for r in rows]

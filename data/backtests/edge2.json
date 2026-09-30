@@ -1,0 +1,259 @@
+{
+ "baseline": {
+  "disc": {
+   "W": 381,
+   "N": 719
+  },
+  "conf": {
+   "W": 395,
+   "N": 705
+  }
+ },
+ "H1": {
+  "no_move_games": {
+   "disc": 111,
+   "conf": 113
+  },
+  "priced_no_move": {
+   "disc": 90,
+   "conf": 45
+  },
+  "disc": {
+   "N": 719,
+   "rule_W": 383,
+   "base_W": 381,
+   "differ": 44,
+   "rule_only": 23,
+   "base_only": 21,
+   "z": 0.30151134457776363,
+   "p_one_sided": 0.3815123002764975
+  },
+  "conf": {
+   "N": 705,
+   "rule_W": 396,
+   "base_W": 395,
+   "differ": 27,
+   "rule_only": 14,
+   "base_only": 13,
+   "z": 0.19245008972987526,
+   "p_one_sided": 0.42369482984335716
+  }
+ },
+ "H2": {
+  "b": 1.75,
+  "disc": {
+   "N": 719,
+   "rule_W": 385,
+   "base_W": 381,
+   "differ": 46,
+   "rule_only": 25,
+   "base_only": 21,
+   "z": 0.5897678246195885,
+   "p_one_sided": 0.2776731583357111
+  },
+  "conf": {
+   "N": 705,
+   "rule_W": 399,
+   "base_W": 395,
+   "differ": 18,
+   "rule_only": 11,
+   "base_only": 7,
+   "z": 0.9428090415820635,
+   "p_one_sided": 0.17288929307558015
+  }
+ },
+ "H3": {
+  "c": 0.0,
+  "ml_minus_spread": {
+   "mean_abs": 0.7115168539325679,
+   "share_ge_1": 0.21137640449438203
+  },
+  "disc": {
+   "N": 719,
+   "rule_W": 381,
+   "base_W": 381,
+   "differ": 0,
+   "rule_only": 0,
+   "base_only": 0,
+   "z": 0.0,
+   "p_one_sided": 1.0
+  },
+  "conf": {
+   "N": 705,
+   "rule_W": 395,
+   "base_W": 395,
+   "differ": 0,
+   "rule_only": 0,
+   "base_only": 0,
+   "z": 0.0,
+   "p_one_sided": 1.0
+  }
+ },
+ "H4": {
+  "disc": {
+   "full": {
+    "N": 719,
+    "rule_W": 386,
+    "base_W": 381,
+    "differ": 341,
+    "rule_only": 173,
+    "base_only": 168,
+    "z": 0.27076518053694115,
+    "p_one_sided": 0.39328582085163444
+   },
+   "tiebreak": {
+    "N": 719,
+    "rule_W": 382,
+    "base_W": 381,
+    "differ": 51,
+    "rule_only": 26,
+    "base_only": 25,
+    "z": 0.14002800840280097,
+    "p_one_sided": 0.4443189304475039
+   },
+   "no_move_games": 111
+  },
+  "conf": {
+   "full": {
+    "N": 705,
+    "rule_W": 367,
+    "base_W": 395,
+    "differ": 354,
+    "rule_only": 163,
+    "base_only": 191,
+    "z": -1.4881832096676548,
+    "p_one_sided": 0.9316487080142752
+   },
+   "tiebreak": {
+    "N": 705,
+    "rule_W": 406,
+    "base_W": 395,
+    "differ": 61,
+    "rule_only": 36,
+    "base_only": 25,
+    "z": 1.4084056792618558,
+    "p_one_sided": 0.07950548925036617
+   },
+   "no_move_games": 113
+  }
+ },
+ "H5": {
+  "full": {
+   "N": 453,
+   "rule_W": 246,
+   "base_W": 258,
+   "differ": 164,
+   "rule_only": 76,
+   "base_only": 88,
+   "z": -0.9370425713316364,
+   "p_one_sided": 0.8256316699305974
+  },
+  "tiebreak": {
+   "N": 453,
+   "rule_W": 261,
+   "base_W": 258,
+   "differ": 37,
+   "rule_only": 20,
+   "base_only": 17,
+   "z": 0.4931969619160719,
+   "p_one_sided": 0.3109367121653705
+  },
+  "no_move_games": 69
+ },
+ "holm": {
+  "H4b": {
+   "p": 0.07950548925036617,
+   "threshold": 0.0071428571428571435,
+   "pass": false
+  },
+  "H2": {
+   "p": 0.17288929307558015,
+   "threshold": 0.008333333333333333,
+   "pass": false
+  },
+  "H5b": {
+   "p": 0.3109367121653705,
+   "threshold": 0.01,
+   "pass": false
+  },
+  "H1": {
+   "p": 0.42369482984335716,
+   "threshold": 0.0125,
+   "pass": false
+  },
+  "H5a": {
+   "p": 0.8256316699305974,
+   "threshold": 0.016666666666666666,
+   "pass": false
+  },
+  "H4a": {
+   "p": 0.9316487080142752,
+   "threshold": 0.025,
+   "pass": false
+  },
+  "H3": {
+   "p": 1.0,
+   "threshold": 0.05,
+   "pass": false
+  }
+ },
+ "baseline_conf_ci95_week_bootstrap": [
+  0.5278164130607069,
+  0.591339978447259
+ ],
+ "baseline_by_move": {
+  "no_move_2014_2019": {
+   "W": 51,
+   "N": 111
+  },
+  "no_move_2020_2024": {
+   "W": 52,
+   "N": 113
+  },
+  "half_pt_2014_2019": {
+   "W": 127,
+   "N": 259
+  },
+  "half_pt_2020_2024": {
+   "W": 98,
+   "N": 180
+  },
+  "1_plus_2014_2019": {
+   "W": 203,
+   "N": 349
+  },
+  "1_plus_2020_2024": {
+   "W": 245,
+   "N": 412
+  }
+ },
+ "season_sim": {
+  "0.514": {
+   "mean": 139.83743,
+   "p5": 126.0,
+   "p95": 153.0,
+   "P_ge_141": 0.46911,
+   "P_ge_150": 0.11888,
+   "P_below_136": 0.29859,
+   "weeks_12plus_per_season": 0.82857
+  },
+  "0.549": {
+   "mean": 149.33535,
+   "p5": 136.0,
+   "p95": 163.0,
+   "P_ge_141": 0.86045,
+   "P_ge_150": 0.49341,
+   "P_below_136": 0.04587,
+   "weeks_12plus_per_season": 1.4242
+  },
+  "0.56": {
+   "mean": 152.31336,
+   "p5": 139.0,
+   "p95": 166.0,
+   "P_ge_141": 0.92565,
+   "P_ge_150": 0.63632,
+   "P_below_136": 0.02004,
+   "weeks_12plus_per_season": 1.67885
+  }
+ }
+}
