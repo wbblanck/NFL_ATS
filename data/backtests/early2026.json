@@ -1,10 +1,9 @@
 {
- "week2_source": "pool screenshots (user, 2026-09-30)",
- "week1_source": "CBS expert ATS page, half-point lines only; wrong on 2 of 13 half-point lines in week 2, so week 1 is unverified",
+ "source": "pool lines from the user's screenshots (weeks 1-2); market at lock = nflverse close",
  "summary": {
   "official": {
    "1": [
-    7,
+    9,
     7
    ],
    "2": [
@@ -12,27 +11,27 @@
     7
    ],
    "all": [
-    16,
+    18,
     14
    ]
   },
   "keynum": {
    "1": [
-    7,
-    7
+    10,
+    6
    ],
    "2": [
     9,
     7
    ],
    "all": [
-    16,
-    14
+    19,
+    13
    ]
   },
   "v1": {
    "1": [
-    6,
+    8,
     8
    ],
    "2": [
@@ -40,36 +39,36 @@
     8
    ],
    "all": [
-    14,
+    16,
     16
    ]
   },
   "v3": {
    "1": [
-    6,
-    8
+    9,
+    7
    ],
    "2": [
     9,
     7
    ],
    "all": [
-    15,
-    15
+    18,
+    14
    ]
   },
   "hybrid": {
    "1": [
-    6,
-    8
+    10,
+    6
    ],
    "2": [
     10,
     6
    ],
    "all": [
-    16,
-    14
+    20,
+    12
    ]
   }
  },
@@ -78,7 +77,7 @@
    "game_id": "2026_01_NE_SEA",
    "week": 1,
    "line": -3.5,
-   "line_source": "CBS expert page (unverified)",
+   "line_source": "pool",
    "market": -3.0,
    "drift": 0.5,
    "covered": "NE",
@@ -92,7 +91,7 @@
    "game_id": "2026_01_SF_LA",
    "week": 1,
    "line": -3.5,
-   "line_source": "CBS expert page (unverified)",
+   "line_source": "pool",
    "market": -3.5,
    "drift": 0.0,
    "covered": "SF",
@@ -106,7 +105,7 @@
    "game_id": "2026_01_CHI_CAR",
    "week": 1,
    "line": 2.5,
-   "line_source": "CBS expert page (unverified)",
+   "line_source": "pool",
    "market": 3.0,
    "drift": 0.5,
    "covered": "CHI",
@@ -120,7 +119,7 @@
    "game_id": "2026_01_TB_CIN",
    "week": 1,
    "line": -3.5,
-   "line_source": "CBS expert page (unverified)",
+   "line_source": "pool",
    "market": -3.5,
    "drift": 0.0,
    "covered": "CIN",
@@ -131,24 +130,38 @@
    "hybrid": "CIN"
   },
   {
+   "game_id": "2026_01_NO_DET",
+   "week": 1,
+   "line": -7.5,
+   "line_source": "pool",
+   "market": -7.0,
+   "drift": 0.5,
+   "covered": "NO",
+   "official": "NO",
+   "keynum": "NO",
+   "v1": "NO",
+   "v3": "NO",
+   "hybrid": "NO"
+  },
+  {
    "game_id": "2026_01_BUF_HOU",
    "week": 1,
-   "line": 1.5,
-   "line_source": "CBS expert page (unverified)",
+   "line": -1.5,
+   "line_source": "pool",
    "market": 1.5,
-   "drift": 0.0,
+   "drift": 3.0,
    "covered": "BUF",
    "official": "BUF",
    "keynum": "BUF",
-   "v1": "HOU",
-   "v3": "HOU",
-   "hybrid": "HOU"
+   "v1": "BUF",
+   "v3": "BUF",
+   "hybrid": "BUF"
   },
   {
    "game_id": "2026_01_BAL_IND",
    "week": 1,
    "line": 3.5,
-   "line_source": "CBS expert page (unverified)",
+   "line_source": "pool",
    "market": 3.0,
    "drift": -0.5,
    "covered": "BAL",
@@ -162,7 +175,7 @@
    "game_id": "2026_01_CLE_JAX",
    "week": 1,
    "line": -7.5,
-   "line_source": "CBS expert page (unverified)",
+   "line_source": "pool",
    "market": -8.5,
    "drift": -1.0,
    "covered": "JAX",
@@ -173,24 +186,38 @@
    "hybrid": "JAX"
   },
   {
+   "game_id": "2026_01_ATL_PIT",
+   "week": 1,
+   "line": -3.5,
+   "line_source": "pool",
+   "market": -6.5,
+   "drift": -3.0,
+   "covered": "PIT",
+   "official": "PIT",
+   "keynum": "PIT",
+   "v1": "ATL",
+   "v3": "ATL",
+   "hybrid": "PIT"
+  },
+  {
    "game_id": "2026_01_NYJ_TEN",
    "week": 1,
-   "line": -1.5,
-   "line_source": "CBS expert page (unverified)",
+   "line": -2.5,
+   "line_source": "pool",
    "market": -1.5,
-   "drift": 0.0,
+   "drift": 1.0,
    "covered": "NYJ",
    "official": "NYJ",
-   "keynum": "TEN",
+   "keynum": "NYJ",
    "v1": "TEN",
-   "v3": "TEN",
-   "hybrid": "TEN"
+   "v3": "NYJ",
+   "hybrid": "NYJ"
   },
   {
    "game_id": "2026_01_ARI_LAC",
    "week": 1,
    "line": -10.5,
-   "line_source": "CBS expert page (unverified)",
+   "line_source": "pool",
    "market": -8.5,
    "drift": 2.0,
    "covered": "ARI",
@@ -204,7 +231,7 @@
    "game_id": "2026_01_MIA_LV",
    "week": 1,
    "line": -3.5,
-   "line_source": "CBS expert page (unverified)",
+   "line_source": "pool",
    "market": -3.0,
    "drift": 0.5,
    "covered": "LV",
@@ -218,7 +245,7 @@
    "game_id": "2026_01_GB_MIN",
    "week": 1,
    "line": -1.5,
-   "line_source": "CBS expert page (unverified)",
+   "line_source": "pool",
    "market": -1.5,
    "drift": 0.0,
    "covered": "MIN",
@@ -232,7 +259,7 @@
    "game_id": "2026_01_WAS_PHI",
    "week": 1,
    "line": -4.5,
-   "line_source": "CBS expert page (unverified)",
+   "line_source": "pool",
    "market": -6.0,
    "drift": -1.5,
    "covered": "WAS",
@@ -246,7 +273,7 @@
    "game_id": "2026_01_DAL_NYG",
    "week": 1,
    "line": 2.5,
-   "line_source": "CBS expert page (unverified)",
+   "line_source": "pool",
    "market": 3.0,
    "drift": 0.5,
    "covered": "NYG",
@@ -260,7 +287,7 @@
    "game_id": "2026_01_DEN_KC",
    "week": 1,
    "line": -2.5,
-   "line_source": "CBS expert page (unverified)",
+   "line_source": "pool",
    "market": -2.5,
    "drift": 0.0,
    "covered": "KC",
@@ -274,7 +301,7 @@
    "game_id": "2026_02_DET_BUF",
    "week": 2,
    "line": -4.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": -5.5,
    "drift": -1.0,
    "covered": "BUF",
@@ -288,7 +315,7 @@
    "game_id": "2026_02_CAR_ATL",
    "week": 2,
    "line": 1.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": 2.5,
    "drift": 1.0,
    "covered": "CAR",
@@ -302,7 +329,7 @@
    "game_id": "2026_02_NO_BAL",
    "week": 2,
    "line": -8.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": -8.5,
    "drift": 0.0,
    "covered": "NO",
@@ -316,7 +343,7 @@
    "game_id": "2026_02_MIN_CHI",
    "week": 2,
    "line": -5.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": -4.5,
    "drift": 1.0,
    "covered": "MIN",
@@ -330,7 +357,7 @@
    "game_id": "2026_02_CIN_HOU",
    "week": 2,
    "line": -2.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": -3.0,
    "drift": -0.5,
    "covered": "CIN",
@@ -344,7 +371,7 @@
    "game_id": "2026_02_PIT_NE",
    "week": 2,
    "line": -5.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": -4.5,
    "drift": 1.0,
    "covered": "NE",
@@ -358,7 +385,7 @@
    "game_id": "2026_02_GB_NYJ",
    "week": 2,
    "line": 3.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": 3.5,
    "drift": 0.0,
    "covered": "NYJ",
@@ -372,7 +399,7 @@
    "game_id": "2026_02_CLE_TB",
    "week": 2,
    "line": -8.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": -8.5,
    "drift": 0.0,
    "covered": "CLE",
@@ -386,7 +413,7 @@
    "game_id": "2026_02_PHI_TEN",
    "week": 2,
    "line": 7.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": 7.0,
    "drift": -0.5,
    "covered": "TEN",
@@ -400,7 +427,7 @@
    "game_id": "2026_02_JAX_DEN",
    "week": 2,
    "line": -2.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": -2.5,
    "drift": 0.0,
    "covered": "DEN",
@@ -414,7 +441,7 @@
    "game_id": "2026_02_LV_LAC",
    "week": 2,
    "line": -6.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": -6.5,
    "drift": 0.0,
    "covered": "LV",
@@ -428,7 +455,7 @@
    "game_id": "2026_02_SEA_ARI",
    "week": 2,
    "line": 3.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": 3.5,
    "drift": 0.0,
    "covered": "SEA",
@@ -442,7 +469,7 @@
    "game_id": "2026_02_WAS_DAL",
    "week": 2,
    "line": -3.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": -3.5,
    "drift": 0.0,
    "covered": "DAL",
@@ -456,7 +483,7 @@
    "game_id": "2026_02_MIA_SF",
    "week": 2,
    "line": -13.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": -12.5,
    "drift": 1.0,
    "covered": "SF",
@@ -470,7 +497,7 @@
    "game_id": "2026_02_IND_KC",
    "week": 2,
    "line": -6.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": -6.0,
    "drift": 0.5,
    "covered": "IND",
@@ -484,7 +511,7 @@
    "game_id": "2026_02_NYG_LA",
    "week": 2,
    "line": -7.5,
-   "line_source": "pool screenshot",
+   "line_source": "pool",
    "market": -6.5,
    "drift": 1.0,
    "covered": "LA",
