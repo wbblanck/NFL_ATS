@@ -1,5 +1,6 @@
 {
- "source": "CBS expert ATS pages (half-point lines; matched pool 10/10 in week 3)",
+ "week2_source": "pool screenshots (user, 2026-09-30)",
+ "week1_source": "CBS expert ATS page, half-point lines only; wrong on 2 of 13 half-point lines in week 2, so week 1 is unverified",
  "summary": {
   "official": {
    "1": [
@@ -7,11 +8,11 @@
     7
    ],
    "2": [
-    6,
+    9,
     7
    ],
    "all": [
-    13,
+    16,
     14
    ]
   },
@@ -21,12 +22,12 @@
     7
    ],
    "2": [
-    7,
-    6
+    9,
+    7
    ],
    "all": [
-    14,
-    13
+    16,
+    14
    ]
   },
   "v1": {
@@ -35,12 +36,12 @@
     8
    ],
    "2": [
-    6,
-    7
+    8,
+    8
    ],
    "all": [
-    12,
-    15
+    14,
+    16
    ]
   },
   "v3": {
@@ -49,12 +50,12 @@
     8
    ],
    "2": [
-    7,
-    6
+    9,
+    7
    ],
    "all": [
-    13,
-    14
+    15,
+    15
    ]
   },
   "hybrid": {
@@ -63,12 +64,12 @@
     8
    ],
    "2": [
-    6,
-    7
+    10,
+    6
    ],
    "all": [
-    12,
-    15
+    16,
+    14
    ]
   }
  },
@@ -77,7 +78,7 @@
    "game_id": "2026_01_NE_SEA",
    "week": 1,
    "line": -3.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": -3.0,
    "drift": 0.5,
    "covered": "NE",
@@ -91,7 +92,7 @@
    "game_id": "2026_01_SF_LA",
    "week": 1,
    "line": -3.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": -3.5,
    "drift": 0.0,
    "covered": "SF",
@@ -105,7 +106,7 @@
    "game_id": "2026_01_CHI_CAR",
    "week": 1,
    "line": 2.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": 3.0,
    "drift": 0.5,
    "covered": "CHI",
@@ -119,7 +120,7 @@
    "game_id": "2026_01_TB_CIN",
    "week": 1,
    "line": -3.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": -3.5,
    "drift": 0.0,
    "covered": "CIN",
@@ -133,7 +134,7 @@
    "game_id": "2026_01_BUF_HOU",
    "week": 1,
    "line": 1.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": 1.5,
    "drift": 0.0,
    "covered": "BUF",
@@ -147,7 +148,7 @@
    "game_id": "2026_01_BAL_IND",
    "week": 1,
    "line": 3.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": 3.0,
    "drift": -0.5,
    "covered": "BAL",
@@ -161,7 +162,7 @@
    "game_id": "2026_01_CLE_JAX",
    "week": 1,
    "line": -7.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": -8.5,
    "drift": -1.0,
    "covered": "JAX",
@@ -175,7 +176,7 @@
    "game_id": "2026_01_NYJ_TEN",
    "week": 1,
    "line": -1.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": -1.5,
    "drift": 0.0,
    "covered": "NYJ",
@@ -189,7 +190,7 @@
    "game_id": "2026_01_ARI_LAC",
    "week": 1,
    "line": -10.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": -8.5,
    "drift": 2.0,
    "covered": "ARI",
@@ -203,7 +204,7 @@
    "game_id": "2026_01_MIA_LV",
    "week": 1,
    "line": -3.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": -3.0,
    "drift": 0.5,
    "covered": "LV",
@@ -217,7 +218,7 @@
    "game_id": "2026_01_GB_MIN",
    "week": 1,
    "line": -1.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": -1.5,
    "drift": 0.0,
    "covered": "MIN",
@@ -231,7 +232,7 @@
    "game_id": "2026_01_WAS_PHI",
    "week": 1,
    "line": -4.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": -6.0,
    "drift": -1.5,
    "covered": "WAS",
@@ -245,7 +246,7 @@
    "game_id": "2026_01_DAL_NYG",
    "week": 1,
    "line": 2.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": 3.0,
    "drift": 0.5,
    "covered": "NYG",
@@ -259,7 +260,7 @@
    "game_id": "2026_01_DEN_KC",
    "week": 1,
    "line": -2.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "CBS expert page (unverified)",
    "market": -2.5,
    "drift": 0.0,
    "covered": "KC",
@@ -273,7 +274,7 @@
    "game_id": "2026_02_DET_BUF",
    "week": 2,
    "line": -4.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "pool screenshot",
    "market": -5.5,
    "drift": -1.0,
    "covered": "BUF",
@@ -286,22 +287,22 @@
   {
    "game_id": "2026_02_CAR_ATL",
    "week": 2,
-   "line": 2.5,
-   "line_source": "cbs_ats_experts",
+   "line": 1.5,
+   "line_source": "pool screenshot",
    "market": 2.5,
-   "drift": 0.0,
+   "drift": 1.0,
    "covered": "CAR",
    "official": "CAR",
    "keynum": "CAR",
    "v1": "ATL",
    "v3": "ATL",
-   "hybrid": "ATL"
+   "hybrid": "CAR"
   },
   {
    "game_id": "2026_02_NO_BAL",
    "week": 2,
    "line": -8.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "pool screenshot",
    "market": -8.5,
    "drift": 0.0,
    "covered": "NO",
@@ -315,7 +316,7 @@
    "game_id": "2026_02_MIN_CHI",
    "week": 2,
    "line": -5.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "pool screenshot",
    "market": -4.5,
    "drift": 1.0,
    "covered": "MIN",
@@ -329,7 +330,7 @@
    "game_id": "2026_02_CIN_HOU",
    "week": 2,
    "line": -2.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "pool screenshot",
    "market": -3.0,
    "drift": -0.5,
    "covered": "CIN",
@@ -343,7 +344,7 @@
    "game_id": "2026_02_PIT_NE",
    "week": 2,
    "line": -5.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "pool screenshot",
    "market": -4.5,
    "drift": 1.0,
    "covered": "NE",
@@ -357,7 +358,7 @@
    "game_id": "2026_02_GB_NYJ",
    "week": 2,
    "line": 3.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "pool screenshot",
    "market": 3.5,
    "drift": 0.0,
    "covered": "NYJ",
@@ -371,7 +372,7 @@
    "game_id": "2026_02_CLE_TB",
    "week": 2,
    "line": -8.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "pool screenshot",
    "market": -8.5,
    "drift": 0.0,
    "covered": "CLE",
@@ -382,10 +383,24 @@
    "hybrid": "CLE"
   },
   {
+   "game_id": "2026_02_PHI_TEN",
+   "week": 2,
+   "line": 7.5,
+   "line_source": "pool screenshot",
+   "market": 7.0,
+   "drift": -0.5,
+   "covered": "TEN",
+   "official": "TEN",
+   "keynum": "TEN",
+   "v1": "TEN",
+   "v3": "TEN",
+   "hybrid": "TEN"
+  },
+  {
    "game_id": "2026_02_JAX_DEN",
    "week": 2,
    "line": -2.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "pool screenshot",
    "market": -2.5,
    "drift": 0.0,
    "covered": "DEN",
@@ -396,24 +411,38 @@
    "hybrid": "JAX"
   },
   {
+   "game_id": "2026_02_LV_LAC",
+   "week": 2,
+   "line": -6.5,
+   "line_source": "pool screenshot",
+   "market": -6.5,
+   "drift": 0.0,
+   "covered": "LV",
+   "official": "LV",
+   "keynum": "LV",
+   "v1": "LV",
+   "v3": "LV",
+   "hybrid": "LV"
+  },
+  {
    "game_id": "2026_02_SEA_ARI",
    "week": 2,
-   "line": 4.5,
-   "line_source": "cbs_ats_experts",
+   "line": 3.5,
+   "line_source": "pool screenshot",
    "market": 3.5,
-   "drift": -1.0,
+   "drift": 0.0,
    "covered": "SEA",
-   "official": "ARI",
+   "official": "SEA",
    "keynum": "ARI",
    "v1": "SEA",
    "v3": "ARI",
-   "hybrid": "ARI"
+   "hybrid": "SEA"
   },
   {
    "game_id": "2026_02_WAS_DAL",
    "week": 2,
    "line": -3.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "pool screenshot",
    "market": -3.5,
    "drift": 0.0,
    "covered": "DAL",
@@ -427,7 +456,7 @@
    "game_id": "2026_02_MIA_SF",
    "week": 2,
    "line": -13.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "pool screenshot",
    "market": -12.5,
    "drift": 1.0,
    "covered": "SF",
@@ -441,7 +470,7 @@
    "game_id": "2026_02_IND_KC",
    "week": 2,
    "line": -6.5,
-   "line_source": "cbs_ats_experts",
+   "line_source": "pool screenshot",
    "market": -6.0,
    "drift": 0.5,
    "covered": "IND",
@@ -450,6 +479,20 @@
    "v1": "IND",
    "v3": "IND",
    "hybrid": "IND"
+  },
+  {
+   "game_id": "2026_02_NYG_LA",
+   "week": 2,
+   "line": -7.5,
+   "line_source": "pool screenshot",
+   "market": -6.5,
+   "drift": 1.0,
+   "covered": "LA",
+   "official": "NYG",
+   "keynum": "NYG",
+   "v1": "NYG",
+   "v3": "NYG",
+   "hybrid": "NYG"
   }
  ]
 }
