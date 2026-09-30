@@ -1,0 +1,33 @@
+name: Render web page
+# One-off: render a JavaScript page in headless Chromium and save its text and screenshot as evidence.
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [main]
+    paths: ['scripts/fetch/render_page.py', '.github/workflows/render-page.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install playwright && python -m playwright install --with-deps chromium
+      - name: Render
+        env:
+          RENDER_URLS: |
+            https://www.reddit.com/r/sportsanalytics/s/2QwZbckAer
+        run: python scripts/fetch/render_page.py
+      - name: Commit
+        run: |
+          git config user.name "nfl-ats-engine"
+          git config user.email "nfl-ats-engine@users.noreply.github.com"
+          git add docs/evidence/probe
+          git commit -m "evidence: rendered page capture" || exit 0
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep 5; done
