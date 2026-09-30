@@ -306,9 +306,16 @@ def main(argv=None) -> int:
         except Exception as e:
             print("game detail unavailable:", repr(e), file=sys.stderr)
             details = {}
+        try:
+            import nflreadpy as _nfl
+            from engine.features import epa_components as _epa
+            epa_tab = _epa.compute(_nfl.load_pbp(seasons=[a.season]), a.week)
+        except Exception as e:
+            print("team EPA unavailable:", repr(e), file=sys.stderr)
+            epa_tab = {}
         out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
         open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results,
-                                              details, season_tab, market.credits_left()))
+                                              details, season_tab, market.credits_left(), epa_tab))
         print(out)
         return 0
     if a.cmd == "check-league-lines":
