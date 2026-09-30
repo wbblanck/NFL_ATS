@@ -32,8 +32,11 @@ def load_xlsx(path=XLSX) -> pl.DataFrame:
         day = dt.date.fromisoformat(day[:10]) if isinstance(day, str) else day.date()
         out.append({"date": day, "home": FR.get(h, h), "away": FR.get(a, a),
                     "open": r[ix["Home Line Open"]], "close_b": r[ix["Home Line Close"]],
-                    "playoff": r[ix["Playoff Game?"]] == "Y"})
-    return pl.DataFrame(out)
+                    "min_b": r[ix["Home Line Min"]], "max_b": r[ix["Home Line Max"]],
+                    "hp_close": r[ix["Home Line Odds Close"]], "ap_close": r[ix["Away Line Odds Close"]],
+                    "hml_close": r[ix["Home Odds Close"]], "aml_close": r[ix["Away Odds Close"]],
+                    "neutral": r[ix["Neutral Venue?"]] == "Y", "playoff": r[ix["Playoff Game?"]] == "Y"})
+    return pl.DataFrame(out, infer_schema_length=None)
 
 
 def match(x: pl.DataFrame, sched: pl.DataFrame) -> pl.DataFrame:
@@ -52,8 +55,14 @@ def match(x: pl.DataFrame, sched: pl.DataFrame) -> pl.DataFrame:
         r = c[0]
         s = 1.0 if r["home"] == h else -1.0
         f = lambda v: None if v is None else s * float(v)
-        out.append({"game_id": g["game_id"], "b_open": f(r["open"]), "b_close": f(r["close_b"])})
-    return pl.DataFrame(out)
+        sw = s < 0
+        lo, hi = f(r["min_b"]), f(r["max_b"])
+        out.append({"game_id": g["game_id"], "b_open": f(r["open"]), "b_close": f(r["close_b"]),
+                    "b_min": None if lo is None else min(lo, hi), "b_max": None if hi is None else max(lo, hi),
+                    "hp": r["ap_close"] if sw else r["hp_close"], "ap": r["hp_close"] if sw else r["ap_close"],
+                    "hml": r["aml_close"] if sw else r["hml_close"], "aml": r["hml_close"] if sw else r["aml_close"],
+                    "swapped": sw})
+    return pl.DataFrame(out, infer_schema_length=None)
 
 
 def _rec(w, n):

@@ -49,7 +49,11 @@ Not pre-registered, reported only. 2025 graded with the same model against two o
 | betr open (AusSportsBetting) | 137-121 (53.1%) | 109-78 (58.3%) |
 | CBS open (the earlier holdout) | 130-137 (48.7%) | 66-61 (52.0%) |
 
-The two agreed in 35% of games. Against a bookmaker's early opener the model keeps its edge; against the CBS line it
+The two agreed in 35% of games. **Correction (2026-09-30, docs/edge2_report.md):** the file's betr data
+(September 2025 onward) failed verification: 2025 weeks 1–5 have no close, and in 2026 weeks 1–3 its lines
+disagree with our own live captures (closes within ½ point of ours in 11 of 15 games; opens up to 9 points from
+the market). The betr row above is therefore unreliable and should not be read as evidence. Against a bookmaker's
+early opener (2022–2024, bet365, which did pass verification) the model keeps its edge; against the CBS line it
 did not in 2025. The pool uses CBS's Tuesday line, which is posted later than a bookmaker's opener, so part of the
 early move has already happened when the pool line is set. **The 2022–2024 result therefore shows the market-move
 signal still worked in those seasons, but it overstates what to expect against the pool line.** The honest guide
