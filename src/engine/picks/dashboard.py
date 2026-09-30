@@ -67,7 +67,7 @@ def _result_char(v) -> str | None:
 
 
 def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.datetime,
-           results: dict | None = None, details: dict | None = None) -> str:
+           results: dict | None = None, details: dict | None = None, season_table: list | None = None) -> str:
     """results: game_id -> graded row from live.compute (result, proj_<version> strings); optional.
     details: game_id -> per-game detail from game_detail.build (book lines over time, why, inputs); optional."""
     results = results or {}
@@ -115,7 +115,8 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
         models.append({"label": "Hybrid (tracked)", "W": h["W"], "L": h["L"],
                        "note": f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"})
     nxt = min(upcoming) if upcoming else None
-    data = json.dumps({"games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
+    from engine.picks.season import MODELS as _SM
+    data = json.dumps({"season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
                        "next_lock": None if nxt is None else {"at": _clock(nxt[0]), "game": nxt[1]},
                        "updated": updated.astimezone(ET).strftime("%a %b %-d, %-I:%M %p ET")})
@@ -246,6 +247,7 @@ header{display:flex;flex-direction:column;gap:10px}
 .d-match .at{font-size:.5em;color:var(--ink-3)}
 .d-facts{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;font-size:14px;color:var(--ink-2)}
 .d-facts b{color:var(--ink);font-weight:600}
+.panel[hidden]{display:none}
 .panel{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
 h3{margin:0;font:800 22px/1 var(--display);text-transform:uppercase;letter-spacing:.01em}
 .sub{font-size:13px;color:var(--ink-2);margin:0}
@@ -353,6 +355,11 @@ details p{margin:0}
       <div class="meter" role="img" id="ev-m"><i id="ev-i"></i></div>
     </div>
   </section>
+  <section class="panel" id="season-panel" hidden aria-label="Season by week">
+    <h3>Season by week</h3>
+    <p class="sub" id="season-note"></p>
+    <div class="tbl"><table id="season-tab"></table></div>
+  </section>
   <section class="controls">
     <div class="filters" role="group" aria-label="Filter games">
       <button id="f-all" aria-pressed="true">All games</button>
@@ -402,6 +409,18 @@ $('ev-a').textContent=`${D.graded} of ${D.claim_at} graded games before any clai
 $('ev-b').textContent=`±${Math.round(50/Math.sqrt(Math.max(D.graded,1)))} pts standard error at ${D.graded} games`;
 $('ev-i').style.width=pg+'%';
 $('ev-m').setAttribute('aria-label',`${D.graded} of ${D.claim_at} games graded`);
+(function(){
+  const T=D.season_tab||[];if(!T.length)return;
+  const M=D.season_models;$('season-panel').hidden=false;
+  const cell=r=>r&&(r[0]+r[1])?`${r[0]}–${r[1]}`:'—';
+  const sum=rows=>Object.fromEntries(M.map(([k])=>[k,rows.reduce((a,w)=>[a[0]+w.rec[k][0],a[1]+w.rec[k][1]],[0,0])]));
+  const live=T.filter(w=>w.kind==='live');
+  const row=(lab,rec,cls)=>`<tr${cls?` class="${cls}"`:''}><td>${lab}</td>${M.map(([k])=>`<td class="n">${cell(rec[k])}</td>`).join('')}</tr>`;
+  $('season-tab').innerHTML=`<thead><tr><th>Week</th>${M.map(([,l])=>`<th class="n">${esc(l)}</th>`).join('')}</tr></thead><tbody>`
+    +T.map(w=>row(`Week ${w.week}${w.kind==='backtest'?' <span class="m hook">backtest</span>':''}`,w.rec)).join('')
+    +(live.length?row('Live total',sum(live),'med'):'')+row('Season incl. backtest',sum(T),'med')+'</tbody>';
+  $('season-note').textContent=T.some(w=>w.kind==='backtest')?'Weeks marked backtest were not picked live: each model re-run as it would have been at lock, on the real pool lines from the Picks history, with the closing line as the market. Only live weeks count toward the official record.':'';
+})();
 const half=x=>{const w=Math.floor(x),f=x-w;return f===0.5?(w?w+'½':'½'):num(x,1)};
 
 function team(x,side,picked){

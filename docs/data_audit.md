@@ -387,3 +387,11 @@ Hosted cron stays in use only for the non-time-critical CBS capture (every
    allowed, and add `PARLAY_API_KEY` as a secret in this repository.
 3. **Scheduler for final picks**: local machine, always-on host, or an
    external trigger (0.10).
+
+## ESPN core API (probe 2026-09-30, `docs/evidence/probe/20260930T034922Z/`)
+
+- `site.api.espn.com` is still refused (403) from GitHub runners; `site.web.api.espn.com` and
+  `sports.core.api.espn.com` answer (200).
+- Core `/events/{id}/competitions/{id}/odds`: 2022–2023 games list ~15 books but only their final line (no open);
+  2024 onward, ESPN BET / DraftKings items carry `open` and `close`. A `.../odds/{provider}/history/...` link
+  exists (seen for teamrankings, 2022) and was not followed: it may hold timestamped line movement. Not used.

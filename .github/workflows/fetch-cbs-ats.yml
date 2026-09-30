@@ -1,0 +1,29 @@
+name: Fetch CBS ATS expert pages
+# One-off: CBS expert against-the-spread pages for 2026 weeks 1-4 (candidate pool-line source).
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [main]
+    paths: ['scripts/fetch/cbs_ats_experts.py', '.github/workflows/fetch-cbs-ats.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - run: python scripts/fetch/cbs_ats_experts.py
+      - name: Commit
+        run: |
+          git config user.name "nfl-ats-engine"
+          git config user.email "nfl-ats-engine@users.noreply.github.com"
+          git add docs/evidence/probe
+          git commit -m "evidence: CBS ATS expert pages 2026 weeks 1-4" || exit 0
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep 5; done

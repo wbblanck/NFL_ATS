@@ -1,0 +1,525 @@
+{
+ "source": "pool lines from the user's screenshots (weeks 1-2); market at lock = nflverse close",
+ "summary": {
+  "official": {
+   "1": [
+    9,
+    7
+   ],
+   "2": [
+    9,
+    7
+   ],
+   "all": [
+    18,
+    14
+   ]
+  },
+  "keynum": {
+   "1": [
+    10,
+    6
+   ],
+   "2": [
+    9,
+    7
+   ],
+   "all": [
+    19,
+    13
+   ]
+  },
+  "v1": {
+   "1": [
+    8,
+    8
+   ],
+   "2": [
+    8,
+    8
+   ],
+   "all": [
+    16,
+    16
+   ]
+  },
+  "v3": {
+   "1": [
+    9,
+    7
+   ],
+   "2": [
+    9,
+    7
+   ],
+   "all": [
+    18,
+    14
+   ]
+  },
+  "hybrid": {
+   "1": [
+    10,
+    6
+   ],
+   "2": [
+    10,
+    6
+   ],
+   "all": [
+    20,
+    12
+   ]
+  }
+ },
+ "games": [
+  {
+   "game_id": "2026_01_NE_SEA",
+   "week": 1,
+   "line": -3.5,
+   "line_source": "pool",
+   "market": -3.0,
+   "drift": 0.5,
+   "covered": "NE",
+   "official": "NE",
+   "keynum": "NE",
+   "v1": "NE",
+   "v3": "NE",
+   "hybrid": "NE"
+  },
+  {
+   "game_id": "2026_01_SF_LA",
+   "week": 1,
+   "line": -3.5,
+   "line_source": "pool",
+   "market": -3.5,
+   "drift": 0.0,
+   "covered": "SF",
+   "official": "SF",
+   "keynum": "SF",
+   "v1": "LA",
+   "v3": "LA",
+   "hybrid": "LA"
+  },
+  {
+   "game_id": "2026_01_CHI_CAR",
+   "week": 1,
+   "line": 2.5,
+   "line_source": "pool",
+   "market": 3.0,
+   "drift": 0.5,
+   "covered": "CHI",
+   "official": "CHI",
+   "keynum": "CHI",
+   "v1": "CAR",
+   "v3": "CAR",
+   "hybrid": "CAR"
+  },
+  {
+   "game_id": "2026_01_TB_CIN",
+   "week": 1,
+   "line": -3.5,
+   "line_source": "pool",
+   "market": -3.5,
+   "drift": 0.0,
+   "covered": "CIN",
+   "official": "TB",
+   "keynum": "TB",
+   "v1": "CIN",
+   "v3": "CIN",
+   "hybrid": "CIN"
+  },
+  {
+   "game_id": "2026_01_NO_DET",
+   "week": 1,
+   "line": -7.5,
+   "line_source": "pool",
+   "market": -7.0,
+   "drift": 0.5,
+   "covered": "NO",
+   "official": "NO",
+   "keynum": "NO",
+   "v1": "NO",
+   "v3": "NO",
+   "hybrid": "NO"
+  },
+  {
+   "game_id": "2026_01_BUF_HOU",
+   "week": 1,
+   "line": -1.5,
+   "line_source": "pool",
+   "market": 1.5,
+   "drift": 3.0,
+   "covered": "BUF",
+   "official": "BUF",
+   "keynum": "BUF",
+   "v1": "BUF",
+   "v3": "BUF",
+   "hybrid": "BUF"
+  },
+  {
+   "game_id": "2026_01_BAL_IND",
+   "week": 1,
+   "line": 3.5,
+   "line_source": "pool",
+   "market": 3.0,
+   "drift": -0.5,
+   "covered": "BAL",
+   "official": "IND",
+   "keynum": "IND",
+   "v1": "IND",
+   "v3": "IND",
+   "hybrid": "IND"
+  },
+  {
+   "game_id": "2026_01_CLE_JAX",
+   "week": 1,
+   "line": -7.5,
+   "line_source": "pool",
+   "market": -8.5,
+   "drift": -1.0,
+   "covered": "JAX",
+   "official": "JAX",
+   "keynum": "CLE",
+   "v1": "JAX",
+   "v3": "JAX",
+   "hybrid": "JAX"
+  },
+  {
+   "game_id": "2026_01_ATL_PIT",
+   "week": 1,
+   "line": -3.5,
+   "line_source": "pool",
+   "market": -6.5,
+   "drift": -3.0,
+   "covered": "PIT",
+   "official": "PIT",
+   "keynum": "PIT",
+   "v1": "ATL",
+   "v3": "ATL",
+   "hybrid": "PIT"
+  },
+  {
+   "game_id": "2026_01_NYJ_TEN",
+   "week": 1,
+   "line": -2.5,
+   "line_source": "pool",
+   "market": -1.5,
+   "drift": 1.0,
+   "covered": "NYJ",
+   "official": "NYJ",
+   "keynum": "NYJ",
+   "v1": "TEN",
+   "v3": "NYJ",
+   "hybrid": "NYJ"
+  },
+  {
+   "game_id": "2026_01_ARI_LAC",
+   "week": 1,
+   "line": -10.5,
+   "line_source": "pool",
+   "market": -8.5,
+   "drift": 2.0,
+   "covered": "ARI",
+   "official": "ARI",
+   "keynum": "ARI",
+   "v1": "ARI",
+   "v3": "ARI",
+   "hybrid": "ARI"
+  },
+  {
+   "game_id": "2026_01_MIA_LV",
+   "week": 1,
+   "line": -3.5,
+   "line_source": "pool",
+   "market": -3.0,
+   "drift": 0.5,
+   "covered": "LV",
+   "official": "MIA",
+   "keynum": "MIA",
+   "v1": "MIA",
+   "v3": "MIA",
+   "hybrid": "MIA"
+  },
+  {
+   "game_id": "2026_01_GB_MIN",
+   "week": 1,
+   "line": -1.5,
+   "line_source": "pool",
+   "market": -1.5,
+   "drift": 0.0,
+   "covered": "MIN",
+   "official": "GB",
+   "keynum": "MIN",
+   "v1": "MIN",
+   "v3": "MIN",
+   "hybrid": "MIN"
+  },
+  {
+   "game_id": "2026_01_WAS_PHI",
+   "week": 1,
+   "line": -4.5,
+   "line_source": "pool",
+   "market": -6.0,
+   "drift": -1.5,
+   "covered": "WAS",
+   "official": "PHI",
+   "keynum": "PHI",
+   "v1": "PHI",
+   "v3": "PHI",
+   "hybrid": "PHI"
+  },
+  {
+   "game_id": "2026_01_DAL_NYG",
+   "week": 1,
+   "line": 2.5,
+   "line_source": "pool",
+   "market": 3.0,
+   "drift": 0.5,
+   "covered": "NYG",
+   "official": "DAL",
+   "keynum": "DAL",
+   "v1": "NYG",
+   "v3": "NYG",
+   "hybrid": "NYG"
+  },
+  {
+   "game_id": "2026_01_DEN_KC",
+   "week": 1,
+   "line": -2.5,
+   "line_source": "pool",
+   "market": -2.5,
+   "drift": 0.0,
+   "covered": "KC",
+   "official": "DEN",
+   "keynum": "KC",
+   "v1": "DEN",
+   "v3": "DEN",
+   "hybrid": "DEN"
+  },
+  {
+   "game_id": "2026_02_DET_BUF",
+   "week": 2,
+   "line": -4.5,
+   "line_source": "pool",
+   "market": -5.5,
+   "drift": -1.0,
+   "covered": "BUF",
+   "official": "BUF",
+   "keynum": "DET",
+   "v1": "DET",
+   "v3": "BUF",
+   "hybrid": "BUF"
+  },
+  {
+   "game_id": "2026_02_CAR_ATL",
+   "week": 2,
+   "line": 1.5,
+   "line_source": "pool",
+   "market": 2.5,
+   "drift": 1.0,
+   "covered": "CAR",
+   "official": "CAR",
+   "keynum": "CAR",
+   "v1": "ATL",
+   "v3": "ATL",
+   "hybrid": "CAR"
+  },
+  {
+   "game_id": "2026_02_NO_BAL",
+   "week": 2,
+   "line": -8.5,
+   "line_source": "pool",
+   "market": -8.5,
+   "drift": 0.0,
+   "covered": "NO",
+   "official": "NO",
+   "keynum": "NO",
+   "v1": "NO",
+   "v3": "NO",
+   "hybrid": "NO"
+  },
+  {
+   "game_id": "2026_02_MIN_CHI",
+   "week": 2,
+   "line": -5.5,
+   "line_source": "pool",
+   "market": -4.5,
+   "drift": 1.0,
+   "covered": "MIN",
+   "official": "MIN",
+   "keynum": "MIN",
+   "v1": "MIN",
+   "v3": "MIN",
+   "hybrid": "MIN"
+  },
+  {
+   "game_id": "2026_02_CIN_HOU",
+   "week": 2,
+   "line": -2.5,
+   "line_source": "pool",
+   "market": -3.0,
+   "drift": -0.5,
+   "covered": "CIN",
+   "official": "HOU",
+   "keynum": "HOU",
+   "v1": "HOU",
+   "v3": "CIN",
+   "hybrid": "HOU"
+  },
+  {
+   "game_id": "2026_02_PIT_NE",
+   "week": 2,
+   "line": -5.5,
+   "line_source": "pool",
+   "market": -4.5,
+   "drift": 1.0,
+   "covered": "NE",
+   "official": "PIT",
+   "keynum": "PIT",
+   "v1": "PIT",
+   "v3": "PIT",
+   "hybrid": "PIT"
+  },
+  {
+   "game_id": "2026_02_GB_NYJ",
+   "week": 2,
+   "line": 3.5,
+   "line_source": "pool",
+   "market": 3.5,
+   "drift": 0.0,
+   "covered": "NYJ",
+   "official": "GB",
+   "keynum": "NYJ",
+   "v1": "NYJ",
+   "v3": "NYJ",
+   "hybrid": "NYJ"
+  },
+  {
+   "game_id": "2026_02_CLE_TB",
+   "week": 2,
+   "line": -8.5,
+   "line_source": "pool",
+   "market": -8.5,
+   "drift": 0.0,
+   "covered": "CLE",
+   "official": "CLE",
+   "keynum": "CLE",
+   "v1": "CLE",
+   "v3": "CLE",
+   "hybrid": "CLE"
+  },
+  {
+   "game_id": "2026_02_PHI_TEN",
+   "week": 2,
+   "line": 7.5,
+   "line_source": "pool",
+   "market": 7.0,
+   "drift": -0.5,
+   "covered": "TEN",
+   "official": "TEN",
+   "keynum": "TEN",
+   "v1": "TEN",
+   "v3": "TEN",
+   "hybrid": "TEN"
+  },
+  {
+   "game_id": "2026_02_JAX_DEN",
+   "week": 2,
+   "line": -2.5,
+   "line_source": "pool",
+   "market": -2.5,
+   "drift": 0.0,
+   "covered": "DEN",
+   "official": "JAX",
+   "keynum": "DEN",
+   "v1": "JAX",
+   "v3": "JAX",
+   "hybrid": "JAX"
+  },
+  {
+   "game_id": "2026_02_LV_LAC",
+   "week": 2,
+   "line": -6.5,
+   "line_source": "pool",
+   "market": -6.5,
+   "drift": 0.0,
+   "covered": "LV",
+   "official": "LV",
+   "keynum": "LV",
+   "v1": "LV",
+   "v3": "LV",
+   "hybrid": "LV"
+  },
+  {
+   "game_id": "2026_02_SEA_ARI",
+   "week": 2,
+   "line": 3.5,
+   "line_source": "pool",
+   "market": 3.5,
+   "drift": 0.0,
+   "covered": "SEA",
+   "official": "SEA",
+   "keynum": "ARI",
+   "v1": "SEA",
+   "v3": "ARI",
+   "hybrid": "SEA"
+  },
+  {
+   "game_id": "2026_02_WAS_DAL",
+   "week": 2,
+   "line": -3.5,
+   "line_source": "pool",
+   "market": -3.5,
+   "drift": 0.0,
+   "covered": "DAL",
+   "official": "WAS",
+   "keynum": "WAS",
+   "v1": "WAS",
+   "v3": "WAS",
+   "hybrid": "WAS"
+  },
+  {
+   "game_id": "2026_02_MIA_SF",
+   "week": 2,
+   "line": -13.5,
+   "line_source": "pool",
+   "market": -12.5,
+   "drift": 1.0,
+   "covered": "SF",
+   "official": "MIA",
+   "keynum": "MIA",
+   "v1": "MIA",
+   "v3": "MIA",
+   "hybrid": "MIA"
+  },
+  {
+   "game_id": "2026_02_IND_KC",
+   "week": 2,
+   "line": -6.5,
+   "line_source": "pool",
+   "market": -6.0,
+   "drift": 0.5,
+   "covered": "IND",
+   "official": "IND",
+   "keynum": "IND",
+   "v1": "IND",
+   "v3": "IND",
+   "hybrid": "IND"
+  },
+  {
+   "game_id": "2026_02_NYG_LA",
+   "week": 2,
+   "line": -7.5,
+   "line_source": "pool",
+   "market": -6.5,
+   "drift": 1.0,
+   "covered": "LA",
+   "official": "NYG",
+   "keynum": "NYG",
+   "v1": "NYG",
+   "v3": "NYG",
+   "hybrid": "NYG"
+  }
+ ]
+}
