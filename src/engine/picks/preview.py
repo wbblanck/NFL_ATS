@@ -34,7 +34,7 @@ def latest_market(game_ids: set[str]) -> dict[str, dict]:
 
 def _projections(proj_games, season, week, games, v3=None, names=None):
     """Tracked projection for display: proj-players-v3 when its inputs load, else v1. Returns
-    game_id -> (Projection, version, flags, explanation)."""
+    game_id -> (Projection, version, flags, explanation, v1 Projection)."""
     if proj_games is None:
         return {}
     import sys
@@ -57,6 +57,8 @@ def _projections(proj_games, season, week, games, v3=None, names=None):
         except Exception:
             continue
         fh, fa = feats.get((g["game_id"], h)), feats.get((g["game_id"], a))
+        pr1 = P.Projection(P.points_pmf(q["home_td"], q["home_fg"], rt.p_xp, rt.p_2),
+                           P.points_pmf(q["away_td"], q["away_fg"], rt.p_xp, rt.p_2))     # v1, for the hybrid
         version, flags, used = final.PROJ_VERSION, [], False
         if m is not None and fh is not None and fa is not None and all(
                 f[c] is not None for f in (fh, fa) for c in m["features"]):
@@ -77,7 +79,7 @@ def _projections(proj_games, season, week, games, v3=None, names=None):
         except Exception as e:
             print("projection explanation unavailable:", repr(e), file=sys.stderr)
             why = None
-        out[g["game_id"]] = (pr, version, flags, why)
+        out[g["game_id"]] = (pr, version, flags, why, pr1)
     return out
 
 
@@ -91,6 +93,8 @@ def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None =
     dist, _ = final.fit_dist(sched, now)
     tdist = final.fit_total_dist(sched, now)
     projs = _projections(proj_games, season, week, wk.to_dicts(), v3, names)
+    rec_v1 = {r["game_id"]: r.get("proj_pick") or None for r in store.read_rows(final.projections_path())
+              if (r.get("model_version") or final.PROJ_VERSION) == final.PROJ_VERSION}
     out = []
     for g in wk.to_dicts():
         gid = g["game_id"]
@@ -99,15 +103,19 @@ def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None =
                 "away_score": g.get("away_score"), "home_score": g.get("home_score")}
         got = projs.get(gid)
         if got is not None:
-            pr, version, pflags, why = got
+            pr, version, pflags, why, pr1 = got
             hs, as_ = pr.mean_scores()
             line = ll.get(gid)
             pp = pr.p_home_cover(line) if line is not None and is_half_point(line) else None
+            p1 = pr1.p_home_cover(line) if line is not None and is_half_point(line) else None
+            base["v1_pick"] = None if p1 is None else (g["home_team"] if p1 > 0.5 else g["away_team"])
             base.update(proj_home=round(hs, 1), proj_away=round(as_, 1), proj_version=version,
                         proj_flags=";".join(pflags), proj_why=why,
                         proj_pick=None if pp is None else (g["home_team"] if pp > 0.5 else g["away_team"]))
         if gid in finals:
             f = finals[gid]
+            if gid in rec_v1:
+                base["v1_pick"] = rec_v1[gid]          # the v1 pick recorded at lock
             out.append({**base, "status": "final", "market": f["market_at_lock"], "drift": f["drift"],
                         "p_home": f["p_home_cover"], "p_away": f["p_away_cover"], "pick": f["pick_team"],
                         "flags": f["flags"], "market_time": f["created_at"]})

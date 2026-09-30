@@ -9,7 +9,7 @@ import json
 from zoneinfo import ZoneInfo
 
 from engine.data import store
-from engine.picks import final
+from engine.picks import final, hybrid
 
 ET = ZoneInfo("America/New_York")
 
@@ -94,6 +94,7 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
             upcoming.append((pick_at, f"{r['away']} @ {r['home']}"))
         g = results.get(r["game_id"], {})
         pres = _result_char(g.get(f"proj_{r.get('proj_version') or V3}"))
+        hy, hysrc = hybrid.pick(r.get("pick"), r.get("drift"), r.get("v1_pick"))
         games.append({"id": r["game_id"], "away": r["away"], "home": r["home"], "ko": ko.astimezone(ET).strftime("%a %-I:%M %p"),
                       "slot": slot_of[r["game_id"]], "ko_iso": ko.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "line": r["league_line"],
                       "market": r["market"] if r["market"] not in ("", None) else None,
@@ -103,12 +104,16 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                       "pick_at": _clock(pick_at), "ph": r.get("proj_home"), "pa": r.get("proj_away"),
                       "ppick": r.get("proj_pick"), "pver": r.get("proj_version"), "pflags": r.get("proj_flags"),
                       "hs": r.get("home_score"), "as": r.get("away_score"), "res": g.get("result"), "pres": pres,
-                      "xp": r.get("proj_why")})
+                      "xp": r.get("proj_why"), "hy": hy, "hysrc": hysrc, "hres": _result_char(g.get("hybrid"))})
     models = [{"label": "Official pick", "W": live.get("W", 0), "L": live.get("L", 0)}]
     for label, v in (("Team-only projection", V1), ("Player projection", V3)):
         m = (live.get("projection_models") or {}).get(v)
         if m:
             models.append({"label": label, "W": m["W"], "L": m["L"]})
+    if live.get("hybrid"):
+        h = live["hybrid"]
+        models.append({"label": "Hybrid (tracked)", "W": h["W"], "L": h["L"],
+                       "note": f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"})
     nxt = min(upcoming) if upcoming else None
     data = json.dumps({"games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
@@ -353,6 +358,7 @@ details p{margin:0}
       <button id="f-all" aria-pressed="true">All games</button>
       <button id="f-strong" aria-pressed="false">Moved 1+ pt</button>
       <button id="f-differs" aria-pressed="false">Projection disagrees</button>
+      <button id="f-hybrid" aria-pressed="false">Hybrid disagrees</button>
     </div>
     <div class="legend">
       <span><i class="k-pool"></i>Pool line (frozen Tuesday)</span>
@@ -370,6 +376,7 @@ details p{margin:0}
       <p><b>The pick</b> is the side the market moved toward, with a cover chance from how games have finished relative to the closing spread since 1999. <b>Provisional</b> picks use the latest market snapshot and can change. The official pick is locked about 20 minutes before kickoff and never changes.</p>
       <p><b>Historical win rates</b> are 2007–2021. The 2025 holdout was weaker, at 52% on 1+ point moves. No claim of skill is made before 256 graded games.</p>
       <p><b>Projections</b> are tracked for comparison and do not make the pick. The player projection (proj-players-v3) adjusts team scoring strength for the starting quarterback, injured starters weighted by snaps, rest, travel and roof. Against the market it was a coin flip in 2022–2025 testing (docs/players_v3_report.md). "Injury report pending" means the game statuses were not yet published, so injuries are not reflected. It rates a listed backup quarterback from the depth chart and does not know if that backup is also out.</p>
+      <p><b>Hybrid (tracked)</b> keeps the pick when the market moved 1+ point off the pool line and uses the team-only projection when it moved ½ point or not at all. It is followed for comparison only and never makes the pick (docs/hybrid_tracking.md).</p>
     </div>
   </details>
 </div>
@@ -388,7 +395,7 @@ $('meta').textContent=`${D.season} regular season · snapshot ${D.updated}`;
 if(D.next_lock){$('next').hidden=false;$('next-t').textContent=`Next pick locks ${D.next_lock.at} ET · ${D.next_lock.game}`}
 const g=D.games, locked=g.filter(x=>x.status==='final').length;
 $('records').innerHTML=D.models.map(m=>{const p=pct(m.W,m.L);
-  return `<div class="rec"><span class="v">${m.W}–${m.L}</span><span class="l">${esc(m.label)}</span><span class="s">${p?`${p[0]}% ± ${p[1]} · vs pool line`:'no games graded yet'}</span></div>`}).join('')
+  return `<div class="rec"><span class="v">${m.W}–${m.L}</span><span class="l">${esc(m.label)}</span><span class="s">${p?`${p[0]}% ± ${p[1]} · vs pool line`:'no games graded yet'}${m.note?`<br>${esc(m.note)}`:''}</span></div>`}).join('')
   +`<div class="rec"><span class="v">${locked}/${g.length}</span><span class="l">Picks locked this week</span><span class="s">${g.length-locked?`${g.filter(x=>x.status==='provisional').length} still provisional`:'nothing left to lock'}</span></div>`;
 const pg=Math.min(100,D.graded/D.claim_at*100);
 $('ev-a').textContent=`${D.graded} of ${D.claim_at} graded games before any claim of skill`;
@@ -428,6 +435,12 @@ function proj(x){
   const pend=(x.pflags||'').includes('INJ_STATUS_MISSING');
   const r=x.pres==='W'?'<span class="ok">✓ covered</span>':x.pres==='L'?'<span class="no">✕ missed</span>':'';
   return `<div class="proj"><span class="lab">${label}</span><span class="mono">${esc(x.away)} ${Number(x.pa).toFixed(1)} – ${esc(x.home)} ${Number(x.ph).toFixed(1)}</span><span>picks ${esc(x.ppick||'—')}</span>${differs?'<span class="diff">differs</span>':''}${pend?'<span class="diff">injury report pending</span>':''}${r}</div>`;
+}
+function hyb(x){
+  if(x.hysrc!=='v1'||!x.hy)return '';
+  const d=x.hy!==x.pick;
+  const r=x.hres==='W'?'<span class="ok">✓</span>':x.hres==='L'?'<span class="no">✕</span>':'';
+  return `<div class="proj"><span class="lab">Hybrid (tracked, not the pick)</span><span>Small move, so it uses the team-only projection: <b class="mono">${esc(x.hy)}</b></span>${d?'<span class="diff">differs</span>':''}${r}</div>`;
 }
 function stateBadge(x){
   if(x.res==='W')return '<span class="pill won">✓ Won</span>';
@@ -504,10 +517,10 @@ function xPanel(x){
 function card(x){
   const pa=x.pick===x.away,ph=x.pick===x.home;
   return `<article class="card" data-id="${esc(x.id)}"><div class="card-h"><span class="ko">${esc(x.ko)}</span>${stateBadge(x)}</div>
-    <div class="teams">${team(x,'a',pa)}${team(x,'h',ph)}</div>${move(x)}${meter(x)}${proj(x)}${xDrivers(x)}${xExpand(x)}${foot(x)}<button class="more" data-id="${esc(x.id)}">Book-by-book lines ›</button></article>`;
+    <div class="teams">${team(x,'a',pa)}${team(x,'h',ph)}</div>${move(x)}${meter(x)}${proj(x)}${hyb(x)}${xDrivers(x)}${xExpand(x)}${foot(x)}<button class="more" data-id="${esc(x.id)}">Book-by-book lines ›</button></article>`;
 }
 const cols=n=>n===4||n===10?2:3;      // fill the rows: 4 games make 2x2, not 3+1
-const pred={all:()=>true,strong:x=>x.sig==='strong',differs:x=>x.ppick&&x.pick&&x.ppick!==x.pick};
+const pred={all:()=>true,strong:x=>x.sig==='strong',differs:x=>x.ppick&&x.pick&&x.ppick!==x.pick,hybrid:x=>x.hysrc==='v1'&&x.hy&&x.pick&&x.hy!==x.pick};
 function draw(k){
   const out=D.slots.map((s,i)=>{
     const gs=g.filter(x=>x.slot===i&&pred[k](x));
@@ -518,8 +531,8 @@ function draw(k){
   }).join('');
   $('slots').innerHTML=out||'<p class="empty">No games match this filter.</p>';
 }
-function setF(k){for(const n of ['all','strong','differs'])$('f-'+n).setAttribute('aria-pressed',n===k);draw(k)}
-for(const n of ['all','strong','differs'])$('f-'+n).onclick=()=>setF(n);
+function setF(k){for(const n of ['all','strong','differs','hybrid'])$('f-'+n).setAttribute('aria-pressed',n===k);draw(k)}
+for(const n of ['all','strong','differs','hybrid'])$('f-'+n).onclick=()=>setF(n);
 draw('all');
 /* ---- game view ---- */
 const byId=Object.fromEntries(g.map(x=>[x.id,x]));
