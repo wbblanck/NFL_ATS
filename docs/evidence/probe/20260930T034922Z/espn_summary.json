@@ -1,0 +1,104 @@
+[
+ {
+  "name": "site_scoreboard",
+  "url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+  "status": 403,
+  "bytes": 442
+ },
+ {
+  "name": "site_web_scoreboard",
+  "url": "https://site.web.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+  "status": 200,
+  "bytes": 157355
+ },
+ {
+  "name": "core_odds_2022_10_SEA_TB",
+  "url": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401435638/competitions/401435638/odds",
+  "status": 200,
+  "bytes": 28485,
+  "providers": [
+   "Bet 365",
+   "Caesars Sportsbook",
+   "Caesars Sportsbook (Colorado)",
+   "Caesars Sportsbook (New Jersey)",
+   "Caesars Sportsbook (New Jersey) - Live Odds",
+   "DraftKings",
+   "ESPN BET",
+   "Holland Casino",
+   "MGM",
+   "PointsBet",
+   "SugarHouse",
+   "Titanbets",
+   "Unibet",
+   "accuscore",
+   "consensus",
+   "teamrankings"
+  ]
+ },
+ {
+  "name": "site_summary_2022_10_SEA_TB",
+  "url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=401435638",
+  "status": 403,
+  "bytes": 444
+ },
+ {
+  "name": "core_odds_2023_05_JAX_BUF",
+  "url": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401547228/competitions/401547228/odds",
+  "status": 200,
+  "bytes": 24367,
+  "providers": [
+   "Bet 365",
+   "Caesars Sportsbook",
+   "Caesars Sportsbook (Colorado)",
+   "Caesars Sportsbook (New Jersey)",
+   "Caesars Sportsbook (New Jersey) - Live Odds",
+   "Caesars Sportsbook (Tennessee)",
+   "DraftKings",
+   "ESPN BET",
+   "ESPN Bet - Live Odds",
+   "MGM",
+   "PointsBet",
+   "SugarHouse",
+   "Titanbets",
+   "Unibet",
+   "accuscore"
+  ]
+ },
+ {
+  "name": "site_summary_2023_05_JAX_BUF",
+  "url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=401547228",
+  "status": 403,
+  "bytes": 444
+ },
+ {
+  "name": "core_odds_2024_12_KC_CAR",
+  "url": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401671651/competitions/401671651/odds",
+  "status": 200,
+  "bytes": 12863,
+  "providers": [
+   "ESPN BET",
+   "ESPN Bet - Live Odds"
+  ]
+ },
+ {
+  "name": "site_summary_2024_12_KC_CAR",
+  "url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=401671651",
+  "status": 403,
+  "bytes": 444
+ },
+ {
+  "name": "core_odds_2026_01_BUF_HOU",
+  "url": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/401872660/competitions/401872660/odds",
+  "status": 200,
+  "bytes": 6841,
+  "providers": [
+   "DraftKings"
+  ]
+ },
+ {
+  "name": "site_summary_2026_01_BUF_HOU",
+  "url": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=401872660",
+  "status": 403,
+  "bytes": 444
+ }
+]
