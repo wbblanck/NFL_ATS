@@ -1,0 +1,222 @@
+--- frame https://nfl-analytics-platform.streamlit.app/?language=EN&page=LAB
+
+--- frame https://qjmnz4vd2y07.statuspage.io/embed/frame
+Status embed installed correctly
+
+This will be shown if an incident or maintenance is posted on your status page.
+View latest updates
+--- frame https://nfl-analytics-platform.streamlit.app/~/+/?language=EN&page=LAB
+⌁
+NFL Analytics Platform
+
+EN
+
+HU
+
+⌂ Weekly Overview
+
+◫ Game Center
+
+▦ Betting Board
+
+↗ Results
+
+♟ Teams
+
+⌁ Season Simulator
+
+⚗ Data Science Lab
+
+ⓘ About the Platform
+
+DATA READY
+
+Analytical estimates, not guarantees. Bet responsibly.
+
+Team identity metadata: nflverse teams.
+2026 FORWARD ANALYTICS
+Data Science Lab
+How are NFL forecasts built and tested?
+Data updated: 2026-09-29 01:16 CEST
+
+This page explains the modeling methods behind the platform, how model quality is measured, and the analyses used to study factors associated with NFL results.
+
+1
+Data
+Games, play-by-play, nfelo, quarterbacks, injuries, weather and odds.
+2
+Features
+Chronologically valid model inputs known before kickoff.
+3
+Models
+Separate models for win probability, margin and total points.
+4
+Validation
+Backtest, holdout test and the 2026 forward test.
+5
+Predictions
+Win probability, Spread, Total and implied team scores.
+01 — What do the models predict?
+
+The platform uses separate models for win probability, expected margin and expected combined points because these are different prediction targets.
+
+Win probability
+
+Who wins the game? Each team receives a probability between 0% and 100%.
+
+Expected margin
+
+How large is the expected difference between the teams? Its betting equivalent is the Spread.
+
+Expected total points
+
+How many combined points are expected in the game? Its betting equivalent is the Total.
+
+02 — How is model performance measured?
+03 — How are models validated?
+1. Backtest
+
+Chronological tests where every model learns only from seasons before the one being evaluated.
+
+2. Holdout test
+
+A one-time check on 2025 data kept out of development and candidate selection.
+
+3. Forward test
+
+Later evaluation of pre-kickoff 2026 forecasts on genuinely unseen outcomes.
+
+keyboard_arrow_right
+
+How do we avoid misleading results?
+
+The 2026 season is the prospective forward test. Development results do not guarantee future performance, so only forecasts archived before kickoff count.
+
+04 — Which models were evaluated?
+
+Development adds information step by step to a simpler baseline. Extra complexity is useful only when improvement remains stable in later seasons.
+
+1. Elo baseline — Continuously updated team strength and home-field advantage.
+
+2. Elo + quarterback + injury burden — Adds offense, defense and special-teams injury burden to Elo and quarterback context.
+
+3. Elo + quarterback — Adds the expected starting-quarterback rating difference to Elo.
+
+4. Elo + quarterback + rest context — Adds whether either team plays after a bye week.
+
+5. Full platform model — Also uses recent EPA, success rate, explosive-play, sack and turnover indicators.
+
+↓ These candidates are compared on the same test sample.
+
+05 — Which platform model performs best?
+
+Candidates are compared on the same test sample. Brier score and Log loss are the primary win-probability metrics; accuracy is supporting context. Lower error is better.
+
+Stability by season
+
+Average performance is not enough: a useful model should remain reasonably stable across seasons rather than rely on one exceptional year.
+
+Season stability
+2020
+2021
+2022
+2023
+2024
+2025
+0.19
+0.2
+0.21
+0.22
+0.23
+0.24
+Model
+Full platform model
+Elo baseline
+Elo + quarterback + rest context
+Elo + quarterback
+Elo + quarterback + injury burden
+Season
+Brier score
+
+↓ The best platform model becomes the basis of the platform component in the production ensemble.
+
+06 — How does the selected model become a production forecast?
+CURRENT WIN MODEL
+Logistic + nfelo ensemble
+70% Elo + quarterback + injury burden · 30% published nfelo
+2026 FORWARD TEST
+Version 0.3.0
+
+Production is not an unrelated extra model. A later audit extended the selected Elo-QB-injury structure with external nfelo team strength and QB adjustment. That platform-trained logistic component is blended with published nfelo probability.
+
+Platform logistic model
+Elo + quarterback + injury burden
+70%
+
++
+
+External reference
+nfelo
+30%
+
+=
+
+Production forecast
+Logistic + nfelo ensemble
+
+70% platform model + 30% nfelo = production forecast
+Normal operation
+
+A weighted ensemble of the complete-input platform model and published nfelo probability.
+
+When current inputs are incomplete
+
+If a required current data source is unavailable or incomplete, the system automatically uses a fallback model validated for the inputs that remain available.
+
+How to interpret the result
+
+A useful production model does not need to predict every winner. It should be calibrated: events assigned 60% should occur about 60% of the time over a large sample. Betting analysis therefore compares model probability with no-vig market probability rather than simply selecting the expected winner.
+
+Bookmaker margin is removed book by book and the probabilities form an equal-weighted consensus. The model–market gap measures that disagreement; EV separately uses the best available executable price.
+
+07 — Impact analysis
+
+Historical data is also used for separate research analyses. These examine how team performance changed under particular circumstances and show associations, not necessarily causal effects.
+
+Home field
+
+Rest
+
+QB
+
+Injuries
+
+Weather
+
+Is there a measurable home-field advantage in the NFL?
+
+This is a league-wide summary rather than a two-group comparison because every game has a home team.
+
+Home win rate
+
+54.4%
+
+Average home margin
+
++1.72
+
+Games
+
+2,227
+
+Interpretation: home teams won somewhat more often than 50% and scored 1.72 more points per game on average. This is a league average, not a fixed advantage for every team.
+
+Team identity metadata sourced from nflverse. Team names and marks belong to their respective owners. Independent analytics project; not affiliated with or endorsed by the NFL or its clubs.
+
+Anonymous usage analytics
+
+This site can use Google Analytics to measure anonymous visits and improve the platform. Advertising and personalization features are disabled.
+
+Essential only
+
+Allow usage analytics

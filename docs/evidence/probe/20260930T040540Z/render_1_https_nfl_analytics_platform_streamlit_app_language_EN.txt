@@ -1,0 +1,333 @@
+--- frame https://nfl-analytics-platform.streamlit.app/?language=EN
+
+--- frame https://qjmnz4vd2y07.statuspage.io/embed/frame
+Status embed installed correctly
+
+This will be shown if an incident or maintenance is posted on your status page.
+View latest updates
+--- frame https://nfl-analytics-platform.streamlit.app/~/+/?language=EN
+⌁
+NFL Analytics Platform
+
+EN
+
+HU
+
+⌂ Weekly Overview
+
+◫ Game Center
+
+▦ Betting Board
+
+↗ Results
+
+♟ Teams
+
+⌁ Season Simulator
+
+⚗ Data Science Lab
+
+ⓘ About the Platform
+
+DATA READY
+
+Analytical estimates, not guarantees. Bet responsibly.
+
+Team identity metadata: nflverse teams.
+2026 FORWARD ANALYTICS
+Weekly Overview
+Matchups, expected scores and win probabilities for the selected week.
+Data updated: 2026-09-29 01:16 CEST
+
+Week
+
+Games
+
+16
+
+0 Final · 16 Upcoming
+
+Most even matchup
+
+GB @ TB
+
+50.5% / 49.5%
+
+Biggest favorite
+
+MIN
+
+82.6% · MIA @ MIN
+
+Highest model total
+
+MIA @ MIN
+
+47.4 points
+
+Matchups
+WEEK 4 · 2026-10-02 · 02:15
+PIT
+62.0%
+@
+CLE
+38.0%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+23.5 – 19.9
+Spread -3.5 · Total 43.4
+
+Matchup details →
+
+WEEK 4 · 2026-10-04 · 15:30
+IND
+55.7%
+@
+WAS
+44.3%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+21.7 – 20.4
+Spread -1.3 · Total 42.1
+
+Matchup details →
+
+WEEK 4 · 2026-10-04 · 19:00
+ARI
+36.0%
+@
+NYG
+64.0%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+18.6 – 23.2
+Spread +4.5 · Total 41.8
+
+Matchup details →
+
+WEEK 4 · 2026-10-04 · 19:00
+DAL
+45.6%
+@
+HOU
+54.4%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+21.1 – 22.7
+Spread +1.6 · Total 43.7
+
+Matchup details →
+
+WEEK 4 · 2026-10-04 · 19:00
+GB
+50.5%
+@
+TB
+49.5%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+21.3 – 21.4
+Spread +0.0 · Total 42.7
+
+Matchup details →
+
+WEEK 4 · 2026-10-04 · 19:00
+JAX
+41.2%
+@
+CIN
+58.8%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+20.7 – 23.6
+Spread +2.9 · Total 44.4
+
+Matchup details →
+
+WEEK 4 · 2026-10-04 · 19:00
+LA
+55.9%
+@
+PHI
+44.1%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+23.5 – 21.9
+Spread -1.6 · Total 45.4
+
+Matchup details →
+
+WEEK 4 · 2026-10-04 · 19:00
+NE
+35.0%
+@
+BUF
+65.0%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+20.8 – 25.5
+Spread +4.7 · Total 46.3
+
+Matchup details →
+
+WEEK 4 · 2026-10-04 · 19:00
+NYJ
+34.5%
+@
+CHI
+65.5%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+18.8 – 24.1
+Spread +5.3 · Total 42.9
+
+Matchup details →
+
+WEEK 4 · 2026-10-04 · 19:00
+TEN
+19.3%
+@
+BAL
+80.7%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+15.5 – 26.5
+Spread +10.9 · Total 42.0
+
+Matchup details →
+
+WEEK 4 · 2026-10-04 · 22:05
+MIA
+17.4%
+@
+MIN
+82.6%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+17.8 – 29.6
+Spread +11.7 · Total 47.4
+
+Matchup details →
+
+WEEK 4 · 2026-10-04 · 22:25
+DEN
+37.1%
+@
+SF
+62.9%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+20.9 – 25.0
+Spread +4.1 · Total 45.9
+
+Matchup details →
+
+WEEK 4 · 2026-10-04 · 22:25
+KC
+66.5%
+@
+LV
+33.5%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+25.8 – 20.8
+Spread -5.0 · Total 46.6
+
+Matchup details →
+
+WEEK 4 · 2026-10-04 · 22:25
+LAC
+27.8%
+@
+SEA
+72.2%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+19.1 – 26.4
+Spread +7.3 · Total 45.4
+
+Matchup details →
+
+WEEK 4 · 2026-10-05 · 02:20
+DET
+57.8%
+@
+CAR
+42.2%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+23.0 – 20.8
+Spread -2.2 · Total 43.8
+
+Matchup details →
+
+WEEK 4 · 2026-10-06 · 02:15
+ATL
+38.4%
+@
+NO
+61.6%
+→ 0.0%
+ⓘ
+→ 0.0%
+ⓘ
+Expected score
+21.3 – 25.2
+Spread +3.9 · Total 46.5
+
+Matchup details →
+
+Team identity metadata sourced from nflverse. Team names and marks belong to their respective owners. Independent analytics project; not affiliated with or endorsed by the NFL or its clubs.
+
+Anonymous usage analytics
+
+This site can use Google Analytics to measure anonymous visits and improve the platform. Advertising and personalization features are disabled.
+
+Essential only
+
+Allow usage analytics
