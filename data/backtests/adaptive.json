@@ -1,0 +1,83 @@
+{
+ "best": {
+  "H": Infinity,
+  "lam": 10.0,
+  "val_logloss": 0.688729024476102
+ },
+ "confirm_2020_2024_half": {
+  "N": 705,
+  "adaptive_W": 384,
+  "live_W": 394,
+  "differ": 38,
+  "adaptive_only": 14,
+  "live_only": 24,
+  "z": -1.6222142113076254,
+  "logloss_adaptive": 0.6840697763881296,
+  "logloss_live": 0.6826345049897152
+ },
+ "cbs_2025_half": {
+  "N": 210,
+  "adaptive_W": 108,
+  "live_W": 108,
+  "differ": 0,
+  "adaptive_only": 0,
+  "live_only": 0,
+  "z": 0.0,
+  "logloss_adaptive": 0.6910736286461984,
+  "logloss_live": 0.6902867104156022
+ },
+ "pass_a": false,
+ "pass_b": false,
+ "pass_c": true,
+ "PASS": false,
+ "layer1_alone_conf": {
+  "W": 360,
+  "N": 705
+ },
+ "layer1_alone_2025": {
+  "W": 96,
+  "N": 210
+ },
+ "conf_1plus": {
+  "N": 444,
+  "adaptive_W": 257,
+  "live_W": 260,
+  "differ": 5,
+  "adaptive_only": 1,
+  "live_only": 4,
+  "z": -1.3416407864998738,
+  "logloss_adaptive": 0.6784373779249939,
+  "logloss_live": 0.6761499795473292
+ },
+ "conf_low": {
+  "N": 261,
+  "adaptive_W": 127,
+  "live_W": 134,
+  "differ": 33,
+  "adaptive_only": 13,
+  "live_only": 20,
+  "z": -1.2185435916898848,
+  "logloss_adaptive": 0.6936513277966823,
+  "logloss_live": 0.6936656517192914
+ },
+ "coef_first": {
+  "season": 2020,
+  "week": 1,
+  "b": [
+   -0.02841880115931909,
+   0.6950824333722213,
+   0.1641543272587526,
+   0.11156653558787079
+  ]
+ },
+ "coef_last": {
+  "season": 2025,
+  "week": 18,
+  "b": [
+   0.005939870363070994,
+   0.8129311237314618,
+   0.013255576763020093,
+   0.053583364835108935
+  ]
+ }
+}
