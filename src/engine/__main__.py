@@ -294,8 +294,10 @@ def main(argv=None) -> int:
             lv, graded = live.compute(sched)         # read-only: does not rewrite live_record.md
             lv["claim_at"] = live.MIN_GAMES_FOR_CLAIM
             results = {r["game_id"]: r for r in graded}
+            from engine.picks import season as _season
+            season_tab = _season.build(graded, a.season)
         except Exception:
-            lv, results = {"N": 0, "W": 0, "L": 0}, {}
+            lv, results, season_tab = {"N": 0, "W": 0, "L": 0}, {}, []
         try:
             import polars as _pl
             from engine.picks import game_detail
@@ -306,7 +308,7 @@ def main(argv=None) -> int:
             details = {}
         out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
         open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results,
-                                              details))
+                                              details, season_tab))
         print(out)
         return 0
     if a.cmd == "check-league-lines":
