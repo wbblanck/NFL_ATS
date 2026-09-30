@@ -2,9 +2,17 @@
 
 Rules: `docs/cbs_lines_preregistration.md`. Regenerate: `python -m engine cbs-lines`.
 
-Games with a recorded pool line: **32**. A source counts as identified only with ≥ 45 games and a match rate ≥ 90%.
+Games with a recorded pool line: **64**. A source counts as identified only with ≥ 45 games and a match rate ≥ 90%.
 
 ## Q1: which source and time the pool line copies
+
+### 2026-w01: 16 pool lines; Tuesday window 2026-09-08T12:00 to 2026-09-08T21:00 UTC
+
+No market or CBS-page snapshot inside the Tuesday window for this week (captures began after it). Not analysable for Q1/Q2.
+
+### 2026-w02: 16 pool lines; Tuesday window 2026-09-15T12:00 to 2026-09-15T21:00 UTC
+
+No market or CBS-page snapshot inside the Tuesday window for this week (captures began after it). Not analysable for Q1/Q2.
 
 ### 2026-w03: 16 pool lines; Tuesday window 2026-09-22T12:00 to 2026-09-22T21:00 UTC
 
