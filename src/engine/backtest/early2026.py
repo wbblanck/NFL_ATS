@@ -89,3 +89,27 @@ def summary(rows: list[dict]) -> dict:
             w = sum(r[m] == r["covered"] for r in rs)
             out.setdefault(m, {})[wk] = (w, len(rs) - w)
     return out
+
+
+def cbs_ats_lines(sched: pl.DataFrame, weeks=WEEKS) -> dict[str, float]:
+    """Home spreads from CBS's expert against-the-spread pages (docs/evidence/probe/*/cbs_ats_2026_w*.html).
+    In week 3 these equalled the pool line on all 10 games where they were half-points; whole numbers are
+    returned too, and run() skips them (the pool's hook direction is unknown)."""
+    from engine.teams import to_canonical
+    reg = sched.filter(pl.col("season") == 2026)
+    ids = {(r["away_team"], r["home_team"], r["week"]): r["game_id"] for r in reg.iter_rows(named=True)}
+    out = {}
+    for f in sorted(glob.glob(str(config.ROOT / "docs/evidence/probe/*/cbs_ats_2026_w*.html"))):
+        wk = int(re.search(r"_w(\d+)\.html", f).group(1))
+        if wk not in weeks:
+            continue
+        t = re.sub(r"<script.*?</script>|<style.*?</style>", " ", open(f).read(), flags=re.S)
+        t = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", t))
+        for m in re.finditer(r"FINAL(?:/OT)? \S+ ([A-Z]{2,3}) \d+-\d+ \d+ ([A-Z]{2,3}) \d+-\d+ \d+ Recap "
+                             r"(?:WIN|LOSS|PUSH) ([A-Z]{2,3}) ([+-]\d+(?:\.5)?)", t):
+            a, h, tm = (to_canonical(x) for x in m.groups()[:3])
+            sp = float(m.group(4))
+            gid = ids.get((a, h, wk))
+            if gid:
+                out[gid] = sp if tm == h else -sp
+    return out
