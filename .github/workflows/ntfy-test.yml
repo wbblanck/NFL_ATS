@@ -1,0 +1,15 @@
+name: Phone alert test
+# Manual: sends one test message to the ntfy topic in the NTFY_TOPIC secret.
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send test alert
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: |
+          if [ -z "$NTFY_TOPIC" ]; then echo "NTFY_TOPIC secret is not set"; exit 1; fi
+          curl -fsS -H "Title: NFL picks" -H "Tags: football" -d "Test alert: picks will look like this. Picks locked (Thu 8:15 PM): PIT -2.5" "https://ntfy.sh/$NTFY_TOPIC"

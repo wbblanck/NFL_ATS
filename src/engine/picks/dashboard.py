@@ -102,7 +102,8 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                       "books": r.get("market_books"), "at": None if mt is None else _clock(mt), "lead": lead,
                       "pick_at": _clock(pick_at), "ph": r.get("proj_home"), "pa": r.get("proj_away"),
                       "ppick": r.get("proj_pick"), "pver": r.get("proj_version"), "pflags": r.get("proj_flags"),
-                      "hs": r.get("home_score"), "as": r.get("away_score"), "res": g.get("result"), "pres": pres})
+                      "hs": r.get("home_score"), "as": r.get("away_score"), "res": g.get("result"), "pres": pres,
+                      "xp": r.get("proj_why")})
     models = [{"label": "Official pick", "W": live.get("W", 0), "L": live.get("L", 0)}]
     for label, v in (("Team-only projection", V1), ("Player projection", V3)):
         m = (live.get("projection_models") or {}).get(v)
@@ -281,6 +282,51 @@ tr.med td{font-weight:600;background:var(--panel-2)}
 .kv dd{margin:0;font-family:var(--mono)}
 .kv-h{font:800 26px/1 var(--display);text-transform:uppercase;margin:0 0 8px}
 
+/* how the projected score was built */
+.drivers{font-size:12px;color:var(--ink-2);display:grid;grid-template-columns:auto 1fr;gap:3px 12px;align-items:baseline}
+.drivers .dt{font-family:var(--mono);color:var(--ink)}
+.drivers .lab{grid-column:1/-1;font:400 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.drivers b{font:500 12px var(--mono);color:var(--ink)}
+.build-top{display:flex;flex-wrap:wrap;gap:6px 24px;align-items:baseline;font-size:14px;color:var(--ink-2)}
+.build-top b{color:var(--ink);font-weight:600}
+.teams2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:22px 32px}
+.tb{display:flex;flex-direction:column;gap:12px;min-width:0}
+.tb-h{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 14px}
+.tb-h .code{font:800 30px/1 var(--display);text-transform:uppercase}
+.tb-h .tot{font:800 30px/1 var(--display);font-variant-numeric:tabular-nums}
+.tb-h .from{font:400 12px var(--mono);color:var(--ink-2);margin-left:auto}
+.axis-row{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) 3.6em;gap:10px;font:400 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.axis-row .mid{display:flex;justify-content:space-between}
+.br{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) 3.6em;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--rule)}
+.br .name{display:flex;flex-direction:column;gap:1px;min-width:0}
+.br .name b{font-weight:600;font-size:14px}
+.br .name small{font-size:12px;color:var(--ink-2);line-height:1.35}
+.br .track2{position:relative;height:16px}
+.br .track2::before{content:"";position:absolute;left:50%;top:-4px;bottom:-4px;width:1px;background:var(--ink-3)}
+.br .track2 i{position:absolute;top:2px;height:12px;border-radius:2px}
+.br .track2 i.up{left:50%;background:var(--ink);border-radius:0 3px 3px 0}
+.br .track2 i.dn{right:50%;background:var(--ink-3);border-radius:3px 0 0 3px}
+.br .val{font:500 14px var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.none{font-size:12px;color:var(--ink-2);border-top:1px solid var(--rule);padding-top:10px}
+.none b{font-weight:600;color:var(--ink)}
+.pend{font-size:12px;color:var(--ink);background:var(--flag-soft);border-radius:6px;padding:8px 10px}
+.sum{font:400 12px var(--mono);color:var(--ink-2);border-top:2px solid var(--ink);padding-top:8px;display:flex;flex-wrap:wrap;gap:2px 10px}
+.sum b{color:var(--ink);font-weight:500}
+@media (max-width:520px){
+  .axis-row{display:none}
+  .br{grid-template-columns:minmax(0,1fr) 3.6em;grid-template-areas:"name val" "bar bar";gap:6px 10px}
+  .br .name{grid-area:name}.br .val{grid-area:val}.br .track2{grid-area:bar}
+}
+.xbtn{font:500 12px var(--mono);color:var(--ink);background:var(--panel-2);border:1px solid var(--rule);border-radius:8px;padding:9px 12px;cursor:pointer;text-align:left;display:flex;justify-content:space-between;gap:8px;width:100%}
+.xbtn:hover{border-color:var(--ink-3)}.xbtn:focus-visible,.xclose:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.xp{display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--rule);padding-top:12px;cursor:default}
+.xp[hidden]{display:none}
+.xp .tb-h .from{display:none}
+.xp .axis-row{display:none}
+.xp .br{grid-template-columns:minmax(0,1fr) 3.6em;grid-template-areas:"name val" "bar bar";gap:6px 10px}
+.xp .br .name{grid-area:name}.xp .br .val{grid-area:val}.xp .br .track2{grid-area:bar}
+.xclose{font:500 12px var(--mono);color:var(--ink-2);background:none;border:1px solid var(--rule);border-radius:8px;padding:8px 12px;cursor:pointer;align-self:flex-start}
+
 /* notes */
 details{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:14px 18px}
 summary{cursor:pointer;font:600 14px var(--body)}
@@ -400,10 +446,65 @@ function foot(x){
   else if(x.status==='provisional')bits.push(`snapshot ${x.at||'—'} ET · picks at ${x.pick_at} ET`);
   return bits.length?`<div class="cover">${bits.join(' · ')}</div>`:'';
 }
+
+/* ---- how the projected score was built ---- */
+const SMALL=0.25;
+const sg1=(v,d=1)=>(v>0.049?'+':v<-0.049?'−':'')+Math.abs(v).toFixed(d);
+const XNOTE={off:'scoring over recent games',def:'scoring allowed over recent games',home:'playing at home',other:'roof, division game, model calibration'};
+const XLAB={other:'Everything else',qb:'Starting quarterback',own_inj:'Injuries',opp_inj:"Opponent's injuries",sched:'Rest and travel'};
+const isInj=k=>k==='own_inj'||k==='opp_inj';
+const pending=x=>(x.pflags||'').includes('INJ_STATUS_MISSING');
+function xItems(x,side){
+  const t=x.xp[side],team=side==='home'?x.home:x.away,opp=side==='home'?x.away:x.home;
+  return t.items.filter(i=>!(pending(x)&&isInj(i.key))).map(i=>({...i,
+    label:i.key==='off'?`${team} offense`:i.key==='def'?`${opp} defense`:(XLAB[i.key]||i.label),note:i.note||XNOTE[i.key]||''}));
+}
+function xBlock(x,side,scale){
+  const t=x.xp[side],team=side==='home'?x.home:x.away,all=xItems(x,side);
+  const shown=all.filter(i=>Math.abs(i.pts)>=SMALL).sort((a,b)=>Math.abs(b.pts)-Math.abs(a.pts));
+  const quiet=all.filter(i=>Math.abs(i.pts)<SMALL);
+  const row=i=>{const w=Math.min(50,Math.abs(i.pts)/scale*50);
+    return `<div class="br"><div class="name"><b>${esc(i.label)}</b><small>${esc(i.note)}</small></div>
+      <div class="track2" role="img" aria-label="${esc(i.label)} ${sg1(i.pts)} points"><i class="${i.pts>=0?'up':'dn'}" style="width:${w}%"></i></div>
+      <div class="val">${sg1(i.pts)}</div></div>`};
+  const q=quiet.length?`<div class="none"><b>Small effects, under ¼ point each:</b> ${quiet.map(i=>`${esc(i.label.toLowerCase())} ${sg1(i.pts)}`).join(' · ')}</div>`:'';
+  return `<div class="tb"><div class="tb-h"><span class="code">${esc(team)}</span><span class="tot">${t.total.toFixed(1)}</span><span class="from">starts at ${t.baseline.toFixed(1)} · league-average team</span></div>
+    <div class="axis-row"><span>Factor</span><span class="mid"><span>◂ subtracts</span><span>adds ▸</span></span><span style="text-align:right">Points</span></div>
+    ${shown.map(row).join('')}${q}
+    <div class="sum"><b>${t.baseline.toFixed(1)}</b> start <b>${sg1(t.total-t.baseline)}</b> net <b>= ${t.total.toFixed(1)}</b> projected points</div></div>`;
+}
+const xScale=x=>Math.ceil(Math.max(...['home','away'].flatMap(s=>xItems(x,s).map(i=>Math.abs(i.pts))),1.5));
+function xDrivers(x){
+  if(!x.xp)return '';
+  const line=s=>{const team=s==='home'?x.home:x.away;
+    const top=xItems(x,s).filter(i=>Math.abs(i.pts)>=SMALL).sort((p,q)=>Math.abs(q.pts)-Math.abs(p.pts)).slice(0,2)
+      .map(i=>`${esc(i.key==='qb'?'QB':i.key==='home'?'home field':i.label)} <b>${sg1(i.pts)}</b>`).join(' · ');
+    return `<span class="dt"><b>${esc(team)} ${x.xp[s].total.toFixed(1)}</b></span><span>${top||'no single big driver'}</span>`};
+  return `<div class="drivers"><span class="lab">Biggest drivers</span>${line('away')}${line('home')}</div>`;
+}
+const openX=new Set();
+function xExpand(x){
+  if(!x.xp)return '';
+  const o=openX.has(x.id),sc=xScale(x);
+  return `<button class="xbtn" data-x="${esc(x.id)}" aria-expanded="${o}" aria-controls="xp-${esc(x.id)}"><span>How each score was built</span><span aria-hidden="true">${o?'▴':'▾'}</span></button>
+    <div class="xp" id="xp-${esc(x.id)}"${o?'':' hidden'}>${xBlock(x,'away',sc)}${xBlock(x,'home',sc)}
+    <p class="sub" style="font-size:12px">Each team starts at what an average team scores; bars add or subtract from that and sum to the projected score.</p>
+    <button class="xclose" data-x="${esc(x.id)}">Close ✕</button></div>`;
+}
+function xPanel(x){
+  if(!x.xp)return '';
+  const margin=x.ph-x.pa,sc=xScale(x);
+  const takes=x.ppick&&x.line!=null?`<span>So the projection takes <b>${esc(x.ppick)}</b> against the pool line (${esc(x.home)} ${sgn(x.line)})</span>`:'';
+  return `<section class="panel"><h3>How the projected score was built</h3>
+    <div class="build-top"><span>Projected <b>${esc(x.away)} ${Number(x.pa).toFixed(1)} – ${esc(x.home)} ${Number(x.ph).toFixed(1)}</b></span><span>${esc(margin>=0?x.home:x.away)} by ${Math.abs(margin).toFixed(1)}</span>${takes}</div>
+    ${pending(x)?'<div class="pend"><b>Injuries are not counted yet.</b> Official statuses come out Wednesday to Friday, and this projection will update then.</div>':''}
+    <p class="sub">Each team starts from what an average team scores against an average defense at a neutral site. Every bar adds or subtracts from that, and the pieces add up to the projected score (to the nearest tenth).</p>
+    <div class="teams2">${xBlock(x,'away',sc)}${xBlock(x,'home',sc)}</div></section>`;
+}
 function card(x){
   const pa=x.pick===x.away,ph=x.pick===x.home;
   return `<article class="card" data-id="${esc(x.id)}"><div class="card-h"><span class="ko">${esc(x.ko)}</span>${stateBadge(x)}</div>
-    <div class="teams">${team(x,'a',pa)}${team(x,'h',ph)}</div>${move(x)}${meter(x)}${proj(x)}${foot(x)}<button class="more" data-id="${esc(x.id)}">Book-by-book lines ›</button></article>`;
+    <div class="teams">${team(x,'a',pa)}${team(x,'h',ph)}</div>${move(x)}${meter(x)}${proj(x)}${xDrivers(x)}${xExpand(x)}${foot(x)}<button class="more" data-id="${esc(x.id)}">Book-by-book lines ›</button></article>`;
 }
 const cols=n=>n===4||n===10?2:3;      // fill the rows: 4 games make 2x2, not 3+1
 const pred={all:()=>true,strong:x=>x.sig==='strong',differs:x=>x.ppick&&x.pick&&x.ppick!==x.pick};
@@ -517,6 +618,7 @@ function detailHTML(x){
     <div class="d-match"><span>${esc(x.away)}</span><span class="at">@</span><span>${esc(x.home)}</span></div>
     <div class="d-facts">${stateBadge(x)}${x.line!=null?`<span>Pool line <b>${esc(x.home)} ${sgn(x.line)}</b></span>`:''}${pick}${res}${d.total!=null?`<span>Total <b>${d.total}</b></span>`:''}</div></section>
   ${d.why&&d.why.length?`<section class="panel"><h3>Why this pick</h3><ul>${d.why.map(w=>`<li>${esc(w)}</li>`).join('')}</ul></section>`:''}
+  ${xPanel(x)}
   <section class="panel"><h3>Line movement</h3>
     <p class="sub">Spread on ${esc(x.home)} across every book. Higher on the chart means the market favors ${esc(x.home)} more; lower favors ${esc(x.away)} more.</p>
     ${has?`<div class="key"><span><i class="k-line"></i>Median of books</span><span><i class="k-band"></i>Range across books</span><span><i class="k-dash"></i>Pool line</span><span><i class="k-mkt"></i>${x.status==='final'?'Pick captured':'Latest capture'}</span></div><div class="chart" id="chart"></div>${snapTable(d)}`:'<p class="sub">No book lines were captured for this game yet.</p>'}
@@ -537,7 +639,15 @@ function showBoard(){
   ro&&ro.disconnect();$('detail').hidden=true;$('detail').innerHTML='';$('board').hidden=false;window.scrollTo(0,saved);
 }
 function open(id){try{location.hash=id}catch(e){}showGame(id)}
-$('slots').addEventListener('click',e=>{const c=e.target.closest('.card');if(c)open(c.dataset.id)});
+$('slots').addEventListener('click',e=>{
+  const b=e.target.closest('.xbtn,.xclose');
+  if(b){const id=b.dataset.x,card=b.closest('.card'),want=b.classList.contains('xclose')?false:!openX.has(id);
+    want?openX.add(id):openX.delete(id);
+    const box=card.querySelector('.xp'),btn=card.querySelector('.xbtn');
+    box.hidden=!want;btn.setAttribute('aria-expanded',want);btn.lastElementChild.textContent=want?'▴':'▾';
+    if(!want)btn.focus();return}
+  if(e.target.closest('.xp'))return;
+  const c=e.target.closest('.card');if(c)open(c.dataset.id)});
 function route(){const id=(location.hash||'').slice(1);if(id&&byId[id])showGame(id);else if(!$('detail').hidden)showBoard()}
 window.addEventListener('hashchange',route);route();
 </script>

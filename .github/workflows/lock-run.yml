@@ -39,6 +39,7 @@ jobs:
       - name: Final picks
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: |
           git config user.name "nfl-ats-engine"
           git config user.email "nfl-ats-engine@users.noreply.github.com"
@@ -48,18 +49,27 @@ jobs:
             for i in 1 2 3 4; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && return 0; sleep $((i*3)); done
             return 1
           }
+          # Phone alert for the picks written since $1 (ISO, +00:00); never fails the run. No-op without NTFY_TOPIC.
+          notify() { python -m engine alert --local --send --since "$1" || true; }
+          now_iso() { date -u +%Y-%m-%dT%H:%M:%S+00:00; }
           if [ -n "${{ inputs.game_id }}" ]; then
+            T0=$(now_iso)
             python -m engine run --game "${{ inputs.game_id }}"
+            notify "$T0"
           elif [ "${{ inputs.wait }}" = "true" ]; then
             # One lock group per pass: wait, pick at lock - lead, commit, repeat until the window is empty.
             for pass in 1 2 3 4 5 6 7 8; do
+              T0=$(now_iso)
               python -m engine lock-run --wait --window-minutes "${{ inputs.window_minutes || '25' }}" \
                 --lead-minutes "${{ inputs.lead_minutes || '5' }}" | tee pass.log || echo "pass $pass failed; retrying"
               commit
+              notify "$T0"
               grep -q "^REMAINING 0" pass.log && break
             done
           else
+            T0=$(now_iso)
             python -m engine lock-run --window-minutes "${{ inputs.window_minutes || '25' }}"
+            notify "$T0"
           fi
       - name: Grade finished games (live record)
         if: always()
