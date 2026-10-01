@@ -1,0 +1,63 @@
+{
+ "2025": {
+  "H1_under_at_highest_line": {
+   "n": 2343,
+   "weeks": 13,
+   "win_rate": 0.539906103286385,
+   "roi": 0.008808497245394464,
+   "roi_ci95": [
+    -0.03080835926024587,
+    0.04209648861890976
+   ],
+   "baseline_n": 7387,
+   "baseline_roi": -0.057613341950059446,
+   "roi_minus_baseline": 0.06642183919545391,
+   "roi_minus_baseline_ci95": [
+    0.021205868248325817,
+    0.11435832797132413
+   ],
+   "books_at_bet": {
+    "BetRivers NJ": 548,
+    "DK NJ": 1291,
+    "BetMGM NJ": 108,
+    "FanDuel NJ": 396
+   },
+   "pass": false
+  },
+  "H2_under_at_lowest_line": {
+   "n": 2343,
+   "weeks": 13,
+   "win_rate": 0.5066154502774222,
+   "roi": -0.04142118699585827,
+   "roi_ci95": [
+    -0.07569323537386878,
+    -0.009623630051369122
+   ],
+   "baseline_n": 7387,
+   "baseline_roi": -0.057613341950059446,
+   "roi_minus_baseline": 0.016192154954201177,
+   "roi_minus_baseline_ci95": [
+    -0.03214461952602321,
+    0.06969464908780473
+   ],
+   "books_at_bet": {
+    "DK NJ": 755,
+    "FanDuel NJ": 512,
+    "BetMGM NJ": 78,
+    "BetRivers NJ": 998
+   },
+   "pass": false
+  }
+ },
+ "coverage_2025": {
+  "rows_real_books": 38603,
+  "match": {
+   "snaps_zero": 1480,
+   "full": 35265,
+   "none": 1605,
+   "last": 253
+  },
+  "graded_ou": 24567
+ },
+ "generated_utc": "2026-10-01T12:53:42.180048+00:00"
+}
