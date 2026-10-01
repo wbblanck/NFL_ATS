@@ -68,7 +68,7 @@ def _result_char(v) -> str | None:
 
 def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.datetime,
            results: dict | None = None, details: dict | None = None, season_table: list | None = None,
-           credits: int | None = None, epa: dict | None = None) -> str:
+           credits: int | None = None, epa: dict | None = None, curve: dict | None = None) -> str:
     """results: game_id -> graded row from live.compute (result, proj_<version> strings); optional.
     details: game_id -> per-game detail from game_detail.build (book lines over time, why, inputs); optional."""
     results = results or {}
@@ -117,7 +117,7 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                        "note": f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"})
     nxt = min(upcoming) if upcoming else None
     from engine.picks.season import MODELS as _SM
-    data = json.dumps({"epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
+    data = json.dumps({"curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
                        "next_lock": None if nxt is None else {"at": _clock(nxt[0]), "game": nxt[1]},
                        "updated": updated.astimezone(ET).strftime("%a %b %-d, %-I:%M %p ET")})
@@ -378,6 +378,14 @@ details p{margin:0}
       <div class="meter" role="img" id="ev-m"><i id="ev-i"></i></div>
     </div>
   </section>
+  <section class="panel" id="curve-panel" hidden aria-label="Season path">
+    <h3>Season path</h3>
+    <p class="sub" id="curve-note"></p>
+    <div class="key" id="curve-key"></div>
+    <div class="chart" id="curve-chart"></div>
+    <p class="sub" id="curve-verdict"></p>
+    <details><summary>As a table</summary><div class="tbl"><table id="curve-tab"></table></div></details>
+  </section>
   <section class="panel" id="season-panel" hidden aria-label="Season by week">
     <h3>Season by week</h3>
     <p class="sub" id="season-note"></p>
@@ -443,6 +451,33 @@ $('ev-m').setAttribute('aria-label',`${D.graded} of ${D.claim_at} games graded`)
     +T.map(w=>row(`Week ${w.week}${w.kind==='backtest'?' <span class="m hook">backtest</span>':''}`,w.rec)).join('')
     +(live.length?row('Live total',sum(live),'med'):'')+row('Season incl. backtest',sum(T),'med')+'</tbody>';
   $('season-note').textContent=T.some(w=>w.kind==='backtest')?'Weeks marked backtest were not picked live: each model re-run as it would have been at lock, on the real pool lines from the Picks history, with the closing line as the market. Only live weeks count toward the official record.':'';
+})();
+
+(function(){
+  const C=D.curve||{};if(!C.games||C.games.length<2)return;
+  $('curve-panel').hidden=false;
+  const S=[['official','Official pick','var(--ink)',null],['hybrid','Hybrid (tracked)','var(--flag)','5 3'],['favorite','Always the favorite','var(--ink-3)','2 4'],['home','Always the home team','var(--ink-3)','1 3']];
+  $('curve-note').textContent='Cumulative wins minus losses against the pool line, game by game. The band is where a coin-flipper would land 95% of the time. Weeks marked backtest were not picked live (see Season by week).';
+  $('curve-key').innerHTML=`<span><i class="k-band"></i>Luck band (95%)</span>`+S.map(([k,l,c,d])=>`<span><i style="display:inline-block;width:18px;height:0;border-top:2px ${d?'dashed':'solid'} ${c}"></i>${esc(l)} ${C.cum[k][C.cum[k].length-1]>0?'+':''}${C.cum[k][C.cum[k].length-1]}</span>`).join('');
+  $('curve-verdict').textContent=C.verdict||'';
+  const draw=()=>{
+    const box=$('curve-chart'),W=Math.max(280,Math.floor(box.clientWidth||320)),H=W<520?230:290,m={l:36,r:12,t:12,b:26},pw=W-m.l-m.r,ph=H-m.t-m.b;
+    const n=C.games.length,mx=Math.max(8,Math.ceil(Math.max(...C.band,...S.flatMap(([k])=>C.cum[k].map(Math.abs)))/4)*4);
+    const X=i=>m.l+(n===1?0:i/(n-1)*pw),Y=v=>m.t+(1-(v+mx)/(2*mx))*ph;
+    let o='';
+    for(let v=-mx;v<=mx;v+=mx/2)o+=`<line class="c-grid" x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${v>0?'+':''}${v}</text>`;
+    o+=`<polygon class="c-band" points="${C.band.map((b,i)=>X(i)+','+Y(b)).join(' ')} ${[...C.band].reverse().map((b,i)=>X(n-1-i)+','+Y(-b)).join(' ')}"/>`;
+    let first=C.games.findIndex(g=>g.kind==='live');if(first<0)first=n;
+    if(first>0)o+=`<text x="${X(0)+4}" y="${m.t+10}" style="fill:var(--ink-3)">backtest</text>`;
+    if(first>0&&first<n)o+=`<line class="c-cross" x1="${X(first)}" x2="${X(first)}" y1="${m.t}" y2="${H-m.b}"/><text x="${X(first)+4}" y="${m.t+10}" style="fill:var(--ink-3)">live</text>`;
+    for(const [k,l,c,d] of S.slice().reverse())o+=`<polyline fill="none" stroke="${c}" stroke-width="${k==='official'?2.5:1.75}" ${d?`stroke-dasharray="${d}"`:''} points="${C.cum[k].map((v,i)=>X(i)+','+Y(v)).join(' ')}"/>`;
+    const wks=[...new Set(C.games.map(g=>g.week))];
+    for(const w of wks){const i=C.games.findIndex(g=>g.week===w);o+=`<text x="${X(i)}" y="${H-8}" text-anchor="start">W${w}</text>`}
+    box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Cumulative wins minus losses by game, four strategies and a 95% luck band">${o}</svg>`;
+  };
+  draw();if(window.ResizeObserver)new ResizeObserver(()=>draw()).observe($('curve-chart'));
+  $('curve-tab').innerHTML='<thead><tr><th>#</th><th>Game</th>'+S.map(([,l])=>`<th class="n">${esc(l)}</th>`).join('')+'</tr></thead><tbody>'
+    +C.games.map((g,i)=>`<tr><td>${i+1}</td><td>${esc(g.label)}${g.kind==='backtest'?' <span class="m hook">backtest</span>':''}</td>${S.map(([k])=>`<td class="n">${C.cum[k][i]>0?'+':''}${C.cum[k][i]}</td>`).join('')}</tr>`).join('')+'</tbody>';
 })();
 const half=x=>{const w=Math.floor(x),f=x-w;return f===0.5?(w?w+'½':'½'):num(x,1)};
 

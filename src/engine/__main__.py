@@ -297,7 +297,7 @@ def main(argv=None) -> int:
             from engine.picks import season as _season
             season_tab = _season.build(graded, a.season)
         except Exception:
-            lv, results, season_tab = {"N": 0, "W": 0, "L": 0}, {}, []
+            lv, results, season_tab, graded = {"N": 0, "W": 0, "L": 0}, {}, [], []
         try:
             import polars as _pl
             from engine.picks import game_detail
@@ -313,9 +313,15 @@ def main(argv=None) -> int:
         except Exception as e:
             print("team EPA unavailable:", repr(e), file=sys.stderr)
             epa_tab = {}
+        try:
+            from engine.picks import curve as _curve
+            curve_data = _curve.build(sched, a.season, graded)
+        except Exception as e:
+            print("season curve unavailable:", repr(e), file=sys.stderr)
+            curve_data = {}
         out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
         open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results,
-                                              details, season_tab, market.credits_left(), epa_tab))
+                                              details, season_tab, market.credits_left(), epa_tab, curve_data))
         print(out)
         return 0
     if a.cmd == "check-league-lines":
