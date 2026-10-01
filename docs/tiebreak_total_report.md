@@ -22,7 +22,8 @@ Typical range around the market total (all games): half land within −8.5 to +9
   - All games: 10.407 vs 10.403 for the market total, so no gain.
   - Last games: 9.77 vs 9.88. That is a 0.11-point gain, and the bootstrap gives a 95% interval of −0.11 to +0.35 (P ≈ 0.17). Not significant.
 - **Night games** have finished slightly under the total since 2018 (442 games, median −1.5). In 2010–2017 they went the other way (median +0.5), so this is not a stable effect.
-- **Team projections** score games less accurately than the market for totals as well as spreads (docs/total_report.md and the projection reports). They are not used.
+- **Team projections** were not tested on totals here. Against the market on spreads they were no better than a coin
+  flip (the projection reports), so they are not used.
 
 ## Rule
 
