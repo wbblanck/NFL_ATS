@@ -1,0 +1,442 @@
+{
+ "n_games": 4572,
+ "n_disc": 1490,
+ "n_conf": 2815,
+ "patterns": [
+  {
+   "pattern": "home_dog",
+   "disc_b": 0.004585672571756632,
+   "disc_z": 0.0493421517721244,
+   "sign": 1.0,
+   "conf_b": 0.01750674401647695,
+   "conf_z_in_sign": 0.2715497610872283,
+   "conf_p": 0.39298411652099813,
+   "disc_effect": {
+    "games": 469,
+    "won": 232,
+    "rate": 0.4946695095948827,
+    "model_expected": 0.4935375075688258
+   },
+   "conf_effect": {
+    "games": 978,
+    "won": 482,
+    "rate": 0.49284253578732107,
+    "model_expected": 0.48853638797329585
+   },
+   "cbs2025_effect": {
+    "games": 113,
+    "won": 60,
+    "rate": 0.5309734513274337,
+    "model_expected": 0.4954377523842255
+   },
+   "holm_threshold": 0.005,
+   "pass": false
+  },
+  {
+   "pattern": "dog",
+   "disc_b": -0.014157632648186508,
+   "disc_z": -0.27150943997181515,
+   "sign": -1.0,
+   "conf_b": -0.00033104562346350893,
+   "conf_z_in_sign": 0.008709082278555876,
+   "conf_p": 0.49652562277647144,
+   "disc_effect": {
+    "games": 1490,
+    "won": 735,
+    "rate": 0.49328859060402686,
+    "model_expected": 0.48979439160964866
+   },
+   "conf_effect": {
+    "games": 2815,
+    "won": 1389,
+    "rate": 0.49342806394316163,
+    "model_expected": 0.49334667270707655
+   },
+   "cbs2025_effect": {
+    "games": 267,
+    "won": 129,
+    "rate": 0.48314606741573035,
+    "model_expected": 0.49861739293396323
+   },
+   "holm_threshold": 0.008333333333333333,
+   "pass": false
+  },
+  {
+   "pattern": "nomove_home",
+   "disc_b": -0.08421038994315767,
+   "disc_z": -0.7250847249503375,
+   "sign": -1.0,
+   "conf_b": 0.07786390981526768,
+   "conf_z_in_sign": -0.8555696599834554,
+   "conf_p": 0.803882071028643,
+   "disc_effect": {
+    "games": 299,
+    "won": 163,
+    "rate": 0.5451505016722408,
+    "model_expected": 0.5242027473695979
+   },
+   "conf_effect": {
+    "games": 483,
+    "won": 244,
+    "rate": 0.505175983436853,
+    "model_expected": 0.5246221127281118
+   },
+   "cbs2025_effect": {
+    "games": 82,
+    "won": 42,
+    "rate": 0.5121951219512195,
+    "model_expected": 0.524421209858103
+   },
+   "holm_threshold": 0.025,
+   "pass": false
+  },
+  {
+   "pattern": "move_to_dog",
+   "disc_b": -0.013622631341280927,
+   "disc_z": -0.1729497824820916,
+   "sign": -1.0,
+   "conf_b": -0.006734172783635301,
+   "conf_z_in_sign": 0.11427279805801895,
+   "conf_p": 0.45451077261464673,
+   "disc_effect": {
+    "games": 656,
+    "won": 293,
+    "rate": 0.44664634146341464,
+    "model_expected": 0.4433016136568029
+   },
+   "conf_effect": {
+    "games": 1178,
+    "won": 519,
+    "rate": 0.4405772495755518,
+    "model_expected": 0.43893179572829577
+   },
+   "cbs2025_effect": {
+    "games": 87,
+    "won": 42,
+    "rate": 0.4827586206896552,
+    "model_expected": 0.44011228142463493
+   },
+   "holm_threshold": 0.00625,
+   "pass": false
+  },
+  {
+   "pattern": "move_to_fav",
+   "disc_b": 0.08151240536191821,
+   "disc_z": 0.9330270868665937,
+   "sign": 1.0,
+   "conf_b": 0.0011402137063101848,
+   "conf_z_in_sign": 0.01921139240377378,
+   "conf_p": 0.4923362347283311,
+   "disc_effect": {
+    "games": 535,
+    "won": 302,
+    "rate": 0.5644859813084112,
+    "model_expected": 0.5444302622577132
+   },
+   "conf_effect": {
+    "games": 1154,
+    "won": 634,
+    "rate": 0.5493934142114385,
+    "model_expected": 0.549112903497223
+   },
+   "cbs2025_effect": {
+    "games": 98,
+    "won": 43,
+    "rate": 0.4387755102040816,
+    "model_expected": 0.5518906890612855
+   },
+   "holm_threshold": 0.0071428571428571435,
+   "pass": false
+  },
+  {
+   "pattern": "early_move",
+   "disc_b": -0.02527476683852685,
+   "disc_z": -0.21336185507763744,
+   "sign": -1.0,
+   "conf_b": 0.03042069115532791,
+   "conf_z_in_sign": -0.3554929599985266,
+   "conf_p": 0.6388898409633942,
+   "disc_effect": {
+    "games": 289,
+    "won": 131,
+    "rate": 0.4532871972318339,
+    "model_expected": 0.4470624511373528
+   },
+   "conf_effect": {
+    "games": 556,
+    "won": 247,
+    "rate": 0.4442446043165468,
+    "model_expected": 0.4517281996220596
+   },
+   "cbs2025_effect": {
+    "games": 37,
+    "won": 20,
+    "rate": 0.5405405405405406,
+    "model_expected": 0.43834244999293537
+   },
+   "holm_threshold": 0.016666666666666666,
+   "pass": false
+  },
+  {
+   "pattern": "late_move",
+   "disc_b": 0.025549759538021976,
+   "disc_z": 0.19298352100812477,
+   "sign": 1.0,
+   "conf_b": -0.005343681792022934,
+   "conf_z_in_sign": -0.058023118228488026,
+   "conf_p": 0.5231348930686807,
+   "disc_effect": {
+    "games": 234,
+    "won": 132,
+    "rate": 0.5641025641025641,
+    "model_expected": 0.5578637764165008
+   },
+   "conf_effect": {
+    "games": 485,
+    "won": 273,
+    "rate": 0.5628865979381443,
+    "model_expected": 0.5641852106185797
+   },
+   "cbs2025_effect": {
+    "games": 51,
+    "won": 26,
+    "rate": 0.5098039215686274,
+    "model_expected": 0.5625854822885092
+   },
+   "holm_threshold": 0.01,
+   "pass": false
+  },
+  {
+   "pattern": "key_cross",
+   "disc_b": 0.20080699943673738,
+   "disc_z": 0.8536520137701766,
+   "sign": 1.0,
+   "conf_b": 0.36897017744031163,
+   "conf_z_in_sign": 2.8128985120222865,
+   "conf_p": 0.0024548572111559456,
+   "disc_effect": {
+    "games": 78,
+    "won": 49,
+    "rate": 0.6282051282051282,
+    "model_expected": 0.5806381866656971
+   },
+   "conf_effect": {
+    "games": 270,
+    "won": 183,
+    "rate": 0.6777777777777778,
+    "model_expected": 0.5939701015789286
+   },
+   "cbs2025_effect": {
+    "games": 26,
+    "won": 13,
+    "rate": 0.5,
+    "model_expected": 0.6051128856207272
+   },
+   "holm_threshold": 0.0033333333333333335,
+   "pass": true
+  },
+  {
+   "pattern": "division_dog",
+   "disc_b": 0.020911395504546904,
+   "disc_z": 0.24602226171924604,
+   "sign": 1.0,
+   "conf_b": 0.059822318666776834,
+   "conf_z_in_sign": 0.9521677830287684,
+   "conf_p": 0.17050594853950285,
+   "disc_effect": {
+    "games": 562,
+    "won": 290,
+    "rate": 0.5160142348754448,
+    "model_expected": 0.5108625266111995
+   },
+   "conf_effect": {
+    "games": 1036,
+    "won": 542,
+    "rate": 0.5231660231660231,
+    "model_expected": 0.5085223823286957
+   },
+   "cbs2025_effect": {
+    "games": 94,
+    "won": 49,
+    "rate": 0.5212765957446809,
+    "model_expected": 0.4952743393767975
+   },
+   "holm_threshold": 0.0038461538461538464,
+   "pass": false
+  },
+  {
+   "pattern": "primetime_dog",
+   "disc_b": -0.12641524997217674,
+   "disc_z": -1.0439923642820188,
+   "sign": -1.0,
+   "conf_b": -0.02088281824925935,
+   "conf_z_in_sign": 0.2540042413176128,
+   "conf_p": 0.3997461407205998,
+   "disc_effect": {
+    "games": 277,
+    "won": 147,
+    "rate": 0.5306859205776173,
+    "model_expected": 0.4994815230933312
+   },
+   "conf_effect": {
+    "games": 601,
+    "won": 303,
+    "rate": 0.5041597337770383,
+    "model_expected": 0.4990188239511909
+   },
+   "cbs2025_effect": {
+    "games": 63,
+    "won": 28,
+    "rate": 0.4444444444444444,
+    "model_expected": 0.504721599867231
+   },
+   "holm_threshold": 0.005555555555555556,
+   "pass": false
+  },
+  {
+   "pattern": "big_fav_dog",
+   "disc_b": 0.16771799621848013,
+   "disc_z": 1.221704574932213,
+   "sign": 1.0,
+   "conf_b": -0.10306990554275783,
+   "conf_z_in_sign": -0.8710317331834513,
+   "conf_p": 0.8081315867059775,
+   "disc_effect": {
+    "games": 219,
+    "won": 123,
+    "rate": 0.5616438356164384,
+    "model_expected": 0.5206981911980783
+   },
+   "conf_effect": {
+    "games": 291,
+    "won": 139,
+    "rate": 0.47766323024054985,
+    "model_expected": 0.5029952602801152
+   },
+   "cbs2025_effect": {
+    "games": 24,
+    "won": 13,
+    "rate": 0.5416666666666666,
+    "model_expected": 0.5088000995767986
+   },
+   "holm_threshold": 0.05,
+   "pass": false
+  },
+  {
+   "pattern": "rest",
+   "disc_b": 0.04949558873833357,
+   "disc_z": 0.5319337737257352,
+   "sign": 1.0,
+   "conf_b": -0.01740153701796424,
+   "conf_z_in_sign": -0.2720668828236046,
+   "conf_p": 0.6072147034780911,
+   "disc_effect": {
+    "games": 469,
+    "won": 245,
+    "rate": 0.5223880597014925,
+    "model_expected": 0.5101883807342027
+   },
+   "conf_effect": {
+    "games": 995,
+    "won": 505,
+    "rate": 0.507537688442211,
+    "model_expected": 0.5118121115854872
+   },
+   "cbs2025_effect": {
+    "games": 100,
+    "won": 51,
+    "rate": 0.51,
+    "model_expected": 0.5053965646004481
+   },
+   "holm_threshold": 0.0125,
+   "pass": false
+  },
+  {
+   "pattern": "bounce",
+   "disc_b": 0.04524189711855072,
+   "disc_z": 0.23486480099692586,
+   "sign": 1.0,
+   "conf_b": 0.15294722504117544,
+   "conf_z_in_sign": 1.0955861472400548,
+   "conf_p": 0.13662996334749997,
+   "disc_effect": {
+    "games": 109,
+    "won": 56,
+    "rate": 0.5137614678899083,
+    "model_expected": 0.5025705222777989
+   },
+   "conf_effect": {
+    "games": 209,
+    "won": 109,
+    "rate": 0.5215311004784688,
+    "model_expected": 0.4839251898299641
+   },
+   "cbs2025_effect": {
+    "games": 15,
+    "won": 11,
+    "rate": 0.7333333333333333,
+    "model_expected": 0.47182474483445347
+   },
+   "holm_threshold": 0.0035714285714285718,
+   "pass": false
+  },
+  {
+   "pattern": "ats_fade",
+   "disc_b": 0.11535305072359282,
+   "disc_z": 0.8814000685404124,
+   "sign": 1.0,
+   "conf_b": 0.06560938132248034,
+   "conf_z_in_sign": 0.724086829573107,
+   "conf_p": 0.23450621486707443,
+   "disc_effect": {
+    "games": 237,
+    "won": 124,
+    "rate": 0.5232067510548524,
+    "model_expected": 0.4947463823421277
+   },
+   "conf_effect": {
+    "games": 496,
+    "won": 256,
+    "rate": 0.5161290322580645,
+    "model_expected": 0.500006876683673
+   },
+   "cbs2025_effect": {
+    "games": 45,
+    "won": 25,
+    "rate": 0.5555555555555556,
+    "model_expected": 0.482754958094764
+   },
+   "holm_threshold": 0.004166666666666667,
+   "pass": false
+  },
+  {
+   "pattern": "wind_dog",
+   "disc_b": -0.11816149793703896,
+   "disc_z": -0.7224225031187095,
+   "sign": -1.0,
+   "conf_b": -0.05195681773446407,
+   "conf_z_in_sign": 0.3746109862853714,
+   "conf_p": 0.3539749006067826,
+   "disc_effect": {
+    "games": 152,
+    "won": 78,
+    "rate": 0.5131578947368421,
+    "model_expected": 0.48407965202417624
+   },
+   "conf_effect": {
+    "games": 211,
+    "won": 106,
+    "rate": 0.5023696682464455,
+    "model_expected": 0.4895699780394289
+   },
+   "cbs2025_effect": {
+    "games": 18,
+    "won": 11,
+    "rate": 0.6111111111111112,
+    "model_expected": 0.49047381960003317
+   },
+   "holm_threshold": 0.004545454545454546,
+   "pass": false
+  }
+ ]
+}
