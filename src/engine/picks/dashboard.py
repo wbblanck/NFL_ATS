@@ -68,7 +68,7 @@ def _result_char(v) -> str | None:
 
 def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.datetime,
            results: dict | None = None, details: dict | None = None, season_table: list | None = None,
-           credits: int | None = None) -> str:
+           credits: int | None = None, epa: dict | None = None) -> str:
     """results: game_id -> graded row from live.compute (result, proj_<version> strings); optional.
     details: game_id -> per-game detail from game_detail.build (book lines over time, why, inputs); optional."""
     results = results or {}
@@ -117,7 +117,7 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                        "note": f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"})
     nxt = min(upcoming) if upcoming else None
     from engine.picks.season import MODELS as _SM
-    data = json.dumps({"credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
+    data = json.dumps({"epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
                        "next_lock": None if nxt is None else {"at": _clock(nxt[0]), "game": nxt[1]},
                        "updated": updated.astimezone(ET).strftime("%a %b %-d, %-I:%M %p ET")})
@@ -335,6 +335,28 @@ tr.med td{font-weight:600;background:var(--panel-2)}
 .xp .br .name{grid-area:name}.xp .br .val{grid-area:val}.xp .br .track2{grid-area:bar}
 .xclose{font:500 12px var(--mono);color:var(--ink-2);background:none;border:1px solid var(--rule);border-radius:8px;padding:8px 12px;cursor:pointer;align-self:flex-start}
 
+/* team EPA matchup (game page) */
+.ep-sec{display:flex;flex-direction:column;gap:6px}
+.ep-sec h4{margin:6px 0 0;font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.ep-row{display:grid;grid-template-columns:7.5em minmax(0,1fr) minmax(0,1fr) 6.5em;gap:10px 14px;align-items:center;padding:8px 0;border-top:1px solid var(--rule)}
+.ep-row .what{font-weight:600;font-size:14px}
+.ep-cell{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 8px;align-items:center;min-width:0}
+.ep-cell .who{grid-column:1/-1;font:400 11px var(--mono);color:var(--ink-2)}
+.ep-cell .num{font:500 13px var(--mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.ep-cell .num small{color:var(--ink-3);font-weight:400}
+.ep-bar{position:relative;height:12px}
+.ep-bar::before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--ink-3)}
+.ep-bar i{position:absolute;top:1px;height:10px}
+.ep-bar i.up{left:50%;background:var(--ink);border-radius:0 3px 3px 0}
+.ep-bar i.dn{right:50%;background:var(--ink-3);border-radius:3px 0 0 3px}
+.ep-edge{font:500 11px var(--mono);border-radius:999px;padding:3px 8px;text-align:center;white-space:nowrap;justify-self:end}
+.ep-edge.on{background:var(--flag-soft);color:var(--ink)}
+.ep-edge.even{background:var(--flat-bg);color:var(--ink-2)}
+@media (max-width:620px){
+  .ep-row{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"what edge" "a a" "b b"}
+  .ep-row .what{grid-area:what}.ep-row .ep-edge{grid-area:edge}.ep-row .ea{grid-area:a}.ep-row .eb{grid-area:b}
+}
+
 /* notes */
 details{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:14px 18px}
 summary{cursor:pointer;font:600 14px var(--body)}
@@ -534,6 +556,38 @@ function xPanel(x){
     <p class="sub">Each team starts from what an average team scores against an average defense at a neutral site. Every bar adds or subtracts from that, and the pieces add up to the projected score (to the nearest tenth).</p>
     <div class="teams2">${xBlock(x,'away',sc)}${xBlock(x,'home',sc)}</div></section>`;
 }
+
+/* ---- team EPA matchup ---- */
+const EPC=[['pass_off','Pass offense'],['rush_off','Rush offense'],['pass_def','Pass defense'],['run_def','Run defense'],['turnovers','Turnovers'],['penalties','Penalties'],['special_teams','Special teams']];
+const EPL=Object.fromEntries(EPC);
+const ord=n=>n+(n%100>=11&&n%100<=13?'th':({1:'st',2:'nd',3:'rd'}[n%10]||'th'));
+function epMax(k){const T=(D.epa||{}).teams||{};return Math.max(...Object.values(T).map(t=>t[k]?Math.abs(t[k][0]):0),1)}
+function epCell(team,k,cls){
+  const t=((D.epa||{}).teams||{})[team];const v=t&&t[k];
+  if(!v)return `<div class="ep-cell ${cls}"><span class="who">${esc(team)} ${esc(EPL[k].toLowerCase())}</span><span class="num">—</span></div>`;
+  const w=Math.min(50,Math.abs(v[0])/epMax(k)*50);
+  const lab=`${team} ${EPL[k].toLowerCase()}: ${(v[0]>0?'+':v[0]<0?'−':'')+Math.abs(v[0]).toFixed(1)} EPA per game over ${t.games} games, ${ord(v[1])} of 32`;
+  return `<div class="ep-cell ${cls}" title="${esc(lab)}"><span class="who">${esc(team)} ${esc(EPL[k].toLowerCase())}</span>
+    <div class="ep-bar" role="img" aria-label="${esc(lab)}"><i class="${v[0]>=0?'up':'dn'}" style="width:${w}%"></i></div>
+    <span class="num">${(v[0]>0?'+':v[0]<0?'−':'')+Math.abs(v[0]).toFixed(1)} <small>${ord(v[1])}</small></span></div>`;
+}
+function epEdge(a,ka,b,kb){
+  const T=(D.epa||{}).teams||{},ra=T[a]&&T[a][ka],rb=T[b]&&T[b][kb];
+  if(!ra||!rb)return '<span class="ep-edge even">—</span>';
+  const d=rb[1]-ra[1];                       // lower rank is better
+  return Math.abs(d)<6?'<span class="ep-edge even">Even</span>':`<span class="ep-edge on">Edge ${esc(d>0?a:b)}</span>`;
+}
+function epRow(what,a,ka,b,kb){return `<div class="ep-row"><span class="what">${esc(what)}</span>${epCell(a,ka,'ea')}${epCell(b,kb,'eb')}${epEdge(a,ka,b,kb)}</div>`}
+function epaPanel(x){
+  const E=D.epa||{};if(!E.teams||!E.teams[x.home]||!E.teams[x.away])return '';
+  const sec=(title,rows)=>`<div class="ep-sec"><h4>${title}</h4>${rows}</div>`;
+  return `<section class="panel"><h3>How they have played</h3>
+    <p class="sub">EPA per game through week ${E.through_week} (expected points added: how much each play changed the expected score). Positive is better on every row; rank 1 = best of 32. Descriptive only: the market already prices this in, and it is not used by the pick.</p>
+    ${sec(`When ${esc(x.away)} has the ball`,epRow('Passing',x.away,'pass_off',x.home,'pass_def')+epRow('Running',x.away,'rush_off',x.home,'run_def'))}
+    ${sec(`When ${esc(x.home)} has the ball`,epRow('Passing',x.home,'pass_off',x.away,'pass_def')+epRow('Running',x.home,'rush_off',x.away,'run_def'))}
+    ${sec('Everything else',epRow('Turnovers',x.away,'turnovers',x.home,'turnovers')+epRow('Penalties',x.away,'penalties',x.home,'penalties')+epRow('Special teams',x.away,'special_teams',x.home,'special_teams'))}
+  </section>`;
+}
 function card(x){
   const pa=x.pick===x.away,ph=x.pick===x.home;
   return `<article class="card" data-id="${esc(x.id)}"><div class="card-h"><span class="ko">${esc(x.ko)}</span>${stateBadge(x)}</div>
@@ -652,6 +706,7 @@ function detailHTML(x){
     <div class="d-facts">${stateBadge(x)}${x.line!=null?`<span>Pool line <b>${esc(x.home)} ${sgn(x.line)}</b></span>`:''}${pick}${res}${d.total!=null?`<span>Total <b>${d.total}</b></span>`:''}</div></section>
   ${d.why&&d.why.length?`<section class="panel"><h3>Why this pick</h3><ul>${d.why.map(w=>`<li>${esc(w)}</li>`).join('')}</ul></section>`:''}
   ${xPanel(x)}
+  ${epaPanel(x)}
   <section class="panel"><h3>Line movement</h3>
     <p class="sub">Spread on ${esc(x.home)} across every book. Higher on the chart means the market favors ${esc(x.home)} more; lower favors ${esc(x.away)} more.</p>
     ${has?`<div class="key"><span><i class="k-line"></i>Median of books</span><span><i class="k-band"></i>Range across books</span><span><i class="k-dash"></i>Pool line</span><span><i class="k-mkt"></i>${x.status==='final'?'Pick captured':'Latest capture'}</span></div><div class="chart" id="chart"></div>${snapTable(d)}`:'<p class="sub">No book lines were captured for this game yet.</p>'}
