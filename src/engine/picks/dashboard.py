@@ -68,7 +68,8 @@ def _result_char(v) -> str | None:
 
 def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.datetime,
            results: dict | None = None, details: dict | None = None, season_table: list | None = None,
-           credits: int | None = None, epa: dict | None = None, curve: dict | None = None) -> str:
+           credits: int | None = None, epa: dict | None = None, curve: dict | None = None,
+           tiebreak: list | None = None) -> str:
     """results: game_id -> graded row from live.compute (result, proj_<version> strings); optional.
     details: game_id -> per-game detail from game_detail.build (book lines over time, why, inputs); optional."""
     results = results or {}
@@ -117,7 +118,7 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                        "note": f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"})
     nxt = min(upcoming) if upcoming else None
     from engine.picks.season import MODELS as _SM
-    data = json.dumps({"curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
+    data = json.dumps({"tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
                        "next_lock": None if nxt is None else {"at": _clock(nxt[0]), "game": nxt[1]},
                        "updated": updated.astimezone(ET).strftime("%a %b %-d, %-I:%M %p ET")})
@@ -273,6 +274,11 @@ h3{margin:0;font:800 22px/1 var(--display);text-transform:uppercase;letter-spaci
 .k-line{width:18px;height:0;border-top:2px solid var(--ink)}
 .k-dash{width:18px;height:0;border-top:2px dashed var(--ink-2)}
 .tbl{overflow-x:auto}
+.tbn{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 22px}
+.tbn .g{font:800 56px/1 var(--display);font-variant-numeric:tabular-nums}
+.tbn .tbm{font-size:14px;color:var(--ink-2)}
+.tbn .tbm b{color:var(--ink)}
+
 table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
 th{font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);white-space:nowrap}
 td{padding:8px 10px;border-bottom:1px solid var(--rule);white-space:nowrap}
@@ -387,6 +393,12 @@ details p{margin:0}
     <p class="sub" id="curve-verdict"></p>
     <details><summary>As a table</summary><div class="tbl"><table id="curve-tab"></table></div></details>
   </section>
+  <section class="panel" id="tb-panel" hidden aria-label="Tiebreaker">
+    <h3>Tiebreaker: total points in the last game</h3>
+    <div id="tb-now"></div>
+    <p class="sub" id="tb-note"></p>
+    <details><summary>Every week</summary><div class="tbl"><table id="tb-tab"></table></div></details>
+  </section>
   <section class="panel" id="season-panel" hidden aria-label="Season by week">
     <h3>Season by week</h3>
     <p class="sub" id="season-note"></p>
@@ -452,6 +464,23 @@ $('ev-m').setAttribute('aria-label',`${D.graded} of ${D.claim_at} games graded`)
     +T.map(w=>row(`Week ${w.week}${w.kind==='backtest'?' <span class="m hook">backtest</span>':''}`,w.rec)).join('')
     +(live.length?row('Live total',sum(live),'med'):'')+row('Season incl. backtest',sum(T),'med')+'</tbody>';
   $('season-note').textContent=T.some(w=>w.kind==='backtest')?'Weeks marked backtest were not picked live: each model re-run as it would have been at lock, on the real pool lines from the Picks history, with the closing line as the market. Only live weeks count toward the official record.':'';
+})();
+
+(function(){
+  const T=D.tiebreak||[];if(!T.length)return;
+  $('tb-panel').hidden=false;
+  const cur=T.find(r=>r.week===D.week)||T[T.length-1];
+  const ko=r=>new Date(r.kickoff_utc).toLocaleString('en-US',{timeZone:'America/New_York',weekday:'short',hour:'numeric',minute:'2-digit'});
+  const game=r=>`${esc(r.away)} @ ${esc(r.home)}`;
+  $('tb-now').innerHTML=cur.guess==null
+    ?`<div class="tbn"><span class="tbm">Week ${cur.week} · <b>${game(cur)}</b> · ${ko(cur)} ET · market total not posted yet</span></div>`
+    :`<div class="tbn"><span class="g">${cur.guess}</span><span class="tbm">Week ${cur.week} · <b>${game(cur)}</b> · ${ko(cur)} ET<br>Market total <b>${num(cur.market_total,1)}</b>`
+      +(cur.home_pts!=null?` · implied <b>${esc(cur.away)} ${num(cur.away_pts,1)}</b>, <b>${esc(cur.home)} ${num(cur.home_pts,1)}</b>`:'')
+      +`<br>Half of games land between <b>${cur.r50[0]}–${cur.r50[1]}</b>, 8 in 10 between <b>${cur.r80[0]}–${cur.r80[1]}</b>`
+      +(cur.actual!=null?`<br>Final <b>${cur.actual}</b> · missed by <b>${cur.miss}</b>`:'')+`</span></div>`;
+  $('tb-note').textContent='The guess is the betting market total for the game, rounded (a .5 rounds down). Since 2010 nothing we tried beat it: the miss averages about 10 points, so the tiebreaker is mostly luck. Enter it as late as the pool allows and use the market total at that time.';
+  $('tb-tab').innerHTML='<thead><tr><th>Week</th><th>Game</th><th class="n">Total</th><th class="n">Guess</th><th class="n">Final</th><th class="n">Miss</th></tr></thead><tbody>'
+    +T.map(r=>`<tr${r.week===D.week?' class="med"':''}><td>${r.week}</td><td>${game(r)}</td><td class="n">${r.market_total!=null?num(r.market_total,1):'—'}</td><td class="n">${r.guess??'—'}</td><td class="n">${r.actual??'—'}</td><td class="n">${r.miss??'—'}</td></tr>`).join('')+'</tbody>';
 })();
 
 (function(){
