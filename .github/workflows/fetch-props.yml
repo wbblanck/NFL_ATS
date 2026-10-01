@@ -1,0 +1,45 @@
+name: Fetch props
+# Action Network NFL player-prop lines for one regular season -> data/props/an_props_<season>.csv.
+# The push trigger fetches the exploration season (2024) only; held-out seasons are refused by the
+# script until docs/props_confirm_preregistration.md is committed.
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: "Season (2024 = exploration; others need the confirm pre-registration)"
+        required: true
+        default: "2024"
+  push:
+    branches-ignore: [main]
+    paths: ['scripts/fetch/an_props.py', '.github/workflows/fetch-props.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch-props-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      SEASON: ${{ github.event.inputs.season || '2024' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch
+        run: python scripts/fetch/an_props.py --season "$SEASON"
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name "nfl-ats-engine"
+          git config user.email "nfl-ats-engine@users.noreply.github.com"
+          f="data/props/an_props_${SEASON}.csv"
+          [ -f "$f" ] || exit 0
+          git add "$f"
+          git commit -m "props: Action Network lines ${SEASON}" || exit 0
+          for i in 1 2 3 4; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep $((2**i)); done
