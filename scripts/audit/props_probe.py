@@ -42,15 +42,12 @@ def get(url: str, tries: int = 3):
     return last, None
 
 
-SCOREBOARD_VARIANTS = [
-    "web/v2/scoreboard/nfl?date={date}&periods=event",
-    "web/v2/scoreboard/nfl?season={season}&week={week}&periods=event",
-    "web/v2/scoreboard/nfl?season={season}&week={week}&seasonType=reg&periods=event",
-    "web/v1/scoreboard/nfl?season={season}&week={week}",
-    "web/v1/scoreboard/nfl?date={date}",
-]
-# (date, season, week): mid-October Sundays, plus 2026 week 3
-TARGETS = [("20211017", 2021, 6), ("20231015", 2023, 6), ("20251012", 2025, 6), ("20260927", 2026, 3)]
+SCOREBOARD_VARIANTS = ["web/v2/scoreboard/nfl?season={season}&week={week}&periods=event"]
+# Run 2 (20261001T033953Z): season/week works; props on 2025 wk 6 and 2026 wk 3, none on 2021/2023 wk 6.
+# Run 3 bounds the start: (label, season, week); props are summarized for the first 2 games of each.
+TARGETS = [("2022w06", 2022, 6), ("2023w15", 2023, 15), ("2024w01", 2024, 1), ("2024w06", 2024, 6),
+           ("2024w15", 2024, 15), ("2025w01", 2025, 1)]
+GAMES = 2
 
 
 def game_brief(g: dict) -> dict:
@@ -67,19 +64,16 @@ def main() -> None:
     books = {str(b.get("id")): b.get("display_name") or b.get("name") or ""
              for b in ((bd or {}).get("books") or [])}
     summary = {"stamp": stamp, "scoreboards": {}, "props": {}}
-    for date, season, week in TARGETS:
+    for label, season, week in TARGETS:
         for v in SCOREBOARD_VARIANTS:
-            url = v.format(date=date, season=season, week=week)
+            url = v.format(season=season, week=week)
             st, sb = get(f"{AN}/{url}")
             games = (sb or {}).get("games") or []
             briefs = [game_brief(g) for g in games]
             summary["scoreboards"][url] = {"status": st, "games": len(games), "first": briefs[:3],
                                            "top_keys": sorted((sb or {}).keys())[:20]}
             print(f"{url}: {st}, {len(games)} games, first {briefs[:2]}", flush=True)
-            # props for the first game whose start date matches the target date
-            hit = next((b for b in briefs if (b["start_time"] or "")[:10].replace("-", "") == date), None)
-            key = f"{date}"
-            if hit and key not in summary["props"]:
+            for hit in briefs[:GAMES]:
                 pst, props = get(f"{AN}/web/v2/games/{hit['id']}/props")
                 pp = (props or {}).get("player_props") or {}
                 mk = {}
@@ -92,8 +86,9 @@ def main() -> None:
                                 bk[books.get(str(book), str(book))] += 1
                                 per[(ln.get("player_id"), str(book))].add(ln.get("value"))
                     mk[market] = {"players": len({p for p, _ in per}), "books": sorted(bk)}
-                summary["props"][key] = {"game": hit, "status": pst, "n_markets": len(mk), "markets": mk}
-                print(f"  props {date} game {hit}: {pst}, {len(mk)} markets", flush=True)
+                summary["props"][f"{label}_{hit['id']}"] = {"game": hit, "status": pst, "n_markets": len(mk),
+                                                           "markets": mk}
+                print(f"  props {label} game {hit}: {pst}, {len(mk)} markets", flush=True)
     (out / "summary.json").write_text(json.dumps(summary, indent=1, default=str))
     print(f"wrote {out}")
 
