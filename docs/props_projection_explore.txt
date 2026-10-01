@@ -1,0 +1,39 @@
+fitted on 2024 (a = team factor exponent, b = opponent): {'anytime_td': (0.25, 0.0), 'pass_att': (0.0, 0.5), 'pass_cmp': (0.0, 0.5), 'pass_int': (0.0, 0.0), 'pass_rush_yds': (0.0, 0.25), 'pass_td': (0.25, 0.0), 'pass_yds': (0.0, 0.25), 'rec': (0.0, 0.25), 'rec_yds': (0.0, 0.0), 'rush_att': (0.0, 0.5), 'rush_rec_yds': (0.25, 0.25), 'rush_yds': (0.25, 0.25)}
+
+== 2024 (fit): 11492 props with a projection; MAE line 17.11 vs projection 18.69
+  UNDER (line above projection)
+    gap >= 0.00: n  4742  win 0.520  ROI -0.040
+    gap >= 0.05: n  3555  win 0.526  ROI -0.033
+    gap >= 0.10: n  2538  win 0.525  ROI -0.040
+    gap >= 0.15: n  1881  win 0.526  ROI -0.041
+    gap >= 0.20: n  1400  win 0.522  ROI -0.047
+    gap >= 0.30: n   821  win 0.536  ROI -0.017
+  OVER (projection above line)
+    gap >= 0.00: n  6750  win 0.491  ROI -0.091
+    gap >= 0.05: n  5499  win 0.494  ROI -0.088
+    gap >= 0.10: n  4474  win 0.491  ROI -0.096
+    gap >= 0.15: n  3641  win 0.486  ROI -0.107
+    gap >= 0.20: n  2955  win 0.486  ROI -0.107
+    gap >= 0.30: n  2049  win 0.486  ROI -0.110
+  UNDER gap >= 0.10 AND books disagree AND DK has the high line: n 18  win 0.556  ROI +0.038
+  UNDER gap >= 0.20 AND books disagree AND DK has the high line: n 9  win 0.444  ROI -0.160
+  UNDER gap >= 0.15 by market: [('pass_att', 86, 0.465, -0.125), ('pass_cmp', 83, 0.506, -0.069), ('pass_rush_yds', 79, 0.468, -0.124), ('pass_yds', 86, 0.488, -0.086), ('rec', 505, 0.55, -0.047), ('rec_yds', 353, 0.456, -0.147), ('rush_att', 238, 0.605, 0.096), ('rush_rec_yds', 225, 0.529, -0.01), ('rush_yds', 226, 0.562, 0.054)]
+
+== 2025 (check): 10027 props with a projection; MAE line 16.25 vs projection 17.77
+  UNDER (line above projection)
+    gap >= 0.00: n  4302  win 0.534  ROI -0.013
+    gap >= 0.05: n  3165  win 0.533  ROI -0.018
+    gap >= 0.10: n  2255  win 0.526  ROI -0.033
+    gap >= 0.15: n  1640  win 0.541  ROI -0.007
+    gap >= 0.20: n  1225  win 0.524  ROI -0.039
+    gap >= 0.30: n   692  win 0.503  ROI -0.078
+  OVER (projection above line)
+    gap >= 0.00: n  5725  win 0.472  ROI -0.113
+    gap >= 0.05: n  4670  win 0.477  ROI -0.107
+    gap >= 0.10: n  3727  win 0.480  ROI -0.103
+    gap >= 0.15: n  3037  win 0.481  ROI -0.103
+    gap >= 0.20: n  2486  win 0.492  ROI -0.084
+    gap >= 0.30: n  1748  win 0.499  ROI -0.072
+  UNDER gap >= 0.10 AND books disagree AND DK has the high line: n 453  win 0.572  ROI +0.059
+  UNDER gap >= 0.20 AND books disagree AND DK has the high line: n 243  win 0.560  ROI +0.037
+  UNDER gap >= 0.15 by market: [('pass_att', 79, 0.557, 0.052), ('pass_cmp', 89, 0.551, 0.031), ('pass_rush_yds', 62, 0.387, -0.271), ('pass_yds', 78, 0.487, -0.078), ('rec', 501, 0.573, -0.007), ('rec_yds', 310, 0.49, -0.076), ('rush_att', 193, 0.565, 0.058), ('rush_rec_yds', 104, 0.615, 0.159), ('rush_yds', 224, 0.54, 0.016)]
