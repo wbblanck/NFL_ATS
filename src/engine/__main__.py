@@ -319,9 +319,15 @@ def main(argv=None) -> int:
         except Exception as e:
             print("season curve unavailable:", repr(e), file=sys.stderr)
             curve_data = {}
+        try:
+            from engine.picks import tiebreak_total as _tb
+            tb_rows = _tb.build(sched, a.season)
+        except Exception as e:
+            print("tiebreaker unavailable:", repr(e), file=sys.stderr)
+            tb_rows = []
         out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
         open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results,
-                                              details, season_tab, market.credits_left(), epa_tab, curve_data))
+                                              details, season_tab, market.credits_left(), epa_tab, curve_data, tb_rows))
         print(out)
         return 0
     if a.cmd == "check-league-lines":
