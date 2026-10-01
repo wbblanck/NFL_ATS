@@ -1,0 +1,67 @@
+rows (real books): 22274 | books: {'DK NJ': 20630, 'BetMGM NJ': 688, 'FanDuel NJ': 584, 'BetRivers NJ': 372}
+match: {'full': 19841, 'ambiguous': 5, 'snaps_zero': 1022, 'none': 1275, 'last': 131} | with actual: 20994
+unmatched / last-name examples: [('K.J. Osborn', None, 3, 'snaps_zero'), ('Keilan Robinson', None, 18, 'snaps_zero'), (' Defense', 'IND', 8, 'none'), (' Defense', 'MIN', 7, 'none'), (' Defense', 'LA', 11, 'none'), ('JuJu Smith-Schuster', None, 7, 'snaps_zero'), ('Scott Matlock', 'LAC', 7, 'snaps_zero'), (' Defense', 'TB', 13, 'none'), ('Juwan Johnson', 'NO', 3, 'snaps_zero'), ('Drew Ogletree', 'IND', 12, 'none'), ('Craig Reynolds', None, 1, 'none'), (' Defense', 'WAS', 5, 'none'), ('Justin Watson', None, 5, 'last'), ('Trey Palmer', 'NO', 18, 'none'), ('Geoff Swaim', None, 9, 'snaps_zero')]
+
+== Over/under markets, every real book (one row per player-game-market-book) ==
+market          n   hold   over%  under%  push%  mean p_over  ROI over  ROI under
+pass_att        534  0.069  0.485  0.515  0.000   0.500     -0.090   -0.033
+pass_cmp        536  0.068  0.493  0.507  0.000   0.498     -0.076   -0.055
+pass_int        551  0.065  0.479  0.521  0.000   0.511     -0.130   -0.007
+pass_rush_yds   498  0.070  0.496  0.504  0.000   0.500     -0.073   -0.057
+pass_td         660  0.065  0.468  0.532  0.000   0.454     -0.036   -0.086
+pass_yds        554  0.070  0.478  0.522  0.000   0.501     -0.107   -0.022
+rec            2914  0.065  0.465  0.535  0.000   0.494     -0.121   -0.009
+rec_yds        3178  0.069  0.479  0.521  0.000   0.502     -0.107   -0.021
+rush_att       1150  0.068  0.459  0.541  0.000   0.500     -0.140   +0.015
+rush_rec_yds   1816  0.070  0.487  0.513  0.000   0.501     -0.091   -0.039
+rush_yds       1463  0.069  0.459  0.541  0.000   0.498     -0.142   +0.008
+
+== Calibration of de-vigged P(over), all O/U markets, DK only ==
+  p_over [0.00,0.40): n   338  mean p 0.364  over rate 0.299
+  p_over [0.40,0.45): n  1000  mean p 0.429  over rate 0.401
+  p_over [0.45,0.50): n  2934  mean p 0.482  over rate 0.457
+  p_over [0.50,0.55): n  7794  mean p 0.508  over rate 0.491
+  p_over [0.55,0.60): n   965  mean p 0.571  over rate 0.551
+  p_over [0.60,1.00): n   220  mean p 0.630  over rate 0.605
+
+== Line vs the player's as-of mean (strictly earlier games; week 1 uses 2023), DK only ==
+  pass_att      n   507  over rate by gap quintile (mean - line, low->high): 0.446 0.598 0.554 0.450 0.408
+  pass_cmp      n   503  over rate by gap quintile (mean - line, low->high): 0.465 0.530 0.515 0.470 0.485
+  pass_int      n   517  over rate by gap quintile (mean - line, low->high): 0.495 0.425 0.473 0.510 0.482
+  pass_rush_yds n   489  over rate by gap quintile (mean - line, low->high): 0.531 0.490 0.526 0.500 0.459
+  pass_td       n   488  over rate by gap quintile (mean - line, low->high): 0.495 0.495 0.412 0.541 0.606
+  pass_yds      n   518  over rate by gap quintile (mean - line, low->high): 0.548 0.427 0.615 0.447 0.413
+  rec           n  2759  over rate by gap quintile (mean - line, low->high): 0.442 0.477 0.482 0.492 0.500
+  rec_yds       n  2964  over rate by gap quintile (mean - line, low->high): 0.518 0.499 0.497 0.509 0.450
+  rush_att      n  1115  over rate by gap quintile (mean - line, low->high): 0.399 0.482 0.504 0.475 0.439
+  rush_rec_yds  n  1747  over rate by gap quintile (mean - line, low->high): 0.497 0.479 0.510 0.490 0.480
+  rush_yds      n  1395  over rate by gap quintile (mean - line, low->high): 0.462 0.477 0.448 0.480 0.444
+
+== Anytime TD (yes price only), all real books ==
+  implied [0.0,0.1): n  2514  implied 0.056  scored 0.032  ROI yes -0.474
+  implied [0.1,0.2): n  1790  implied 0.143  scored 0.111  ROI yes -0.237
+  implied [0.2,0.3): n  1255  implied 0.243  scored 0.202  ROI yes -0.178
+  implied [0.3,0.4): n   728  implied 0.346  scored 0.294  ROI yes -0.147
+  implied [0.4,0.5): n   461  implied 0.439  scored 0.434  ROI yes -0.015
+  implied [0.5,1.0): n   391  implied 0.573  scored 0.524  ROI yes -0.086
+
+== Books disagreeing on the line (same player-game-market), O/U ==
+  player-game-markets with >= 2 books: 565 | with different lines: 291
+
+== Follow-ups (added after the tables above; still 2024 only) ==
+  always under, all O/U markets, all books: n 13854  under 0.526  ROI -0.021
+  always under, yardage  : n  7509  under 0.522  ROI -0.023
+  always under, counts   : n  5134  under 0.531  ROI -0.011
+  always under, tds_ints : n  1211  under 0.527  ROI -0.050
+  always under, under is plus money or even : n  2010  under 0.454  ROI -0.023
+  always under, under is minus money        : n 11844  under 0.538  ROI -0.020
+  under rate by line tercile within market (low -> high line):
+    rec           [0.5-2.5] 0.550 (+0.041)  [2.5-3.5] 0.508 (-0.066)  [3.5-7.5] 0.545 (+0.005)
+    rec_yds       [0.5-17.5] 0.545 (+0.021)  [17.5-36.5] 0.504 (-0.055)  [36.5-100.5] 0.516 (-0.027)
+    rush_yds      [0.5-19.5] 0.554 (+0.014)  [19.5-47.5] 0.582 (+0.091)  [47.5-115.5] 0.489 (-0.081)
+    rush_att      [0.5-5.5] 0.527 (-0.011)  [5.5-12.5] 0.556 (+0.037)  [12.5-23.5] 0.540 (+0.016)
+    pass_yds      [155.5-215.5] 0.478 (-0.104)  [215.5-238.5] 0.506 (-0.054)  [238.5-294.5] 0.578 (+0.085)
+    rush_rec_yds  [0.5-39.5] 0.535 (-0.000)  [39.5-66.5] 0.518 (-0.030)  [66.5-134.5] 0.488 (-0.086)
+  line shopping where books disagree (same player-game-market, >= 2 books, different lines):
+    over at the lowest line   : n  289  win 0.412  ROI -0.213
+    under at the highest line : n  289  win 0.671  ROI +0.217

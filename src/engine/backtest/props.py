@@ -76,29 +76,50 @@ def load_stats(season: int) -> pl.DataFrame:
                     *[e.alias(m) for m, e in STAT.items()])
 
 
-def join(lines: pl.DataFrame, stats: pl.DataFrame) -> pl.DataFrame:
-    """Attach nflverse player_id and the graded stat to every prop row; `match` says how (full/last/none)."""
+def load_snaps(season: int) -> pl.DataFrame:
+    import nflreadpy as nfl
+
+    s = nfl.load_snap_counts(seasons=[season]).filter(pl.col("game_type") == "REG", pl.col("offense_snaps") > 0)
+    return s.select("player", "team", "week")
+
+
+def join(lines: pl.DataFrame, stats: pl.DataFrame, snaps: pl.DataFrame | None = None) -> pl.DataFrame:
+    """Attach nflverse player_id and the graded stat to every prop row; `match` says how (full/last/none).
+    A player with no stat row who played offensive snaps that week (`snaps`) is graded 0 ("snaps_zero"):
+    nflverse player stats omit players with no recorded play, but books grade them as 0. A player with neither
+    is treated as not playing (books void the prop)."""
     st = stats.with_columns(pl.col("player_display_name").map_elements(norm_name, return_dtype=pl.Utf8).alias("nkey"),
                             pl.col("player_display_name").map_elements(last_name, return_dtype=pl.Utf8).alias("lkey"))
     full = {(r["week"], r["team"], r["nkey"]): r["player_id"] for r in st.iter_rows(named=True)}
     lk = {}
     for r in st.iter_rows(named=True):
         lk.setdefault((r["week"], r["team"], r["lkey"]), set()).add(r["player_id"])
+    played = set()
+    if snaps is not None:
+        played = {(w, t, norm_name(p)) for w, t, p in zip(snaps["week"].to_list(), snaps["team"].to_list(),
+                                                          snaps["player"].to_list())}
     ids, how = [], []
-    for w, t, p in zip(lines["week"].to_list(), lines["team"].to_list(), lines["player"].to_list()):
-        k = (w, t, norm_name(p))
-        if k in full:
-            ids.append(full[k]); how.append("full")
+    cols = [lines[c].to_list() for c in ("week", "team", "home", "away", "player")]
+    for w, t, h, a, p in zip(*cols):
+        # Action Network often leaves the player's team blank: then search both teams in the game
+        teams = [t] if t else [TEAM_FIX.get(h, h), TEAM_FIX.get(a, a)]
+        hit = {full[(w, x, norm_name(p))] for x in teams if (w, x, norm_name(p)) in full}
+        if len(hit) == 1:
+            ids.append(next(iter(hit))); how.append("full")
             continue
-        c = lk.get((w, t, last_name(p)), set())
-        if len(c) == 1:
+        c = set().union(*(lk.get((w, x, last_name(p)), set()) for x in teams))
+        if len(c) == 1 and not hit:
             ids.append(next(iter(c))); how.append("last")
+        elif not (hit or c) and any((w, x, norm_name(p)) in played for x in teams):
+            ids.append(None); how.append("snaps_zero")
         else:
-            ids.append(None); how.append("none" if not c else "ambiguous")
+            ids.append(None); how.append("ambiguous" if (hit or c) else "none")
     out = lines.with_columns(pl.Series("player_id", ids, dtype=pl.Utf8), pl.Series("match", how))
     long = stats.unpivot(index=["player_id", "week", "position"], on=list(STAT), variable_name="market",
                          value_name="actual")
-    return out.join(long, on=["player_id", "week", "market"], how="left")
+    out = out.join(long, on=["player_id", "week", "market"], how="left")
+    return out.with_columns(pl.when(pl.col("match") == "snaps_zero").then(0).otherwise(pl.col("actual"))
+                            .alias("actual"))
 
 
 def graded(d: pl.DataFrame) -> pl.DataFrame:

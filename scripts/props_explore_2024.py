@@ -53,7 +53,7 @@ def main() -> None:
     pr = lambda *a: print(*a, file=buf)  # noqa: E731
     lines = P.load_lines(2024)
     stats = P.load_stats(2024)
-    d = P.join(lines, stats)
+    d = P.join(lines, stats, P.load_snaps(2024))
     pr("rows (real books):", d.height, "| books:", dict(d["book"].value_counts().sort("count", descending=True).iter_rows()))
     pr("match:", dict(d["match"].value_counts().iter_rows()), "| with actual:", d.filter(pl.col("actual").is_not_null()).height)
     um = d.filter(pl.col("match") != "full").select("player", "team", "week", "match").unique().head(15)
@@ -109,6 +109,46 @@ def main() -> None:
     multi = g.group_by(k).agg(pl.col("line").n_unique().alias("nl"), pl.col("book").n_unique().alias("nb"))
     pr("  player-game-markets with >= 2 books:", multi.filter(pl.col("nb") >= 2).height,
        "| with different lines:", multi.filter((pl.col("nb") >= 2) & (pl.col("nl") >= 2)).height)
+
+    pr("\n== Follow-ups (added after the tables above; still 2024 only) ==")
+    gg = g.filter(pl.col("result") != "push")
+    res = gg["result"].to_numpy()
+    _, ru = roi(gg["under_odds"].to_numpy(), side_won(res, "under"))
+    pr(f"  always under, all O/U markets, all books: n {gg.height}  under {np.mean(res=='under'):.3f}  ROI {ru:+.3f}")
+    for name, mks in {"yardage": ["pass_yds", "rush_yds", "rec_yds", "rush_rec_yds", "pass_rush_yds"],
+                      "counts": ["pass_att", "pass_cmp", "rush_att", "rec"], "tds_ints": ["pass_td", "pass_int"]}.items():
+        x = gg.filter(pl.col("market").is_in(mks))
+        r = x["result"].to_numpy()
+        _, rr = roi(x["under_odds"].to_numpy(), side_won(r, "under"))
+        pr(f"  always under, {name:9s}: n {x.height:5d}  under {np.mean(r=='under'):.3f}  ROI {rr:+.3f}")
+    for lab, cond in {"under is plus money or even": pl.col("under_odds") >= -100,
+                      "under is minus money": pl.col("under_odds") < -100}.items():
+        x = gg.filter(cond)
+        r = x["result"].to_numpy()
+        _, rr = roi(x["under_odds"].to_numpy(), side_won(r, "under"))
+        pr(f"  always under, {lab:28s}: n {x.height:5d}  under {np.mean(r=='under'):.3f}  ROI {rr:+.3f}")
+    pr("  under rate by line tercile within market (low -> high line):")
+    for mk in ["rec", "rec_yds", "rush_yds", "rush_att", "pass_yds", "rush_rec_yds"]:
+        x = gg.filter(pl.col("market") == mk)
+        q = np.quantile(x["line"].to_numpy(), [0, 1 / 3, 2 / 3, 1])
+        row = []
+        for lo, hi in zip(q[:-1], q[1:]):
+            y = x.filter(pl.col("line").is_between(lo, hi, closed="left" if hi < q[-1] else "both"))
+            r = y["result"].to_numpy()
+            _, rr = roi(y["under_odds"].to_numpy(), side_won(r, "under"))
+            row.append(f"[{lo:g}-{hi:g}] {np.mean(r=='under'):.3f} ({rr:+.3f})")
+        pr(f"    {mk:13s} " + "  ".join(row))
+    pr("  line shopping where books disagree (same player-game-market, >= 2 books, different lines):")
+    k = ["player_id", "week", "market"]
+    dis = gg.join(multi.filter((pl.col("nb") >= 2) & (pl.col("nl") >= 2)).select(k), on=k)
+    lo_ = dis.filter(pl.col("line") == pl.col("line").min().over(k))
+    hi_ = dis.filter(pl.col("line") == pl.col("line").max().over(k))
+    for lab, x, side, oc in (("over at the lowest line", lo_, "over", "over_odds"),
+                             ("under at the highest line", hi_, "under", "under_odds")):
+        x = x.unique(subset=k, keep="first")
+        r = x["result"].to_numpy()
+        _, rr = roi(x[oc].to_numpy(), side_won(r, side))
+        pr(f"    {lab:26s}: n {x.height:4d}  win {np.mean(r==side):.3f}  ROI {rr:+.3f}")
     OUT.write_text(buf.getvalue())
     sys.stdout.write(buf.getvalue())
 
