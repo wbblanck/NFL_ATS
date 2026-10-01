@@ -113,3 +113,33 @@ def test_send_posts_the_text_to_the_topic_and_never_raises():
 def test_send_uses_env_topic_and_skips_without_one(monkeypatch):
     monkeypatch.delenv("NTFY_TOPIC", raising=False)
     assert A.send("x", opener=lambda *a, **k: 1 / 0) is False           # no topic: nothing is attempted
+
+
+def _row(gid, flags, mtl=5.0, books=14, ko="2026-09-27T17:00:00+00:00"):
+    a, h = gid.split("_")[2:4]
+    return {"game_id": gid, "away_team": a, "home_team": h, "kickoff_utc": ko, "flags": flags,
+            "minutes_to_lock": str(mtl), "market_books": str(books)}
+
+
+def test_warning_lists_flagged_picks_only():
+    rows = [_row("2026_03_KC_MIA", "EARLY_PICK", mtl=43.7), _row("2026_03_ARI_SF", "FEW_BOOKS", books=4),
+            _row("2026_03_NYJ_DET", "")]
+    assert A.warning_message(rows) == ("CHECK PICKS: ARI@SF only 4 books"
+                                       " · KC@MIA picked 44 min before lock (stale market)")
+    assert A.warning_message([_row("2026_03_NYJ_DET", "")]) == ""
+
+
+def test_warning_fits_the_limit():
+    rows = [_row(f"2026_03_A{i}_B{i}", "EARLY_PICK;TOTAL_FROM_SCHEDULE", mtl=60) for i in range(9)]
+    t = A.warning_message(rows)
+    assert len(t) <= A.MAX_LEN and t.endswith("more")
+
+
+def test_week3_replay_would_have_warned():
+    from engine.data import store
+    from engine.picks import final
+    from engine import config
+    p = config.ROOT / "data" / "predictions" / "predictions.csv"
+    rows = [r for r in store.read_rows(p) if r["week"] == "3"]
+    flagged = [r for r in rows if float(r["minutes_to_lock"]) > final.EARLY_PICK_MIN]
+    assert len(flagged) == 14          # every week 3 pick except PHI@CHI (5 min)

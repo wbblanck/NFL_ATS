@@ -203,6 +203,10 @@ def next_lock(sched: pl.DataFrame, now: dt.datetime, window_minutes: int, done: 
     return due["lock_utc"].min(), due.height
 
 
+EARLY_PICK_MIN = 15    # a pick made more than this long before lock used a stale market (week 3 picks ran 44-64 min early)
+MIN_BOOKS = 5          # fewer books than this at lock: the market median is thin (week 3 low was 8)
+
+
 def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int = 25,
         events: list[dict] | None = None, snapshot_id: str = "", game_id: str | None = None,
         totals: list[dict] | None = None, proj_games=None, v3: dict | None = None) -> list[dict]:
@@ -247,6 +251,10 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
         flags = [f for f in d["flags"].split(";") if f]
         if mtl <= 0:
             flags.append("LATE_AFTER_LOCK")
+        elif mtl > EARLY_PICK_MIN:
+            flags.append("EARLY_PICK")
+        if 0 < cons["n_books"] < MIN_BOOKS:
+            flags.append("FEW_BOOKS")
         if use_total and t_flag:
             flags.append(t_flag)
         if not use_total and dist is not None:

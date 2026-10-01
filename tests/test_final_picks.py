@@ -120,3 +120,16 @@ def test_next_lock_finds_the_earliest_unpicked_lock_in_the_window():
     lock, n = final.next_lock(s, t0, 240, {"a"})
     assert lock == t0 + dt.timedelta(minutes=45) and n == 2
     assert final.next_lock(s, t0, 30, set()) == (None, 0)
+
+
+def test_early_pick_flagged_and_on_time_pick_clean(tmp_root, week3_schedule):
+    _league(tmp_root, "2026_03_ATL_GB,2026,3,GB,ATL,-6.5,GB,test,x\n")
+    early = final.run(week3_schedule, now=LOCK - dt.timedelta(minutes=20), window_minutes=25, events=EVENTS)
+    assert "EARLY_PICK" in early[0]["flags"]
+
+
+def test_on_time_pick_has_no_timing_or_book_flag(tmp_root, week3_schedule):
+    _league(tmp_root, "2026_03_ATL_GB,2026,3,GB,ATL,-6.5,GB,test,x\n")
+    r = final.run(week3_schedule, now=LOCK - dt.timedelta(minutes=5), window_minutes=25, events=EVENTS)[0]
+    assert "EARLY_PICK" not in r["flags"] and "LATE_AFTER_LOCK" not in r["flags"]
+    assert ("FEW_BOOKS" in r["flags"]) == (r["market_books"] < final.MIN_BOOKS)

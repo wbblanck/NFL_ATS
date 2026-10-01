@@ -187,10 +187,12 @@ def main(argv=None) -> int:
         now = _dt.datetime.now(_dt.timezone.utc)
         since = a.since or (now - _dt.timedelta(minutes=30)).isoformat()
         if not a.watch:
-            text = alerts.message(alerts.new_rows(alerts.local_predictions() if a.local else alerts.origin_predictions(), since))
-            print(text)
-            if a.send and text:
-                print("ntfy: " + ("sent" if alerts.send(text) else "not sent"))
+            rows = alerts.new_rows(alerts.local_predictions() if a.local else alerts.origin_predictions(), since)
+            for text in (alerts.message(rows), alerts.warning_message(rows)):
+                if text:
+                    print(text)
+                    if a.send:
+                        print("ntfy: " + ("sent" if alerts.send(text) else "not sent"))
             return 0
         preds = alerts.origin_predictions()
         done = {p["game_id"] for p in preds if not p.get("supersedes")}

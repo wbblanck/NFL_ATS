@@ -5,6 +5,8 @@ The lock run (a GitHub Action) sends each group's alert line to ntfy right after
 session watching origin/main (`alert --watch`), cannot reach a phone and is kept only for printing.
 Messages are one line of at most 200 characters (the notification limit), listing each pick with the spread it
 carries on the pool line, e.g. 'Picks locked (Sun 1:00 PM): LAC +7.5 · CLE +2.5 · NYJ +6.5'.
+A second alert, 'CHECK PICKS: ...', follows only when a pick was made under a data-quality flag (picked more than
+15 min before lock, fewer than 5 books, no market, fallback line or total, or after lock).
 """
 from __future__ import annotations
 
@@ -66,6 +68,32 @@ def message(rows: list[dict], max_len: int = MAX_LEN) -> str:
         if len(text) <= max_len:
             return text
     return (head + items[0])[:max_len]
+
+
+# flag -> short phrase for the check-these-picks alert ({m} = minutes before lock, {b} = books)
+WARN = {"EARLY_PICK": "picked {m} min before lock (stale market)", "LATE_AFTER_LOCK": "picked after lock",
+        "FEW_BOOKS": "only {b} books", "NO_MARKET": "no market", "NO_LEAGUE_LINE": "no pool line",
+        "LINE_FROM_CBS_ODDS_PAGE_OPEN": "pool line from CBS odds page",
+        "TOTAL_FROM_SCHEDULE": "total from schedule", "NO_TOTAL_SHIFTED_FALLBACK": "no total"}
+
+
+def warning_message(rows: list[dict], max_len: int = MAX_LEN) -> str:
+    """Second alert listing picks made under a data-quality flag; '' when every pick is clean."""
+    bad = []
+    for r in sorted(rows, key=lambda r: (r["kickoff_utc"], r["game_id"])):
+        fl = [f for f in (r.get("flags") or "").split(";") if f in WARN]
+        if fl:
+            m = round(float(r.get("minutes_to_lock") or 0))
+            bad.append(f"{r['away_team']}@{r['home_team']} " + ", ".join(WARN[f].format(m=m, b=r.get("market_books")) for f in fl))
+    if not bad:
+        return ""
+    head = "CHECK PICKS: "
+    for keep in range(len(bad), 0, -1):
+        more = f" · +{len(bad) - keep} more" if keep < len(bad) else ""
+        text = head + " · ".join(bad[:keep]) + more
+        if len(text) <= max_len:
+            return text
+    return (head + bad[0])[:max_len]
 
 
 def new_rows(preds: list[dict], since: str, ids: set[str] | None = None) -> list[dict]:
