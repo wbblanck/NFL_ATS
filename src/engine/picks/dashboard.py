@@ -230,6 +230,7 @@ header{display:flex;flex-direction:column;gap:10px}
 .proj .lab{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);flex-basis:100%}
 .proj .mono{color:var(--ink)}
 .proj .diff{font:500 11px var(--mono);border:1px solid var(--ink-3);border-radius:999px;padding:2px 7px}
+.proj.hy:not(.hy-d){opacity:.8}.proj.hy-d{background:var(--flag-soft);border-radius:6px;padding:8px 10px;border-top:0}
 .proj .ok{color:var(--win)}.proj .no{color:var(--loss)}
 .cover{font-size:13px;color:var(--ink-2)}
 .empty{color:var(--ink-2);padding:24px 0}
@@ -514,10 +515,12 @@ function proj(x){
   return `<div class="proj"><span class="lab">${label}</span><span class="mono">${esc(x.away)} ${Number(x.pa).toFixed(1)} – ${esc(x.home)} ${Number(x.ph).toFixed(1)}</span><span>picks ${esc(x.ppick||'—')}</span>${differs?'<span class="diff">differs</span>':''}${pend?'<span class="diff">injury report pending</span>':''}${r}</div>`;
 }
 function hyb(x){
-  if(x.hysrc!=='v1'||!x.hy)return '';
-  const d=x.hy!==x.pick;
+  if(!x.hy)return '';
+  const d=!!x.pick&&x.hy!==x.pick;
   const r=x.hres==='W'?'<span class="ok">✓</span>':x.hres==='L'?'<span class="no">✕</span>':'';
-  return `<div class="proj"><span class="lab">Hybrid (tracked, not the pick)</span><span>Small move, so it uses the team-only projection: <b class="mono">${esc(x.hy)}</b></span>${d?'<span class="diff">differs</span>':''}${r}</div>`;
+  const why=x.hysrc==='v1'?'small move, team-only projection':'big move, same rule as the pick';
+  if(!d)return `<div class="proj hy"><span class="lab">Hybrid (tracked, not the pick)</span><span class="mono">${esc(x.hy)}</span><span>same pick</span>${r}</div>`;
+  return `<div class="proj hy hy-d"><span class="lab">Hybrid (tracked, not the pick)</span><span class="mono"><b>${esc(x.hy)}</b></span><span class="diff">differs</span><span>${why}</span>${r}</div>`;
 }
 function stateBadge(x){
   if(x.res==='W')return '<span class="pill won">✓ Won</span>';
