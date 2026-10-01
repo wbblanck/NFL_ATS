@@ -1,0 +1,4610 @@
+{
+ "stamp": "20261001T034123Z",
+ "scoreboards": {
+  "web/v2/scoreboard/nfl?season=2022&week=6&periods=event": {
+   "status": 200,
+   "games": 14,
+   "first": [
+    {
+     "id": 132567,
+     "start_time": "2022-10-14T00:15:00.000Z",
+     "season": 2022,
+     "week": 6,
+     "home": "CHI",
+     "away": "WAS"
+    },
+    {
+     "id": 132559,
+     "start_time": "2022-10-16T17:00:00.000Z",
+     "season": 2022,
+     "week": 6,
+     "home": "IND",
+     "away": "JAC"
+    },
+    {
+     "id": 132560,
+     "start_time": "2022-10-16T17:00:00.000Z",
+     "season": 2022,
+     "week": 6,
+     "home": "GB",
+     "away": "NYJ"
+    }
+   ],
+   "top_keys": [
+    "content_live_count",
+    "games",
+    "league",
+    "market_rules"
+   ]
+  },
+  "web/v2/scoreboard/nfl?season=2023&week=15&periods=event": {
+   "status": 504,
+   "games": 0,
+   "first": [],
+   "top_keys": []
+  },
+  "web/v2/scoreboard/nfl?season=2024&week=1&periods=event": {
+   "status": 200,
+   "games": 16,
+   "first": [
+    {
+     "id": 226304,
+     "start_time": "2024-09-06T00:20:00.000Z",
+     "season": 2024,
+     "week": 1,
+     "home": "KC",
+     "away": "BAL"
+    },
+    {
+     "id": 226139,
+     "start_time": "2024-09-07T00:15:00.000Z",
+     "season": 2024,
+     "week": 1,
+     "home": "PHI",
+     "away": "GB"
+    },
+    {
+     "id": 227295,
+     "start_time": "2024-09-08T17:00:00.000Z",
+     "season": 2024,
+     "week": 1,
+     "home": "ATL",
+     "away": "PIT"
+    }
+   ],
+   "top_keys": [
+    "content_live_count",
+    "games",
+    "league",
+    "market_rules"
+   ]
+  },
+  "web/v2/scoreboard/nfl?season=2024&week=6&periods=event": {
+   "status": 200,
+   "games": 14,
+   "first": [
+    {
+     "id": 227435,
+     "start_time": "2024-10-11T00:15:00.000Z",
+     "season": 2024,
+     "week": 6,
+     "home": "SEA",
+     "away": "SF"
+    },
+    {
+     "id": 227334,
+     "start_time": "2024-10-13T13:30:00.000Z",
+     "season": 2024,
+     "week": 6,
+     "home": "CHI",
+     "away": "JAC"
+    },
+    {
+     "id": 227436,
+     "start_time": "2024-10-13T17:00:00.000Z",
+     "season": 2024,
+     "week": 6,
+     "home": "BAL",
+     "away": "WAS"
+    }
+   ],
+   "top_keys": [
+    "content_live_count",
+    "games",
+    "league",
+    "market_rules"
+   ]
+  },
+  "web/v2/scoreboard/nfl?season=2024&week=15&periods=event": {
+   "status": 200,
+   "games": 16,
+   "first": [
+    {
+     "id": 227533,
+     "start_time": "2024-12-13T01:15:00.000Z",
+     "season": 2024,
+     "week": 15,
+     "home": "SF",
+     "away": "LA"
+    },
+    {
+     "id": 227534,
+     "start_time": "2024-12-15T18:00:00.000Z",
+     "season": 2024,
+     "week": 15,
+     "home": "CAR",
+     "away": "DAL"
+    },
+    {
+     "id": 227535,
+     "start_time": "2024-12-15T18:00:00.000Z",
+     "season": 2024,
+     "week": 15,
+     "home": "CLE",
+     "away": "KC"
+    }
+   ],
+   "top_keys": [
+    "content_live_count",
+    "games",
+    "league",
+    "market_rules"
+   ]
+  },
+  "web/v2/scoreboard/nfl?season=2025&week=1&periods=event": {
+   "status": 200,
+   "games": 16,
+   "first": [
+    {
+     "id": 256552,
+     "start_time": "2025-09-05T00:20:00.000Z",
+     "season": 2025,
+     "week": 1,
+     "home": "PHI",
+     "away": "DAL"
+    },
+    {
+     "id": 256625,
+     "start_time": "2025-09-06T00:00:00.000Z",
+     "season": 2025,
+     "week": 1,
+     "home": "LAC",
+     "away": "KC"
+    },
+    {
+     "id": 256626,
+     "start_time": "2025-09-07T17:00:00.000Z",
+     "season": 2025,
+     "week": 1,
+     "home": "NE",
+     "away": "LV"
+    }
+   ],
+   "top_keys": [
+    "content_live_count",
+    "games",
+    "league",
+    "market_rules"
+   ]
+  }
+ },
+ "props": {
+  "2022w06_132567": {
+   "game": {
+    "id": 132567,
+    "start_time": "2022-10-14T00:15:00.000Z",
+    "season": 2022,
+    "week": 6,
+    "home": "CHI",
+    "away": "WAS"
+   },
+   "status": 200,
+   "n_markets": 0,
+   "markets": {}
+  },
+  "2022w06_132559": {
+   "game": {
+    "id": 132559,
+    "start_time": "2022-10-16T17:00:00.000Z",
+    "season": 2022,
+    "week": 6,
+    "home": "IND",
+    "away": "JAC"
+   },
+   "status": 200,
+   "n_markets": 0,
+   "markets": {}
+  },
+  "2024w01_226304": {
+   "game": {
+    "id": 226304,
+    "start_time": "2024-09-06T00:20:00.000Z",
+    "season": 2024,
+    "week": 1,
+    "home": "KC",
+    "away": "BAL"
+   },
+   "status": 200,
+   "n_markets": 76,
+   "markets": {
+    "core_bet_type_15_receptions": {
+     "players": 16,
+     "books": [
+      "BetMGM NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1016_player_rushing_yards_milestones_50_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1027_player_receiving_yards_milestones_70_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_59_longest_reception": {
+     "players": 12,
+     "books": [
+      "BetMGM NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_18_rushing_attempts": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_67_to_score_2_or_more_touchdowns": {
+     "players": 36,
+     "books": [
+      "BetMGM NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1025_player_receiving_yards_milestones_50_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_62_anytime_touchdown_scorer": {
+     "players": 75,
+     "books": [
+      "BetMGM NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_533_1081_player_rushing_attempts_milestones_8_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_66_rushing_receiving_yards": {
+     "players": 11,
+     "books": [
+      "BetMGM NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1024_player_receiving_yards_milestones_40_or_more": {
+     "players": 13,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_16_receiving_yards": {
+     "players": 16,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_68_to_score_3_or_more_touchdowns": {
+     "players": 33,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1019_player_rushing_yards_milestones_80_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_63_last_touchdown_scorer": {
+     "players": 36,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_65_interceptions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1028_player_receiving_yards_milestones_80_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_70_tackles_assists": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_12_rushing_yards": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1026_player_receiving_yards_milestones_60_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1036_player_passing_touchdowns_milestones_3_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1023_player_receiving_yards_milestones_25_or_more": {
+     "players": 14,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_578_sacks": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_58_longest_rush": {
+     "players": 5,
+     "books": [
+      "BetMGM NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_9_passing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_56_first_touchdown_scorer": {
+     "players": 36,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1017_player_rushing_yards_milestones_60_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1022_player_rushing_yards_milestones_110_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_60_longest_completion": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_13_rushing_tds": {
+     "players": 6,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1030_player_receiving_yards_milestones_100_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1039_player_receptions_milestones_3_or_more": {
+     "players": 14,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_43_kicking_points": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1045_player_passing_yards_milestones_175_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1007_player_passing_yards_milestones_225_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_212_extra_points_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_213_field_goals_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_533_1086_player_rushing_attempts_milestones_20_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_10_pass_completions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_527_1047_player_rushing_touchdowns_milestones_1_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1015_player_rushing_yards_milestones_40_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1038_player_receptions_milestones_2_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1043_player_receptions_milestones_7_or_more": {
+     "players": 6,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1044_player_receptions_milestones_8_or_more": {
+     "players": 4,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1018_player_rushing_yards_milestones_70_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1040_player_receptions_milestones_4_or_more": {
+     "players": 14,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1020_player_rushing_yards_milestones_90_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1034_player_passing_touchdowns_milestones_1_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1041_player_receptions_milestones_5_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1011_player_passing_yards_milestones_325_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1031_player_receiving_yards_milestones_110_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_11_passing_tds": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_533_1116_player_rushing_attempts_milestones_16_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1014_player_rushing_yards_milestones_25_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1057_player_receptions_milestones_10_or_more": {
+     "players": 3,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1056_player_receptions_milestones_9_or_more": {
+     "players": 4,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_30_passing_attempts": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_71_passing_rushing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1075_player_receiving_yards_milestones_75_or_more": {
+     "players": 5,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1006_player_passing_yards_milestones_200_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1021_player_rushing_yards_milestones_100_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1009_player_passing_yards_milestones_275_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_17_receiving_tds": {
+     "players": 6,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1032_player_receiving_yards_milestones_125_or_more": {
+     "players": 5,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1029_player_receiving_yards_milestones_90_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1037_player_passing_touchdowns_milestones_4_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_527_1048_player_rushing_touchdowns_milestones_2_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1076_player_rushing_yards_milestones_75_or_more": {
+     "players": 3,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_533_1092_player_rushing_attempts_milestones_12_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1010_player_passing_yards_milestones_300_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1008_player_passing_yards_milestones_250_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1042_player_receptions_milestones_6_or_more": {
+     "players": 7,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1035_player_passing_touchdowns_milestones_2_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1012_player_passing_yards_milestones_350_or_more": {
+     "players": 1,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1033_player_receiving_yards_milestones_150_or_more": {
+     "players": 1,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1046_player_passing_yards_milestones_150_or_more": {
+     "players": 1,
+     "books": [
+      "Open"
+     ]
+    }
+   }
+  },
+  "2024w01_226139": {
+   "game": {
+    "id": 226139,
+    "start_time": "2024-09-07T00:15:00.000Z",
+    "season": 2024,
+    "week": 1,
+    "home": "PHI",
+    "away": "GB"
+   },
+   "status": 200,
+   "n_markets": 70,
+   "markets": {
+    "core_bet_type_62_anytime_touchdown_scorer": {
+     "players": 72,
+     "books": [
+      "BetMGM NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_60_longest_completion": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1024_player_receiving_yards_milestones_40_or_more": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_18_rushing_attempts": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_9_passing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_16_receiving_yards": {
+     "players": 13,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_67_to_score_2_or_more_touchdowns": {
+     "players": 31,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1040_player_receptions_milestones_4_or_more": {
+     "players": 12,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_56_first_touchdown_scorer": {
+     "players": 30,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_68_to_score_3_or_more_touchdowns": {
+     "players": 29,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_63_last_touchdown_scorer": {
+     "players": 30,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_58_longest_rush": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_30_passing_attempts": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_15_receptions": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1026_player_receiving_yards_milestones_60_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1025_player_receiving_yards_milestones_50_or_more": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_70_tackles_assists": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1028_player_receiving_yards_milestones_80_or_more": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1032_player_receiving_yards_milestones_125_or_more": {
+     "players": 5,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1006_player_passing_yards_milestones_200_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_213_field_goals_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_212_extra_points_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_12_rushing_yards": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1039_player_receptions_milestones_3_or_more": {
+     "players": 12,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1029_player_receiving_yards_milestones_90_or_more": {
+     "players": 8,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_71_passing_rushing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_59_longest_reception": {
+     "players": 13,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_66_rushing_receiving_yards": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1014_player_rushing_yards_milestones_25_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_578_sacks": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_527_1047_player_rushing_touchdowns_milestones_1_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1023_player_receiving_yards_milestones_25_or_more": {
+     "players": 13,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1015_player_rushing_yards_milestones_40_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1027_player_receiving_yards_milestones_70_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1030_player_receiving_yards_milestones_100_or_more": {
+     "players": 7,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1037_player_passing_touchdowns_milestones_4_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1044_player_receptions_milestones_8_or_more": {
+     "players": 4,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_43_kicking_points": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_11_passing_tds": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1042_player_receptions_milestones_6_or_more": {
+     "players": 10,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1018_player_rushing_yards_milestones_70_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1036_player_passing_touchdowns_milestones_3_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1016_player_rushing_yards_milestones_50_or_more": {
+     "players": 3,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1010_player_passing_yards_milestones_300_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1008_player_passing_yards_milestones_250_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1043_player_receptions_milestones_7_or_more": {
+     "players": 9,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1019_player_rushing_yards_milestones_80_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_65_interceptions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_527_1048_player_rushing_touchdowns_milestones_2_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1007_player_passing_yards_milestones_225_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1009_player_passing_yards_milestones_275_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1075_player_receiving_yards_milestones_75_or_more": {
+     "players": 6,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1076_player_rushing_yards_milestones_75_or_more": {
+     "players": 3,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1012_player_passing_yards_milestones_350_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1017_player_rushing_yards_milestones_60_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_10_pass_completions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1045_player_passing_yards_milestones_175_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1041_player_receptions_milestones_5_or_more": {
+     "players": 11,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1046_player_passing_yards_milestones_150_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1031_player_receiving_yards_milestones_110_or_more": {
+     "players": 7,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1021_player_rushing_yards_milestones_100_or_more": {
+     "players": 3,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1011_player_passing_yards_milestones_325_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1035_player_passing_touchdowns_milestones_2_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1038_player_receptions_milestones_2_or_more": {
+     "players": 10,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1034_player_passing_touchdowns_milestones_1_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1020_player_rushing_yards_milestones_90_or_more": {
+     "players": 3,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1033_player_receiving_yards_milestones_150_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1056_player_receptions_milestones_9_or_more": {
+     "players": 3,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1022_player_rushing_yards_milestones_110_or_more": {
+     "players": 3,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1057_player_receptions_milestones_10_or_more": {
+     "players": 1,
+     "books": [
+      "Open"
+     ]
+    }
+   }
+  },
+  "2024w06_227435": {
+   "game": {
+    "id": 227435,
+    "start_time": "2024-10-11T00:15:00.000Z",
+    "season": 2024,
+    "week": 6,
+    "home": "SEA",
+    "away": "SF"
+   },
+   "status": 200,
+   "n_markets": 73,
+   "markets": {
+    "core_bet_type_68_to_score_3_or_more_touchdowns": {
+     "players": 31,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_62_anytime_touchdown_scorer": {
+     "players": 55,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_66_rushing_receiving_yards": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1019_player_rushing_yards_milestones_80_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1070_player_tackles_milestones_6_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_15_receptions": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_63_last_touchdown_scorer": {
+     "players": 34,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_70_tackles_assists": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1034_player_passing_touchdowns_milestones_1_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_56_first_touchdown_scorer": {
+     "players": 33,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1018_player_rushing_yards_milestones_70_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1026_player_receiving_yards_milestones_60_or_more": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_71_passing_rushing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_43_kicking_points": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1069_player_tackles_milestones_5_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_59_longest_reception": {
+     "players": 14,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1040_player_receptions_milestones_4_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_16_receiving_yards": {
+     "players": 14,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1023_player_receiving_yards_milestones_25_or_more": {
+     "players": 13,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1073_player_tackles_milestones_9_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1071_player_tackles_milestones_7_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1024_player_receiving_yards_milestones_40_or_more": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_12_rushing_yards": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1035_player_passing_touchdowns_milestones_2_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_58_longest_rush": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_213_field_goals_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_18_rushing_attempts": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1056_player_receptions_milestones_9_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1039_player_receptions_milestones_3_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1030_player_receiving_yards_milestones_100_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1029_player_receiving_yards_milestones_90_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1016_player_rushing_yards_milestones_50_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1074_player_tackles_milestones_10_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1011_player_passing_yards_milestones_325_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1006_player_passing_yards_milestones_200_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_67_to_score_2_or_more_touchdowns": {
+     "players": 32,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1041_player_receptions_milestones_5_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1028_player_receiving_yards_milestones_80_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1042_player_receptions_milestones_6_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1015_player_rushing_yards_milestones_40_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_30_passing_attempts": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_9_passing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1037_player_passing_touchdowns_milestones_4_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1014_player_rushing_yards_milestones_25_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_10_pass_completions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1009_player_passing_yards_milestones_275_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_65_interceptions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1017_player_rushing_yards_milestones_60_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1032_player_receiving_yards_milestones_125_or_more": {
+     "players": 6,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1027_player_receiving_yards_milestones_70_or_more": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1007_player_passing_yards_milestones_225_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1072_player_tackles_milestones_8_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1044_player_receptions_milestones_8_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1025_player_receiving_yards_milestones_50_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1043_player_receptions_milestones_7_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_578_sacks": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1022_player_rushing_yards_milestones_110_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_212_extra_points_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_60_longest_completion": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1068_player_tackles_milestones_4_or_more": {
+     "players": 6,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1008_player_passing_yards_milestones_250_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1033_player_receiving_yards_milestones_150_or_more": {
+     "players": 3,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1038_player_receptions_milestones_2_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1031_player_receiving_yards_milestones_110_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1012_player_passing_yards_milestones_350_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1020_player_rushing_yards_milestones_90_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1021_player_rushing_yards_milestones_100_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_11_passing_tds": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1045_player_passing_yards_milestones_175_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1010_player_passing_yards_milestones_300_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1057_player_receptions_milestones_10_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1036_player_passing_touchdowns_milestones_3_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1067_player_tackles_milestones_3_or_more": {
+     "players": 1,
+     "books": [
+      "Open"
+     ]
+    }
+   }
+  },
+  "2024w06_227334": {
+   "game": {
+    "id": 227334,
+    "start_time": "2024-10-13T13:30:00.000Z",
+    "season": 2024,
+    "week": 6,
+    "home": "CHI",
+    "away": "JAC"
+   },
+   "status": 200,
+   "n_markets": 74,
+   "markets": {
+    "core_bet_type_18_rushing_attempts": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1025_player_receiving_yards_milestones_50_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_56_first_touchdown_scorer": {
+     "players": 29,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1028_player_receiving_yards_milestones_80_or_more": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1045_player_passing_yards_milestones_175_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1018_player_rushing_yards_milestones_70_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_213_field_goals_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_62_anytime_touchdown_scorer": {
+     "players": 38,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_16_receiving_yards": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1017_player_rushing_yards_milestones_60_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1019_player_rushing_yards_milestones_80_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_15_receptions": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_67_to_score_2_or_more_touchdowns": {
+     "players": 28,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_66_rushing_receiving_yards": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_68_to_score_3_or_more_touchdowns": {
+     "players": 27,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_30_passing_attempts": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_70_tackles_assists": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1030_player_receiving_yards_milestones_100_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_63_last_touchdown_scorer": {
+     "players": 30,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_59_longest_reception": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_60_longest_completion": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1073_player_tackles_milestones_9_or_more": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1074_player_tackles_milestones_10_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1036_player_passing_touchdowns_milestones_3_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1011_player_passing_yards_milestones_325_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1027_player_receiving_yards_milestones_70_or_more": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1023_player_receiving_yards_milestones_25_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1024_player_receiving_yards_milestones_40_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1020_player_rushing_yards_milestones_90_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1039_player_receptions_milestones_3_or_more": {
+     "players": 10,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1010_player_passing_yards_milestones_300_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1026_player_receiving_yards_milestones_60_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1069_player_tackles_milestones_5_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_11_passing_tds": {
+     "players": 2,
+     "books": [
+      "BetMGM NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_12_rushing_yards": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1014_player_rushing_yards_milestones_25_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1009_player_passing_yards_milestones_275_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1016_player_rushing_yards_milestones_50_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_43_kicking_points": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_58_longest_rush": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1015_player_rushing_yards_milestones_40_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_212_extra_points_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1029_player_receiving_yards_milestones_90_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_65_interceptions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1040_player_receptions_milestones_4_or_more": {
+     "players": 10,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_578_sacks": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_10_pass_completions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1031_player_receiving_yards_milestones_110_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1038_player_receptions_milestones_2_or_more": {
+     "players": 9,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1022_player_rushing_yards_milestones_110_or_more": {
+     "players": 3,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1042_player_receptions_milestones_6_or_more": {
+     "players": 10,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_71_passing_rushing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1043_player_receptions_milestones_7_or_more": {
+     "players": 10,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1071_player_tackles_milestones_7_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_9_passing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1044_player_receptions_milestones_8_or_more": {
+     "players": 5,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1068_player_tackles_milestones_4_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1070_player_tackles_milestones_6_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1008_player_passing_yards_milestones_250_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1032_player_receiving_yards_milestones_125_or_more": {
+     "players": 5,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1067_player_tackles_milestones_3_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_531_1072_player_tackles_milestones_8_or_more": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1034_player_passing_touchdowns_milestones_1_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1056_player_receptions_milestones_9_or_more": {
+     "players": 5,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1041_player_receptions_milestones_5_or_more": {
+     "players": 10,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1033_player_receiving_yards_milestones_150_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1046_player_passing_yards_milestones_150_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1021_player_rushing_yards_milestones_100_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1006_player_passing_yards_milestones_200_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1007_player_passing_yards_milestones_225_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1035_player_passing_touchdowns_milestones_2_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1037_player_passing_touchdowns_milestones_4_or_more": {
+     "players": 1,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1057_player_receptions_milestones_10_or_more": {
+     "players": 1,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1012_player_passing_yards_milestones_350_or_more": {
+     "players": 1,
+     "books": [
+      "Open"
+     ]
+    }
+   }
+  },
+  "2024w15_227533": {
+   "game": {
+    "id": 227533,
+    "start_time": "2024-12-13T01:15:00.000Z",
+    "season": 2024,
+    "week": 15,
+    "home": "SF",
+    "away": "LA"
+   },
+   "status": 200,
+   "n_markets": 66,
+   "markets": {
+    "core_bet_type_525_1008_player_passing_yards_milestones_250_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_62_anytime_touchdown_scorer": {
+     "players": 33,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_63_last_touchdown_scorer": {
+     "players": 34,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1016_player_rushing_yards_milestones_50_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1006_player_passing_yards_milestones_200_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_67_to_score_2_or_more_touchdowns": {
+     "players": 33,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_12_rushing_yards": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1037_player_passing_touchdowns_milestones_4_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_56_first_touchdown_scorer": {
+     "players": 33,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_10_pass_completions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_11_passing_tds": {
+     "players": 2,
+     "books": [
+      "BetMGM NJ",
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_16_receiving_yards": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1039_player_receptions_milestones_3_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1028_player_receiving_yards_milestones_80_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1010_player_passing_yards_milestones_300_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_15_receptions": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_59_longest_reception": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_58_longest_rush": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1014_player_rushing_yards_milestones_25_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1027_player_receiving_yards_milestones_70_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_70_tackles_assists": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1024_player_receiving_yards_milestones_40_or_more": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1043_player_receptions_milestones_7_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_71_passing_rushing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1025_player_receiving_yards_milestones_50_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_213_field_goals_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_68_to_score_3_or_more_touchdowns": {
+     "players": 32,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_66_rushing_receiving_yards": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1012_player_passing_yards_milestones_350_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1018_player_rushing_yards_milestones_70_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1031_player_receiving_yards_milestones_110_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1023_player_receiving_yards_milestones_25_or_more": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1041_player_receptions_milestones_5_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_43_kicking_points": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_30_passing_attempts": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_65_interceptions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_9_passing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1033_player_receiving_yards_milestones_150_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1035_player_passing_touchdowns_milestones_2_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1042_player_receptions_milestones_6_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_18_rushing_attempts": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1040_player_receptions_milestones_4_or_more": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1044_player_receptions_milestones_8_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_212_extra_points_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1017_player_rushing_yards_milestones_60_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1034_player_passing_touchdowns_milestones_1_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_60_longest_completion": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_578_sacks": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1009_player_passing_yards_milestones_275_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1036_player_passing_touchdowns_milestones_3_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1032_player_receiving_yards_milestones_125_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1007_player_passing_yards_milestones_225_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1029_player_receiving_yards_milestones_90_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1026_player_receiving_yards_milestones_60_or_more": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1015_player_rushing_yards_milestones_40_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1038_player_receptions_milestones_2_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1046_player_passing_yards_milestones_150_or_more": {
+     "players": 1,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1056_player_receptions_milestones_9_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1045_player_passing_yards_milestones_175_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1011_player_passing_yards_milestones_325_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1030_player_receiving_yards_milestones_100_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1057_player_receptions_milestones_10_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1020_player_rushing_yards_milestones_90_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1021_player_rushing_yards_milestones_100_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1019_player_rushing_yards_milestones_80_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1022_player_rushing_yards_milestones_110_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "FanDuel NJ",
+      "Open"
+     ]
+    }
+   }
+  },
+  "2024w15_227534": {
+   "game": {
+    "id": 227534,
+    "start_time": "2024-12-15T18:00:00.000Z",
+    "season": 2024,
+    "week": 15,
+    "home": "CAR",
+    "away": "DAL"
+   },
+   "status": 200,
+   "n_markets": 63,
+   "markets": {
+    "core_bet_type_56_first_touchdown_scorer": {
+     "players": 34,
+     "books": [
+      "BetRivers NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_62_anytime_touchdown_scorer": {
+     "players": 34,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_67_to_score_2_or_more_touchdowns": {
+     "players": 33,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_71_passing_rushing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_16_receiving_yards": {
+     "players": 12,
+     "books": [
+      "BetRivers NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1024_player_receiving_yards_milestones_40_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1023_player_receiving_yards_milestones_25_or_more": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1034_player_passing_touchdowns_milestones_1_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1016_player_rushing_yards_milestones_50_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_68_to_score_3_or_more_touchdowns": {
+     "players": 31,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_63_last_touchdown_scorer": {
+     "players": 34,
+     "books": [
+      "BetRivers NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_15_receptions": {
+     "players": 8,
+     "books": [
+      "BetRivers NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_43_kicking_points": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_9_passing_yards": {
+     "players": 2,
+     "books": [
+      "BetRivers NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_59_longest_reception": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1035_player_passing_touchdowns_milestones_2_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_578_sacks": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1018_player_rushing_yards_milestones_70_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_18_rushing_attempts": {
+     "players": 4,
+     "books": [
+      "BetRivers NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1025_player_receiving_yards_milestones_50_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_11_passing_tds": {
+     "players": 2,
+     "books": [
+      "BetRivers NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1008_player_passing_yards_milestones_250_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_60_longest_completion": {
+     "players": 2,
+     "books": [
+      "BetRivers NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1026_player_receiving_yards_milestones_60_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1045_player_passing_yards_milestones_175_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1028_player_receiving_yards_milestones_80_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1017_player_rushing_yards_milestones_60_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_30_passing_attempts": {
+     "players": 2,
+     "books": [
+      "BetRivers NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_70_tackles_assists": {
+     "players": 7,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_12_rushing_yards": {
+     "players": 4,
+     "books": [
+      "BetRivers NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1030_player_receiving_yards_milestones_100_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_66_rushing_receiving_yards": {
+     "players": 3,
+     "books": [
+      "BetRivers NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_58_longest_rush": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1014_player_rushing_yards_milestones_25_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1043_player_receptions_milestones_7_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_10_pass_completions": {
+     "players": 2,
+     "books": [
+      "BetRivers NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1039_player_receptions_milestones_3_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1044_player_receptions_milestones_8_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1046_player_passing_yards_milestones_150_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1027_player_receiving_yards_milestones_70_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_65_interceptions": {
+     "players": 2,
+     "books": [
+      "BetRivers NJ",
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1006_player_passing_yards_milestones_200_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_524_1036_player_passing_touchdowns_milestones_3_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1022_player_rushing_yards_milestones_110_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1015_player_rushing_yards_milestones_40_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_212_extra_points_made": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1042_player_receptions_milestones_6_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1029_player_receiving_yards_milestones_90_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1041_player_receptions_milestones_5_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1040_player_receptions_milestones_4_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_213_field_goals_made": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1010_player_passing_yards_milestones_300_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1007_player_passing_yards_milestones_225_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1031_player_receiving_yards_milestones_110_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1032_player_receiving_yards_milestones_125_or_more": {
+     "players": 2,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_530_1033_player_receiving_yards_milestones_150_or_more": {
+     "players": 1,
+     "books": [
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1038_player_receptions_milestones_2_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1019_player_rushing_yards_milestones_80_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_525_1009_player_passing_yards_milestones_275_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1056_player_receptions_milestones_9_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_532_1057_player_receptions_milestones_10_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1020_player_rushing_yards_milestones_90_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    },
+    "core_bet_type_528_1021_player_rushing_yards_milestones_100_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ",
+      "Open"
+     ]
+    }
+   }
+  },
+  "2025w01_256552": {
+   "game": {
+    "id": 256552,
+    "start_time": "2025-09-05T00:20:00.000Z",
+    "season": 2025,
+    "week": 1,
+    "home": "PHI",
+    "away": "DAL"
+   },
+   "status": 200,
+   "n_markets": 76,
+   "markets": {
+    "core_bet_type_43_kicking_points": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_9_passing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_11_passing_tds": {
+     "players": 2,
+     "books": [
+      "BetMGM NJ",
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_10_pass_completions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_15_receptions": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_16_receiving_yards": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_12_rushing_yards": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_18_rushing_attempts": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_30_passing_attempts": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_59_longest_reception": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_58_longest_rush": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_60_longest_completion": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_62_anytime_touchdown_scorer": {
+     "players": 36,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_63_last_touchdown_scorer": {
+     "players": 26,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_65_interceptions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_66_rushing_receiving_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_67_to_score_2_or_more_touchdowns": {
+     "players": 24,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_68_to_score_3_or_more_touchdowns": {
+     "players": 20,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_578_sacks": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_70_tackles_assists": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_71_passing_rushing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_212_extra_points_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_213_field_goals_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_524_1034_player_passing_touchdowns_milestones_1_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_524_1035_player_passing_touchdowns_milestones_2_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_524_1036_player_passing_touchdowns_milestones_3_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_1006_player_passing_yards_milestones_200_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_1008_player_passing_yards_milestones_250_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_1012_player_passing_yards_milestones_350_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_1010_player_passing_yards_milestones_300_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_1046_player_passing_yards_milestones_150_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_3568_player_passing_yards_milestones_220_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_1013_player_passing_yards_milestones_400_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1016_player_rushing_yards_milestones_50_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1021_player_rushing_yards_milestones_100_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1014_player_rushing_yards_milestones_25_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1096_player_rushing_yards_milestones_15_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1018_player_rushing_yards_milestones_70_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1015_player_rushing_yards_milestones_40_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1019_player_rushing_yards_milestones_80_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1020_player_rushing_yards_milestones_90_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1022_player_rushing_yards_milestones_110_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1017_player_rushing_yards_milestones_60_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1026_player_receiving_yards_milestones_60_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1024_player_receiving_yards_milestones_40_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1101_player_receiving_yards_milestones_15_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1023_player_receiving_yards_milestones_25_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1025_player_receiving_yards_milestones_50_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1027_player_receiving_yards_milestones_70_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1029_player_receiving_yards_milestones_90_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1028_player_receiving_yards_milestones_80_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1033_player_receiving_yards_milestones_150_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1030_player_receiving_yards_milestones_100_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1031_player_receiving_yards_milestones_110_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1041_player_receptions_milestones_5_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1039_player_receptions_milestones_3_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1040_player_receptions_milestones_4_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1038_player_receptions_milestones_2_or_more": {
+     "players": 10,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1042_player_receptions_milestones_6_or_more": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1043_player_receptions_milestones_7_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1044_player_receptions_milestones_8_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1056_player_receptions_milestones_9_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1057_player_receptions_milestones_10_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_533_1116_player_rushing_attempts_milestones_16_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_533_1086_player_rushing_attempts_milestones_20_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_533_1151_player_rushing_attempts_milestones_24_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_533_1152_player_rushing_attempts_milestones_28_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_533_1108_player_rushing_attempts_milestones_30_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_533_1081_player_rushing_attempts_milestones_8_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_533_1092_player_rushing_attempts_milestones_12_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_534_1061_player_passing_attempts_milestones_30_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_534_1120_player_passing_attempts_milestones_38_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_534_1142_player_passing_attempts_milestones_46_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_534_1065_player_passing_attempts_milestones_50_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_534_1141_player_passing_attempts_milestones_42_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_534_1119_player_passing_attempts_milestones_34_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    }
+   }
+  },
+  "2025w01_256625": {
+   "game": {
+    "id": 256625,
+    "start_time": "2025-09-06T00:00:00.000Z",
+    "season": 2025,
+    "week": 1,
+    "home": "LAC",
+    "away": "KC"
+   },
+   "status": 200,
+   "n_markets": 73,
+   "markets": {
+    "core_bet_type_15_receptions": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_43_kicking_points": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_9_passing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_11_passing_tds": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_10_pass_completions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_16_receiving_yards": {
+     "players": 13,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_18_rushing_attempts": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_30_passing_attempts": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_12_rushing_yards": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_59_longest_reception": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_58_longest_rush": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_60_longest_completion": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_62_anytime_touchdown_scorer": {
+     "players": 27,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_63_last_touchdown_scorer": {
+     "players": 27,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_65_interceptions": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_66_rushing_receiving_yards": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_67_to_score_2_or_more_touchdowns": {
+     "players": 27,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_68_to_score_3_or_more_touchdowns": {
+     "players": 25,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_70_tackles_assists": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_71_passing_rushing_yards": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_212_extra_points_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_213_field_goals_made": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_524_1034_player_passing_touchdowns_milestones_1_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_524_1035_player_passing_touchdowns_milestones_2_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_524_1037_player_passing_touchdowns_milestones_4_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_524_1036_player_passing_touchdowns_milestones_3_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_524_1089_player_passing_touchdowns_milestones_5_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_1008_player_passing_yards_milestones_250_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_1010_player_passing_yards_milestones_300_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_1006_player_passing_yards_milestones_200_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_1012_player_passing_yards_milestones_350_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_1046_player_passing_yards_milestones_150_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_1013_player_passing_yards_milestones_400_or_more": {
+     "players": 1,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_525_3568_player_passing_yards_milestones_220_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1021_player_rushing_yards_milestones_100_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1016_player_rushing_yards_milestones_50_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1014_player_rushing_yards_milestones_25_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1015_player_rushing_yards_milestones_40_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1096_player_rushing_yards_milestones_15_or_more": {
+     "players": 7,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1018_player_rushing_yards_milestones_70_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1022_player_rushing_yards_milestones_110_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1017_player_rushing_yards_milestones_60_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1019_player_rushing_yards_milestones_80_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_528_1020_player_rushing_yards_milestones_90_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1028_player_receiving_yards_milestones_80_or_more": {
+     "players": 11,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1023_player_receiving_yards_milestones_25_or_more": {
+     "players": 13,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1101_player_receiving_yards_milestones_15_or_more": {
+     "players": 13,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1031_player_receiving_yards_milestones_110_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1025_player_receiving_yards_milestones_50_or_more": {
+     "players": 13,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1024_player_receiving_yards_milestones_40_or_more": {
+     "players": 13,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1030_player_receiving_yards_milestones_100_or_more": {
+     "players": 6,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1026_player_receiving_yards_milestones_60_or_more": {
+     "players": 13,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1027_player_receiving_yards_milestones_70_or_more": {
+     "players": 13,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1029_player_receiving_yards_milestones_90_or_more": {
+     "players": 9,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_530_1033_player_receiving_yards_milestones_150_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1038_player_receptions_milestones_2_or_more": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1039_player_receptions_milestones_3_or_more": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1040_player_receptions_milestones_4_or_more": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1041_player_receptions_milestones_5_or_more": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1043_player_receptions_milestones_7_or_more": {
+     "players": 8,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1044_player_receptions_milestones_8_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1042_player_receptions_milestones_6_or_more": {
+     "players": 12,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1057_player_receptions_milestones_10_or_more": {
+     "players": 4,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_532_1056_player_receptions_milestones_9_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_533_1116_player_rushing_attempts_milestones_16_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_533_1081_player_rushing_attempts_milestones_8_or_more": {
+     "players": 5,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_533_1086_player_rushing_attempts_milestones_20_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_533_1092_player_rushing_attempts_milestones_12_or_more": {
+     "players": 3,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_534_1142_player_passing_attempts_milestones_46_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_534_1141_player_passing_attempts_milestones_42_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_534_1119_player_passing_attempts_milestones_34_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_534_1120_player_passing_attempts_milestones_38_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    },
+    "core_bet_type_534_1061_player_passing_attempts_milestones_30_or_more": {
+     "players": 2,
+     "books": [
+      "Consensus",
+      "DK NJ"
+     ]
+    }
+   }
+  }
+ }
+}
