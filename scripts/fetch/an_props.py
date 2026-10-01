@@ -7,7 +7,7 @@ One row per (game, player, market, book, line):
   season, week, an_game_id, start_time, home, away, market, an_player_id, player, player_team,
   book_id, book, line, over_odds, under_odds, yes_odds
 Over/under markets fill over_odds/under_odds; anytime-TD (a one-sided "moneyline" market) fills yes_odds.
-Alternate lines (`is_alt_market`) are skipped. Book 15 ("Consensus") and 30 ("Open") are kept and labelled;
+Alternate lines (`is_alt_market`) and partial-game lines (`period` other than "event") are skipped. Book 15 ("Consensus") and 30 ("Open") are kept and labelled;
 they are not books, and analysis must drop them. Line records carry NO timestamp.
 
 Held-out guard (docs/props_preregistration.md): any season but 2024 is refused unless
@@ -87,6 +87,10 @@ def rows_for_game(props: dict, game: dict, season: int, week: int, books: dict) 
             for book, lines in (e.get("lines") or {}).items():
                 for ln in lines:
                     if ln.get("is_alt_market"):
+                        continue
+                    # full-game props only: from 2025 week 13 Action Network also files first-half/quarter
+                    # props (period != "event") under the same market type (found 2026-10-01)
+                    if ln.get("period", "event") != "event":
                         continue
                     side = ln.get("side")
                     slot = {"over": "over_odds", "under": "under_odds", "noside": "yes_odds"}.get(side)
