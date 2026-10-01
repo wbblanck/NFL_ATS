@@ -1,14 +1,16 @@
 # Live record vs the league line
 
-Updated 2026-09-28T23:55:08+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+Updated 2026-10-01T23:55:11+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
 
-**9-5** (14 graded), win rate 0.643 ± 0.128 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
+**9-6** (15 graded), win rate 0.600 ± 0.126 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
 
 No skill claim is made: fewer than 256 graded games (pre-registered).
 
-Shadow key-number estimator (recorded, not used to pick): 9-5; it disagreed with the live pick 2 times and won 1 of those.
+Shadow key-number estimator (recorded, not used to pick): 10-5; it disagreed with the live pick 3 times and won 2 of those.
 
-Score-projection models (tracked comparisons, not used to pick): proj-players-v3 7-7; proj-poisson-v1 8-6.
+Score-projection models (tracked comparisons, not used to pick): proj-players-v3 8-7; proj-poisson-v1 9-6.
+
+Hybrid (tracked, docs/hybrid_tracking.md): 10-5; it picked differently from the live pick 5 times: hybrid right 3, live right 2.
 
 | Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |
 |---|---|---|---|---|---|---|---|
@@ -26,3 +28,4 @@ Score-projection models (tracked comparisons, not used to pick): proj-players-v3
 | 2026 | 3 | 2026_03_BAL_DAL | BAL | +2.5 | 34-31 | W | BAL W |
 | 2026 | 3 | 2026_03_LV_NO | LV | -3.5 | 35-27 | W | LV W |
 | 2026 | 3 | 2026_03_LA_DEN | DEN | +2.5 | 26-30 | W | DEN W |
+| 2026 | 3 | 2026_03_PHI_CHI | PHI | +3.5 | 7-27 | L | CHI W |
