@@ -1,0 +1,916 @@
+{
+ "n_rules": 2220,
+ "n_rule_side_scored": 7814,
+ "search_games": 2992,
+ "holdout_games": 1580,
+ "real": {
+  "max_z": 4.325191497802734,
+  "top25_min_z": 2.6537232398986816,
+  "n_z_over_3": 8,
+  "n_z_over_2": 155
+ },
+ "null": [
+  {
+   "max_z": 3.302778482437134,
+   "top25_min_z": 2.6834089756011963,
+   "n_z_over_3": 4,
+   "n_z_over_2": 165
+  },
+  {
+   "max_z": 3.694920301437378,
+   "top25_min_z": 2.865720510482788,
+   "n_z_over_3": 17,
+   "n_z_over_2": 211
+  },
+  {
+   "max_z": 3.345667600631714,
+   "top25_min_z": 2.4315884113311768,
+   "n_z_over_3": 3,
+   "n_z_over_2": 108
+  },
+  {
+   "max_z": 3.4914941787719727,
+   "top25_min_z": 2.6771578788757324,
+   "n_z_over_3": 8,
+   "n_z_over_2": 181
+  },
+  {
+   "max_z": 4.591108798980713,
+   "top25_min_z": 2.8177385330200195,
+   "n_z_over_3": 12,
+   "n_z_over_2": 211
+  },
+  {
+   "max_z": 3.2647345066070557,
+   "top25_min_z": 2.373244047164917,
+   "n_z_over_3": 2,
+   "n_z_over_2": 103
+  },
+  {
+   "max_z": 3.4805870056152344,
+   "top25_min_z": 2.785292148590088,
+   "n_z_over_3": 10,
+   "n_z_over_2": 216
+  },
+  {
+   "max_z": 3.494837760925293,
+   "top25_min_z": 2.574995994567871,
+   "n_z_over_3": 7,
+   "n_z_over_2": 125
+  },
+  {
+   "max_z": 3.727942943572998,
+   "top25_min_z": 2.7160048484802246,
+   "n_z_over_3": 12,
+   "n_z_over_2": 193
+  },
+  {
+   "max_z": 3.7921369075775146,
+   "top25_min_z": 2.826462507247925,
+   "n_z_over_3": 11,
+   "n_z_over_2": 221
+  },
+  {
+   "max_z": 3.7201473712921143,
+   "top25_min_z": 2.6712701320648193,
+   "n_z_over_3": 8,
+   "n_z_over_2": 143
+  },
+  {
+   "max_z": 3.532599925994873,
+   "top25_min_z": 2.8262178897857666,
+   "n_z_over_3": 10,
+   "n_z_over_2": 203
+  },
+  {
+   "max_z": 3.626138925552368,
+   "top25_min_z": 2.699139356613159,
+   "n_z_over_3": 6,
+   "n_z_over_2": 212
+  },
+  {
+   "max_z": 3.7410523891448975,
+   "top25_min_z": 2.6546273231506348,
+   "n_z_over_3": 8,
+   "n_z_over_2": 148
+  },
+  {
+   "max_z": 3.518486976623535,
+   "top25_min_z": 2.699263572692871,
+   "n_z_over_3": 10,
+   "n_z_over_2": 143
+  },
+  {
+   "max_z": 3.9288415908813477,
+   "top25_min_z": 2.609245777130127,
+   "n_z_over_3": 10,
+   "n_z_over_2": 151
+  },
+  {
+   "max_z": 3.6991617679595947,
+   "top25_min_z": 2.7622463703155518,
+   "n_z_over_3": 10,
+   "n_z_over_2": 209
+  },
+  {
+   "max_z": 3.3921735286712646,
+   "top25_min_z": 2.6591169834136963,
+   "n_z_over_3": 6,
+   "n_z_over_2": 152
+  },
+  {
+   "max_z": 3.4843697547912598,
+   "top25_min_z": 2.8180949687957764,
+   "n_z_over_3": 10,
+   "n_z_over_2": 184
+  },
+  {
+   "max_z": 3.603696823120117,
+   "top25_min_z": 2.716001272201538,
+   "n_z_over_3": 8,
+   "n_z_over_2": 163
+  },
+  {
+   "max_z": 3.599067211151123,
+   "top25_min_z": 2.6304192543029785,
+   "n_z_over_3": 6,
+   "n_z_over_2": 184
+  },
+  {
+   "max_z": 3.896867036819458,
+   "top25_min_z": 3.079136371612549,
+   "n_z_over_3": 27,
+   "n_z_over_2": 204
+  },
+  {
+   "max_z": 3.3920507431030273,
+   "top25_min_z": 2.47285795211792,
+   "n_z_over_3": 2,
+   "n_z_over_2": 111
+  },
+  {
+   "max_z": 3.80029296875,
+   "top25_min_z": 2.718278169631958,
+   "n_z_over_3": 15,
+   "n_z_over_2": 165
+  },
+  {
+   "max_z": 3.457746744155884,
+   "top25_min_z": 2.7928576469421387,
+   "n_z_over_3": 11,
+   "n_z_over_2": 178
+  },
+  {
+   "max_z": 3.5752601623535156,
+   "top25_min_z": 3.0024476051330566,
+   "n_z_over_3": 25,
+   "n_z_over_2": 216
+  },
+  {
+   "max_z": 3.972482919692993,
+   "top25_min_z": 2.8656601905822754,
+   "n_z_over_3": 14,
+   "n_z_over_2": 193
+  },
+  {
+   "max_z": 4.144968032836914,
+   "top25_min_z": 2.7086966037750244,
+   "n_z_over_3": 9,
+   "n_z_over_2": 171
+  },
+  {
+   "max_z": 3.737905263900757,
+   "top25_min_z": 2.718545436859131,
+   "n_z_over_3": 12,
+   "n_z_over_2": 172
+  },
+  {
+   "max_z": 3.7595927715301514,
+   "top25_min_z": 2.564413070678711,
+   "n_z_over_3": 5,
+   "n_z_over_2": 157
+  },
+  {
+   "max_z": 3.6767396926879883,
+   "top25_min_z": 2.5101616382598877,
+   "n_z_over_3": 4,
+   "n_z_over_2": 126
+  },
+  {
+   "max_z": 3.756608009338379,
+   "top25_min_z": 3.0467073917388916,
+   "n_z_over_3": 29,
+   "n_z_over_2": 263
+  },
+  {
+   "max_z": 3.8615241050720215,
+   "top25_min_z": 2.808310031890869,
+   "n_z_over_3": 12,
+   "n_z_over_2": 222
+  },
+  {
+   "max_z": 3.374945640563965,
+   "top25_min_z": 2.565906286239624,
+   "n_z_over_3": 2,
+   "n_z_over_2": 137
+  },
+  {
+   "max_z": 3.5510387420654297,
+   "top25_min_z": 2.8114843368530273,
+   "n_z_over_3": 14,
+   "n_z_over_2": 209
+  },
+  {
+   "max_z": 3.6068146228790283,
+   "top25_min_z": 2.826244354248047,
+   "n_z_over_3": 8,
+   "n_z_over_2": 198
+  },
+  {
+   "max_z": 4.266958713531494,
+   "top25_min_z": 2.547819137573242,
+   "n_z_over_3": 6,
+   "n_z_over_2": 118
+  },
+  {
+   "max_z": 3.5735785961151123,
+   "top25_min_z": 2.815014362335205,
+   "n_z_over_3": 14,
+   "n_z_over_2": 225
+  },
+  {
+   "max_z": 4.4609246253967285,
+   "top25_min_z": 3.0182316303253174,
+   "n_z_over_3": 25,
+   "n_z_over_2": 200
+  },
+  {
+   "max_z": 4.014881134033203,
+   "top25_min_z": 2.550258159637451,
+   "n_z_over_3": 6,
+   "n_z_over_2": 146
+  },
+  {
+   "max_z": 3.4610471725463867,
+   "top25_min_z": 2.5765490531921387,
+   "n_z_over_3": 4,
+   "n_z_over_2": 165
+  },
+  {
+   "max_z": 4.044061660766602,
+   "top25_min_z": 2.868440628051758,
+   "n_z_over_3": 20,
+   "n_z_over_2": 193
+  },
+  {
+   "max_z": 3.510997772216797,
+   "top25_min_z": 2.597902536392212,
+   "n_z_over_3": 2,
+   "n_z_over_2": 153
+  },
+  {
+   "max_z": 3.547739267349243,
+   "top25_min_z": 2.825780153274536,
+   "n_z_over_3": 11,
+   "n_z_over_2": 176
+  },
+  {
+   "max_z": 3.5471291542053223,
+   "top25_min_z": 2.5997745990753174,
+   "n_z_over_3": 6,
+   "n_z_over_2": 177
+  },
+  {
+   "max_z": 3.6587865352630615,
+   "top25_min_z": 2.6823995113372803,
+   "n_z_over_3": 10,
+   "n_z_over_2": 172
+  },
+  {
+   "max_z": 3.678331136703491,
+   "top25_min_z": 2.702805995941162,
+   "n_z_over_3": 11,
+   "n_z_over_2": 124
+  },
+  {
+   "max_z": 3.721247911453247,
+   "top25_min_z": 2.6117303371429443,
+   "n_z_over_3": 4,
+   "n_z_over_2": 175
+  },
+  {
+   "max_z": 4.158787727355957,
+   "top25_min_z": 2.5285890102386475,
+   "n_z_over_3": 2,
+   "n_z_over_2": 146
+  },
+  {
+   "max_z": 3.6820225715637207,
+   "top25_min_z": 2.6795830726623535,
+   "n_z_over_3": 9,
+   "n_z_over_2": 185
+  }
+ ],
+ "top25": [
+  {
+   "rule": "home last_nocover & away last_bigloss",
+   "side": "against move",
+   "search": {
+    "n": 181,
+    "won": 110,
+    "expected": 81.1,
+    "z": 4.325191497802734
+   },
+   "holdout": {
+    "n": 99,
+    "won": 41,
+    "expected": 43.0,
+    "z": -0.4060935080051422,
+    "p": 0.6576630521811648
+   },
+   "cbs2025": {
+    "n": 20,
+    "won": 8,
+    "expected": 8.8
+   },
+   "holm_threshold": 0.00625,
+   "pass": false
+  },
+  {
+   "rule": "referee Brad Allen",
+   "side": "against move",
+   "search": {
+    "n": 70,
+    "won": 48,
+    "expected": 31.5,
+    "z": 3.97883677482605
+   },
+   "holdout": {
+    "n": 75,
+    "won": 38,
+    "expected": 32.6,
+    "z": 1.2622320652008057,
+    "p": 0.10343264686469598
+   },
+   "cbs2025": {
+    "n": 5,
+    "won": 5,
+    "expected": 2.1
+   },
+   "holm_threshold": 0.0020833333333333333,
+   "pass": false
+  },
+  {
+   "rule": "weeks 13-16 & away good",
+   "side": "move side",
+   "search": {
+    "n": 150,
+    "won": 103,
+    "expected": 81.6,
+    "z": 3.5168440341949463
+   },
+   "holdout": {
+    "n": 78,
+    "won": 42,
+    "expected": 43.3,
+    "z": -0.292978435754776,
+    "p": 0.6152306827001339
+   },
+   "cbs2025": {
+    "n": 13,
+    "won": 6,
+    "expected": 7.0
+   },
+   "holm_threshold": 0.004545454545454546,
+   "pass": false
+  },
+  {
+   "rule": "weeks 5-8 & away win3",
+   "side": "against move",
+   "search": {
+    "n": 81,
+    "won": 51,
+    "expected": 36.4,
+    "z": 3.2774453163146973
+   },
+   "holdout": {
+    "n": 43,
+    "won": 19,
+    "expected": 18.6,
+    "z": 0.11161182820796967,
+    "p": 0.4555655965363107
+   },
+   "cbs2025": {
+    "n": 5,
+    "won": 3,
+    "expected": 2.0
+   },
+   "holm_threshold": 0.0035714285714285718,
+   "pass": false
+  },
+  {
+   "rule": "Sunday afternoon late & away last_bigloss",
+   "side": "against move",
+   "search": {
+    "n": 104,
+    "won": 63,
+    "expected": 46.7,
+    "z": 3.2196338176727295
+   },
+   "holdout": {
+    "n": 58,
+    "won": 17,
+    "expected": 25.1,
+    "z": -2.1743838787078857,
+    "p": 0.9851618411088437
+   },
+   "cbs2025": {
+    "n": 12,
+    "won": 4,
+    "expected": 5.2
+   },
+   "holm_threshold": 0.025,
+   "pass": false
+  },
+  {
+   "rule": "weeks 1-4 & division game",
+   "side": "underdog",
+   "search": {
+    "n": 240,
+    "won": 146,
+    "expected": 122.7,
+    "z": 3.0287256240844727
+   },
+   "holdout": {
+    "n": 109,
+    "won": 50,
+    "expected": 55.4,
+    "z": -1.0387732982635498,
+    "p": 0.8505449087530069
+   },
+   "cbs2025": {
+    "n": 22,
+    "won": 7,
+    "expected": 11.4
+   },
+   "holm_threshold": 0.01,
+   "pass": false
+  },
+  {
+   "rule": "spread 3",
+   "side": "move side",
+   "search": {
+    "n": 282,
+    "won": 180,
+    "expected": 154.8,
+    "z": 3.0276947021484375
+   },
+   "holdout": {
+    "n": 126,
+    "won": 78,
+    "expected": 70.9,
+    "z": 1.2817449569702148,
+    "p": 0.09996606433310613
+   },
+   "cbs2025": {
+    "n": 15,
+    "won": 7,
+    "expected": 8.1
+   },
+   "holm_threshold": 0.002,
+   "pass": false
+  },
+  {
+   "rule": "spread 3 & dome or closed",
+   "side": "move side",
+   "search": {
+    "n": 66,
+    "won": 48,
+    "expected": 35.8,
+    "z": 3.0196218490600586
+   },
+   "holdout": {
+    "n": 44,
+    "won": 28,
+    "expected": 24.9,
+    "z": 0.962110698223114,
+    "p": 0.1679970003556644
+   },
+   "cbs2025": {
+    "n": 5,
+    "won": 3,
+    "expected": 2.7
+   },
+   "holm_threshold": 0.002272727272727273,
+   "pass": false
+  },
+  {
+   "rule": "move 3+ & away travels 2-3 zones",
+   "side": "against move",
+   "search": {
+    "n": 64,
+    "won": 36,
+    "expected": 24.7,
+    "z": 2.922264814376831
+   },
+   "holdout": {
+    "n": 60,
+    "won": 23,
+    "expected": 22.5,
+    "z": 0.14233483374118805,
+    "p": 0.4434077666337967
+   },
+   "cbs2025": {
+    "n": 6,
+    "won": 3,
+    "expected": 2.3
+   },
+   "holm_threshold": 0.0029411764705882353,
+   "pass": false
+  },
+  {
+   "rule": "home win3 & away last_bigwin",
+   "side": "home",
+   "search": {
+    "n": 91,
+    "won": 57,
+    "expected": 43.3,
+    "z": 2.8855204582214355
+   },
+   "holdout": {
+    "n": 46,
+    "won": 20,
+    "expected": 21.9,
+    "z": -0.5603259801864624,
+    "p": 0.7123714451720302
+   },
+   "cbs2025": {
+    "n": 10,
+    "won": 4,
+    "expected": 4.8
+   },
+   "holm_threshold": 0.0071428571428571435,
+   "pass": false
+  },
+  {
+   "rule": "spread 3 & away last_nocover",
+   "side": "move side",
+   "search": {
+    "n": 123,
+    "won": 83,
+    "expected": 67.3,
+    "z": 2.850571393966675
+   },
+   "holdout": {
+    "n": 53,
+    "won": 33,
+    "expected": 29.8,
+    "z": 0.881205677986145,
+    "p": 0.18910325331382075
+   },
+   "cbs2025": {
+    "n": 7,
+    "won": 3,
+    "expected": 3.9
+   },
+   "holm_threshold": 0.002380952380952381,
+   "pass": false
+  },
+  {
+   "rule": "weeks 5-8 & spread <=2.5",
+   "side": "against move",
+   "search": {
+    "n": 115,
+    "won": 66,
+    "expected": 50.9,
+    "z": 2.849989175796509
+   },
+   "holdout": {
+    "n": 78,
+    "won": 36,
+    "expected": 33.3,
+    "z": 0.6217182874679565,
+    "p": 0.26706356226074635
+   },
+   "cbs2025": {
+    "n": 13,
+    "won": 5,
+    "expected": 5.3
+   },
+   "holm_threshold": 0.002777777777777778,
+   "pass": false
+  },
+  {
+   "rule": "weeks 13-16 & home cover3",
+   "side": "underdog",
+   "search": {
+    "n": 85,
+    "won": 57,
+    "expected": 44.0,
+    "z": 2.836914300918579
+   },
+   "holdout": {
+    "n": 41,
+    "won": 12,
+    "expected": 21.1,
+    "z": -2.887186288833618,
+    "p": 0.9980564799341902
+   },
+   "cbs2025": {
+    "n": 8,
+    "won": 2,
+    "expected": 3.7
+   },
+   "holm_threshold": 0.05,
+   "pass": false
+  },
+  {
+   "rule": "move 3+ & away good",
+   "side": "home",
+   "search": {
+    "n": 60,
+    "won": 39,
+    "expected": 28.4,
+    "z": 2.8249387741088867
+   },
+   "holdout": {
+    "n": 65,
+    "won": 33,
+    "expected": 30.5,
+    "z": 0.6463136672973633,
+    "p": 0.25903811920430053
+   },
+   "cbs2025": {
+    "n": 6,
+    "won": 2,
+    "expected": 2.8
+   },
+   "holm_threshold": 0.002631578947368421,
+   "pass": false
+  },
+  {
+   "rule": "away travels 0 zones & away nocover3",
+   "side": "away",
+   "search": {
+    "n": 119,
+    "won": 76,
+    "expected": 61.0,
+    "z": 2.771624803543091
+   },
+   "holdout": {
+    "n": 73,
+    "won": 28,
+    "expected": 35.7,
+    "z": -1.8400944471359253,
+    "p": 0.9671228138016431
+   },
+   "cbs2025": {
+    "n": 10,
+    "won": 2,
+    "expected": 4.3
+   },
+   "holm_threshold": 0.0125,
+   "pass": false
+  },
+  {
+   "rule": "spread 3 & division game",
+   "side": "move side",
+   "search": {
+    "n": 105,
+    "won": 72,
+    "expected": 58.1,
+    "z": 2.7477283477783203
+   },
+   "holdout": {
+    "n": 45,
+    "won": 26,
+    "expected": 25.6,
+    "z": 0.1348099559545517,
+    "p": 0.4463810669932582
+   },
+   "cbs2025": {
+    "n": 5,
+    "won": 2,
+    "expected": 2.9
+   },
+   "holm_threshold": 0.003125,
+   "pass": false
+  },
+  {
+   "rule": "weeks 9-12 & home last_nocover",
+   "side": "away",
+   "search": {
+    "n": 310,
+    "won": 186,
+    "expected": 162.0,
+    "z": 2.7457387447357178
+   },
+   "holdout": {
+    "n": 167,
+    "won": 75,
+    "expected": 87.1,
+    "z": -1.892607569694519,
+    "p": 0.9707949618201395
+   },
+   "cbs2025": {
+    "n": 29,
+    "won": 14,
+    "expected": 15.2
+   },
+   "holm_threshold": 0.016666666666666666,
+   "pass": false
+  },
+  {
+   "rule": "spread 3 & home favored",
+   "side": "move side",
+   "search": {
+    "n": 180,
+    "won": 117,
+    "expected": 98.8,
+    "z": 2.74304461479187
+   },
+   "holdout": {
+    "n": 72,
+    "won": 45,
+    "expected": 39.9,
+    "z": 1.21522057056427,
+    "p": 0.11214098840548972
+   },
+   "cbs2025": {
+    "n": 9,
+    "won": 5,
+    "expected": 4.8
+   },
+   "holm_threshold": 0.002173913043478261,
+   "pass": false
+  },
+  {
+   "rule": "move 0.5 & away last_bigloss",
+   "side": "against move",
+   "search": {
+    "n": 132,
+    "won": 79,
+    "expected": 63.3,
+    "z": 2.7419090270996094
+   },
+   "holdout": {
+    "n": 44,
+    "won": 19,
+    "expected": 21.1,
+    "z": -0.6402295231819153,
+    "p": 0.7389883041520625
+   },
+   "cbs2025": {
+    "n": 10,
+    "won": 4,
+    "expected": 4.8
+   },
+   "holm_threshold": 0.008333333333333333,
+   "pass": false
+  },
+  {
+   "rule": "spread 3.5-6.5 & grass",
+   "side": "away",
+   "search": {
+    "n": 589,
+    "won": 335,
+    "expected": 302.0,
+    "z": 2.72959303855896
+   },
+   "holdout": {
+    "n": 309,
+    "won": 160,
+    "expected": 159.0,
+    "z": 0.11115235835313797,
+    "p": 0.45574776498624614
+   },
+   "cbs2025": {
+    "n": 52,
+    "won": 29,
+    "expected": 26.8
+   },
+   "holm_threshold": 0.0038461538461538464,
+   "pass": false
+  },
+  {
+   "rule": "home last_bigloss & away last_bigloss",
+   "side": "against move",
+   "search": {
+    "n": 77,
+    "won": 46,
+    "expected": 34.1,
+    "z": 2.724458694458008
+   },
+   "holdout": {
+    "n": 36,
+    "won": 18,
+    "expected": 15.4,
+    "z": 0.8739477396011353,
+    "p": 0.19107335733083272
+   },
+   "cbs2025": {
+    "n": 6,
+    "won": 2,
+    "expected": 2.7
+   },
+   "holm_threshold": 0.0025,
+   "pass": false
+  },
+  {
+   "rule": "grass & away last_bigloss",
+   "side": "away",
+   "search": {
+    "n": 268,
+    "won": 159,
+    "expected": 136.9,
+    "z": 2.720093011856079
+   },
+   "holdout": {
+    "n": 129,
+    "won": 62,
+    "expected": 63.7,
+    "z": -0.2945212125778198,
+    "p": 0.6158201717238444
+   },
+   "cbs2025": {
+    "n": 19,
+    "won": 12,
+    "expected": 9.1
+   },
+   "holm_threshold": 0.005,
+   "pass": false
+  },
+  {
+   "rule": "spread <=2.5 & dome or closed",
+   "side": "against move",
+   "search": {
+    "n": 137,
+    "won": 76,
+    "expected": 60.5,
+    "z": 2.684056282043457
+   },
+   "holdout": {
+    "n": 139,
+    "won": 61,
+    "expected": 60.2,
+    "z": 0.13465851545333862,
+    "p": 0.4464409371178076
+   },
+   "cbs2025": {
+    "n": 21,
+    "won": 10,
+    "expected": 9.1
+   },
+   "holm_threshold": 0.0033333333333333335,
+   "pass": false
+  },
+  {
+   "rule": "spread 7 & away travels 1 zone",
+   "side": "underdog",
+   "search": {
+    "n": 62,
+    "won": 42,
+    "expected": 31.6,
+    "z": 2.6677799224853516
+   },
+   "holdout": {
+    "n": 21,
+    "won": 10,
+    "expected": 10.7,
+    "z": -0.31263965368270874,
+    "p": 0.6227227760205427
+   },
+   "cbs2025": {
+    "n": 3,
+    "won": 1,
+    "expected": 1.5
+   },
+   "holm_threshold": 0.005555555555555556,
+   "pass": false
+  },
+  {
+   "rule": "away team SD",
+   "side": "underdog",
+   "search": {
+    "n": 67,
+    "won": 44,
+    "expected": 33.2,
+    "z": 2.6537232398986816
+   },
+   "holdout": {
+    "n": 0,
+    "won": 0,
+    "expected": 0.0,
+    "z": 0.0,
+    "p": 0.5
+   },
+   "cbs2025": {
+    "n": 0,
+    "won": 0,
+    "expected": 0.0
+   },
+   "holm_threshold": 0.004166666666666667,
+   "pass": false
+  }
+ ]
+}
