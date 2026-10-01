@@ -58,9 +58,22 @@ def american_to_decimal(a: float) -> float:
     return 1 + (a / 100 if a > 0 else 100 / -a)
 
 
+def check_one_line_per_book(d: pl.DataFrame) -> None:
+    """A book posts one main line per player-game-market. More than that means another proposition (alternate,
+    first-half, quarter) slipped in; 2025 weeks 13-18 had exactly that before the fetch filtered `period`.
+    Only two-sided quotes count (FanDuel sometimes has an over at one line and an under at the next; those
+    one-sided rows are never graded)."""
+    two_sided = (pl.col("over_odds").fill_null("") != "") & (pl.col("under_odds").fill_null("") != "")
+    dup = d.filter(pl.col("market") != "anytime_td", two_sided).group_by("an_game_id", "an_player_id", "market", "book_id") \
+        .agg(pl.col("line").n_unique().alias("n")).filter(pl.col("n") > 1)
+    if dup.height:
+        raise ValueError(f"{dup.height} player-game-market-book groups carry more than one line")
+
+
 def load_lines(season: int, path: Path | None = None) -> pl.DataFrame:
     path = path or config.ROOT / "data" / "props" / f"an_props_{season}.csv"
     d = pl.read_csv(path, infer_schema_length=0)
+    check_one_line_per_book(d.filter(~pl.col("book_id").is_in(list(NON_BOOKS))))
     return (d.with_columns(pl.col("season").cast(pl.Int64), pl.col("week").cast(pl.Int64),
                            pl.col("line").cast(pl.Float64),
                            *(pl.col(c).replace("", None).cast(pl.Float64) for c in ("over_odds", "under_odds", "yes_odds")),
