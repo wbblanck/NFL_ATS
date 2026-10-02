@@ -9,3 +9,6 @@ data/processed/*.duckdb
 data/raw/aussportsbetting/
 data/backtests/gap2022_games.csv
 data/cache/
+
+# AusSportsBetting data is personal-use only: never commit it
+**/aussportsbetting_*
