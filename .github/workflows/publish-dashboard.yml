@@ -1,5 +1,6 @@
 name: Publish dashboard
-# Rebuilds the picks dashboard and deploys it to GitHub Pages (docs/scheduling.md).
+# Rebuilds the picks dashboard and commits it as site/dashboard.html, which the private Streamlit app shows
+# (streamlit_app/app.py, docs/scheduling.md).
 # Triggers: the lock run dispatches it after each group of picks; the crons pick up final scores
 # (nflverse posts them some time after games end); manual dispatch any time.
 on:
@@ -11,12 +12,10 @@ on:
     - cron: '0 13 * * 2'       # Tue morning: week wrap-up
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: publish-dashboard
   cancel-in-progress: true     # only the newest build matters
 
 jobs:
@@ -31,19 +30,11 @@ jobs:
           cache: pip
       - run: pip install -e .
       - name: Build
+        run: python -m engine dashboard --season 2026 --out site/dashboard.html
+      - name: Commit
         run: |
-          mkdir -p site
-          python -m engine dashboard --season 2026 --out site/index.html
-          touch site/.nojekyll
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          git config user.name "nfl-ats-engine"
+          git config user.email "nfl-ats-engine@users.noreply.github.com"
+          git add site/dashboard.html
+          git commit -m "dashboard: rebuild $(date -u +%Y-%m-%dT%H:%MZ)" || exit 0
+          for i in 1 2 3 4; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep $((i*3)); done
