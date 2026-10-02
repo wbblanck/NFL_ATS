@@ -57,7 +57,7 @@ def main(argv=None) -> int:
     pv.add_argument("--week", type=int, required=True)
     db = sub.add_parser("dashboard")
     db.add_argument("--season", type=int, required=True)
-    db.add_argument("--week", type=int, required=True)
+    db.add_argument("--week", type=int, default=None, help="default: the earliest week with an unfinished game")
     db.add_argument("--out", default=None)
     al = sub.add_parser("alert", help="print phone-alert lines for locked picks (see docs/scheduling.md)")
     al.add_argument("--since", default=None, help="ISO time; only picks created after it (default: last 30 min)")
@@ -290,6 +290,8 @@ def main(argv=None) -> int:
             _nm = dict(zip(_pp["gsis_id"].to_list(), _pp["display_name"].to_list()))
         except Exception:
             pass
+        if a.week is None:
+            a.week = dashboard.current_week(sched, a.season)
         rows = preview.build(sched, a.season, a.week, proj_games=_pg, names=_nm,
                              v3=_v3_live.loader(sched, _all if _pg is not None else None))
         try:

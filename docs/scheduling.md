@@ -114,3 +114,16 @@ here; check them yourself.
 - **Locally:** `python -m engine run --game <game_id>`.
 - A pick made after lock is still written, but it is flagged
   `LATE_AFTER_LOCK`.
+
+## Dashboard on GitHub Pages
+
+`publish-dashboard.yml` rebuilds the dashboard (`python -m engine dashboard`, current week chosen automatically) and
+deploys it to GitHub Pages:
+
+- **After every group of picks:** the lock run dispatches it from its `notify` step.
+- **For final scores:** crons on Sunday evening, after the Sunday/Monday/Thursday night games, and Tuesday morning.
+  GitHub's cron can start late (audit 0.10), so scores may appear later than the cron time.
+- **Any time:** dispatch it manually.
+
+One-time setup: repo Settings → Pages → Build and deployment → Source: **GitHub Actions**. Pages on a private
+repository needs a paid GitHub plan, and the published site is public to anyone with the URL.
