@@ -1,0 +1,192 @@
+{
+ "n_games": 4572,
+ "n_disc": 1490,
+ "n_conf": 2815,
+ "checks": {
+  "late_states": 4897,
+  "team_games": 9374,
+  "flip_share": 0.19160104986876642
+ },
+ "inputs": [
+  {
+   "input": "to_last",
+   "disc_b": 0.006287086653874768,
+   "disc_z": 0.29859409711492624,
+   "sign": 1.0,
+   "conf_b": -0.03606853116138766,
+   "conf_z_in_sign": -2.23042796445247,
+   "conf_p": 0.9871404776024534,
+   "nonzero_share": 0.7727471566054244,
+   "disc_effect": {
+    "games": 1154,
+    "won": 583,
+    "rate": 0.5051993067590987,
+    "model_expected": 0.49833814973110085
+   },
+   "conf_effect": {
+    "games": 2168,
+    "won": 1053,
+    "rate": 0.4857011070110701,
+    "model_expected": 0.49802477187499267
+   },
+   "cbs2025_effect": {
+    "games": 211,
+    "won": 109,
+    "rate": 0.5165876777251185,
+    "model_expected": 0.4875103086762775
+   },
+   "holm_threshold": 0.05,
+   "pass": false
+  },
+  {
+   "input": "to_last4",
+   "disc_b": -0.0009741198212177294,
+   "disc_z": -0.09116764529706721,
+   "sign": -1.0,
+   "conf_b": -0.013487671740738469,
+   "conf_z_in_sign": 1.6680489384716621,
+   "conf_p": 0.047653006141199696,
+   "nonzero_share": 0.8541119860017498,
+   "disc_effect": {
+    "games": 1270,
+    "won": 635,
+    "rate": 0.5,
+    "model_expected": 0.5010837715628357
+   },
+   "conf_effect": {
+    "games": 2407,
+    "won": 1231,
+    "rate": 0.5114250103863731,
+    "model_expected": 0.5012174203006102
+   },
+   "cbs2025_effect": {
+    "games": 228,
+    "won": 106,
+    "rate": 0.4649122807017544,
+    "model_expected": 0.5126082570129581
+   },
+   "holm_threshold": 0.008333333333333333,
+   "pass": false
+  },
+  {
+   "input": "to_season",
+   "disc_b": -0.004210993604696483,
+   "disc_z": -0.1004276534028448,
+   "sign": -1.0,
+   "conf_b": -0.020915908456231147,
+   "conf_z_in_sign": 0.6441571642836166,
+   "conf_p": 0.2597367624238511,
+   "nonzero_share": 0.8777340332458443,
+   "disc_effect": {
+    "games": 1301,
+    "won": 647,
+    "rate": 0.4973097617217525,
+    "model_expected": 0.5002376215852241
+   },
+   "conf_effect": {
+    "games": 2479,
+    "won": 1280,
+    "rate": 0.5163372327551432,
+    "model_expected": 0.5007607407128513
+   },
+   "cbs2025_effect": {
+    "games": 233,
+    "won": 112,
+    "rate": 0.48068669527896996,
+    "model_expected": 0.5120405657928054
+   },
+   "holm_threshold": 0.0125,
+   "pass": false
+  },
+  {
+   "input": "fumble_luck",
+   "disc_b": 0.01606386334224568,
+   "disc_z": 0.8828921869537018,
+   "sign": 1.0,
+   "conf_b": -0.011186592409484799,
+   "conf_z_in_sign": -0.7626071157412048,
+   "conf_p": 0.7771511301927723,
+   "nonzero_share": 0.8521434820647419,
+   "disc_effect": {
+    "games": 1275,
+    "won": 660,
+    "rate": 0.5176470588235295,
+    "model_expected": 0.49931917714299584
+   },
+   "conf_effect": {
+    "games": 2382,
+    "won": 1190,
+    "rate": 0.4995801847187238,
+    "model_expected": 0.5005792719035232
+   },
+   "cbs2025_effect": {
+    "games": 239,
+    "won": 124,
+    "rate": 0.5188284518828452,
+    "model_expected": 0.49081779008252585
+   },
+   "holm_threshold": 0.016666666666666666,
+   "pass": false
+  },
+  {
+   "input": "close_record",
+   "disc_b": 0.01678749830710901,
+   "disc_z": 0.9203262962040173,
+   "sign": 1.0,
+   "conf_b": 0.010302558616605444,
+   "conf_z_in_sign": 0.7875807060206178,
+   "conf_p": 0.21547100198141989,
+   "nonzero_share": 0.789588801399825,
+   "disc_effect": {
+    "games": 1169,
+    "won": 615,
+    "rate": 0.5260906757912746,
+    "model_expected": 0.5061942989655505
+   },
+   "conf_effect": {
+    "games": 2221,
+    "won": 1127,
+    "rate": 0.5074290859972985,
+    "model_expected": 0.5035574474074141
+   },
+   "cbs2025_effect": {
+    "games": 220,
+    "won": 109,
+    "rate": 0.4954545454545455,
+    "model_expected": 0.4974186978070473
+   },
+   "holm_threshold": 0.01,
+   "pass": false
+  },
+  {
+   "input": "late_cover_flip",
+   "disc_b": -0.06968447292741861,
+   "disc_z": -0.6155688606262925,
+   "sign": -1.0,
+   "conf_b": 0.15280144849033844,
+   "conf_z_in_sign": -1.7620020628035116,
+   "conf_p": 0.96096552552126,
+   "nonzero_share": 0.19160104986876642,
+   "disc_effect": {
+    "games": 293,
+    "won": 154,
+    "rate": 0.5255972696245734,
+    "model_expected": 0.5062280393942741
+   },
+   "conf_effect": {
+    "games": 523,
+    "won": 244,
+    "rate": 0.4665391969407266,
+    "model_expected": 0.5027027785653886
+   },
+   "cbs2025_effect": {
+    "games": 60,
+    "won": 36,
+    "rate": 0.6,
+    "model_expected": 0.5005352252925068
+   },
+   "holm_threshold": 0.025,
+   "pass": false
+  }
+ ]
+}
