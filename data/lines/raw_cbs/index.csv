@@ -45,3 +45,5 @@ capture_id,url,url_key,parsed_digest,file
 20261002T004628Z,https://www.cbssports.com/nfl/odds/2026/regular/week-5/,621bc5d0ff,54ad8ccd843e082430663cf60dc47dab3f0ea9b6cf3767052b8745bedf58ec49,20261002T004628Z_621bc5d0ff.html.gz
 20261002T094344Z,https://www.cbssports.com/nfl/odds/,f3db15dfb0,2103536a792e7cb72a3bfa2d709f971dae5e50db2f981c95f8879a788d78b023,20261002T094344Z_f3db15dfb0.html.gz
 20261002T094344Z,https://www.cbssports.com/nfl/odds/2026/regular/week-4/,d279436f7a,2103536a792e7cb72a3bfa2d709f971dae5e50db2f981c95f8879a788d78b023,20261002T094344Z_d279436f7a.html.gz
+20261002T175203Z,https://www.cbssports.com/nfl/odds/,f3db15dfb0,14b05426599d0f64c78b3cb5e147e85d83954ca9af7fd14d248081856695b0fd,20261002T175203Z_f3db15dfb0.html.gz
+20261002T175203Z,https://www.cbssports.com/nfl/odds/2026/regular/week-4/,d279436f7a,14b05426599d0f64c78b3cb5e147e85d83954ca9af7fd14d248081856695b0fd,20261002T175203Z_d279436f7a.html.gz
