@@ -66,6 +66,14 @@ def _result_char(v) -> str | None:
     return v.strip()[-1] if isinstance(v, str) and v.strip()[-1:] in ("W", "L") else None
 
 
+def current_week(sched, season: int) -> int:
+    """The week the dashboard should show: the earliest week with an unfinished game, else the last week."""
+    import polars as pl
+    s = sched.filter(pl.col("season") == season)
+    open_ = s.filter(pl.col("result").is_null())
+    return int(open_["week"].min() if open_.height else s["week"].max())
+
+
 def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.datetime,
            results: dict | None = None, details: dict | None = None, season_table: list | None = None,
            credits: int | None = None, epa: dict | None = None, curve: dict | None = None,

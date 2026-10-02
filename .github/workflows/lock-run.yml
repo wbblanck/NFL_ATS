@@ -20,6 +20,7 @@ on:
 
 permissions:
   contents: write
+  actions: write       # dispatch publish-dashboard.yml after each group of picks
 
 concurrency:
   group: lock-run-${{ github.ref }}
@@ -40,6 +41,7 @@ jobs:
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "nfl-ats-engine"
           git config user.email "nfl-ats-engine@users.noreply.github.com"
@@ -50,7 +52,10 @@ jobs:
             return 1
           }
           # Phone alert for the picks written since $1 (ISO, +00:00); never fails the run. No-op without NTFY_TOPIC.
-          notify() { python -m engine alert --local --send --since "$1" || true; }
+          notify() {
+            python -m engine alert --local --send --since "$1" || true
+            gh workflow run publish-dashboard.yml --ref "${GITHUB_REF_NAME}" || echo "dashboard publish not dispatched"
+          }
           now_iso() { date -u +%Y-%m-%dT%H:%M:%S+00:00; }
           if [ -n "${{ inputs.game_id }}" ]; then
             T0=$(now_iso)

@@ -78,3 +78,11 @@ def test_render_carries_the_score_breakdown_and_its_controls():
     for needle in ("How each score was built", "How the projected score was built", "Biggest drivers", "xclose"):
         assert needle in html
     assert _payload(D.render([_row("g2", _k(27, 13), "provisional")], 2026, 3, {"N": 0, "W": 0, "L": 0}, now))["games"][0]["xp"] is None
+
+
+def test_current_week_is_earliest_unfinished_else_last():
+    import polars as pl
+    from engine.picks.dashboard import current_week
+    s = pl.DataFrame({"season": [2026] * 4, "week": [3, 4, 4, 5], "result": [3, -7, None, None]})
+    assert current_week(s, 2026) == 4
+    assert current_week(s.with_columns(pl.lit(1).alias("result")), 2026) == 5

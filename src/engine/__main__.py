@@ -57,7 +57,7 @@ def main(argv=None) -> int:
     pv.add_argument("--week", type=int, required=True)
     db = sub.add_parser("dashboard")
     db.add_argument("--season", type=int, required=True)
-    db.add_argument("--week", type=int, required=True)
+    db.add_argument("--week", type=int, default=None, help="default: the earliest week with an unfinished game")
     db.add_argument("--out", default=None)
     al = sub.add_parser("alert", help="print phone-alert lines for locked picks (see docs/scheduling.md)")
     al.add_argument("--since", default=None, help="ISO time; only picks created after it (default: last 30 min)")
@@ -187,10 +187,12 @@ def main(argv=None) -> int:
         now = _dt.datetime.now(_dt.timezone.utc)
         since = a.since or (now - _dt.timedelta(minutes=30)).isoformat()
         if not a.watch:
-            text = alerts.message(alerts.new_rows(alerts.local_predictions() if a.local else alerts.origin_predictions(), since))
-            print(text)
-            if a.send and text:
-                print("ntfy: " + ("sent" if alerts.send(text) else "not sent"))
+            rows = alerts.new_rows(alerts.local_predictions() if a.local else alerts.origin_predictions(), since)
+            for text in (alerts.message(rows), alerts.warning_message(rows)):
+                if text:
+                    print(text)
+                    if a.send:
+                        print("ntfy: " + ("sent" if alerts.send(text) else "not sent"))
             return 0
         preds = alerts.origin_predictions()
         done = {p["game_id"] for p in preds if not p.get("supersedes")}
@@ -288,6 +290,8 @@ def main(argv=None) -> int:
             _nm = dict(zip(_pp["gsis_id"].to_list(), _pp["display_name"].to_list()))
         except Exception:
             pass
+        if a.week is None:
+            a.week = dashboard.current_week(sched, a.season)
         rows = preview.build(sched, a.season, a.week, proj_games=_pg, names=_nm,
                              v3=_v3_live.loader(sched, _all if _pg is not None else None))
         try:
