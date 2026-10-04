@@ -143,3 +143,26 @@ def test_week3_replay_would_have_warned():
     rows = [r for r in store.read_rows(p) if r["week"] == "3"]
     flagged = [r for r in rows if float(r["minutes_to_lock"]) > final.EARLY_PICK_MIN]
     assert len(flagged) == 14          # every week 3 pick except PHI@CHI (5 min)
+
+
+def test_full_message_lists_every_model_and_marks_disagreements():
+    r = _p("2026_04_NE_BUF", "NE", "BUF", "BUF", -6.5, _k(27, 13))
+    r.update(drift="-0.5", p_home_cover="0.506", p_away_cover="0.494", shadow_pick_keynum="BUF")
+    projs = {"2026_04_NE_BUF": {"proj-poisson-v1": "NE", "proj-players-v3": "NE"}}
+    m = A.full_message([r], projs).split("\n")
+    assert m[0] == "Picks locked (Sun 1:00 PM): BUF −6.5"
+    assert m[1] == ("NE@BUF: Pick BUF −6.5 (moved ½ pt, 51%) | Hybrid NE +6.5 ≠ · v1 NE +6.5 ≠ · v3 NE +6.5 ≠"
+                    " · Key BUF −6.5")
+
+
+def test_full_message_big_move_keeps_hybrid_on_the_pick_and_handles_missing_models():
+    r = _p("2026_04_ARI_NYG", "ARI", "NYG", "ARI", 0.5, _k(27, 13))
+    r.update(drift="1.5", p_home_cover="0.433", p_away_cover="0.567")
+    line = A.full_message([r], {"2026_04_ARI_NYG": {"proj-poisson-v1": "NYG"}}).split("\n")[1]
+    assert "moved 1½ pts, 57%" in line and "Hybrid ARI −0.5 ·" in line and "v1 NYG +0.5 ≠" in line
+    assert "v3 —" in line and "Key —" in line
+
+
+def test_full_message_stays_under_ntfy_limit():
+    rows = [_p(f"g{i}", f"AA{i}", f"BB{i}", f"AA{i}", -3.5, _k(27, 13)) for i in range(200)]
+    assert len(A.full_message(rows).encode()) <= A.FULL_MAX_BYTES
