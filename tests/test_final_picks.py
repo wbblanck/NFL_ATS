@@ -133,3 +133,32 @@ def test_on_time_pick_has_no_timing_or_book_flag(tmp_root, week3_schedule):
     r = final.run(week3_schedule, now=LOCK - dt.timedelta(minutes=5), window_minutes=25, events=EVENTS)[0]
     assert "EARLY_PICK" not in r["flags"] and "LATE_AFTER_LOCK" not in r["flags"]
     assert ("FEW_BOOKS" in r["flags"]) == (r["market_books"] < final.MIN_BOOKS)
+
+
+def _with_pinnacle(point):
+    import copy
+    ev = copy.deepcopy(EVENTS)
+    evs = ev if isinstance(ev, list) else ev.get("data", ev)
+    g = next(x for x in evs if x["home_team"] == "Green Bay Packers")
+    b = copy.deepcopy(g["bookmakers"][0])
+    b["key"] = "pinnacle"
+    for m in b["markets"]:
+        for o in m["outcomes"]:
+            o["point"] = point if o["name"] == g["home_team"] else -point
+    g["bookmakers"].append(b)
+    return ev
+
+
+def test_pinnacle_line_is_the_market_when_present(tmp_root, week3_schedule):
+    _league(tmp_root, "2026_03_ATL_GB,2026,3,GB,ATL,-6.5,GB,test,x\n")
+    r = final.run(week3_schedule, now=LOCK - dt.timedelta(minutes=5), window_minutes=25,
+                  events=_with_pinnacle(-7.5))[0]
+    assert r["market_at_lock"] == -7.5 and r["feature_version"] == "market:pinnacle"
+    assert r["pick_team"] == "GB" and "MARKET_MEDIAN_FALLBACK" not in r["flags"]   # moved toward GB on Pinnacle
+
+
+def test_median_fallback_is_flagged_without_pinnacle(tmp_root, week3_schedule):
+    _league(tmp_root, "2026_03_ATL_GB,2026,3,GB,ATL,-6.5,GB,test,x\n")
+    r = final.run(week3_schedule, now=LOCK - dt.timedelta(minutes=5), window_minutes=25, events=EVENTS)[0]
+    assert r["feature_version"] == "market:median" and "MARKET_MEDIAN_FALLBACK" in r["flags"]
+    assert r["pick_team"] == "ATL"                                                  # median ~-5: moved toward ATL

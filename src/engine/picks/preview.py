@@ -128,10 +128,13 @@ def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None =
         total = g.get("total_line")
         use_t = tdist is not None and total is not None
         prob = (lambda a, b, T=total: tdist.cover_probs(a, b, T)) if use_t else dist
-        d = final.decide(ll.get(gid), m["median"] if m else None, None, prob)
+        mk_in = None if not m else (m["pinnacle"] if m["pinnacle"] is not None else m["median"])
+        d = final.decide(ll.get(gid), mk_in, None, prob)
         flags = [x for x in d["flags"].split(";") if x] + ["PROVISIONAL"]
         pick = None if d["pick"] is None else (g["home_team"] if d["pick"] == "home" else g["away_team"])
-        out.append({**base, "status": "provisional", "market": m["median"] if m else None,
+        if m and m["pinnacle"] is None:
+            flags.append("MARKET_MEDIAN_FALLBACK")
+        out.append({**base, "status": "provisional", "market": mk_in,
                     "market_books": m["n_books"] if m else 0, "pinnacle": m["pinnacle"] if m else None,
                     "drift": d["drift"], "p_home": d["p_home"], "p_away": d["p_away"], "pick": pick,
                     "flags": ";".join(flags), "market_time": m["captured_at"] if m else None, "total": total})
