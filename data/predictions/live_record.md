@@ -1,16 +1,16 @@
 # Live record vs the league line
 
-Updated 2026-10-04T16:40:11+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+Updated 2026-10-04T20:05:09+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
 
-**9-7** (16 graded), win rate 0.562 ± 0.124 (SE). Pending: 9. Ungradable (no league line recorded): 0. Late picks included: 0.
+**11-8** (19 graded), win rate 0.579 ± 0.113 (SE). Pending: 10. Ungradable (no league line recorded): 0. Late picks included: 0.
 
 No skill claim is made: fewer than 256 graded games (pre-registered).
 
-Shadow key-number estimator (recorded, not used to pick): 10-6; it disagreed with the live pick 3 times and won 2 of those.
+Shadow key-number estimator (recorded, not used to pick): 12-7; it disagreed with the live pick 3 times and won 2 of those.
 
-Score-projection models (tracked comparisons, not used to pick): proj-players-v3 8-7 (1 excluded: injury statuses not yet published); proj-poisson-v1 9-7.
+Score-projection models (tracked comparisons, not used to pick): proj-players-v3 11-7 (1 excluded: injury statuses not yet published); proj-poisson-v1 11-8.
 
-Hybrid (tracked, docs/hybrid_tracking.md): 10-6; it picked differently from the live pick 5 times: hybrid right 3, live right 2.
+Hybrid (tracked, docs/hybrid_tracking.md): 13-6; it picked differently from the live pick 6 times: hybrid right 4, live right 2.
 
 | Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |
 |---|---|---|---|---|---|---|---|
@@ -30,3 +30,6 @@ Hybrid (tracked, docs/hybrid_tracking.md): 10-6; it picked differently from the 
 | 2026 | 3 | 2026_03_LA_DEN | DEN | +2.5 | 26-30 | W | DEN W |
 | 2026 | 3 | 2026_03_PHI_CHI | PHI | +3.5 | 7-27 | L | CHI W |
 | 2026 | 4 | 2026_04_PIT_CLE | PIT | +2.5 | 24-27 | L | PIT L |
+| 2026 | 4 | 2026_04_IND_WAS | IND | +3.5 | 30-13 | W | IND W |
+| 2026 | 4 | 2026_04_NYJ_CHI | NYJ | -3.5 | 12-23 | L | NYJ L |
+| 2026 | 4 | 2026_04_GB_TB | TB | +3.5 | 17-14 | W | TB W |
