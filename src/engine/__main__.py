@@ -188,7 +188,8 @@ def main(argv=None) -> int:
         since = a.since or (now - _dt.timedelta(minutes=30)).isoformat()
         if not a.watch:
             rows = alerts.new_rows(alerts.local_predictions() if a.local else alerts.origin_predictions(), since)
-            for text in (alerts.message(rows), alerts.warning_message(rows)):
+            full = alerts.full_message(rows, alerts.local_projections() if a.local else None)
+            for text in (full, alerts.warning_message(rows)):
                 if text:
                     print(text)
                     if a.send:

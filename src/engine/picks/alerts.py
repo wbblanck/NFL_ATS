@@ -3,8 +3,10 @@
 The lock run (a GitHub Action) sends each group's alert line to ntfy right after it commits the picks
 (`python -m engine alert --local --send --since <ISO>`; topic in the NTFY_TOPIC secret). The older route, a Claude
 session watching origin/main (`alert --watch`), cannot reach a phone and is kept only for printing.
-Messages are one line of at most 200 characters (the notification limit), listing each pick with the spread it
-carries on the pool line, e.g. 'Picks locked (Sun 1:00 PM): LAC +7.5 · CLE +2.5 · NYJ +6.5'.
+The alert opens with a summary line listing each official pick with the spread it carries on the pool line, e.g.
+'Picks locked (Sun 1:00 PM): LAC +7.5 · CLE +2.5 · NYJ +6.5', then one line per game with every tracked model's pick
+(official, hybrid, team-only v1, player v3, key-number variant). ntfy accepts up to 4,096 bytes per message
+(docs.ntfy.sh, publish limits); the summary line alone is kept to MAX_LEN for the lock-screen preview.
 A second alert, 'CHECK PICKS: ...', follows only when a pick was made under a data-quality flag (picked more than
 15 min before lock, fewer than 5 books, no market, fallback line or total, or after lock).
 """
@@ -94,6 +96,73 @@ def warning_message(rows: list[dict], max_len: int = MAX_LEN) -> str:
         if len(text) <= max_len:
             return text
     return (head + bad[0])[:max_len]
+
+
+FULL_MAX_BYTES = 4000          # ntfy's limit is 4,096 bytes per message
+MODEL_TAGS = (("hybrid", "Hybrid"), ("proj-poisson-v1", "v1"), ("proj-players-v3", "v3"), ("keynum", "Key"))
+
+
+def _team_spread(r: dict, team: str | None) -> str:
+    if not team:
+        return "—"
+    if r.get("league_line") in (None, ""):
+        return team
+    line = float(r["league_line"])
+    return f"{team} {_spread(line if team == r.get('home_team') else -line)}"
+
+
+def _move(drift) -> str:
+    try:
+        d = abs(float(drift))
+    except (TypeError, ValueError):
+        return "no market"
+    if d == 0:
+        return "no move"
+    w, f = int(d), d - int(d)
+    return "moved " + ((str(w) if w else "") + ("½" if f else "")) + (" pt" if d <= 1 else " pts")
+
+
+def model_picks(r: dict, projs: dict | None) -> dict:
+    """{'hybrid': team, 'proj-poisson-v1': team, 'proj-players-v3': team, 'keynum': team} for one pick row."""
+    from engine.picks import hybrid
+    pj = (projs or {}).get(r["game_id"], {})
+    v1 = pj.get("proj-poisson-v1") or None
+    return {"hybrid": hybrid.pick(r.get("pick_team"), r.get("drift"), v1)[0], "proj-poisson-v1": v1,
+            "proj-players-v3": pj.get("proj-players-v3") or None, "keynum": r.get("shadow_pick_keynum") or None}
+
+
+def full_message(rows: list[dict], projs: dict | None = None, max_bytes: int = FULL_MAX_BYTES) -> str:
+    """Summary line, then one line per game: official pick (move, cover chance) and every tracked model's pick.
+    Models that disagree with the official pick are marked with ≠."""
+    if not rows:
+        return ""
+    rows = sorted(rows, key=lambda r: (r["kickoff_utc"], r["game_id"]))
+    lines = [message(rows, max_len=10_000)]
+    for r in rows:
+        off = r.get("pick_team")
+        try:
+            pc = f", {round(100 * max(float(r['p_home_cover']), float(r['p_away_cover'])))}%"
+        except (KeyError, TypeError, ValueError):
+            pc = ""
+        mp = model_picks(r, projs)
+        rest = " · ".join(f"{tag} {_team_spread(r, mp[k])}" + (" ≠" if mp[k] and off and mp[k] != off else "")
+                          for k, tag in MODEL_TAGS)
+        lines.append(f"{r['away_team']}@{r['home_team']}: Pick {_team_spread(r, off)} ({_move(r.get('drift'))}{pc}) | {rest}")
+    text = "\n".join(lines)
+    while len(text.encode("utf-8")) > max_bytes and len(lines) > 2:
+        lines.pop()
+        text = "\n".join(lines + ["…"])
+    return text
+
+
+def local_projections() -> dict:
+    """game_id -> {model_version: proj_pick} from the working tree's projections.csv."""
+    from engine.data import store
+    from engine.picks import final
+    out: dict = {}
+    for p in store.read_rows(final.projections_path()):
+        out.setdefault(p["game_id"], {})[p.get("model_version") or final.PROJ_VERSION] = p.get("proj_pick")
+    return out
 
 
 def new_rows(preds: list[dict], since: str, ids: set[str] | None = None) -> list[dict]:
