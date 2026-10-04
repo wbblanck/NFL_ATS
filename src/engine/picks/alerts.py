@@ -74,7 +74,7 @@ def message(rows: list[dict], max_len: int = MAX_LEN) -> str:
 WARN = {"EARLY_PICK": "picked {m} min before lock (stale market)", "LATE_AFTER_LOCK": "picked after lock",
         "FEW_BOOKS": "only {b} books", "NO_MARKET": "no market", "NO_LEAGUE_LINE": "no pool line",
         "LINE_FROM_CBS_ODDS_PAGE_OPEN": "pool line from CBS odds page",
-        "TOTAL_FROM_SCHEDULE": "total from schedule", "NO_TOTAL_SHIFTED_FALLBACK": "no total"}
+        "TOTAL_FROM_SCHEDULE": "total from schedule", "MARKET_MEDIAN_FALLBACK": "no Pinnacle line, used median", "NO_TOTAL_SHIFTED_FALLBACK": "no total"}
 
 
 def warning_message(rows: list[dict], max_len: int = MAX_LEN) -> str:

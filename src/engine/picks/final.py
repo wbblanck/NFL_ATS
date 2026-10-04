@@ -41,6 +41,9 @@ FIELDS = [
 # Shadow estimator: recorded for every pick, never used to pick (docs/keynumber_report.md).
 SHADOW = "keynum"
 MODEL_VERSION = "total-shifted-empirical-argmax"
+# Market input (from 2026-10-04, the user's decision): Pinnacle's line at lock; the all-book median only when Pinnacle
+# has no line, flagged MARKET_MEDIAN_FALLBACK. Recorded in feature_version as market:pinnacle / market:median.
+MARKET_BOOK = "pinnacle"
 ESTIMATOR = "shifted"   # fallback when no total is available (docs/phase4_results.md)
 # Adopted per docs/total_report.md: width of the margin distribution depends on the market total.
 
@@ -240,19 +243,23 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
     out = []
     for g in due.sort("kickoff_utc").to_dicts():
         rows = [r for r in caps if r.get("game_id") == g["game_id"] and r.get("status") == "ok"]
-        cons = market.consensus(rows)
+        cons = market.consensus(rows, reference_book=MARKET_BOOK)
+        use_ref = cons["reference"] is not None
+        mkt_in = cons["reference"] if use_ref else cons["median"]
         mt = tot.get((g["home_team"], g["away_team"]))
         total, t_books, t_flag = (mt["median"], mt["n_books"], None) if mt else (sched_tot.get(g["game_id"]), 0, "TOTAL_FROM_SCHEDULE")
         use_total = tdist is not None and total is not None
         prob = (lambda mk, ln, T=total: tdist.cover_probs(mk, ln, T)) if use_total else dist
-        d = decide(ll.get(g["game_id"]), cons["median"], cbs.get(g["game_id"]), prob)
-        mkt = cons["median"]
+        d = decide(ll.get(g["game_id"]), mkt_in, cbs.get(g["game_id"]), prob)
+        mkt = mkt_in
         mtl = (g["lock_utc"] - now).total_seconds() / 60
         flags = [f for f in d["flags"].split(";") if f]
         if mtl <= 0:
             flags.append("LATE_AFTER_LOCK")
         elif mtl > EARLY_PICK_MIN:
             flags.append("EARLY_PICK")
+        if mkt_in is not None and not use_ref:
+            flags.append("MARKET_MEDIAN_FALLBACK")
         if 0 < cons["n_books"] < MIN_BOOKS:
             flags.append("FEW_BOOKS")
         if use_total and t_flag:
@@ -271,7 +278,7 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
             "kickoff_utc": g["kickoff_utc"].isoformat(), "lock_utc": g["lock_utc"].isoformat(),
             "minutes_to_lock": round(mtl, 1),
             "league_line": ll.get(g["game_id"]), "cbs_open": cbs.get(g["game_id"]),
-            "market_at_lock": cons["median"], "market_books": cons["n_books"], "drift": d["drift"],
+            "market_at_lock": mkt_in, "market_books": cons["n_books"], "drift": d["drift"],
             "model_margin": "UNAVAILABLE" if mkt is None or dist is None else (
                 f"{-mkt:+.1f} / {tdist.median_margin(mkt, total):+.1f}" if use_total
                 else f"{-mkt:+.1f} / {dist.median_margin(mkt):+.0f}"),
@@ -281,7 +288,7 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
             "sim_count": 0, "seed": config.model().get("seed"),
             "model_version": (MODEL_VERSION if use_total else "phase4-shifted-empirical-argmax")
             if dist is not None else "phase3-drift-D0full",
-            "feature_version": "none", "data_snapshot": snapshot_id, "training_period": period,
+            "feature_version": ("market:" + MARKET_BOOK) if use_ref else ("market:median" if mkt_in is not None else "none"), "data_snapshot": snapshot_id, "training_period": period,
             "data_status": d["data_status"], "missing_input": d["missing_input"],
             "expected_impact": d["expected_impact"], "flags": ";".join(flags), "supersedes": "",
             "shadow_p_home_keynum": sh_p, "shadow_pick_keynum": sh_pick,
