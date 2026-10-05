@@ -145,7 +145,9 @@ def full_message(rows: list[dict], projs: dict | None = None, max_bytes: int = F
         except (KeyError, TypeError, ValueError):
             pc = ""
         mp = model_picks(r, projs)
+        noinj = (projs or {}).get(r["game_id"], {}).get("v3_no_injury_report")
         rest = " · ".join(f"{tag} {_team_spread(r, mp[k])}" + (" ≠" if mp[k] and off and mp[k] != off else "")
+                          + (" (no injury report)" if k == "proj-players-v3" and noinj and mp[k] else "")
                           for k, tag in MODEL_TAGS)
         lines.append(f"{r['away_team']}@{r['home_team']}: Pick {_team_spread(r, off)} ({_move(r.get('drift'))}{pc}) | {rest}")
     text = "\n".join(lines)
@@ -156,12 +158,16 @@ def full_message(rows: list[dict], projs: dict | None = None, max_bytes: int = F
 
 
 def local_projections() -> dict:
-    """game_id -> {model_version: proj_pick} from the working tree's projections.csv."""
+    """game_id -> {model_version: proj_pick, 'v3_no_injury_report': True when v3 ran without injury statuses}."""
     from engine.data import store
     from engine.picks import final
     out: dict = {}
     for p in store.read_rows(final.projections_path()):
-        out.setdefault(p["game_id"], {})[p.get("model_version") or final.PROJ_VERSION] = p.get("proj_pick")
+        v = p.get("model_version") or final.PROJ_VERSION
+        g = out.setdefault(p["game_id"], {})
+        g[v] = p.get("proj_pick")
+        if v == "proj-players-v3" and "INJ_STATUS_MISSING" in (p.get("inputs") or ""):
+            g["v3_no_injury_report"] = True      # scored separately in the live record (engine/picks/live.py)
     return out
 
 

@@ -166,3 +166,12 @@ def test_full_message_big_move_keeps_hybrid_on_the_pick_and_handles_missing_mode
 def test_full_message_stays_under_ntfy_limit():
     rows = [_p(f"g{i}", f"AA{i}", f"BB{i}", f"AA{i}", -3.5, _k(27, 13)) for i in range(200)]
     assert len(A.full_message(rows).encode()) <= A.FULL_MAX_BYTES
+
+
+def test_full_message_marks_v3_without_injury_report():
+    r = _p("2026_04_ARI_NYG", "ARI", "NYG", "ARI", 0.5, _k(27, 13))
+    r.update(drift="1.5", p_home_cover="0.433", p_away_cover="0.567")
+    projs = {"2026_04_ARI_NYG": {"proj-players-v3": "NYG", "v3_no_injury_report": True}}
+    assert "v3 NYG +0.5 ≠ (no injury report)" in A.full_message([r], projs)
+    projs["2026_04_ARI_NYG"].pop("v3_no_injury_report")
+    assert "no injury report" not in A.full_message([r], projs)
