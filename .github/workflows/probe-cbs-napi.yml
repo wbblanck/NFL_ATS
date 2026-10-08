@@ -1,0 +1,29 @@
+name: Probe CBS Sports data API
+# One-off reachability and historical-odds test for CBS Sports NAPI odds and betting splits (docs/evidence/probe/*/cbs_napi_*).
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [main]
+    paths: ['scripts/fetch/cbs_napi_probe.py', '.github/workflows/probe-cbs-napi.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - run: python scripts/fetch/cbs_napi_probe.py
+      - name: Commit
+        run: |
+          git config user.name "nfl-ats-engine"
+          git config user.email "nfl-ats-engine@users.noreply.github.com"
+          git add docs/evidence/probe
+          git commit -m "evidence: CBS data API probe" || exit 0
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep 5; done
