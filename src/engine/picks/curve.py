@@ -1,5 +1,5 @@
 """Season path for the dashboard: cumulative (wins - losses) game by game against the pool line for the official
-pick, the hybrid and two no-skill baselines (always the pool-line favorite, always the home team), with the 95% band
+pick, the four tracked models (hybrid, team-only v1, player v3, key-number variant) and two no-skill baselines (always the pool-line favorite, always the home team), with the 95% band
 a coin-flipper lands in. Live games use the picks recorded at lock; games without a live pick (2026 weeks 1-2 and
 ATL@GB) use the backtest in data/backtests/early2026.json and are marked."""
 from __future__ import annotations
@@ -14,8 +14,17 @@ from engine.data import league_lines, store
 from engine.picks import final
 from engine.picks.grading import Result, grade_league
 
-SERIES = [("official", "Official pick"), ("hybrid", "Hybrid (tracked)"), ("favorite", "Always the favorite"),
+SERIES = [("official", "Official pick"), ("hybrid", "Hybrid"), ("v1", "Team-only projection"),
+          ("v3", "Player projection"), ("keynum", "Key-number variant"), ("favorite", "Always the favorite"),
           ("home", "Always the home team")]
+# graded live row field per tracked model ('TEAM W' or a bare 'W'/'L' for keynum, see engine.picks.live).
+# v3 games without a published injury report are left out of its score there, so they are left out here too.
+LIVE_FIELD = {"hybrid": "hybrid", "v1": "proj_proj-poisson-v1", "v3": "proj_proj-players-v3"}
+
+
+def _team(v) -> str | None:
+    v = (v or "").strip()
+    return v.split(" ")[0] or None
 
 
 def _backtest(season: int) -> dict:
@@ -47,13 +56,14 @@ def build(sched: pl.DataFrame, season: int, live_rows: list[dict]) -> dict:
         win = lambda team: None if team is None else (team == g["home_team"]) == home_cov
         live = gid in preds and gid in graded
         if live:
-            off = preds[gid]["pick_team"]
-            hy = graded[gid].get("hybrid", "").split(" ")[0] or None
+            gr = graded[gid]
+            picks = {"official": preds[gid]["pick_team"], "keynum": gr.get("shadow_pick") or None,
+                     **{k: _team(gr.get(f)) for k, f in LIVE_FIELD.items()}}
         else:
             b = bt.get(gid, {})
-            off, hy = b.get("official"), b.get("hybrid")
-        fav = g["home_team"] if line < 0 else g["away_team"]
-        picks = {"official": off, "hybrid": hy, "favorite": fav, "home": g["home_team"]}
+            picks = {k: b.get(k) for k in ("official", "hybrid", "v1", "v3", "keynum")}
+        picks["favorite"] = g["home_team"] if line < 0 else g["away_team"]
+        picks["home"] = g["home_team"]
         d = {}
         for k, team in picks.items():
             w = win(team)

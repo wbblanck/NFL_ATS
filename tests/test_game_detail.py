@@ -98,3 +98,16 @@ def test_why_wording_for_a_pick_that_has_not_locked():
     w = G.why(_row(status="provisional"), None, None)[0]
     assert w.endswith("Sides that the market moves toward have covered about 51% historically.")
     assert "−3.0 now." in w and "at the pick" not in w
+
+
+def test_market_source_pinnacle_pick_median_pick_and_provisional():
+    lock = KO - dt.timedelta(minutes=20)
+    caps = _caps() + [_cap(lock, "pinnacle", -2.5)]
+    pin = {"game_id": "g1", "feature_version": "market:pinnacle"}
+    d = G.build([_row()], caps, [pin], [])["g1"]
+    assert d["src"] == "pinnacle" and d["lock"]["ref"] == -2.5 and d["lock"]["input"] == -2.5
+    old = {"game_id": "g1", "feature_version": ""}                  # picked before the switch: the median was used
+    d = G.build([_row()], caps, [old], [])["g1"]
+    assert d["src"] == "median" and d["lock"]["input"] == d["lock"]["median"]
+    d = G.build([_row(status="provisional", market_time=None)], _caps(), [], [])["g1"]
+    assert d["src"] == "median" and d["lock"]["ref"] is None          # no Pinnacle line: the preview uses the median
