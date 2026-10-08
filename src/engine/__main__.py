@@ -313,11 +313,24 @@ def main(argv=None) -> int:
             details = {}
         try:
             import nflreadpy as _nfl
+            _pbp = _nfl.load_pbp(seasons=[a.season])
+        except Exception as e:
+            print("play-by-play unavailable:", repr(e), file=sys.stderr)
+            _pbp = None
+        try:
             from engine.features import epa_components as _epa
-            epa_tab = _epa.compute(_nfl.load_pbp(seasons=[a.season]), a.week)
+            epa_tab = _epa.compute(_pbp, a.week) if _pbp is not None else {}
         except Exception as e:
             print("team EPA unavailable:", repr(e), file=sys.stderr)
             epa_tab = {}
+        try:
+            from engine.data import store as _store
+            from engine.picks import final as _final, loss_review as _lr
+            lr_data = _lr.build(graded, _store.read_rows(_final.predictions_path()), sched,
+                                _lr.game_paths(_pbp) if _pbp is not None else {})
+        except Exception as e:
+            print("loss review unavailable:", repr(e), file=sys.stderr)
+            lr_data = {}
         try:
             from engine.picks import curve as _curve
             curve_data = _curve.build(sched, a.season, graded)
@@ -332,7 +345,8 @@ def main(argv=None) -> int:
             tb_rows = []
         out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
         open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results,
-                                              details, season_tab, market.credits_left(), epa_tab, curve_data, tb_rows))
+                                              details, season_tab, market.credits_left(), epa_tab, curve_data, tb_rows,
+                                              lr_data))
         print(out)
         return 0
     if a.cmd == "check-league-lines":
