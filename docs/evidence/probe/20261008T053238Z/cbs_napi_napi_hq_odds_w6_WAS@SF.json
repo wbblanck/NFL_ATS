@@ -1,0 +1,1 @@
+{"errors":[{"code":404,"type":"NotFoundException","message":"No odds data for that game.","meta":{"gameId":50029286,"endpointPath":"/resource/game/odds/hq/{gameId}","endpointClass":"GameHqOddsResource"}}]}
