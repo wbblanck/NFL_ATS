@@ -219,6 +219,17 @@ header{display:flex;flex-direction:column;gap:10px}
 .chip.strong{background:var(--flag);color:var(--on-flag)}
 .chip.lean{background:var(--flag-soft);color:var(--ink)}
 .chip.flat,.chip.none{background:var(--flat-bg);color:var(--ink-2)}
+.mv2{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px}
+.mvb{background:var(--panel-2);border:1px solid var(--rule);border-radius:8px;padding:6px 10px;min-width:0}
+.mvb span{display:block;font:400 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.mvb b{display:block;font:800 22px/1.1 var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.mv2.with .mvb.mk{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.mva{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:64px}
+.mva svg{width:56px;height:12px;overflow:visible}
+.mva svg line{stroke:var(--ink);stroke-width:2.5;stroke-linecap:round}.mva svg path{fill:var(--ink)}
+.mv2.flat .mva svg line{stroke:var(--ink-3);stroke-width:2}
+.mva.none svg line{stroke:var(--ink-3);stroke-dasharray:3 4}
+.mva small{font:500 11px var(--mono);color:var(--ink-2);text-align:center;white-space:nowrap}
 .track{position:relative;height:34px}
 .track .base{position:absolute;left:0;right:0;top:11px;height:2px;background:var(--rule)}
 .track .tk{position:absolute;top:8px;width:1px;height:8px;background:var(--ink-3);opacity:.6}
@@ -231,6 +242,18 @@ header{display:flex;flex-direction:column;gap:10px}
 .pick-meter{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"lab pct" "g g";align-items:baseline;gap:6px 12px}
 .pick-meter .lab{grid-area:lab;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
 .pick-meter .pct{grid-area:pct;justify-self:end;font:800 30px/1 var(--display);font-variant-numeric:tabular-nums}
+.g2{grid-area:g;position:relative;padding-bottom:30px}
+.g2-bar{position:relative;height:10px;border-radius:5px;background:var(--panel-2);border:1px solid var(--rule)}
+.g2-bar i{position:absolute;top:-1px;bottom:-1px;border-radius:5px}
+.g2-bar i.up{background:var(--ink)}.g2-bar i.dn{background:var(--loss)}
+.g2-bar .g2-50{position:absolute;top:-5px;bottom:-5px;width:2px;margin-left:-1px;background:var(--ink-2)}
+.g2-bar .g2-h{position:absolute;top:-5px;bottom:-5px;width:0;margin-left:-1px;border-left:2px dashed var(--ink-3)}
+.g2-dot{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--flag);border:2px solid var(--ink)}
+.g2-lab{position:absolute;left:0;right:0;top:16px;height:28px;font:400 10.5px var(--mono);color:var(--ink-3)}
+.g2-lab span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.g2-lab span.h{top:13px}
+.g2-edge{grid-column:1/-1;font:400 11.5px var(--mono);color:var(--ink-2);margin-top:-4px}
+.pick-meter{grid-template-areas:"lab pct" "g g"}
 .gauge{grid-area:g;position:relative;height:8px;border-radius:4px;background:var(--panel-2);border:1px solid var(--rule)}
 .gauge i{position:absolute;top:-1px;bottom:-1px;background:var(--ink);border-radius:0 4px 4px 0}
 .gauge b{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink-2);left:33.333%}
@@ -351,6 +374,26 @@ svg [hidden]{display:none}
 .k-mdash{width:18px;height:0;border-top:1.5px dashed var(--ink-3)}
 .k-dash{width:18px;height:0;border-top:2px dashed var(--ink-2)}
 .tbl{overflow-x:auto}
+.tb-chart{margin:14px 0 4px}
+.tb-chart .tb-80{fill:var(--ink);opacity:.08}.tb-chart .tb-50{fill:var(--ink);opacity:.2}
+.tb-chart .tb-g{stroke:var(--flag);stroke-width:3.5;stroke-linecap:round}
+.tb-chart .tb-a{fill:var(--ink);stroke:var(--panel);stroke-width:2}
+.tb-key .tbk{display:inline-block;width:18px;height:10px;border-radius:5px;background:var(--ink)}
+.tb-key .tbk-50{opacity:.2}.tb-key .tbk-80{opacity:.08}
+.tb-key .tbk-g{display:inline-block;width:3.5px;height:14px;border-radius:2px;background:var(--flag)}
+.tb-key .tbk-a{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--ink)}
+.tb-chart .sub{margin-top:6px}
+.sw{table-layout:fixed;width:100%;border-collapse:separate;border-spacing:3px}
+.sw th{font:500 11px var(--mono);color:var(--ink-3);text-align:center;padding:4px 2px;letter-spacing:.04em;text-transform:none}
+.sw th[scope=row]{text-align:left;color:var(--ink);font-size:12px;white-space:nowrap;width:52px}
+.sw thead th:first-child{width:52px;text-align:left}
+.sw .sw-c{background:var(--tint,transparent);border-radius:6px;text-align:center;padding:7px 2px;font:500 13px var(--mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+.sw .sw-c b{font-weight:500}
+.sw .sw-t b{font-weight:700}
+.sw .sw-c small{display:block;font-size:10.5px;color:var(--ink-2);margin-top:1px}
+.sw .sw-x{color:var(--ink-3)}
+.sw .sw-sum th{padding-top:10px}
+.sw-bt{display:inline-block;margin-left:4px;font:500 9.5px var(--mono);background:var(--flag-soft);color:var(--ink);border-radius:4px;padding:0 4px;vertical-align:1px}
 .tbn{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 22px}
 .tbn .g{font:800 56px/1 var(--display);font-variant-numeric:tabular-nums}
 .tbn .tbm{font-size:14px;color:var(--ink-2)}
@@ -473,6 +516,7 @@ details p{margin:0}
   <section class="panel" id="tb-panel" hidden aria-label="Tiebreaker">
     <h3>Tiebreaker: total points in the last game</h3>
     <div id="tb-now"></div>
+    <div class="chart tb-chart" id="tb-chart"></div>
     <p class="sub" id="tb-note"></p>
     <details><summary>Every week</summary><div class="tbl"><table id="tb-tab"></table></div></details>
   </section>
@@ -543,14 +587,19 @@ $('ev-m').setAttribute('aria-label',`${D.graded} of ${D.claim_at} games graded`)
 (function(){
   const T=D.season_tab||[];if(!T.length)return;
   const M=D.season_models;$('season-panel').hidden=false;
-  const cell=r=>r&&(r[0]+r[1])?`${r[0]}–${r[1]}`:'—';
+  const SHORT={official:'Official',keynum:'Key',v3:'v3',v1:'v1',hybrid:'Hybrid'};
   const sum=rows=>Object.fromEntries(M.map(([k])=>[k,rows.reduce((a,w)=>[a[0]+w.rec[k][0],a[1]+w.rec[k][1]],[0,0])]));
   const live=T.filter(w=>w.kind==='live');
-  const row=(lab,rec,cls)=>`<tr${cls?` class="${cls}"`:''}><td>${lab}</td>${M.map(([k])=>`<td class="n">${cell(rec[k])}</td>`).join('')}</tr>`;
-  $('season-tab').innerHTML=`<thead><tr><th>Week</th>${M.map(([,l])=>`<th class="n">${esc(l)}</th>`).join('')}</tr></thead><tbody>`
-    +T.map(w=>row(`Week ${w.week}${w.kind==='backtest'?' <span class="m hook">backtest</span>':''}`,w.rec)).join('')
-    +(live.length?row('Live total',sum(live),'med'):'')+row('Season incl. backtest',sum(T),'med')+'</tbody>';
-  $('season-note').textContent=T.some(w=>w.kind==='backtest')?'Weeks marked backtest were not picked live: each model re-run as it would have been at lock, on the real pool lines from the Picks history, with the closing line as the market. Only live weeks count toward the official record.':'';
+  // cell tint: green above .500, red below, stronger the further from even (text always carries the record)
+  const cell=(r,tot)=>{const n=r?r[0]+r[1]:0;if(!n)return `<td class="sw-c"><span class="sw-x">—</span></td>`;
+    const q=r[0]/n,d=Math.min(1,Math.abs(q-.5)/.3),pc=Math.round(8+d*34),c=q>.5?'var(--win)':q<.5?'var(--loss)':'var(--ink-3)';
+    return `<td class="sw-c${tot?' sw-t':''}" style="--tint:color-mix(in srgb, ${c} ${q===.5?6:pc}%, transparent)" title="${r[0]}–${r[1]} (${Math.round(q*100)}%)"><b>${r[0]}–${r[1]}</b>${tot?`<small>${Math.round(q*100)}%</small>`:''}</td>`};
+  const row=(lab,rec,cls,tot)=>`<tr${cls?` class="${cls}"`:''}><th scope="row">${lab}</th>${M.map(([k])=>cell(rec[k],tot)).join('')}</tr>`;
+  $('season-tab').classList.add('sw');
+  $('season-tab').innerHTML=`<thead><tr><th>Week</th>${M.map(([k,l])=>`<th title="${esc(l)}">${esc(SHORT[k]||l)}</th>`).join('')}</tr></thead><tbody>`
+    +T.map(w=>row(`W${w.week}${w.kind==='backtest'?'<span class="sw-bt" title="backtest">bt</span>':''}`,w.rec)).join('')
+    +(live.length?row('Live',sum(live),'sw-sum',true):'')+row('Season',sum(T),'sw-sum',true)+'</tbody>';
+  $('season-note').innerHTML=`Wins–losses against the pool line. Green is above .500, red below; deeper means further from even. ${T.some(w=>w.kind==='backtest')?'<span class="sw-bt">bt</span> = backtest week, not picked live: each model re-run as it would have been at lock on the real pool lines. Only live weeks count toward the official record. ':''}Key = key-number variant · v3 = player projection · v1 = team-only projection.`;
 })();
 
 (function(){
@@ -565,6 +614,30 @@ $('ev-m').setAttribute('aria-label',`${D.graded} of ${D.claim_at} games graded`)
       +(cur.home_pts!=null?` · implied <b>${esc(cur.away)} ${num(cur.away_pts,1)}</b>, <b>${esc(cur.home)} ${num(cur.home_pts,1)}</b>`:'')
       +`<br>Half of games land between <b>${cur.r50[0]}–${cur.r50[1]}</b>, 8 in 10 between <b>${cur.r80[0]}–${cur.r80[1]}</b>`
       +(cur.actual!=null?`<br>Final <b>${cur.actual}</b> · missed by <b>${cur.miss}</b>`:'')+`</span></div>`;
+  // strip chart: each week's 50% / 80% ranges around its market total, the guess, and the final total once played
+  const R=T.filter(r=>r.guess!=null&&r.week<=cur.week).slice().reverse();
+  const done=R.filter(r=>r.actual!=null),in50=done.filter(r=>r.actual>=r.r50[0]&&r.actual<=r.r50[1]).length,in80=done.filter(r=>r.actual>=r.r80[0]&&r.actual<=r.r80[1]).length;
+  const drawTB=()=>{
+    const box=$('tb-chart');if(!R.length){box.innerHTML='';return}
+    const W=Math.max(280,Math.floor(box.clientWidth||320)),rh=30,m={l:34,r:12,t:22,b:24},H=m.t+m.b+R.length*rh;
+    const vals=R.flatMap(r=>[r.r80[0],r.r80[1]].concat(r.actual!=null?[r.actual]:[]));
+    const lo=Math.floor((Math.min(...vals)-2)/10)*10,hi=Math.ceil((Math.max(...vals)+2)/10)*10,X=v=>m.l+(v-lo)/(hi-lo)*(W-m.l-m.r);
+    let o='';
+    for(let v=lo;v<=hi;v+=10)o+=`<line class="c-grid" x1="${X(v)}" x2="${X(v)}" y1="${m.t-6}" y2="${H-m.b}"/><text x="${X(v)}" y="${H-6}" text-anchor="middle">${v}</text>`;
+    o+=`<text x="${m.l}" y="11" style="fill:var(--ink-3)">Total points</text>`;
+    R.forEach((r,i)=>{const y=m.t+i*rh+rh/2,cur=r.week===cur0.week;
+      o+=`<text x="0" y="${y+4}" style="${cur?'fill:var(--ink);font-weight:600':''}">W${r.week}</text>`;
+      o+=`<rect class="tb-80" x="${X(r.r80[0])}" y="${y-7}" width="${X(r.r80[1])-X(r.r80[0])}" height="14" rx="7"/>`;
+      o+=`<rect class="tb-50" x="${X(r.r50[0])}" y="${y-7}" width="${X(r.r50[1])-X(r.r50[0])}" height="14" rx="7"/>`;
+      o+=`<line class="tb-g" x1="${X(r.guess)}" x2="${X(r.guess)}" y1="${y-10}" y2="${y+10}"/>`;
+      if(r.actual!=null){const ok=r.actual>=r.r50[0]&&r.actual<=r.r50[1];o+=`<circle cx="${X(r.actual)}" cy="${y}" r="5.5" class="tb-a"><title>Week ${r.week}: guess ${r.guess}, final ${r.actual}, missed by ${r.miss}</title></circle>`}
+      else if(cur)o+=`<text x="${X(r.guess)+6}" y="${y-9}" style="fill:var(--ink);font-weight:600">${r.guess}</text>`;
+    });
+    box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Tiebreaker guesses and ranges by week${done.length?`; the final total landed in the half-of-games range ${in50} of ${done.length} weeks`:''}">${o}</svg>
+      <div class="key tb-key"><span><i class="tbk tbk-50"></i>Half of games</span><span><i class="tbk tbk-80"></i>8 in 10</span><span><i class="tbk-g"></i>Guess</span><span><i class="tbk-a"></i>Final total</span></div>
+      ${done.length?`<p class="sub">So far the final landed in the half-of-games range <b>${in50} of ${done.length}</b> weeks and the 8-in-10 range <b>${in80} of ${done.length}</b>.</p>`:''}`;
+  };
+  const cur0=cur;drawTB();if(window.ResizeObserver){let w0=0;new ResizeObserver(es=>{const w=Math.round(es[0].contentRect.width);if(w&&w!==w0){w0=w;drawTB()}}).observe($('tb-chart'))}
   $('tb-note').textContent='The guess is the betting market total for the game, rounded (a .5 rounds down). Since 2010 nothing we tried beat it: the miss averages about 10 points, so the tiebreaker is mostly luck. Enter it as late as the pool allows and use the market total at that time.';
   $('tb-tab').innerHTML='<thead><tr><th>Week</th><th>Game</th><th class="n">Total</th><th class="n">Guess</th><th class="n">Final</th><th class="n">Miss</th></tr></thead><tbody>'
     +T.map(r=>`<tr${r.week===D.week?' class="med"':''}><td>${r.week}</td><td>${game(r)}</td><td class="n">${r.market_total!=null?num(r.market_total,1):'—'}</td><td class="n">${r.guess??'—'}</td><td class="n">${r.actual??'—'}</td><td class="n">${r.miss??'—'}</td></tr>`).join('')+'</tbody>';
@@ -637,14 +710,29 @@ function track(x){
 }
 function move(x){
   if(x.drift==null&&x.status==='started_no_final_pick')return '<div class="cover">No pick was recorded before kickoff.</div>';
-  if(x.drift==null)return `<div class="move"><div class="move-top"><span class="chip none">No market data</span></div>${track(x)}</div>`;
-  const txt=x.drift===0?`${esc(x.home)} ${sgn(x.line)}, unchanged`:`${esc(x.home)} ${sgn(x.line)} → ${sgn(x.market)} · toward ${esc(x.drift<0?x.home:x.away)}`;
-  return `<div class="move"><div class="move-top"><span class="chip ${x.sig}">${esc(x.sig_label)}</span><span class="mono">${txt}</span></div>${track(x)}</div>`;
+  const side=x.pick||x.home,fl=v=>side===x.home?v:-v;                 // spreads from the pick's side
+  const poolTxt=x.line==null?'—':`${esc(side)} ${sgn(fl(x.line))}`;
+  if(x.drift==null)return `<div class="move"><div class="move-top"><span class="chip none">No market data</span></div><div class="mv2"><div class="mvb"><span>Pool line</span><b>${poolTxt}</b></div><div class="mva none"><svg viewBox="0 0 60 12" aria-hidden="true"><line x1="2" x2="50" y1="6" y2="6"/></svg><small>no market yet</small></div><div class="mvb mk"><span>Market</span><b>—</b></div></div></div>`;
+  const toward=x.drift<0?x.home:x.away,withPick=x.pick&&toward===x.pick;
+  const what=x.drift===0?'no move':`${pts(Math.abs(x.drift))} toward ${esc(toward)}`;
+  const lbl=`Pool line ${side} ${sgn(fl(x.line))}, market ${x.status==='final'?'at the pick':'now'} ${side} ${sgn(fl(x.market))}: ${x.drift===0?'no move':pts(Math.abs(x.drift))+' toward '+toward}`;
+  return `<div class="move"><div class="move-top"><span class="chip ${x.sig}">${esc(x.sig_label)}</span></div>
+    <div class="mv2 ${x.drift===0?'flat':withPick?'with':'against'}" role="img" aria-label="${esc(lbl)}">
+      <div class="mvb"><span>Pool line</span><b>${poolTxt}</b></div>
+      <div class="mva"><svg viewBox="0 0 60 12" aria-hidden="true">${x.drift===0?'<line x1="6" x2="54" y1="4" y2="4"/><line x1="6" x2="54" y1="9" y2="9"/>':'<line x1="2" x2="50" y1="6" y2="6"/><path d="M48 1 L58 6 L48 11 Z"/>'}</svg><small>${what}</small></div>
+      <div class="mvb mk"><span>Market ${x.status==='final'?'at pick':'now'}</span><b>${esc(side)} ${sgn(fl(x.market))}</b></div>
+    </div></div>`;
 }
 function meter(x){
   if(x.pick_p==null)return '';
-  const p=x.pick_p*100,lo=45,hi=60,mid=(50-lo)/(hi-lo)*100,w=Math.max(0,Math.min(hi,p)-50)/(hi-lo)*100;
-  return `<div class="pick-meter"><span class="lab">Cover chance · ${esc(x.pick)}</span><span class="pct">${p.toFixed(1)}%</span><div class="gauge" role="img" aria-label="${p.toFixed(1)}% on a 45 to 60% scale"><b></b><i style="left:${mid}%;width:${w}%"></i></div></div>`;
+  const p=x.pick_p*100,lo=45,hi=62,X=v=>(Math.max(lo,Math.min(hi,v))-lo)/(hi-lo)*100;
+  const H={strong:[57,'1+ pt moves: 57%'],lean:[51,'½ pt moves: ~51%'],flat:[52,'no move: ~52%']}[x.sig];
+  const edge=p-50,l=Math.min(X(50),X(p)),w=Math.abs(X(p)-X(50));
+  return `<div class="pick-meter"><span class="lab">Cover chance · ${esc(x.pick)}</span><span class="pct">${p.toFixed(1)}%</span>
+    <div class="g2" role="img" aria-label="${p.toFixed(1)}% to cover, ${Math.abs(edge).toFixed(1)} points ${edge>=0?'above':'below'} a coin flip">
+      <div class="g2-bar"><i class="${edge>=0?'up':'dn'}" style="left:${l}%;width:${w}%"></i><b class="g2-50" style="left:${X(50)}%"></b>${H?`<b class="g2-h" style="left:${X(H[0])}%" title="Historically, ${esc(H[1])}"></b>`:''}<span class="g2-dot" style="left:${X(p)}%"></span></div>
+      <div class="g2-lab"><span style="left:${X(50)}%">50% coin flip</span>${H?`<span class="h" style="left:${X(H[0])}%">${esc(H[1])}</span>`:''}</div>
+    </div><span class="g2-edge">${edge>=0?'+':'−'}${Math.abs(edge).toFixed(1)} pts vs a coin flip</span></div>`;
 }
 function proj(x){
   if(x.ph==null)return '';
