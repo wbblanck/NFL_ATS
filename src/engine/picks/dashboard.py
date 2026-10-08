@@ -299,6 +299,8 @@ h3{margin:0;font:800 22px/1 var(--display);text-transform:uppercase;letter-spaci
 .chart .c-lock{fill:var(--flag);stroke:var(--ink);stroke-width:2}
 .chart .c-cross{stroke:var(--ink-3);stroke-width:1}
 .chart .c-poollab{fill:var(--ink-2)}
+.chart .c-halo{paint-order:stroke;stroke:var(--panel);stroke-width:4px;stroke-linejoin:round}
+.chart .c-dir{fill:var(--ink-3);font-size:10.5px}
 .tip{position:absolute;top:4px;pointer-events:none;background:var(--ink);color:var(--bg);border-radius:6px;padding:8px 10px;font:400 12px/1.5 var(--mono);white-space:nowrap;z-index:3}
 .tip b{font-weight:500}
 .key{display:flex;flex-wrap:wrap;gap:6px 18px;font:400 12px var(--mono);color:var(--ink-2)}
@@ -430,6 +432,16 @@ tr.med td{font-weight:600;background:var(--panel-2)}
 .tb-h .code{font:800 30px/1 var(--display);text-transform:uppercase}
 .tb-h .tot{font:800 30px/1 var(--display);font-variant-numeric:tabular-nums}
 .tb-h .from{font:400 12px var(--mono);color:var(--ink-2);margin-left:auto}
+.wf .wf-t{position:relative;height:16px;background:linear-gradient(var(--rule),var(--rule)) 0 50%/100% 1px no-repeat}
+.wf .wf-t i{position:absolute;top:2px;height:12px;border-radius:3px}
+.wf .wf-t i.up{background:var(--ink)}
+.wf .wf-t i.dn{background:var(--panel);border:2px solid var(--ink);box-sizing:border-box}
+.wf .wf-g{position:absolute;top:-6px;bottom:-6px;border-left:1px dashed var(--ink-3)}
+.wf .wf-m{position:absolute;top:0;width:14px;height:14px;margin-left:-7px;transform:rotate(45deg) scale(.8);background:var(--ink-2)}
+.wf.wf-e .wf-m{background:var(--flag);border:2px solid var(--ink);box-sizing:border-box}
+.wf.wf-e .val,.wf.wf-e .name b{font-weight:700}
+.wf.wf-e{border-top:2px solid var(--ink)}
+.wf-ax{display:flex;justify-content:space-between;font:400 10.5px var(--mono);color:var(--ink-3);margin-top:-6px}
 .axis-row{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) 3.6em;gap:10px;font:400 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .axis-row .mid{display:flex;justify-content:space-between}
 .br{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) 3.6em;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--rule)}
@@ -458,6 +470,7 @@ tr.med td{font-weight:600;background:var(--panel-2)}
 .xp[hidden]{display:none}
 .xp .tb-h .from{display:none}
 .xp .axis-row{display:none}
+.wf-ax{padding-left:0}
 .xp .br{grid-template-columns:minmax(0,1fr) 3.6em;grid-template-areas:"name val" "bar bar";gap:6px 10px}
 .xp .br .name{grid-area:name}.xp .br .val{grid-area:val}.xp .br .track2{grid-area:bar}
 .xclose{font:500 12px var(--mono);color:var(--ink-2);background:none;border:1px solid var(--rule);border-radius:8px;padding:8px 12px;cursor:pointer;align-self:flex-start}
@@ -476,6 +489,29 @@ tr.med td{font-weight:600;background:var(--panel-2)}
 .ep-bar i{position:absolute;top:1px;height:10px}
 .ep-bar i.up{left:50%;background:var(--ink);border-radius:0 3px 3px 0}
 .ep-bar i.dn{right:50%;background:var(--ink-3);border-radius:3px 0 0 3px}
+@media (max-width:560px){
+  .bkt thead{display:none}
+  .bkt tr{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 6px;border-top:1px solid var(--rule)}
+  .bkt td{display:none;border:0;padding:0}
+  .bkt td.bk{display:block;font-weight:600}.bkt td.sp{display:block;font:600 15px var(--mono);text-align:right}
+  .bkt td[data-l]{display:inline;text-align:left;font:400 11.5px var(--mono);color:var(--ink-2)}
+  .bkt td[data-l]::before{content:attr(data-l) " ";color:var(--ink-3)}
+  .bkt tr{grid-template-areas:"bk sp" "meta meta"}
+  .bkt tr.med{background:var(--panel-2);border-radius:8px}.bkt tr.med td{background:none}
+  .bkt .bk{grid-area:bk}.bkt .sp{grid-area:sp}
+}
+.ep2{display:block}
+.ep2 .ep-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.ep-tug{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);gap:10px;align-items:center}
+.ep-s{display:flex;flex-direction:column;font:400 11px var(--mono);color:var(--ink-2);min-width:0}
+.ep-s b{font:800 18px/1 var(--display);color:var(--ink);text-transform:uppercase}
+.ep-s span{color:var(--ink-3);font-variant-numeric:tabular-nums}
+.ep-s.r{text-align:right}
+.ep-tb{position:relative;height:12px;background:var(--panel-2);border-radius:6px}
+.ep-tb::before{content:"";position:absolute;left:50%;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:var(--ink-3)}
+.ep-tb i{position:absolute;top:0;bottom:0;background:var(--ink)}
+.ep-tb.ev i{background:var(--ink-3)}
+.ep-tb i.l{right:50%;border-radius:6px 0 0 6px}.ep-tb i.r{left:50%;border-radius:0 6px 6px 0}
 .ep-edge{font:500 11px var(--mono);border-radius:999px;padding:3px 8px;text-align:center;white-space:nowrap;justify-self:end}
 .ep-edge.on{background:var(--flag-soft);color:var(--ink)}
 .ep-edge.even{background:var(--flat-bg);color:var(--ink-2)}
@@ -877,21 +913,29 @@ function xItems(x,side){
   return t.items.filter(i=>!(pending(x)&&isInj(i.key))).map(i=>({...i,
     label:i.key==='off'?`${team} offense`:i.key==='def'?`${opp} defense`:(XLAB[i.key]||i.label),note:i.note||XNOTE[i.key]||''}));
 }
-function xBlock(x,side,scale){
-  const t=x.xp[side],team=side==='home'?x.home:x.away,all=xItems(x,side);
+function xSteps(x,side){
+  const t=x.xp[side],all=xItems(x,side);
   const shown=all.filter(i=>Math.abs(i.pts)>=SMALL).sort((a,b)=>Math.abs(b.pts)-Math.abs(a.pts));
-  const quiet=all.filter(i=>Math.abs(i.pts)<SMALL);
-  const row=i=>{const w=Math.min(50,Math.abs(i.pts)/scale*50);
-    return `<div class="br"><div class="name"><b>${esc(i.label)}</b><small>${esc(i.note)}</small></div>
-      <div class="track2" role="img" aria-label="${esc(i.label)} ${sg1(i.pts)} points"><i class="${i.pts>=0?'up':'dn'}" style="width:${w}%"></i></div>
-      <div class="val">${sg1(i.pts)}</div></div>`};
-  const q=quiet.length?`<div class="none"><b>Small effects, under ¼ point each:</b> ${quiet.map(i=>`${esc(i.label.toLowerCase())} ${sg1(i.pts)}`).join(' · ')}</div>`:'';
-  return `<div class="tb"><div class="tb-h"><span class="code">${esc(team)}</span><span class="tot">${t.total.toFixed(1)}</span><span class="from">starts at ${t.baseline.toFixed(1)} · league-average team</span></div>
-    <div class="axis-row"><span>Factor</span><span class="mid"><span>◂ subtracts</span><span>adds ▸</span></span><span style="text-align:right">Points</span></div>
-    ${shown.map(row).join('')}${q}
-    <div class="sum"><b>${t.baseline.toFixed(1)}</b> start <b>${sg1(t.total-t.baseline)}</b> net <b>= ${t.total.toFixed(1)}</b> projected points</div></div>`;
+  const quiet=all.filter(i=>Math.abs(i.pts)<SMALL),qs=quiet.reduce((a,i)=>a+i.pts,0);
+  const steps=shown.slice();if(quiet.length)steps.push({key:'quiet',label:'Small effects',note:quiet.map(i=>`${i.label.toLowerCase()} ${sg1(i.pts)}`).join(' · '),pts:qs});
+  let c=t.baseline;const out=steps.map(i=>{const a=c;c+=i.pts;return {...i,a,b:c}});
+  return {t,out};
 }
-const xScale=x=>Math.ceil(Math.max(...['home','away'].flatMap(s=>xItems(x,s).map(i=>Math.abs(i.pts))),1.5));
+// one shared points axis for both teams, so the two waterfalls compare directly
+const xScale=x=>{const v=['home','away'].flatMap(s=>{const {t,out}=xSteps(x,s);return [t.baseline,t.total,...out.flatMap(o=>[o.a,o.b])]});
+  return [Math.floor(Math.min(...v)-1),Math.ceil(Math.max(...v)+1)]};
+function xBlock(x,side,sc){
+  const {t,out}=xSteps(x,side),team=side==='home'?x.home:x.away,[lo,hi]=sc,P=v=>(v-lo)/(hi-lo)*100;
+  const row=i=>{const l=P(Math.min(i.a,i.b)),w=Math.max(.6,Math.abs(P(i.b)-P(i.a)));
+    return `<div class="br wf"><div class="name"><b>${esc(i.label)}</b><small>${esc(i.note)}</small></div>
+      <div class="wf-t" role="img" aria-label="${esc(i.label)} ${sg1(i.pts)} points, ${i.a.toFixed(1)} to ${i.b.toFixed(1)}"><span class="wf-g" style="left:${P(i.a)}%"></span><i class="${i.pts>=0?'up':'dn'}" style="left:${l}%;width:${w}%"></i></div>
+      <div class="val">${sg1(i.pts)}</div></div>`};
+  const end=(lab,note,v,cls)=>`<div class="br wf ${cls}"><div class="name"><b>${lab}</b><small>${note}</small></div>
+      <div class="wf-t"><span class="wf-m" style="left:${P(v)}%"></span></div><div class="val">${v.toFixed(1)}</div></div>`;
+  return `<div class="tb"><div class="tb-h"><span class="code">${esc(team)}</span><span class="tot">${t.total.toFixed(1)}</span><span class="from">projected points</span></div>
+    ${end('Start','league-average team',t.baseline,'wf-s')}${out.map(row).join('')}${end('Projected',`${sg1(t.total-t.baseline)} net from the start`,t.total,'wf-e')}
+    <div class="wf-ax"><span>${lo}</span><span>${Math.round((lo+hi)/2)}</span><span>${hi} pts</span></div></div>`;
+}
 function xDrivers(x){
   if(!x.xp)return '';
   const line=s=>{const team=s==='home'?x.home:x.away;
@@ -940,12 +984,20 @@ function epEdge(a,ka,b,kb){
   const d=rb[1]-ra[1];                       // lower rank is better
   return Math.abs(d)<6?'<span class="ep-edge even">Even</span>':`<span class="ep-edge on">Edge ${esc(d>0?a:b)}</span>`;
 }
-function epRow(what,a,ka,b,kb){return `<div class="ep-row"><span class="what">${esc(what)}</span>${epCell(a,ka,'ea')}${epCell(b,kb,'eb')}${epEdge(a,ka,b,kb)}</div>`}
+function epRow(what,a,ka,b,kb){
+  // one bar per matchup: offense value minus the defense it faces (or team minus team below), pulled toward whoever is better
+  const T=(D.epa||{}).teams||{},ra=T[a]&&T[a][ka],rb=T[b]&&T[b][kb];
+  if(!ra||!rb)return `<div class="ep-row ep2"><span class="what">${esc(what)}</span><span class="ep-edge even">—</span></div>`;
+  const d=rb[1]-ra[1],w=Math.min(50,Math.abs(d)/31*50),even=Math.abs(d)<6;      // rank gap (1 = best): positive favors a
+  const lab=k=>EPL[k].toLowerCase().replace(' offense','').replace(' defense','');
+  const side=(t,k,r,cls)=>`<span class="ep-s ${cls}"><b>${esc(t)}</b> ${esc(lab(k))}<span>${(r[0]>0?'+':r[0]<0?'−':'')+Math.abs(r[0]).toFixed(1)} · ${ord(r[1])}</span></span>`;
+  return `<div class="ep-row ep2"><div class="ep-top"><span class="what">${esc(what)}</span>${even?'<span class="ep-edge even">Even</span>':`<span class="ep-edge on">Edge ${esc(d>0?a:b)}</span>`}</div>
+    <div class="ep-tug">${side(a,ka,ra,'l')}<div class="ep-tb${even?' ev':''}" role="img" aria-label="${esc(`${what}: ${a} ${ra[0].toFixed(1)} (${ord(ra[1])}) vs ${b} ${rb[0].toFixed(1)} (${ord(rb[1])})`)}"><i class="${d>=0?'l':'r'}" style="width:${w}%"></i></div>${side(b,kb,rb,'r')}</div></div>`}
 function epaPanel(x){
   const E=D.epa||{};if(!E.teams||!E.teams[x.home]||!E.teams[x.away])return '';
   const sec=(title,rows)=>`<div class="ep-sec"><h4>${title}</h4>${rows}</div>`;
   return `<section class="panel"><h3>How they have played</h3>
-    <p class="sub">EPA per game through week ${E.through_week} (expected points added: how much each play changed the expected score). Positive is better on every row; rank 1 = best of 32. Descriptive only: the market already prices this in, and it is not used by the pick.</p>
+    <p class="sub">EPA per game through week ${E.through_week} (expected points added: how much each play changed the expected score). Positive is better on every row; rank 1 = best of 32. Each bar leans toward the side with the better rank, longer for a bigger gap; under 6 places is Even. Descriptive only: the market already prices this in, and it is not used by the pick.</p>
     ${sec(`When ${esc(x.away)} has the ball`,epRow('Passing',x.away,'pass_off',x.home,'pass_def')+epRow('Running',x.away,'rush_off',x.home,'run_def'))}
     ${sec(`When ${esc(x.home)} has the ball`,epRow('Passing',x.home,'pass_off',x.away,'pass_def')+epRow('Running',x.home,'rush_off',x.away,'run_def'))}
     ${sec('Everything else',epRow('Turnovers',x.away,'turnovers',x.home,'turnovers')+epRow('Penalties',x.away,'penalties',x.home,'penalties')+epRow('Special teams',x.away,'special_teams',x.home,'special_teams'))}
@@ -1005,7 +1057,7 @@ function chart(x,d,W){
   o+=`<text x="${W-m.r}" y="${H-m.b+18}" text-anchor="end">Kickoff ${esc(x.ko.replace(/^\w+ /,''))}</text>`;
   if(n>1)o+=`<polygon class="c-band" points="${S.map(s=>X(s.ms)+','+Y(s.lo)).join(' ')} ${[...S].reverse().map(s=>X(s.ms)+','+Y(s.hi)).join(' ')}"/>`;
   else o+=`<line class="c-med" style="stroke-width:8;opacity:.18" x1="${X(S[0].ms)}" x2="${X(S[0].ms)}" y1="${Y(S[0].lo)}" y2="${Y(S[0].hi)}"/>`;
-  if(pool!=null)o+=`<line class="c-pool" x1="${m.l}" x2="${W-m.r}" y1="${Y(pool)}" y2="${Y(pool)}"/><text class="c-poollab" x="${W-m.r}" y="${Y(pool)-6}" text-anchor="end">Pool line ${sgn(pool)}</text>`;
+  if(pool!=null)o+=`<line class="c-pool" x1="${m.l}" x2="${W-m.r}" y1="${Y(pool)}" y2="${Y(pool)}"/>`;
   if(!RS.length){                              // no reference-book line at all: the median is the only line
     if(n>1)o+=`<polyline class="c-med" points="${S.map(s=>X(s.ms)+','+Y(s.med)).join(' ')}"/>`;
     S.forEach((s,i)=>{if(i!==(d.lock?d.lock.i:-1))o+=`<circle class="c-pt" cx="${X(s.ms)}" cy="${Y(s.med)}" r="4"/>`});
@@ -1014,6 +1066,10 @@ function chart(x,d,W){
   const li=d.lock?d.lock.i:-1;
   RS.forEach(([s,i])=>{if(i!==li)o+=`<circle class="c-pt" cx="${X(s.ms)}" cy="${Y(s.ref)}" r="4"/>`});
   if(li>=0)o+=`<circle class="c-lock" cx="${X(S[li].ms)}" cy="${Y(inp(S[li]))}" r="7"/>`;
+  // labels last so they sit on top, with a halo so lines never run through them
+  if(pool!=null){const up=S.filter(s=>X(s.ms)<m.l+150).some(s=>Math.abs(Y(inp(s))-Y(pool))<14);
+    o+=`<text class="c-poollab c-halo" x="${m.l+6}" y="${Y(pool)+(up&&Y(pool)<H-m.b-20?16:-6)}">Pool line ${esc(x.home)} ${sgn(pool)}</text>`}
+  o+=`<text class="c-dir c-halo" x="${W-m.r-4}" y="${m.t+12}" text-anchor="end">▲ ${esc(x.home)} favored more</text><text class="c-dir c-halo" x="${W-m.r-4}" y="${H-m.b-6}" text-anchor="end">▼ ${esc(x.away)} favored more</text>`;
   o+=`<line class="c-cross" id="xh" x1="0" x2="0" y1="${m.t}" y2="${H-m.b}" hidden/>`;
   const lbl=`Line movement for ${x.away} at ${x.home}: ${n} captures, ${RS.length?`${refName(d)} ${sgn(RS[0][0].ref)} to ${sgn(RS[RS.length-1][0].ref)}, `:''}median ${sgn(S[0].med)} to ${sgn(S[n-1].med)}`;
   return {svg:`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" tabindex="0" aria-label="${esc(lbl)}">${o}</svg>`,S,X,Y,m,H};
@@ -1041,9 +1097,9 @@ function booksTable(x,d){
     return `<p class="sub">Tuesday posting window (${esc(tue.at)}): ${same} of ${v.length} books had exactly the pool line, ${hook} were a half point away.</p>`})():'';
   const R=d.ref_book||'pinnacle',useRef=d.src===R&&L.ref!=null;
   const rows=L.books.map(b=>{const t=tue&&tue.books[b.book];
-    return `<tr${b.book===R?' class="med"':''}><td>${esc(bk(b.book))}${b.book===R&&useRef?' (model input)':''}</td><td class="n">${sgn(b.spread)}</td><td class="n">${x.line==null?'—':diff(b.spread-x.line)}</td><td class="n">${diff(b.spread-L.median)}</td><td class="n">${esc(b.price)||'—'}</td><td class="n">${esc(b.upd)||'—'}</td>${tue?`<td class="n">${t?sgn(t.line)+`<span class="m ${t.m}">${t.m==='same'?'= pool':t.m==='hook'?'hook':'differs'}</span>`:'—'}</td>`:''}</tr>`}).join('');
-  return `${tueNote}<div class="tbl"><table><thead><tr><th>Book</th><th class="n">${esc(x.home)} spread</th><th class="n">vs pool</th><th class="n">vs median</th><th class="n">Price</th><th class="n">Updated</th>${tue?'<th class="n">Tuesday</th>':''}</tr></thead><tbody>
-    <tr${useRef?'':' class="med"'}><td>Median of books${useRef?'':' (model input)'}</td><td class="n">${sgn(L.median)}</td><td class="n">${x.line==null?'—':diff(L.median-x.line)}</td><td class="n">—</td><td class="n">—</td><td class="n">${L.n} books</td>${tue?'<td class="n"></td>':''}</tr>${rows}</tbody></table></div>`;
+    return `<tr${b.book===R?' class="med"':''}><td class="bk">${esc(bk(b.book))}${b.book===R&&useRef?' (model input)':''}</td><td class="n sp">${sgn(b.spread)}</td><td class="n" data-l="vs pool">${x.line==null?'—':diff(b.spread-x.line)}</td><td class="n" data-l="vs median">${diff(b.spread-L.median)}</td><td class="n" data-l="price">${esc(b.price)||'—'}</td><td class="n" data-l="updated">${esc(b.upd)||'—'}</td>${tue?`<td class="n" data-l="Tuesday">${t?sgn(t.line)+`<span class="m ${t.m}">${t.m==='same'?'= pool':t.m==='hook'?'hook':'differs'}</span>`:'—'}</td>`:''}</tr>`}).join('');
+  return `${tueNote}<div class="tbl"><table class="bkt"><thead><tr><th>Book</th><th class="n">${esc(x.home)} spread</th><th class="n">vs pool</th><th class="n">vs median</th><th class="n">Price</th><th class="n">Updated</th>${tue?'<th class="n">Tuesday</th>':''}</tr></thead><tbody>
+    <tr${useRef?'':' class="med"'}><td class="bk">Median of books${useRef?'':' (model input)'}</td><td class="n sp">${sgn(L.median)}</td><td class="n" data-l="vs pool">${x.line==null?'—':diff(L.median-x.line)}</td><td class="n nd">—</td><td class="n nd">—</td><td class="n" data-l="from">${L.n} books</td>${tue?'<td class="n"></td>':''}</tr>${rows}</tbody></table></div>`;
 }
 function inputsPanel(x,d){
   const I=d.inputs;
