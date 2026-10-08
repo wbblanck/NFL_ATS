@@ -77,7 +77,7 @@ def current_week(sched, season: int) -> int:
 def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.datetime,
            results: dict | None = None, details: dict | None = None, season_table: list | None = None,
            credits: int | None = None, epa: dict | None = None, curve: dict | None = None,
-           tiebreak: list | None = None) -> str:
+           tiebreak: list | None = None, loss_review: dict | None = None) -> str:
     """results: game_id -> graded row from live.compute (result, proj_<version> strings); optional.
     details: game_id -> per-game detail from game_detail.build (book lines over time, why, inputs); optional."""
     results = results or {}
@@ -126,7 +126,7 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                        "note": f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"})
     nxt = min(upcoming) if upcoming else None
     from engine.picks.season import MODELS as _SM
-    data = json.dumps({"tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
+    data = json.dumps({"loss_review": loss_review or {}, "tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
                        "next_lock": None if nxt is None else {"at": _clock(nxt[0]), "game": nxt[1]},
                        "updated": updated.astimezone(ET).strftime("%a %b %-d, %-I:%M %p ET")})
@@ -284,6 +284,63 @@ h3{margin:0;font:800 22px/1 var(--display);text-transform:uppercase;letter-spaci
 .key .ck b{font-weight:500;color:var(--ink)}
 .key .ck.dim{opacity:.45}
 .key .ck[aria-pressed="true"]{text-decoration:underline;text-underline-offset:4px}
+svg [hidden]{display:none}
+/* loss review */
+.lr-tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:4px 0 14px}
+.lr-tiles button{all:unset;cursor:pointer;background:var(--panel-2);border:1px solid transparent;border-radius:10px;padding:10px 8px;text-align:center}
+.lr-tiles button:hover{border-color:var(--rule)}
+.lr-tiles button[aria-pressed="true"]{border-color:var(--ink);background:var(--panel)}
+.lr-tiles button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.lr-tiles b{display:block;font:800 34px/1 var(--display)}
+.lr-tiles span{display:block;margin-top:4px;font:400 11px/1.25 var(--mono);color:var(--ink-2)}
+.lr-tiles .late b{color:var(--loss)}
+.lr-swing{margin:0 0 16px}
+.lr-swing .top{display:flex;justify-content:space-between;font:400 12px var(--mono);color:var(--ink-2);margin-bottom:6px}
+.lr-swing .top b{color:var(--ink);font-weight:500}
+.lr-swing .bar{display:flex;height:12px;border-radius:999px;overflow:hidden;gap:2px;background:var(--panel)}
+.lr-swing .bar i{display:block;height:100%}
+.lr-swing .bar .a{background:var(--loss)}.lr-swing .bar .f{background:var(--win)}
+.lr-swing p{margin:6px 0 0;font-size:12.5px;color:var(--ink-3)}
+.lr-panel .filters{margin-bottom:14px}
+.lr-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:720px){.lr-grid{grid-template-columns:1fr}.lr-tiles{grid-template-columns:repeat(3,1fr)}}
+.lrc{border:1px solid var(--rule);border-radius:12px;padding:12px 12px 10px;background:var(--panel);position:relative;min-width:0}
+.lrc-h{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.lrc-h .wk{font:400 11px var(--mono);color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
+.lrc-h h4{margin:2px 0 0;font:800 24px/1 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.lrc-h h4 small{font:400 13px var(--mono);color:var(--ink-2);text-transform:none;margin-left:6px}
+.lrc-h .miss{text-align:right}
+.lrc-h .miss b{display:block;font:800 30px/1 var(--display);color:var(--loss)}
+.lrc-h .miss span{font:400 11px var(--mono);color:var(--ink-3)}
+.lrc .pk{display:inline-block;margin-top:6px;font:500 12px var(--mono);background:var(--ink);color:var(--bg);border-radius:6px;padding:2px 8px}
+.lrc .pk em{font-style:normal;opacity:.7;margin-left:6px}
+.lrc .flow{position:relative;margin:8px 0 4px}
+.lrc .flow svg{display:block;width:100%;height:auto;overflow:visible;touch-action:pan-y}
+.lrc .flow text{font:400 10.5px var(--mono);fill:var(--ink-3)}
+.lrc .f-up{fill:var(--win);opacity:.16}.lrc .f-dn{fill:var(--loss);opacity:.16}
+.lrc .f-line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
+.lrc .f-zero{stroke:var(--ink-2);stroke-width:1.25;stroke-dasharray:4 3}
+.lrc .f-late{fill:var(--flag);opacity:.18}
+.lrc .f-q{stroke:var(--rule);stroke-width:1}
+.lrc .f-end{stroke:var(--panel);stroke-width:2}
+.lrc .f-x{stroke:var(--ink-3);stroke-width:1}
+.lrc .to-p{fill:var(--loss)}.lrc .to-o{fill:var(--win)}
+.lrc .ftip{position:absolute;top:0;pointer-events:none;background:var(--ink);color:var(--bg);border-radius:6px;padding:5px 8px;font:400 11.5px/1.4 var(--mono);white-space:nowrap;z-index:2}
+.lrc .note{font-size:13px;color:var(--ink-2);margin:2px 0 8px}
+.lrc .tags{display:flex;flex-wrap:wrap;gap:5px}
+.lrc .tg{font:500 10.5px var(--mono);border-radius:999px;padding:2px 8px;background:var(--flat-bg);color:var(--ink)}
+.lrc .tg.late,.lrc .tg.hook{background:var(--flag-soft)}
+.lrc .tg.far,.lrc .tg.to_lost{background:var(--loss-bg);color:var(--loss)}
+.lrc .tg.to_won{background:var(--win-bg);color:var(--win)}
+.lrc .oth{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:9px;padding-top:8px;border-top:1px solid var(--rule);font:400 11.5px var(--mono);color:var(--ink-3)}
+.lrc .oth .ok{color:var(--win)}.lrc .oth .no{color:var(--loss)}
+.lr-key{display:flex;flex-wrap:wrap;gap:6px 16px;font:400 11.5px var(--mono);color:var(--ink-2);margin:-4px 0 12px}
+.lr-key span{display:inline-flex;align-items:center;gap:6px}
+.lr-key svg{flex:none}
+.lr-more{all:unset;cursor:pointer;display:block;margin:14px auto 4px;font:500 13px var(--body);color:var(--ink);border:1px solid var(--rule);border-radius:999px;padding:8px 16px}
+.lr-more[hidden]{display:none}
+.lr-more:hover{border-color:var(--ink-3)}
+.lr-more:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 #ctip{background:var(--panel);color:var(--ink);border:1px solid var(--rule);box-shadow:0 4px 14px rgba(0,0,0,.12)}
 #ctip .tr{display:flex;align-items:center;gap:7px}
 #ctip .tr b{margin-left:auto;padding-left:10px}
@@ -423,6 +480,16 @@ details p{margin:0}
     <h3>Season by week</h3>
     <p class="sub" id="season-note"></p>
     <div class="tbl"><table id="season-tab"></table></div>
+  </section>
+  <section class="panel lr-panel" id="lr-panel" hidden aria-label="Loss review">
+    <h3>Loss review</h3>
+    <p class="sub">Every official loss, play by play: the line is how far the pick was from covering the pool line at each moment of the game. Above the number = covering. Descriptive only; nothing here changes a pick.</p>
+    <div class="lr-tiles" id="lr-tiles"></div>
+    <div class="lr-swing" id="lr-swing"></div>
+    <div class="filters" role="group" aria-label="Filter losses" id="lr-filters"></div>
+    <div class="lr-grid" id="lr-grid"></div>
+    <button class="lr-more" id="lr-more" hidden></button>
+    <details><summary>As a table</summary><div class="tbl"><table id="lr-tab"></table></div></details>
   </section>
   <section class="controls">
     <div class="filters" role="group" aria-label="Filter games">
@@ -613,6 +680,103 @@ function foot(x){
   return bits.length?`<div class="cover">${bits.join(' · ')}</div>`:'';
 }
 
+/* ---- loss review ---- */
+(function(){
+  const R=D.loss_review||{},Ls=R.losses||[],Sm=R.summary||{};if(!Ls.length)return;
+  $('lr-panel').hidden=false;
+  const TAG={late:'Lost in last 5:00',hook:'By the hook',close:'Within a FG',far:'Not close',never:'Never covered',to_lost:'Lost turnovers',to_won:'Won turnovers',ot:'Overtime'};
+  const OTH=[['hybrid','Hybrid'],['v1','v1'],['v3','v3'],['keynum','Key']];
+  const s1=v=>{const a=Math.abs(v),t=(a%1?a.toFixed(1):String(a));return (v>0?'+':v<0?'−':'')+t};
+  const clock=t=>{const ot=t>60,q=Math.min(4,Math.floor(t/15)+1),r=Math.max(0,Math.round(((ot?70:q*15)-t)*60));
+    return `${ot?'OT':'Q'+q} ${Math.floor(r/60)}:${String(r%60).padStart(2,'0')}`};
+  // filters: the tiles double as filters
+  const F=[['all','Losses',Sm.n,x=>true,''],['late','Lost in last 5:00',Sm.late,x=>x.tags.includes('late'),'late'],
+    ['fg','Within a FG',Sm.fg,x=>x.tags.includes('hook')||x.tags.includes('close'),''],['far','Not close (7+)',Sm.far,x=>x.tags.includes('far'),''],
+    ['to','Turnover swing (2+)',Ls.filter(x=>x.tags.includes('to_lost')||x.tags.includes('to_won')).length,x=>x.tags.includes('to_lost')||x.tags.includes('to_won'),'']];
+  let cur='all',all=false;
+  const latest=Math.max(...Ls.map(x=>x.week));
+  const tiles=()=>{$('lr-tiles').innerHTML=F.map(([k,l,n,,c])=>`<button class="${c}" data-f="${k}" aria-pressed="${cur===k}"><b>${n}</b><span>${esc(l)}</span></button>`).join('');
+    $('lr-tiles').querySelectorAll('button').forEach(b=>b.onclick=()=>{cur=cur===b.dataset.f&&cur!=='all'?'all':b.dataset.f;all=true;tiles();grid()})};
+  // late-swing ledger: luck in both directions
+  const a=Sm.late||0,f=Sm.won_late||0;
+  if(a+f){$('lr-swing').innerHTML=`<div class="top"><span>Late swings against: <b>${a}</b></span><span>Late swings for us: <b>${f}</b></span></div>
+    <div class="bar" role="img" aria-label="${a} losses flipped in the last 5 minutes, ${f} wins flipped our way"><i class="a" style="flex:${a}"></i><i class="f" style="flex:${f}"></i></div>
+    <p>Games where the last 5:00 flipped the cover. Our turnovers in losses: gave ${Sm.to_gave}, took ${Sm.to_took}.</p>`}
+  // shared vertical scale so cards compare honestly
+  const vals=Ls.flatMap(x=>(x.flow||[]).map(p=>Math.abs(p[1])).concat([Math.abs(x.fin)]));
+  const YM=Math.min(28,Math.max(14,Math.ceil(Math.max(...vals)/7)*7));
+  function flow(x,W){
+    const H=Math.round(W*0.5)+30,m={l:30,r:40,t:12,b:20},pw=W-m.l-m.r,ph=H-m.t-m.b;
+    const T=x.flow?Math.max(60,x.flow[x.flow.length-1][0]):60;
+    const X=t=>m.l+t/T*pw,cl=v=>Math.max(-YM,Math.min(YM,v)),Y=v=>m.t+(1-(cl(v)+YM)/(2*YM))*ph;
+    let o=`<rect class="f-late" x="${X(55)}" y="${m.t}" width="${X(60)-X(55)}" height="${ph}"/>`;
+    for(const q of [15,30,45,60])o+=`<line class="f-q" x1="${X(q)}" x2="${X(q)}" y1="${m.t}" y2="${m.t+ph}"/>`;
+    ['Q1','Q2','Q3','Q4'].forEach((q,i)=>o+=`<text x="${X(i*15+7.5)}" y="${H-5}" text-anchor="middle">${q}</text>`);
+    if(T>60)o+=`<text x="${X((60+T)/2)}" y="${H-5}" text-anchor="middle">OT</text>`;
+    o+=`<text x="${X(57.5)}" y="${m.t-2}" text-anchor="middle" style="font-size:9.5px">5:00</text>`;
+    for(const v of [-YM,-YM/2,YM/2,YM])o+=`<text x="${m.l-5}" y="${Y(v)+3.5}" text-anchor="end">${s1(v)}</text>`;
+    if(!x.flow){o+=`<line class="f-zero" x1="${m.l}" x2="${m.l+pw}" y1="${Y(0)}" y2="${Y(0)}"/><text x="${m.l+pw/2}" y="${Y(0)-8}" text-anchor="middle">Play-by-play not available yet</text>`;return {svg:o,H}}
+    const P=x.flow,pts=[];P.forEach((p,i)=>{if(i)pts.push([X(p[0]),Y(P[i-1][1])]);pts.push([X(p[0]),Y(p[1])])});
+    const d=pts.map((q,i)=>(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' ');
+    const id='c'+x.id.replace(/\W/g,''),z=Y(0),x0=X(0),x1=X(P[P.length-1][0]);
+    o+=`<defs><clipPath id="${id}u"><rect x="0" y="0" width="${W}" height="${z}"/></clipPath><clipPath id="${id}d"><rect x="0" y="${z}" width="${W}" height="${H}"/></clipPath></defs>`;
+    const area=`${d} L${x1} ${z} L${x0} ${z} Z`;
+    o+=`<path class="f-up" clip-path="url(#${id}u)" d="${area}"/><path class="f-dn" clip-path="url(#${id}d)" d="${area}"/>`;
+    o+=`<line class="f-zero" x1="${m.l}" x2="${m.l+pw}" y1="${z}" y2="${z}"/>`;
+    o+=`<path class="f-line" d="${d}"/>`;
+    for(const [t,who] of x.tos||[]){const tx=X(t),ty=m.t+ph;o+=who==='pick'?`<path class="to-p" d="M${tx-5} ${ty-9} L${tx+5} ${ty-9} L${tx} ${ty-1} Z"><title>${esc(x.pick)} turnover ${clock(t)}</title></path>`:`<path class="to-o" d="M${tx-5} ${ty-1} L${tx+5} ${ty-1} L${tx} ${ty-9} Z"><title>${esc(x.opp)} turnover ${clock(t)}</title></path>`}
+    if(x.cov5!=null)o+=`<circle cx="${X(55)}" cy="${Y(x.cov5)}" r="4.5" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>`;
+    const ey=Y(x.fin);o+=`<circle class="f-end" cx="${x1}" cy="${ey}" r="6" fill="var(--loss)"/><text x="${x1+8}" y="${ey+4}" style="fill:var(--loss);font-weight:500">${s1(x.fin)}</text>`;
+    if(Math.abs(x.fin)>YM)o+=`<text x="${x1-4}" y="${ey-9}" text-anchor="end">off scale</text>`;
+    o+=`<line class="f-x" x1="0" x2="0" y1="${m.t}" y2="${m.t+ph}" hidden/>`;
+    return {svg:o,H,X,T,m,pw};
+  }
+  function note(x){
+    const late=x.cov5!=null&&x.cov5>0;
+    if(late)return `Covering by ${s1(x.cov5).replace('+','')} with 5:00 left, then lost it late.`;
+    if(x.peak!=null&&x.peak>0)return `Covered by as much as ${s1(x.peak).replace('+','')} during the game; ${x.cov5!=null?`short by ${Math.abs(x.cov5)} with 5:00 left`:'did not hold'}.`;
+    return `Never ahead of the number after the first score.`;
+  }
+  function card(x){
+    const ot=OTH.map(([k,l])=>{const r=(x.others||{})[k];return `<span>${l} ${r==='W'?'<span class="ok">✓</span>':r==='L'?'<span class="no">✕</span>':'—'}</span>`}).join('');
+    const tg=x.tags.map(t=>`<span class="tg ${t}">${esc(TAG[t]||t)}${t==='to_lost'||t==='to_won'?` ${x.to[0]}–${x.to[1]}`:''}</span>`).join('');
+    const mv=x.drift==null?'':x.drift===0?'no line move':`market moved ${Math.abs(x.drift)} pt`;
+    return `<article class="lrc" data-id="${esc(x.id)}"><div class="lrc-h"><div><div class="wk">Week ${x.week}${mv?' · '+mv:''}</div>
+      <h4>${esc(x.away)} ${x.as} <small>@</small> ${esc(x.home)} ${x.hs}</h4><span class="pk">${esc(x.pick)} ${s1(x.line)}${x.p!=null?`<em>${(x.p*100).toFixed(1)}%</em>`:''}</span></div>
+      <div class="miss"><b>${s1(x.fin)}</b><span>vs the number</span></div></div>
+      <div class="flow" data-id="${esc(x.id)}"></div><p class="note">${note(x)} Turnovers ${esc(x.pick)} ${x.to[0]}, ${esc(x.opp)} ${x.to[1]}.</p>
+      ${tg?`<div class="tags">${tg}</div>`:''}<div class="oth"><span>Other models:</span>${ot}</div></article>`;
+  }
+  function paint(){
+    document.querySelectorAll('#lr-grid .flow').forEach(box=>{
+      const x=Ls.find(z=>z.id===box.dataset.id),W=Math.max(260,Math.floor(box.clientWidth||300)),c=flow(x,W);
+      box.innerHTML=`<svg viewBox="0 0 ${W} ${c.H}" width="${W}" height="${c.H}" role="img" tabindex="0" aria-label="${esc(`${x.pick} cover margin through the game: ${x.cov5!=null?`${s1(x.cov5)} with 5:00 left, `:''}final ${s1(x.fin)}`)}">${c.svg}</svg><div class="ftip" hidden></div>`;
+      if(!x.flow)return;
+      const svg=box.querySelector('svg'),tip=box.querySelector('.ftip'),xl=svg.querySelector('.f-x');
+      const at=t=>{let p=x.flow[0];for(const q of x.flow){if(q[0]<=t)p=q;else break}return p};
+      const show=px=>{const t=Math.max(0,Math.min(c.T,(px-c.m.l)/c.pw*c.T)),p=at(t),xx=c.X(t);
+        xl.removeAttribute('hidden');xl.setAttribute('x1',xx);xl.setAttribute('x2',xx);
+        tip.innerHTML=`<b>${clock(t)}</b> · ${esc(x.away)} ${p[2]}–${p[3]} ${esc(x.home)}<br>${esc(x.pick)} ${p[1]>0?'covering by '+s1(p[1]).replace('+',''):p[1]<0?'short by '+Math.abs(p[1]):'on the number'}`;
+        tip.hidden=false;const tw=tip.offsetWidth;tip.style.left=Math.max(0,Math.min(W-tw,xx-tw/2))+'px'};
+      const hide=()=>{tip.hidden=true;xl.setAttribute('hidden','')};
+      svg.addEventListener('pointermove',e=>{const r=svg.getBoundingClientRect();show((e.clientX-r.left)*(W/r.width))});
+      svg.addEventListener('pointerleave',hide);svg.addEventListener('blur',hide);
+      let kt=c.T;svg.onkeydown=e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){kt=Math.max(0,Math.min(c.T,kt+(e.key==='ArrowLeft'?-1:1)));show(c.X(kt));e.preventDefault()}else if(e.key==='Escape')hide()};
+    });
+  }
+  function grid(){
+    const pr=F.find(z=>z[0]===cur)[3],sel=Ls.filter(pr),shown=all||cur!=='all'?sel:sel.filter(x=>x.week===latest);
+    $('lr-grid').innerHTML=shown.length?shown.map(card).join(''):'<p class="empty">No losses match.</p>';
+    const more=$('lr-more'),rest=sel.length-shown.length;
+    more.hidden=!rest;more.textContent=`Show all ${sel.length} losses this season`;more.onclick=()=>{all=true;grid()};
+    paint();
+  }
+  $('lr-swing').insertAdjacentHTML('afterend',`<div class="lr-key"><span><svg width="22" height="10"><line x1="0" x2="22" y1="5" y2="5" stroke="var(--ink)" stroke-width="2"/></svg>Cover margin</span><span><svg width="22" height="10"><line x1="0" x2="22" y1="5" y2="5" stroke="var(--ink-2)" stroke-width="1.25" stroke-dasharray="4 3"/></svg>The number (pool line)</span><span><svg width="12" height="12"><circle cx="6" cy="6" r="4" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/></svg>5:00 left</span><span><svg width="12" height="10"><path d="M1 1 L11 1 L6 9 Z" fill="var(--loss)"/></svg>Our turnover</span><span><svg width="12" height="10"><path d="M1 9 L11 9 L6 1 Z" fill="var(--win)"/></svg>Their turnover</span></div>`);
+  tiles();grid();
+  if(window.ResizeObserver){let w0=0;new ResizeObserver(es=>{const w=Math.round(es[0].contentRect.width);if(w&&w!==w0){w0=w;paint()}}).observe($('lr-grid'))}
+  $('lr-tab').innerHTML='<thead><tr><th>Week</th><th>Game</th><th>Pick</th><th class="n">5:00 left</th><th class="n">Final</th><th class="n">Turnovers</th><th>Tags</th></tr></thead><tbody>'
+    +Ls.map(x=>`<tr><td>${x.week}</td><td>${esc(x.away)} ${x.as} @ ${esc(x.home)} ${x.hs}</td><td>${esc(x.pick)} ${s1(x.line)}</td><td class="n">${x.cov5==null?'—':s1(x.cov5)}</td><td class="n">${s1(x.fin)}</td><td class="n">${x.to[0]}–${x.to[1]}</td><td>${x.tags.map(t=>esc(TAG[t])).join(', ')}</td></tr>`).join('')+'</tbody>';
+})();
 /* ---- how the projected score was built ---- */
 const SMALL=0.25;
 const sg1=(v,d=1)=>(v>0.049?'+':v<-0.049?'−':'')+Math.abs(v).toFixed(d);
