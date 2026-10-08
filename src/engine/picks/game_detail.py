@@ -192,7 +192,16 @@ def build(rows: list[dict], caps: list[dict], preds: list[dict], projs: list[dic
                                       "price": american(_f(x.get("home_price_decimal"))),
                                       "upd": _clock(_t(x["book_last_update"])) if x.get("book_last_update") else ""}
                                      for x in h["_rows"][li]), key=lambda z: (z["spread"], z["book"]))}
-        out[gid] = {"t": h["t"], "b": h["b"], "lock": lock,
+        pred = pred_by.get(gid)
+        if pred and pred.get("feature_version") is not None:
+            src = final.MARKET_BOOK if f"market:{final.MARKET_BOOK}" in (pred.get("feature_version") or "") else "median"
+        else:                                   # provisional: the preview uses the reference book when it has a line
+            src = final.MARKET_BOOK if lock and any(b["book"] == final.MARKET_BOOK for b in lock["books"]) else "median"
+        if lock:
+            ref = next((b["spread"] for b in lock["books"] if b["book"] == final.MARKET_BOOK), None)
+            lock["ref"] = ref
+            lock["input"] = ref if src == final.MARKET_BOOK and ref is not None else lock["median"]
+        out[gid] = {"t": h["t"], "b": h["b"], "lock": lock, "src": src, "ref_book": final.MARKET_BOOK,
                     "tue": tuesday_match(h, _f(r.get("league_line")), (windows or {}).get(gid)),
                     "why": why(r, pred_by.get(gid), proj_by.get(gid)),
                     "inputs": inputs_block(proj_by.get(gid), names),

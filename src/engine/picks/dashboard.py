@@ -147,9 +147,10 @@ TEMPLATE = r"""<title>__TITLE__</title>
 :root{--bg:#eef0f4;--panel:#ffffff;--panel-2:#f5f6f9;--ink:#0f1a2b;--ink-2:#41506b;--ink-3:#586580;--rule:#dbe0ea;
 --flag:#ffc800;--flag-soft:#fff0b8;--on-flag:#0f1a2b;--flat-bg:#e4e8ef;--band:rgba(15,26,43,.10);
 --win:#146c36;--win-bg:#e2f4e8;--loss:#b3261e;--loss-bg:#fde7e5;
+--c-hy:#eb6834;--c-v1:#2a78d6;--c-v3:#1baf7a;
 --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;--body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0a111f;--panel:#111a2c;--panel-2:#16213a;--ink:#e8edf7;--ink-2:#b3bfd4;--ink-3:#8e9bb4;--rule:#243250;--flag-soft:#4a3c08;--flat-bg:#1c2740;--band:rgba(232,237,247,.14);--win:#63d68d;--win-bg:#123322;--loss:#ff8f86;--loss-bg:#40181a}}
-:root[data-theme="dark"]{color-scheme:dark;--bg:#0a111f;--panel:#111a2c;--panel-2:#16213a;--ink:#e8edf7;--ink-2:#b3bfd4;--ink-3:#8e9bb4;--rule:#243250;--flag-soft:#4a3c08;--flat-bg:#1c2740;--band:rgba(232,237,247,.14);--win:#63d68d;--win-bg:#123322;--loss:#ff8f86;--loss-bg:#40181a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0a111f;--panel:#111a2c;--panel-2:#16213a;--ink:#e8edf7;--ink-2:#b3bfd4;--ink-3:#8e9bb4;--rule:#243250;--flag-soft:#4a3c08;--flat-bg:#1c2740;--band:rgba(232,237,247,.14);--win:#63d68d;--win-bg:#123322;--loss:#ff8f86;--loss-bg:#40181a;--c-hy:#d95926;--c-v1:#3987e5;--c-v3:#199e70}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0a111f;--panel:#111a2c;--panel-2:#16213a;--ink:#e8edf7;--ink-2:#b3bfd4;--ink-3:#8e9bb4;--rule:#243250;--flag-soft:#4a3c08;--flat-bg:#1c2740;--band:rgba(232,237,247,.14);--win:#63d68d;--win-bg:#123322;--loss:#ff8f86;--loss-bg:#40181a;--c-hy:#d95926;--c-v1:#3987e5;--c-v3:#199e70}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);padding-inline:16px;padding-block:28px 56px}
 .wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:26px}
@@ -269,6 +270,7 @@ h3{margin:0;font:800 22px/1 var(--display);text-transform:uppercase;letter-spaci
 .chart .c-grid{stroke:var(--rule);stroke-width:1}
 .chart .c-band{fill:var(--band)}
 .chart .c-med{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
+.chart .c-mdash{fill:none;stroke:var(--ink-3);stroke-width:1.5;stroke-dasharray:4 3;stroke-linejoin:round}
 .chart .c-pool{stroke:var(--ink-2);stroke-width:1.5;stroke-dasharray:5 4}
 .chart .c-pt{fill:var(--panel);stroke:var(--ink);stroke-width:2}
 .chart .c-lock{fill:var(--flag);stroke:var(--ink);stroke-width:2}
@@ -278,8 +280,18 @@ h3{margin:0;font:800 22px/1 var(--display);text-transform:uppercase;letter-spaci
 .tip b{font-weight:500}
 .key{display:flex;flex-wrap:wrap;gap:6px 18px;font:400 12px var(--mono);color:var(--ink-2)}
 .key span{display:inline-flex;align-items:center;gap:7px}
+.key .ck{display:inline-flex;align-items:center;gap:7px;font:inherit;color:inherit;background:none;border:0;padding:4px 0;cursor:pointer}
+.key .ck b{font-weight:500;color:var(--ink)}
+.key .ck.dim{opacity:.45}
+.key .ck[aria-pressed="true"]{text-decoration:underline;text-underline-offset:4px}
+#ctip{background:var(--panel);color:var(--ink);border:1px solid var(--rule);box-shadow:0 4px 14px rgba(0,0,0,.12)}
+#ctip .tr{display:flex;align-items:center;gap:7px}
+#ctip .tr b{margin-left:auto;padding-left:10px}
+#ctip .ok{color:var(--win)}#ctip .no{color:var(--loss)}
+#ctip svg{display:inline-block;width:22px;height:6px;overflow:visible}
 .k-band{width:16px;height:10px;background:var(--band);border:1px solid var(--rule)}
 .k-line{width:18px;height:0;border-top:2px solid var(--ink)}
+.k-mdash{width:18px;height:0;border-top:1.5px dashed var(--ink-3)}
 .k-dash{width:18px;height:0;border-top:2px dashed var(--ink-2)}
 .tbl{overflow-x:auto}
 .tbn{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 22px}
@@ -494,10 +506,20 @@ $('ev-m').setAttribute('aria-label',`${D.graded} of ${D.claim_at} games graded`)
 (function(){
   const C=D.curve||{};if(!C.games||C.games.length<2)return;
   $('curve-panel').hidden=false;
-  const S=[['official','Official pick','var(--ink)',null],['hybrid','Hybrid (tracked)','var(--flag)','5 3'],['favorite','Always the favorite','var(--ink-3)','2 4'],['home','Always the home team','var(--ink-3)','1 3']];
-  $('curve-note').textContent='Cumulative wins minus losses against the pool line, game by game. The band is where a coin-flipper would land 95% of the time. Weeks marked backtest were not picked live (see Season by week).';
-  $('curve-key').innerHTML=`<span><i class="k-band"></i>Luck band (95%)</span>`+S.map(([k,l,c,d])=>`<span><i style="display:inline-block;width:18px;height:0;border-top:2px ${d?'dashed':'solid'} ${c}"></i>${esc(l)} ${C.cum[k][C.cum[k].length-1]>0?'+':''}${C.cum[k][C.cum[k].length-1]}</span>`).join('');
+  // [key, label, stroke, dash, width]. Three models get the validated categorical hues; the key-number variant is a
+  // variant of the official pick, so it shares its ink, dashed; the no-skill baselines are muted dotted.
+  const S=[['official','Official pick','var(--ink)',null,2.5],['hybrid','Hybrid','var(--c-hy)',null,2],
+    ['v1','Team-only (v1)','var(--c-v1)',null,2],['v3','Player (v3)','var(--c-v3)',null,2],
+    ['keynum','Key-number variant','var(--ink-2)','6 3',1.75],['favorite','Always the favorite','var(--ink-3)','2 4',1.5],
+    ['home','Always the home team','var(--ink-3)','1 3',1.5]].filter(z=>C.cum[z[0]]);
+  let on=null;                                 // highlighted series (tap a legend item), null = all
+  const fin=k=>C.cum[k][C.cum[k].length-1],sg=v=>v>0?'+'+v:v<0?'−'+(-v):'0';
+  const sw=(c,d,w)=>`<svg width="22" height="6" aria-hidden="true" style="flex:none"><line x1="0" x2="22" y1="3" y2="3" stroke="${c}" stroke-width="${Math.max(2,w)}"${d?` stroke-dasharray="${d}"`:''}/></svg>`;
+  $('curve-note').textContent='Cumulative wins minus losses against the pool line, game by game. The band is where a coin-flipper would land 95% of the time. Tap a name to highlight its line. Player (v3) skips games where the injury report was not out at the pick. Weeks marked backtest were not picked live (see Season by week).';
+  const key=()=>{$('curve-key').innerHTML=`<span><i class="k-band"></i>Luck band (95%)</span>`+S.map(([k,l,c,d,w])=>`<button class="ck${on&&on!==k?' dim':''}" data-k="${k}" aria-pressed="${on===k}">${sw(c,d,w)}${esc(l)} <b>${sg(fin(k))}</b></button>`).join('');
+    $('curve-key').querySelectorAll('.ck').forEach(b=>b.onclick=()=>{on=on===b.dataset.k?null:b.dataset.k;key();draw()})};
   $('curve-verdict').textContent=C.verdict||'';
+  let G=null;
   const draw=()=>{
     const box=$('curve-chart'),W=Math.max(280,Math.floor(box.clientWidth||320)),H=W<520?230:290,m={l:36,r:12,t:12,b:26},pw=W-m.l-m.r,ph=H-m.t-m.b;
     const n=C.games.length,mx=Math.max(8,Math.ceil(Math.max(...C.band,...S.flatMap(([k])=>C.cum[k].map(Math.abs)))/4)*4);
@@ -508,12 +530,26 @@ $('ev-m').setAttribute('aria-label',`${D.graded} of ${D.claim_at} games graded`)
     let first=C.games.findIndex(g=>g.kind==='live');if(first<0)first=n;
     if(first>0)o+=`<text x="${X(0)+4}" y="${m.t+10}" style="fill:var(--ink-3)">backtest</text>`;
     if(first>0&&first<n)o+=`<line class="c-cross" x1="${X(first)}" x2="${X(first)}" y1="${m.t}" y2="${H-m.b}"/><text x="${X(first)+4}" y="${m.t+10}" style="fill:var(--ink-3)">live</text>`;
-    for(const [k,l,c,d] of S.slice().reverse())o+=`<polyline fill="none" stroke="${c}" stroke-width="${k==='official'?2.5:1.75}" ${d?`stroke-dasharray="${d}"`:''} points="${C.cum[k].map((v,i)=>X(i)+','+Y(v)).join(' ')}"/>`;
+    const order=S.slice().reverse();if(on)order.push(order.splice(order.findIndex(z=>z[0]===on),1)[0]);
+    for(const [k,l,c,d,w] of order)o+=`<polyline fill="none" stroke="${c}" stroke-width="${on===k?w+1:w}" stroke-linejoin="round" ${d?`stroke-dasharray="${d}"`:''} opacity="${on&&on!==k?0.18:1}" points="${C.cum[k].map((v,i)=>X(i)+','+Y(v)).join(' ')}"/>`;
     const wks=[...new Set(C.games.map(g=>g.week))];
     for(const w of wks){const i=C.games.findIndex(g=>g.week===w);o+=`<text x="${X(i)}" y="${H-8}" text-anchor="start">W${w}</text>`}
-    box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Cumulative wins minus losses by game, four strategies and a 95% luck band">${o}</svg>`;
+    o+=`<line class="c-cross" id="cxh" x1="0" x2="0" y1="${m.t}" y2="${H-m.b}" hidden/>`;
+    box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" tabindex="0" aria-label="Cumulative wins minus losses by game for the official pick, four tracked models and two baselines, with a 95% luck band">${o}</svg><div class="tip" id="ctip" hidden></div>`;
+    G={W,X,n};
+    const svg=box.querySelector('svg'),tip=$('ctip'),xh=$('cxh');
+    const show=i=>{const px=X(i),gm=C.games[i];xh.removeAttribute('hidden');xh.setAttribute('x1',px);xh.setAttribute('x2',px);
+      const rows=S.map(([k,l,c,d,w])=>{const r=(gm.d||{})[k];return `<span class="tr">${sw(c,d,w)}${esc(l)} <b>${sg(C.cum[k][i])}</b>${r==null?'':r>0?' <span class="ok">✓</span>':' <span class="no">✕</span>'}</span>`}).join('');
+      tip.innerHTML=`<b>Week ${gm.week} · ${esc(gm.label)}</b>${gm.kind==='backtest'?' <span class="m hook">backtest</span>':''}${rows}`;
+      tip.hidden=false;const tw=tip.offsetWidth;tip.style.left=Math.max(0,Math.min(W-tw,px-tw/2))+'px'};
+    const hide=()=>{tip.hidden=true;xh.setAttribute('hidden','')};
+    svg.addEventListener('pointermove',e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)*(W/r.width);
+      show(Math.max(0,Math.min(n-1,Math.round((px-m.l)/pw*(n-1)))))});
+    svg.addEventListener('pointerleave',hide);svg.addEventListener('blur',hide);
+    let ki=n-1;svg.onkeydown=e=>{if(e.key==='ArrowLeft'){ki=Math.max(0,ki-1);show(ki);e.preventDefault()}
+      else if(e.key==='ArrowRight'){ki=Math.min(n-1,ki+1);show(ki);e.preventDefault()}else if(e.key==='Escape')hide()};
   };
-  draw();if(window.ResizeObserver)new ResizeObserver(()=>draw()).observe($('curve-chart'));
+  key();draw();if(window.ResizeObserver){let w0=0;new ResizeObserver(es=>{const w=Math.round(es[0].contentRect.width);if(w&&w!==w0){w0=w;draw()}}).observe($('curve-chart'))}
   $('curve-tab').innerHTML='<thead><tr><th>#</th><th>Game</th>'+S.map(([,l])=>`<th class="n">${esc(l)}</th>`).join('')+'</tr></thead><tbody>'
     +C.games.map((g,i)=>`<tr><td>${i+1}</td><td>${esc(g.label)}${g.kind==='backtest'?' <span class="m hook">backtest</span>':''}</td>${S.map(([k])=>`<td class="n">${C.cum[k][i]>0?'+':''}${C.cum[k][i]}</td>`).join('')}</tr>`).join('')+'</tbody>';
 })();
@@ -693,13 +729,17 @@ const etDay=ms=>new Date(ms).toLocaleString('en-US',{timeZone:ET,weekday:'short'
 const med=a=>{const s=[...a].sort((p,q)=>p-q),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
 const diff=v=>Math.abs(v)<1e-9?'same':(v>0?'+':'−')+num(Math.abs(v),2);
 function snaps(d){
+  const R=(d.b||{})[d.ref_book||'pinnacle'];
   return d.t.map((t,i)=>{const v=Object.values(d.b).map(a=>a[i]).filter(z=>z!=null);
-    return {ms:Date.parse(t),n:v.length,lo:Math.min(...v),hi:Math.max(...v),med:med(v)}});
+    return {ms:Date.parse(t),n:v.length,lo:Math.min(...v),hi:Math.max(...v),med:med(v),ref:R?R[i]:null}});
 }
+const refName=d=>bk(d.ref_book||'pinnacle');
 function chart(x,d,W){
   const S=snaps(d),n=S.length,ko=Date.parse(x.ko_iso),pool=x.line;
   const H=W<520?240:300,m={l:50,r:14,t:14,b:32},pw=W-m.l-m.r,ph=H-m.t-m.b;
   const all=S.flatMap(s=>[s.lo,s.hi]).concat(pool==null?[]:[pool]);
+  const RS=S.map((s,i)=>[s,i]).filter(([s])=>s.ref!=null),useRef=d.src===(d.ref_book||'pinnacle');
+  const inp=s=>useRef&&s.ref!=null?s.ref:s.med;
   let lo=Math.min(...all)-0.5,hi=Math.max(...all)+0.5;
   if(hi-lo<3){const c=(hi+lo)/2;lo=c-1.5;hi=c+1.5}
   const step=hi-lo>6?1:0.5,t0=n>1?S[0].ms:S[0].ms-36e5,t1=Math.max(ko,S[n-1].ms+6e4);
@@ -714,12 +754,16 @@ function chart(x,d,W){
   if(n>1)o+=`<polygon class="c-band" points="${S.map(s=>X(s.ms)+','+Y(s.lo)).join(' ')} ${[...S].reverse().map(s=>X(s.ms)+','+Y(s.hi)).join(' ')}"/>`;
   else o+=`<line class="c-med" style="stroke-width:8;opacity:.18" x1="${X(S[0].ms)}" x2="${X(S[0].ms)}" y1="${Y(S[0].lo)}" y2="${Y(S[0].hi)}"/>`;
   if(pool!=null)o+=`<line class="c-pool" x1="${m.l}" x2="${W-m.r}" y1="${Y(pool)}" y2="${Y(pool)}"/><text class="c-poollab" x="${W-m.r}" y="${Y(pool)-6}" text-anchor="end">Pool line ${sgn(pool)}</text>`;
-  if(n>1)o+=`<polyline class="c-med" points="${S.map(s=>X(s.ms)+','+Y(s.med)).join(' ')}"/>`;
+  if(!RS.length){                              // no reference-book line at all: the median is the only line
+    if(n>1)o+=`<polyline class="c-med" points="${S.map(s=>X(s.ms)+','+Y(s.med)).join(' ')}"/>`;
+    S.forEach((s,i)=>{if(i!==(d.lock?d.lock.i:-1))o+=`<circle class="c-pt" cx="${X(s.ms)}" cy="${Y(s.med)}" r="4"/>`});
+  }else if(n>1)o+=`<polyline class="c-mdash" points="${S.map(s=>X(s.ms)+','+Y(s.med)).join(' ')}"/>`;
+  if(RS.length>1)o+=`<polyline class="c-med" points="${RS.map(([s])=>X(s.ms)+','+Y(s.ref)).join(' ')}"/>`;
   const li=d.lock?d.lock.i:-1;
-  S.forEach((s,i)=>{if(i!==li)o+=`<circle class="c-pt" cx="${X(s.ms)}" cy="${Y(s.med)}" r="4"/>`});
-  if(li>=0)o+=`<circle class="c-lock" cx="${X(S[li].ms)}" cy="${Y(S[li].med)}" r="7"/>`;
+  RS.forEach(([s,i])=>{if(i!==li)o+=`<circle class="c-pt" cx="${X(s.ms)}" cy="${Y(s.ref)}" r="4"/>`});
+  if(li>=0)o+=`<circle class="c-lock" cx="${X(S[li].ms)}" cy="${Y(inp(S[li]))}" r="7"/>`;
   o+=`<line class="c-cross" id="xh" x1="0" x2="0" y1="${m.t}" y2="${H-m.b}" hidden/>`;
-  const lbl=`Line movement for ${x.away} at ${x.home}: ${n} captures, median ${sgn(S[0].med)} to ${sgn(S[n-1].med)}`;
+  const lbl=`Line movement for ${x.away} at ${x.home}: ${n} captures, ${RS.length?`${refName(d)} ${sgn(RS[0][0].ref)} to ${sgn(RS[RS.length-1][0].ref)}, `:''}median ${sgn(S[0].med)} to ${sgn(S[n-1].med)}`;
   return {svg:`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" tabindex="0" aria-label="${esc(lbl)}">${o}</svg>`,S,X,Y,m,H};
 }
 function drawChart(x,d){
@@ -728,8 +772,8 @@ function drawChart(x,d){
   box.innerHTML=c.svg+'<div class="tip" id="tip" hidden></div>';
   const svg=box.querySelector('svg'),tip=$('tip'),xh=$('xh');
   const show=i=>{const s=c.S[i],px=c.X(s.ms);xh.removeAttribute('hidden');xh.setAttribute('x1',px);xh.setAttribute('x2',px);
-    const dv=x.line==null?'':` · ${diff(s.med-x.line)} vs pool`;
-    tip.innerHTML=`<b>${esc(etTime(s.ms))} ET</b><br>Median ${sgn(s.med)}${dv}<br>Range ${sgn(s.lo)} to ${sgn(s.hi)} · ${s.n} books`;
+    const dv=v=>x.line==null?'':` · ${diff(v-x.line)} vs pool`;
+    tip.innerHTML=`<b>${esc(etTime(s.ms))} ET</b><br>${s.ref!=null?`${esc(refName(d))} ${sgn(s.ref)}${dv(s.ref)}<br>`:`${esc(refName(d))} no line<br>`}Median ${sgn(s.med)}${dv(s.med)}<br>Range ${sgn(s.lo)} to ${sgn(s.hi)} · ${s.n} books`;
     tip.hidden=false;const tw=tip.offsetWidth;tip.style.left=Math.max(0,Math.min(W-tw,px-tw/2))+'px'};
   const hide=()=>{tip.hidden=true;xh.setAttribute('hidden','')};
   svg.addEventListener('pointermove',e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)*(W/r.width);
@@ -743,10 +787,11 @@ function booksTable(x,d){
   const L=d.lock,tue=d.tue;
   const tueNote=tue?(()=>{const v=Object.values(tue.books),same=v.filter(b=>b.m==='same').length,hook=v.filter(b=>b.m==='hook').length;
     return `<p class="sub">Tuesday posting window (${esc(tue.at)}): ${same} of ${v.length} books had exactly the pool line, ${hook} were a half point away.</p>`})():'';
+  const R=d.ref_book||'pinnacle',useRef=d.src===R&&L.ref!=null;
   const rows=L.books.map(b=>{const t=tue&&tue.books[b.book];
-    return `<tr><td>${esc(bk(b.book))}</td><td class="n">${sgn(b.spread)}</td><td class="n">${x.line==null?'—':diff(b.spread-x.line)}</td><td class="n">${diff(b.spread-L.median)}</td><td class="n">${esc(b.price)||'—'}</td><td class="n">${esc(b.upd)||'—'}</td>${tue?`<td class="n">${t?sgn(t.line)+`<span class="m ${t.m}">${t.m==='same'?'= pool':t.m==='hook'?'hook':'differs'}</span>`:'—'}</td>`:''}</tr>`}).join('');
+    return `<tr${b.book===R?' class="med"':''}><td>${esc(bk(b.book))}${b.book===R&&useRef?' (model input)':''}</td><td class="n">${sgn(b.spread)}</td><td class="n">${x.line==null?'—':diff(b.spread-x.line)}</td><td class="n">${diff(b.spread-L.median)}</td><td class="n">${esc(b.price)||'—'}</td><td class="n">${esc(b.upd)||'—'}</td>${tue?`<td class="n">${t?sgn(t.line)+`<span class="m ${t.m}">${t.m==='same'?'= pool':t.m==='hook'?'hook':'differs'}</span>`:'—'}</td>`:''}</tr>`}).join('');
   return `${tueNote}<div class="tbl"><table><thead><tr><th>Book</th><th class="n">${esc(x.home)} spread</th><th class="n">vs pool</th><th class="n">vs median</th><th class="n">Price</th><th class="n">Updated</th>${tue?'<th class="n">Tuesday</th>':''}</tr></thead><tbody>
-    <tr class="med"><td>Median (model input)</td><td class="n">${sgn(L.median)}</td><td class="n">${x.line==null?'—':diff(L.median-x.line)}</td><td class="n">—</td><td class="n">—</td><td class="n">${L.n} books</td>${tue?'<td class="n"></td>':''}</tr>${rows}</tbody></table></div>`;
+    <tr${useRef?'':' class="med"'}><td>Median of books${useRef?'':' (model input)'}</td><td class="n">${sgn(L.median)}</td><td class="n">${x.line==null?'—':diff(L.median-x.line)}</td><td class="n">—</td><td class="n">—</td><td class="n">${L.n} books</td>${tue?'<td class="n"></td>':''}</tr>${rows}</tbody></table></div>`;
 }
 function inputsPanel(x,d){
   const I=d.inputs;
@@ -767,7 +812,7 @@ function inputsPanel(x,d){
 }
 function snapTable(d){
   const S=snaps(d);if(!S.length)return '';
-  return `<details><summary>Captures as a table</summary><div class="tbl"><table><thead><tr><th>Time (ET)</th><th class="n">Books</th><th class="n">Low</th><th class="n">Median</th><th class="n">High</th></tr></thead><tbody>${S.map(s=>`<tr><td>${esc(etTime(s.ms))}</td><td class="n">${s.n}</td><td class="n">${sgn(s.lo)}</td><td class="n">${sgn(s.med)}</td><td class="n">${sgn(s.hi)}</td></tr>`).join('')}</tbody></table></div></details>`;
+  return `<details><summary>Captures as a table</summary><div class="tbl"><table><thead><tr><th>Time (ET)</th><th class="n">Books</th><th class="n">${esc(refName(d))}</th><th class="n">Low</th><th class="n">Median</th><th class="n">High</th></tr></thead><tbody>${S.map(s=>`<tr><td>${esc(etTime(s.ms))}</td><td class="n">${s.n}</td><td class="n">${s.ref==null?'—':sgn(s.ref)}</td><td class="n">${sgn(s.lo)}</td><td class="n">${sgn(s.med)}</td><td class="n">${sgn(s.hi)}</td></tr>`).join('')}</tbody></table></div></details>`;
 }
 function detailHTML(x){
   const d=(D.details||{})[x.id]||{};
@@ -784,7 +829,7 @@ function detailHTML(x){
   ${epaPanel(x)}
   <section class="panel"><h3>Line movement</h3>
     <p class="sub">Spread on ${esc(x.home)} across every book. Higher on the chart means the market favors ${esc(x.home)} more; lower favors ${esc(x.away)} more.</p>
-    ${has?`<div class="key"><span><i class="k-line"></i>Median of books</span><span><i class="k-band"></i>Range across books</span><span><i class="k-dash"></i>Pool line</span><span><i class="k-mkt"></i>${x.status==='final'?'Pick captured':'Latest capture'}</span></div><div class="chart" id="chart"></div>${snapTable(d)}`:'<p class="sub">No book lines were captured for this game yet.</p>'}
+    ${has?`<div class="key"><span><i class="k-line"></i>${esc(refName(d))}${d.src===(d.ref_book||'pinnacle')?' (model input)':''}</span><span><i class="k-mdash"></i>Median of books${d.src==='median'?' (model input)':''}</span><span><i class="k-band"></i>Range across books</span><span><i class="k-dash"></i>Pool line</span><span><i class="k-mkt"></i>${x.status==='final'?'Pick captured':'Latest capture'}</span></div>${d.src==='median'&&x.status==='final'?`<p class="sub">This pick used the median of books: it was made before the switch to ${esc(refName(d))}, or ${esc(refName(d))} had no line at the pick.</p>`:''}<div class="chart" id="chart"></div>${snapTable(d)}`:'<p class="sub">No book lines were captured for this game yet.</p>'}
   </section>
   <section class="panel"><h3>Every book${d.lock?` at ${esc(d.lock.at)} ET`:''}${d.lock&&x.status!=='final'?' · latest':''}</h3>${booksTable(x,d)}</section>
   <section class="panel"><h3>What the projection used</h3>${inputsPanel(x,d)}</section>`;
