@@ -129,6 +129,8 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
     data = json.dumps({"loss_review": loss_review or {}, "tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
                        "next_lock": None if nxt is None else {"at": _clock(nxt[0]), "game": nxt[1]},
+                       "due": [{"iso": a.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "at": _clock(a), "game": g}
+                               for a, g in sorted(upcoming)],
                        "updated": updated.astimezone(ET).strftime("%a %b %-d, %-I:%M %p ET")})
     return TEMPLATE.replace("__DATA__", data).replace("__TITLE__", html.escape(f"Week {week} Picks"))
 
@@ -162,6 +164,11 @@ h2{margin:0;font:800 30px/1 var(--display);text-transform:uppercase;letter-spaci
 header{display:flex;flex-direction:column;gap:10px}
 .next{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink)}
 .next[hidden]{display:none}
+.next{flex-wrap:wrap}
+.next .cd{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.next.soon .cd{color:var(--ink)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,200,0,.7)}100%{box-shadow:0 0 0 10px rgba(255,200,0,0)}}
+@media (prefers-reduced-motion:no-preference){.next.soon i{animation:pulse 1.6s ease-out infinite}.next.now i{animation:pulse .8s ease-out infinite}}
 .next i{width:9px;height:9px;border-radius:50%;background:var(--flag);border:2px solid var(--ink);flex:none}
 
 /* summary */
@@ -229,6 +236,15 @@ header{display:flex;flex-direction:column;gap:10px}
 .mva svg line{stroke:var(--ink);stroke-width:2.5;stroke-linecap:round}.mva svg path{fill:var(--ink)}
 .mv2.flat .mva svg line{stroke:var(--ink-3);stroke-width:2}
 .mva.none svg line{stroke:var(--ink-3);stroke-dasharray:3 4}
+@keyframes mvIn{0%{transform:translateX(calc(-100% - 84px));opacity:0}25%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes mvGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes mvFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:no-preference){
+  .mv2.anim .mvb.mk{position:relative;z-index:1;animation:mvIn .75s cubic-bezier(.2,.8,.25,1) .2s both paused}
+  .mv2.anim .mva svg{transform-origin:left center;animation:mvGrow .55s ease-out .1s both paused}
+  .mv2.anim .mva small{animation:mvFade .4s ease-out .7s both paused}
+  .mv2.anim.go .mvb.mk,.mv2.anim.go .mva svg,.mv2.anim.go .mva small{animation-play-state:running}
+}
 .mva small{font:500 11px var(--mono);color:var(--ink-2);text-align:center;white-space:nowrap}
 .track{position:relative;height:34px}
 .track .base{position:absolute;left:0;right:0;top:11px;height:2px;background:var(--rule)}
@@ -345,7 +361,16 @@ svg [hidden]{display:none}
 .lrc .f-up{fill:var(--win);opacity:.16}.lrc .f-dn{fill:var(--loss);opacity:.16}
 .lrc .f-line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
 .lrc .f-zero{stroke:var(--ink-2);stroke-width:1.25;stroke-dasharray:4 3}
-.lrc .f-late{fill:var(--flag);opacity:.18}
+.lrc .f-late{fill:var(--flag);opacity:.18;transition:opacity .35s}
+.lrc svg.late-on .f-late{opacity:.5}
+.lrc .f-head circle{fill:var(--flag);stroke:var(--ink);stroke-width:2}
+.lrc-bar{display:flex;align-items:center;gap:10px;min-height:30px;margin:0 0 4px}
+.lrc .play{all:unset;box-sizing:border-box;cursor:pointer;font:500 12px var(--mono);color:var(--ink);border:1px solid var(--rule);border-radius:999px;padding:5px 12px;flex:none;background:var(--panel)}
+.lrc .play:hover{border-color:var(--ink-3)}
+.lrc .play:disabled{opacity:.5;cursor:default}
+.lrc .play:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.lrc .rclock{font:400 11.5px var(--mono);color:var(--ink-2);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (prefers-reduced-motion:reduce){.lrc-bar{display:none}}
 .lrc .f-q{stroke:var(--rule);stroke-width:1}
 .lrc .f-end{stroke:var(--panel);stroke-width:2}
 .lrc .f-x{stroke:var(--ink-3);stroke-width:1}
@@ -617,7 +642,18 @@ const pts=a=>{const w=Math.floor(a),f=FR[a-w]??String(a-w);const t=(w?w:'')+f;re
 const pct=(w,l)=>{const n=w+l;if(!n)return null;const r=w/n;return [Math.round(r*100),Math.round(Math.sqrt(r*(1-r)/n)*100)]};
 $('h1').textContent=`Week ${D.week}`;
 $('meta').textContent=`${D.season} regular season · snapshot ${D.updated}`+(D.credits!=null?` · odds API credits left ${D.credits}${D.credits<150?' (optional captures paused)':''}`:'');
-if(D.next_lock){$('next').hidden=false;$('next-t').textContent=`Next pick locks ${D.next_lock.at} ET · ${D.next_lock.game}`}
+(function(){                                 // live countdown to the next pick; rolls on to the following game by itself
+  const due=(D.due||[]).map(d=>({...d,ms:Date.parse(d.iso)})).sort((a,b)=>a.ms-b.ms);
+  if(!due.length)return;
+  const el=$('next'),tx=$('next-t');el.hidden=false;
+  const fmt=ms=>{const s=Math.max(0,Math.floor(ms/1000)),d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);
+    return d?`${d}d ${h}h`:h?`${h}h ${String(m).padStart(2,'0')}m`:`${m}:${String(s%60).padStart(2,'0')}`};
+  const tick=()=>{const now=Date.now(),n=due.find(d=>d.ms+600000>now);      // a pick reads "picking now" for 10 min while the page catches up
+    if(!n){el.hidden=true;return}
+    const left=n.ms-now;el.classList.toggle('soon',left>0&&left<3600000);el.classList.toggle('now',left<=0);
+    tx.innerHTML=left>0?`Next pick locks ${esc(n.at)} ET · ${esc(n.game)} · <b class="cd">in ${fmt(left)}</b>`:`${esc(n.game)} · <b class="cd">picking now</b>, refresh in a minute`};
+  tick();setInterval(tick,1000);
+})();
 const g=D.games, locked=g.filter(x=>x.status==='final').length;
 $('records').innerHTML=D.models.map(m=>{const p=pct(m.W,m.L);
   return `<div class="rec"><span class="v">${m.W}–${m.L}</span><span class="l">${esc(m.label)}</span><span class="s">${p?`${p[0]}% ± ${p[1]} · vs pool line`:'no games graded yet'}${m.note?`<br>${esc(m.note)}`:''}</span></div>`}).join('')
@@ -751,6 +787,10 @@ function track(x){
   const lbl=`Pool line ${x.home} ${sgn(x.line)}, market ${x.market==null?'unknown':sgn(x.market)}: ${toward}`;
   return `<div class="track" role="img" aria-label="${esc(lbl)}" title="${esc(lbl)}"><span class="base"></span>${ticks}<span class="seg" style="left:${lo}%;width:${wd}%"></span><span class="pool"></span><span class="dot" style="left:${pos}%"></span><span class="end l">${esc(x.home)}</span><span class="end r">${esc(x.away)}</span></div>`;
 }
+const REDUCED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const mvSeen=new Set();                      // each card's move animates once, the first time it scrolls into view
+const mvIO=window.IntersectionObserver?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('go');mvIO.unobserve(e.target);mvSeen.add(e.target.dataset.g)}}),{threshold:.6}):null;
+function watchMoves(){document.querySelectorAll('.mv2.anim:not(.go)').forEach(e=>mvIO?mvIO.observe(e):e.classList.add('go'))}
 function move(x){
   if(x.drift==null&&x.status==='started_no_final_pick')return '<div class="cover">No pick was recorded before kickoff.</div>';
   const side=x.pick||x.home,fl=v=>side===x.home?v:-v;                 // spreads from the pick's side
@@ -759,10 +799,14 @@ function move(x){
   const toward=x.drift<0?x.home:x.away,withPick=x.pick&&toward===x.pick;
   const what=x.drift===0?'no move':`${pts(Math.abs(x.drift))} toward ${esc(toward)}`;
   const lbl=`Pool line ${side} ${sgn(fl(x.line))}, market ${x.status==='final'?'at the pick':'now'} ${side} ${sgn(fl(x.market))}: ${x.drift===0?'no move':pts(Math.abs(x.drift))+' toward '+toward}`;
+  const aw=Math.round(Math.max(26,Math.min(56,22+Math.abs(x.drift)*16)));   // the arrow is longer for a bigger move
+  const arrow=x.drift===0?'<svg viewBox="0 0 60 12" aria-hidden="true"><line x1="6" x2="54" y1="4" y2="4"/><line x1="6" x2="54" y1="9" y2="9"/></svg>'
+    :`<svg viewBox="0 0 ${aw} 12" width="${aw}" height="12" aria-hidden="true"><line x1="2" x2="${aw-9}" y1="6" y2="6"/><path d="M${aw-11} 1 L${aw-1} 6 L${aw-11} 11 Z"/></svg>`;
+  const anim=!REDUCED&&x.drift!==0&&!mvSeen.has(x.id);
   return `<div class="move"><div class="move-top"><span class="chip ${x.sig}">${esc(x.sig_label)}</span></div>
-    <div class="mv2 ${x.drift===0?'flat':withPick?'with':'against'}" role="img" aria-label="${esc(lbl)}">
+    <div class="mv2 ${x.drift===0?'flat':withPick?'with':'against'}${anim?' anim':''}" data-g="${esc(x.id)}" role="img" aria-label="${esc(lbl)}">
       <div class="mvb"><span>Pool line</span><b>${poolTxt}</b></div>
-      <div class="mva"><svg viewBox="0 0 60 12" aria-hidden="true">${x.drift===0?'<line x1="6" x2="54" y1="4" y2="4"/><line x1="6" x2="54" y1="9" y2="9"/>':'<line x1="2" x2="50" y1="6" y2="6"/><path d="M48 1 L58 6 L48 11 Z"/>'}</svg><small>${what}</small></div>
+      <div class="mva">${arrow}<small>${what}</small></div>
       <div class="mvb mk"><span>Market ${x.status==='final'?'at pick':'now'}</span><b>${esc(side)} ${sgn(fl(x.market))}</b></div>
     </div></div>`;
 }
@@ -850,17 +894,18 @@ function foot(x){
     const P=x.flow,pts=[];P.forEach((p,i)=>{if(i)pts.push([X(p[0]),Y(P[i-1][1])]);pts.push([X(p[0]),Y(p[1])])});
     const d=pts.map((q,i)=>(i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' ');
     const id='c'+x.id.replace(/\W/g,''),z=Y(0),x0=X(0),x1=X(P[P.length-1][0]);
-    o+=`<defs><clipPath id="${id}u"><rect x="0" y="0" width="${W}" height="${z}"/></clipPath><clipPath id="${id}d"><rect x="0" y="${z}" width="${W}" height="${H}"/></clipPath></defs>`;
+    o+=`<defs><clipPath id="${id}u"><rect x="0" y="0" width="${W}" height="${z}"/></clipPath><clipPath id="${id}d"><rect x="0" y="${z}" width="${W}" height="${H}"/></clipPath><clipPath id="${id}r"><rect class="f-reveal" x="0" y="0" width="${W}" height="${H}"/></clipPath></defs>`;
     const area=`${d} L${x1} ${z} L${x0} ${z} Z`;
+    o+=`<line class="f-zero" x1="${m.l}" x2="${m.l+pw}" y1="${z}" y2="${z}"/><g clip-path="url(#${id}r)">`;      // everything the replay draws sits in this group
     o+=`<path class="f-up" clip-path="url(#${id}u)" d="${area}"/><path class="f-dn" clip-path="url(#${id}d)" d="${area}"/>`;
-    o+=`<line class="f-zero" x1="${m.l}" x2="${m.l+pw}" y1="${z}" y2="${z}"/>`;
     o+=`<path class="f-line" d="${d}"/>`;
     for(const [t,who] of x.tos||[]){const tx=X(t),ty=m.t+ph;o+=who==='pick'?`<path class="to-p" d="M${tx-5} ${ty-9} L${tx+5} ${ty-9} L${tx} ${ty-1} Z"><title>${esc(x.pick)} turnover ${clock(t)}</title></path>`:`<path class="to-o" d="M${tx-5} ${ty-1} L${tx+5} ${ty-1} L${tx} ${ty-9} Z"><title>${esc(x.opp)} turnover ${clock(t)}</title></path>`}
     if(x.cov5!=null)o+=`<circle cx="${X(55)}" cy="${Y(x.cov5)}" r="4.5" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>`;
     const ey=Y(x.fin);o+=`<circle class="f-end" cx="${x1}" cy="${ey}" r="6" fill="var(--loss)"/><text x="${x1+8}" y="${ey+4}" style="fill:var(--loss);font-weight:500">${s1(x.fin)}</text>`;
     if(Math.abs(x.fin)>YM)o+=`<text x="${x1-4}" y="${ey-9}" text-anchor="end">off scale</text>`;
+    o+=`</g><g class="f-head" hidden><circle r="6" cx="0" cy="0"/></g>`;
     o+=`<line class="f-x" x1="0" x2="0" y1="${m.t}" y2="${m.t+ph}" hidden/>`;
-    return {svg:o,H,X,T,m,pw};
+    return {svg:o,H,X,Y,T,m,pw};
   }
   function note(x){
     const late=x.cov5!=null&&x.cov5>0;
@@ -875,11 +920,14 @@ function foot(x){
     return `<article class="lrc" data-id="${esc(x.id)}"><div class="lrc-h"><div><div class="wk">Week ${x.week}${mv?' · '+mv:''}</div>
       <h4>${esc(x.away)} ${x.as} <small>@</small> ${esc(x.home)} ${x.hs}</h4><span class="pk">${esc(x.pick)} ${s1(x.line)}${x.p!=null?`<em>${(x.p*100).toFixed(1)}%</em>`:''}</span></div>
       <div class="miss"><b>${s1(x.fin)}</b><span>vs the number</span></div></div>
-      <div class="flow" data-id="${esc(x.id)}"></div><p class="note">${note(x)} Turnovers ${esc(x.pick)} ${x.to[0]}, ${esc(x.opp)} ${x.to[1]}.</p>
+      <div class="flow" data-id="${esc(x.id)}"></div>${x.flow?'<div class="lrc-bar"><button class="play" type="button" aria-label="Replay the game">▶ Replay</button><span class="rclock"></span></div>':''}<p class="note">${note(x)} Turnovers ${esc(x.pick)} ${x.to[0]}, ${esc(x.opp)} ${x.to[1]}.</p>
       ${tg?`<div class="tags">${tg}</div>`:''}<div class="oth"><span>Other models:</span>${ot}</div></article>`;
   }
+  const played=new Set();                    // cards whose replay has already run once on screen
+  const io=window.IntersectionObserver&&!REDUCED?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){io.unobserve(e.target);played.add(e.target.dataset.id);e.target._run&&e.target._run()}}),{threshold:.6}):null;
   function paint(){
     document.querySelectorAll('#lr-grid .flow').forEach(box=>{
+      cancelAnimationFrame(box._raf);if(io)io.unobserve(box);
       const x=Ls.find(z=>z.id===box.dataset.id),W=Math.max(260,Math.floor(box.clientWidth||300)),c=flow(x,W);
       box.innerHTML=`<svg viewBox="0 0 ${W} ${c.H}" width="${W}" height="${c.H}" role="img" tabindex="0" aria-label="${esc(`${x.pick} cover margin through the game: ${x.cov5!=null?`${s1(x.cov5)} with 5:00 left, `:''}final ${s1(x.fin)}`)}">${c.svg}</svg><div class="ftip" hidden></div>`;
       if(!x.flow)return;
@@ -892,6 +940,20 @@ function foot(x){
       const hide=()=>{tip.hidden=true;xl.setAttribute('hidden','')};
       svg.addEventListener('pointermove',e=>{const r=svg.getBoundingClientRect();show((e.clientX-r.left)*(W/r.width))});
       svg.addEventListener('pointerleave',hide);svg.addEventListener('blur',hide);
+      // replay: the line draws itself through the game, a dot rides the cover margin, the clock and score tick along
+      const card=box.closest('.lrc'),play=card.querySelector('.play'),rd=card.querySelector('.rclock'),rev=svg.querySelector('.f-reveal'),head=svg.querySelector('.f-head'),hc=head.firstChild;
+      const full=()=>{rev.setAttribute('width',W);head.setAttribute('hidden','');svg.classList.remove('late-on')};
+      const frame=t=>{const px=c.X(t),p=at(t);rev.setAttribute('width',px);hc.setAttribute('cx',px);hc.setAttribute('cy',c.Y(p[1]));head.removeAttribute('hidden');
+        svg.classList.toggle('late-on',t>=55);
+        rd.textContent=`${clock(t)} · ${x.away} ${p[2]}–${p[3]} ${x.home} · ${s1(p[1])}`};
+      const run=()=>{if(REDUCED){full();return}
+        cancelAnimationFrame(box._raf);play.disabled=true;const T=c.T,dur=4400,t0=performance.now();
+        const step=now=>{const k=Math.min(1,(now-t0)/dur);frame(k*T);
+          if(k<1)box._raf=requestAnimationFrame(step);
+          else{full();rd.textContent=`Final · ${x.away} ${x.as}–${x.hs} ${x.home} · ${s1(x.fin)}`;play.disabled=false;play.textContent='↻ Replay'}};
+        box._raf=requestAnimationFrame(step)};
+      box._run=run;play.onclick=run;
+      if(io&&!played.has(x.id)){rev.setAttribute('width',0);io.observe(box)}      // first time on screen: plays by itself
       let kt=c.T;svg.onkeydown=e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){kt=Math.max(0,Math.min(c.T,kt+(e.key==='ArrowLeft'?-1:1)));show(c.X(kt));e.preventDefault()}else if(e.key==='Escape')hide()};
     });
   }
@@ -1031,6 +1093,7 @@ function draw(k){
     return `<section class="slot"><div class="slot-h"><h2>${esc(s.day)}<small>${esc(s.times)} ET</small></h2><span class="st">${all.length} game${all.length>1?'s':''} · ${st}</span></div><div class="grid" style="--cols:${cols(gs.length)}">${gs.map(card).join('')}</div></section>`;
   }).join('');
   $('slots').innerHTML=out||'<p class="empty">No games match this filter.</p>';
+  watchMoves();
 }
 function setF(k){for(const n of ['all','strong','differs','hybrid'])$('f-'+n).setAttribute('aria-pressed',n===k);draw(k)}
 for(const n of ['all','strong','differs','hybrid'])$('f-'+n).onclick=()=>setF(n);
