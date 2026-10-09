@@ -1,0 +1,117 @@
+name: openmarkets-auth-probe
+
+# One-off check of the OpenMarkets key. The key is sent only to api.openmarkets.ai (the host the public
+# docs name), as the X-API-Key header. Output is redacted: no key and no account identifiers are printed.
+# Runs on a push that changes this file, or when dispatched by hand.
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/nfl-ats-league-engine-q5vkbf]
+    paths: ['.github/workflows/openmarkets-auth-probe.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Key check, NFL coverage, public docs terms
+        env:
+          OPENMARKETS_API_KEY: ${{ secrets.OPENMARKETS_API_KEY }}
+        run: |
+          python3 -I - <<'PY'
+          import json, os, re, urllib.error, urllib.parse, urllib.request
+
+          BASE = "https://api.openmarkets.ai/flow/v1"
+          KEY = os.environ.get("OPENMARKETS_API_KEY", "")
+          print("OPENMARKETS_API_KEY visible:", bool(KEY))
+
+          def call(path, params=None):
+              url = BASE + path + ("?" + urllib.parse.urlencode(params) if params else "")
+              req = urllib.request.Request(url, headers={"X-API-Key": KEY})
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      return r.status, r.read().decode("utf-8", "replace")
+              except urllib.error.HTTPError as e:
+                  return e.code, e.read().decode("utf-8", "replace")
+              except Exception as e:
+                  return None, type(e).__name__
+
+          def short(s, n=400):
+              return re.sub(r"\s+", " ", s)[:n]
+
+          SENSITIVE = re.compile(r"email|name|user|account|key|prefix|token|secret|hash|_id$|^id$", re.I)
+
+          def show(o, depth=0):
+              pad = "  " * depth
+              if isinstance(o, dict):
+                  for k, v in o.items():
+                      if isinstance(v, (dict, list)):
+                          print(f"{pad}{k}:")
+                          show(v, depth + 1)
+                      else:
+                          print(f"{pad}{k}: {'<redacted>' if SENSITIVE.search(k) else v}")
+              elif isinstance(o, list):
+                  print(f"{pad}[{len(o)} items]")
+                  if o:
+                      show(o[0], depth + 1)
+
+          # 1. What the key is and what it can do (identifiers redacted)
+          st, body = call("/auth/me")
+          print("GET /auth/me ->", st)
+          try:
+              show(json.loads(body))
+          except Exception:
+              print(short(body))
+
+          # 2. Leagues
+          st, body = call("/leagues", {"limit": 200})
+          print("GET /leagues ->", st)
+          leagues = []
+          if st == 200:
+              leagues = json.loads(body).get("data", [])
+              print("leagues:", [(l.get("id"), l.get("name")) for l in leagues])
+          else:
+              print(short(body))
+
+          # 3. NFL contests and the market types they carry
+          nfl = [l for l in leagues if re.search(r"\bNFL\b", str(l.get("name", "")), re.I)]
+          if not nfl:
+              print("no league named NFL in the list")
+          for l in nfl[:1]:
+              st, body = call("/contests", {"league_id": l.get("id"), "limit": 5})
+              print("GET /contests (NFL) ->", st, short(body, 300))
+              if st == 200:
+                  contests = json.loads(body).get("data", [])
+                  print("contests returned:", len(contests))
+                  if contests:
+                      cid = contests[0].get("id")
+                      st, body = call(f"/contests/{cid}/liquidity")
+                      print("GET /contests/:id/liquidity ->", st)
+                      if st == 200:
+                          rows = json.loads(body).get("data", [])
+                          print("positions:", len(rows))
+                          print("market tokens:", sorted(set(re.findall(r"mk_[a-z_]+", json.dumps(rows)))))
+                          print("sample titles:", [r.get("title") for r in rows[:8]])
+                      else:
+                          print(short(body))
+
+          # 4. Public docs: coverage terms and endpoint list (no key used)
+          PAGES = ["developers", "developers/reference", "developers/historical", "developers/authentication",
+                   "developers/rate-limits", "developers/quickstart", "developers/streaming",
+                   "developers/mcp", "developers/connect"]
+          TERMS = ["Pinnacle", "spread", "moneyline", "total", "closing", "historical", "NFL", "sportsbook"]
+          for p in PAGES:
+              try:
+                  raw = urllib.request.urlopen("https://app.openmarkets.ai/" + p, timeout=30).read().decode("utf-8", "replace")
+              except Exception as e:
+                  print(p, "->", type(e).__name__)
+                  continue
+              text = short(re.sub(r"<[^>]+>", " ", raw), 10**9)
+              print(p, {t: len(re.findall(t, text, re.I)) for t in TERMS})
+              if p == "developers/reference":
+                  print("endpoints:", sorted(set(re.findall(r"(GET|POST) (/flow/v1/[A-Za-z0-9/:_-]+)", text))))
+          print("done")
+          PY
