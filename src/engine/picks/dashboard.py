@@ -362,6 +362,10 @@ svg [hidden]{display:none}
 .lr-key{display:flex;flex-wrap:wrap;gap:6px 16px;font:400 11.5px var(--mono);color:var(--ink-2);margin:-4px 0 12px}
 .lr-key span{display:inline-flex;align-items:center;gap:6px}
 .lr-key svg{flex:none}
+.lr-tog{all:unset;box-sizing:border-box;cursor:pointer;display:flex;justify-content:center;gap:8px;width:100%;margin:2px 0 4px;padding:11px 16px;font:600 14px var(--body);color:var(--ink);background:var(--panel-2);border:1px solid var(--rule);border-radius:10px}
+.lr-tog:hover{border-color:var(--ink-3)}
+.lr-tog:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+#lr-body{margin-top:14px}#lr-body[hidden]{display:none}
 .lr-more{all:unset;cursor:pointer;display:block;margin:14px auto 4px;font:500 13px var(--body);color:var(--ink);border:1px solid var(--rule);border-radius:999px;padding:8px 16px}
 .lr-more[hidden]{display:none}
 .lr-more:hover{border-color:var(--ink-3)}
@@ -566,9 +570,12 @@ details p{margin:0}
     <p class="sub">Every official loss, play by play: the line is how far the pick was from covering the pool line at each moment of the game. Above the number = covering. Descriptive only; nothing here changes a pick.</p>
     <div class="lr-tiles" id="lr-tiles"></div>
     <div class="lr-swing" id="lr-swing"></div>
+    <button class="lr-tog" id="lr-tog" aria-expanded="false" aria-controls="lr-body"></button>
+    <div id="lr-body" hidden>
     <div class="filters" role="group" aria-label="Filter losses" id="lr-filters"></div>
     <div class="lr-grid" id="lr-grid"></div>
     <button class="lr-more" id="lr-more" hidden></button>
+    </div>
     <details><summary>As a table</summary><div class="tbl"><table id="lr-tab"></table></div></details>
   </section>
   <section class="controls">
@@ -820,7 +827,7 @@ function foot(x){
   let cur='all',all=false;
   const latest=Math.max(...Ls.map(x=>x.week));
   const tiles=()=>{$('lr-tiles').innerHTML=F.map(([k,l,n,,c])=>`<button class="${c}" data-f="${k}" aria-pressed="${cur===k}"><b>${n}</b><span>${esc(l)}</span></button>`).join('');
-    $('lr-tiles').querySelectorAll('button').forEach(b=>b.onclick=()=>{cur=cur===b.dataset.f&&cur!=='all'?'all':b.dataset.f;all=true;tiles();grid()})};
+    $('lr-tiles').querySelectorAll('button').forEach(b=>b.onclick=()=>{cur=cur===b.dataset.f&&cur!=='all'?'all':b.dataset.f;all=true;tiles();grid();setOpen(true)})};
   // late-swing ledger: luck in both directions
   const a=Sm.late||0,f=Sm.won_late||0;
   if(a+f){$('lr-swing').innerHTML=`<div class="top"><span>Late swings against: <b>${a}</b></span><span>Late swings for us: <b>${f}</b></span></div>
@@ -895,8 +902,13 @@ function foot(x){
     more.hidden=!rest;more.textContent=`Show all ${sel.length} losses this season`;more.onclick=()=>{all=true;grid()};
     paint();
   }
-  $('lr-swing').insertAdjacentHTML('afterend',`<div class="lr-key"><span><svg width="22" height="10"><line x1="0" x2="22" y1="5" y2="5" stroke="var(--ink)" stroke-width="2"/></svg>Cover margin</span><span><svg width="22" height="10"><line x1="0" x2="22" y1="5" y2="5" stroke="var(--ink-2)" stroke-width="1.25" stroke-dasharray="4 3"/></svg>The number (pool line)</span><span><svg width="12" height="12"><circle cx="6" cy="6" r="4" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/></svg>5:00 left</span><span><svg width="12" height="10"><path d="M1 1 L11 1 L6 9 Z" fill="var(--loss)"/></svg>Our turnover</span><span><svg width="12" height="10"><path d="M1 9 L11 9 L6 1 Z" fill="var(--win)"/></svg>Their turnover</span></div>`);
-  tiles();grid();
+  $('lr-body').insertAdjacentHTML('afterbegin',`<div class="lr-key"><span><svg width="22" height="10"><line x1="0" x2="22" y1="5" y2="5" stroke="var(--ink)" stroke-width="2"/></svg>Cover margin</span><span><svg width="22" height="10"><line x1="0" x2="22" y1="5" y2="5" stroke="var(--ink-2)" stroke-width="1.25" stroke-dasharray="4 3"/></svg>The number (pool line)</span><span><svg width="12" height="12"><circle cx="6" cy="6" r="4" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/></svg>5:00 left</span><span><svg width="12" height="10"><path d="M1 1 L11 1 L6 9 Z" fill="var(--loss)"/></svg>Our turnover</span><span><svg width="12" height="10"><path d="M1 9 L11 9 L6 1 Z" fill="var(--win)"/></svg>Their turnover</span></div>`);
+  const body=$('lr-body'),tog=$('lr-tog');
+  const setOpen=o=>{body.hidden=!o;tog.setAttribute('aria-expanded',o);
+    tog.innerHTML=o?'Hide the game charts <span aria-hidden="true">▴</span>':`Show the game charts (${Ls.length} loss${Ls.length===1?'':'es'}) <span aria-hidden="true">▾</span>`;
+    if(o)paint()};
+  tog.onclick=()=>setOpen(body.hidden);
+  tiles();grid();setOpen(false);
   if(window.ResizeObserver){let w0=0;new ResizeObserver(es=>{const w=Math.round(es[0].contentRect.width);if(w&&w!==w0){w0=w;paint()}}).observe($('lr-grid'))}
   $('lr-tab').innerHTML='<thead><tr><th>Week</th><th>Game</th><th>Pick</th><th class="n">5:00 left</th><th class="n">Final</th><th class="n">Turnovers</th><th>Tags</th></tr></thead><tbody>'
     +Ls.map(x=>`<tr><td>${x.week}</td><td>${esc(x.away)} ${x.as} @ ${esc(x.home)} ${x.hs}</td><td>${esc(x.pick)} ${s1(x.line)}</td><td class="n">${x.cov5==null?'—':s1(x.cov5)}</td><td class="n">${s1(x.fin)}</td><td class="n">${x.to[0]}–${x.to[1]}</td><td>${x.tags.map(t=>esc(TAG[t])).join(', ')}</td></tr>`).join('')+'</tbody>';
