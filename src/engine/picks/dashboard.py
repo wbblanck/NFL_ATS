@@ -77,7 +77,8 @@ def current_week(sched, season: int) -> int:
 def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.datetime,
            results: dict | None = None, details: dict | None = None, season_table: list | None = None,
            credits: int | None = None, epa: dict | None = None, curve: dict | None = None,
-           tiebreak: list | None = None, loss_review: dict | None = None) -> str:
+           tiebreak: list | None = None, loss_review: dict | None = None, flips: dict | None = None,
+           slate: dict | None = None) -> str:
     """results: game_id -> graded row from live.compute (result, proj_<version> strings); optional.
     details: game_id -> per-game detail from game_detail.build (book lines over time, why, inputs); optional."""
     results = results or {}
@@ -126,7 +127,7 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                        "note": f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"})
     nxt = min(upcoming) if upcoming else None
     from engine.picks.season import MODELS as _SM
-    data = json.dumps({"loss_review": loss_review or {}, "tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
+    data = json.dumps({"flips": flips or {}, "slate": slate or {}, "loss_review": loss_review or {}, "tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
                        "next_lock": None if nxt is None else {"at": _clock(nxt[0]), "game": nxt[1]},
                        "due": [{"iso": a.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "at": _clock(a), "game": g}
@@ -164,6 +165,133 @@ h2{margin:0;font:800 30px/1 var(--display);text-transform:uppercase;letter-spaci
 header{display:flex;flex-direction:column;gap:10px}
 .next{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink)}
 .next[hidden]{display:none}
+/* week rail */
+.rail{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:14px 12px 10px}
+.rail[hidden]{display:none}
+.rail-t{display:flex;justify-content:space-between;gap:10px;font:400 11px var(--mono);color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.rail-t b{color:var(--ink);font-weight:500}
+.rail-b{position:relative;height:98px}
+.rail-line{position:absolute;left:6%;right:6%;top:9px;height:3px;background:var(--rule);border-radius:2px}
+.rail-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ink);border-radius:2px;transition:width 1.5s cubic-bezier(.2,.7,.2,1)}
+.rail-now{position:absolute;top:3px;left:6%;width:15px;height:15px;margin-left:-7.5px;border-radius:50%;background:var(--flag);border:2px solid var(--ink);z-index:3;transition:left 1.5s cubic-bezier(.2,.7,.2,1)}
+.rail-st{position:absolute;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;width:58px}
+.rail-n{width:11px;height:11px;border-radius:50%;background:var(--panel);border:2px solid var(--ink-3);z-index:2;margin-top:4px;margin-bottom:6px}
+.rail-st.past .rail-n{background:var(--ink);border-color:var(--ink)}
+.rail-st b{font:500 11px var(--mono)}.rail-st span{font:400 10px var(--mono);color:var(--ink-3)}
+.rail-g{display:grid;grid-template-columns:repeat(4,9px);gap:3px;margin-top:5px}
+.rail-g i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-3);box-sizing:border-box}
+.rail-g i.lk{background:var(--ink);border-color:var(--ink)}
+.rail-g i.w{background:var(--win);border-color:var(--win)}
+.rail-g i.l{background:var(--loss);border-color:var(--loss)}
+@keyframes popin{from{transform:scale(0)}to{transform:scale(1)}}
+@media (prefers-reduced-motion:no-preference){.rail-g i{animation:popin .35s cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(var(--i)*45ms + .6s)}.rail-now{animation:pulse 1.8s ease-out infinite}}
+/* split-flap digits */
+.rec .v{white-space:nowrap}
+.fl{display:inline-block;font-size:.72em;background:var(--ink);color:var(--bg);border-radius:5px;padding:3px 5px 1px;margin:0 1px;position:relative;overflow:hidden;line-height:1}
+.fl::after{content:"";position:absolute;left:0;right:0;top:50%;height:1.5px;background:var(--panel);opacity:.5}
+.fl i{font-style:normal;display:inline-block}
+.fs{display:inline-block;margin:0 1px;color:var(--ink-3)}
+@keyframes flapIn{0%{transform:rotateX(-95deg);opacity:.3}100%{transform:none;opacity:1}}
+.fl.flap i{animation:flapIn .16s ease-out both;transform-origin:50% 0}
+/* coin-flip ghosts */
+.ghost-row{margin:-2px 0 4px}
+.ghost-tog{all:unset;box-sizing:border-box;cursor:pointer;font:500 12px var(--mono);color:var(--ink);border:1px solid var(--rule);border-radius:999px;padding:6px 12px;background:var(--panel)}
+.ghost-tog:hover{border-color:var(--ink-3)}
+.ghost-tog[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.ghost-tog:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.chart .c-ghost{fill:none;stroke:var(--ink-3);stroke-width:.8;opacity:.11}
+/* tiebreaker darts */
+.darts{margin:6px 0 2px}
+.darts svg{display:block;width:100%;max-width:290px;height:auto;margin:0 auto;overflow:visible}
+.dg-ring{fill:none;stroke:var(--rule);stroke-width:1}
+.dg-ring.r0{fill:var(--panel-2)}.dg-ring.r1{fill:var(--panel)}
+.dg-bull{fill:var(--flag);stroke:var(--ink);stroke-width:1.5}
+.dg-t{font:400 10px var(--mono);fill:var(--ink-3)}
+.dg-w{font:500 10.5px var(--mono);fill:var(--ink)}
+.dg-shaft{stroke:var(--ink);stroke-width:2.2;stroke-linecap:round}
+.dg-fl{fill:var(--loss)}
+.dg-tip{fill:var(--ink)}
+.dg-ring2{fill:none;stroke:var(--ink);stroke-width:1.5;opacity:0}
+.dg-list{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:8px;font:400 11.5px var(--mono);color:var(--ink-2)}
+.dg-list b{color:var(--ink);font-weight:500}
+@keyframes dartIn{0%{transform:translate(80px,-170px) rotate(28deg) scale(1.7);opacity:0}30%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes dartWob{0%{transform:rotate(-8deg)}40%{transform:rotate(5deg)}70%{transform:rotate(-2deg)}100%{transform:none}}
+@keyframes dartRing{0%{transform:scale(.3);opacity:.7}100%{transform:scale(3.2);opacity:0}}
+@media (prefers-reduced-motion:no-preference){
+  .darts .dfly{animation:dartIn .55s cubic-bezier(.35,.1,.5,1) calc(var(--d)*.5s) both paused}
+  .darts .dwob{animation:dartWob .5s ease-out calc(var(--d)*.5s + .5s) both paused}
+  .darts .dg-ring2{transform-origin:0 0;animation:dartRing .6s ease-out calc(var(--d)*.5s + .5s) both paused}
+  .darts.go .dfly,.darts.go .dwob,.darts.go .dg-ring2{animation-play-state:running}
+}
+/* week replay */
+.sl-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:2px 0 12px}
+.sl-clock,.sl-rec{font:800 26px/1 var(--display);text-transform:uppercase;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sl-rec{text-align:right}
+.sl-clock small,.sl-rec small{display:block;margin-top:4px;font:400 11px var(--mono);color:var(--ink-3);text-transform:none;letter-spacing:0}
+.sl-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+@media (min-width:720px){.sl-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.slc{border:1px solid var(--rule);border-radius:9px;padding:7px 8px 5px;background:var(--tint,var(--panel-2));position:relative;min-width:0}
+.slc .t{display:flex;justify-content:space-between;align-items:baseline;gap:4px}
+.slc .code{font:800 21px/1 var(--display);text-transform:uppercase}
+.slc .ln{font:400 10px var(--mono);color:var(--ink-2);white-space:nowrap}
+.slc .m{font:800 25px/1.05 var(--display);font-variant-numeric:tabular-nums;margin-top:2px}
+.slc .m.up{color:var(--win)}.slc .m.dn{color:var(--loss)}.slc .m.na{color:var(--ink-3);font-size:15px}
+.slc svg{display:block;width:100%;height:20px;margin-top:1px}
+.slc svg .z{stroke:var(--ink-3);stroke-width:.6;stroke-dasharray:2 2}
+.slc svg .p{fill:none;stroke:var(--ink);stroke-width:1.4;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.slc.fin.w{border-color:var(--win)}.slc.fin.l{border-color:var(--loss)}
+.slc .bd{font:700 13px var(--mono);margin-left:4px}
+.slc.fin.w .bd{color:var(--win)}.slc.fin.l .bd{color:var(--loss)}
+.slc .ld{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--flag);border:1.5px solid var(--ink);vertical-align:2px}
+.sl-ctl{display:flex;gap:12px;align-items:center;margin-top:12px}
+.sl-ctl button{all:unset;cursor:pointer;box-sizing:border-box;font:500 12px var(--mono);border:1px solid var(--rule);border-radius:999px;padding:7px 14px;background:var(--panel);flex:none}
+.sl-ctl button:hover{border-color:var(--ink-3)}
+.sl-ctl button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.sl-ctl input[type=range]{flex:1;min-width:0;accent-color:var(--ink)}
+/* line swarm */
+.sw-ctl{display:flex;align-items:center;gap:12px;margin:2px 0 6px}
+.sw-play{all:unset;cursor:pointer;box-sizing:border-box;font:500 12px var(--mono);border:1px solid var(--rule);border-radius:999px;padding:7px 14px;background:var(--panel);flex:none}
+.sw-play:hover{border-color:var(--ink-3)}
+.sw-play:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.sw-clock{font:500 12px var(--mono);color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.swarm svg{display:block;width:100%;height:auto;overflow:visible}
+.swarm text{font:400 10.5px var(--mono);fill:var(--ink-3)}
+.swarm .sw-g{stroke:var(--rule);stroke-width:1}
+.swarm .sw-pool{stroke:var(--ink-2);stroke-width:1.5;stroke-dasharray:5 4}
+.swarm .sw-d{fill:var(--panel);stroke:var(--ink-3);stroke-width:2}
+.swarm .sw-d.ref{fill:var(--flag);stroke:var(--ink);stroke-width:2.2}
+.swarm .sw-lab{fill:var(--ink);font-weight:600}
+.swarm .sw-pick{fill:var(--loss);font-weight:600}
+.sw-seek{width:100%;margin:6px 0 0;accent-color:var(--ink)}
+/* key-number hurdle */
+.kn{display:flex;flex-direction:column;gap:2px}
+.kn svg{display:block;width:100%;max-width:340px;height:auto;margin:0 auto}
+.kn p{margin:0;font:400 11.5px/1.45 var(--mono);color:var(--ink-3)}
+.kn p b{color:var(--ink);font-weight:500}
+.kn-base{stroke:var(--rule);stroke-width:2}
+.kn-post,.kn-bar{fill:var(--ink)}
+.kn-k{font:800 15px var(--display);fill:var(--ink)}
+.kn-from{fill:var(--panel);stroke:var(--ink-2);stroke-width:2}
+.kn-dot{fill:var(--flag);stroke:var(--ink);stroke-width:2}
+.kn:not(.anim) .kn-hx{transform:translateX(228px)}
+@keyframes knx{from{transform:translateX(0)}to{transform:translateX(228px)}}
+@keyframes kny{0%{transform:translateY(0);animation-timing-function:ease-out}50%{transform:translateY(-27px);animation-timing-function:ease-in}100%{transform:translateY(0)}}
+@media (prefers-reduced-motion:no-preference){
+  .kn.anim .kn-hx{animation:knx 1.25s linear .15s both paused}
+  .kn.anim .kn-hy{animation:kny 1.25s linear .15s both paused}
+  .kn.anim.go .kn-hx,.kn.anim.go .kn-hy{animation-play-state:running}
+}
+/* pick flip */
+.teams{position:relative}
+.team{position:relative;z-index:1}
+.flipbar{position:absolute;left:0;right:0;border-radius:7px;background:var(--ink);z-index:0;pointer-events:none}
+.team.picked.pre{background:transparent;color:var(--ink)}
+.team.picked.pre .tag{visibility:hidden}
+.team.picked.pre.hot{color:var(--bg)}
+.team.ghostpick{color:var(--bg)}
+.team{transition:color .2s}
+.flipnote{font:400 11.5px/1.45 var(--mono);color:var(--ink-2);background:var(--flag-soft);border-radius:7px;padding:6px 9px}
+.flipnote b{color:var(--ink);font-weight:600}
 .next{flex-wrap:wrap}
 .next .cd{font-family:var(--mono);font-variant-numeric:tabular-nums}
 .next.soon .cd{color:var(--ink)}
@@ -563,6 +691,7 @@ details p{margin:0}
     <div class="meta" id="meta"></div>
     <div class="next" id="next" hidden><i></i><span id="next-t"></span></div>
   </header>
+  <section class="rail" id="rail" hidden aria-label="The week so far"></section>
   <section class="summary" aria-label="Season record">
     <div class="records" id="records"></div>
     <div class="bar-row">
@@ -574,7 +703,9 @@ details p{margin:0}
     <h3>Season path</h3>
     <p class="sub" id="curve-note"></p>
     <div class="key" id="curve-key"></div>
+    <div class="ghost-row"><button class="ghost-tog" id="ghost-tog" type="button" aria-pressed="false">Show 200 coin-flip ghosts</button></div>
     <div class="chart" id="curve-chart"></div>
+    <p class="sub" id="ghost-note" hidden></p>
     <p class="sub" id="curve-verdict"></p>
     <details><summary>As a table</summary><div class="tbl"><table id="curve-tab"></table></div></details>
   </section>
@@ -582,6 +713,7 @@ details p{margin:0}
     <h3>Tiebreaker: total points in the last game</h3>
     <div id="tb-now"></div>
     <div class="chart tb-chart" id="tb-chart"></div>
+    <div class="darts" id="tb-darts"></div>
     <p class="sub" id="tb-note"></p>
     <details><summary>Every week</summary><div class="tbl"><table id="tb-tab"></table></div></details>
   </section>
@@ -589,6 +721,13 @@ details p{margin:0}
     <h3>Season by week</h3>
     <p class="sub" id="season-note"></p>
     <div class="tbl"><table id="season-tab"></table></div>
+  </section>
+  <section class="panel" id="slate-panel" hidden aria-label="The week replayed">
+    <h3 id="sl-h"></h3>
+    <p class="sub" id="sl-sub"></p>
+    <div class="sl-top"><div class="sl-clock" id="sl-clock"></div><div class="sl-rec" id="sl-rec"></div></div>
+    <div class="sl-grid" id="sl-grid"></div>
+    <div class="sl-ctl"><button id="sl-play" type="button">▶ Replay</button><input id="sl-seek" type="range" min="0" max="1000" value="1000" aria-label="Scrub through the day"></div>
   </section>
   <section class="panel lr-panel" id="lr-panel" hidden aria-label="Loss review">
     <h3>Loss review</h3>
@@ -633,6 +772,7 @@ details p{margin:0}
 <div class="wrap" id="detail" hidden></div>
 <script>
 const D=__DATA__;
+const REDUCED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const num=(v,d)=>Number(v).toFixed(d).replace(/(\.\d)0$/,'$1');
@@ -658,6 +798,52 @@ const g=D.games, locked=g.filter(x=>x.status==='final').length;
 $('records').innerHTML=D.models.map(m=>{const p=pct(m.W,m.L);
   return `<div class="rec"><span class="v">${m.W}–${m.L}</span><span class="l">${esc(m.label)}</span><span class="s">${p?`${p[0]}% ± ${p[1]} · vs pool line`:'no games graded yet'}${m.note?`<br>${esc(m.note)}`:''}</span></div>`}).join('')
   +`<div class="rec"><span class="v">${locked}/${g.length}</span><span class="l">Picks locked this week</span><span class="s">${g.length-locked?`${g.filter(x=>x.status==='provisional').length} still provisional`:'nothing left to lock'}</span></div>`;
+(function(){                                 // split-flap digits: flip only what changed since your last visit, or roll up from 0 on a first look
+  const vals=[...document.querySelectorAll('#records .rec .v')];
+  let prev={};try{prev=JSON.parse(localStorage.getItem('nfl_rec')||'{}')}catch(e){}
+  const now={};
+  vals.forEach((el,i)=>{
+    const lab=el.nextElementSibling?el.nextElementSibling.textContent:String(i),txt=el.textContent;now[lab]=txt;
+    const old=prev[lab];
+    el.setAttribute('aria-label',txt);
+    const roll=!old||old.length!==txt.length;                      // no usable earlier value: roll every digit from 0
+    el.innerHTML=[...txt].map((c,j)=>/\d/.test(c)?`<span class="fl" aria-hidden="true"><i>${REDUCED||(!roll&&old[j]===c)?c:(roll?'0':old[j])}</i></span>`:`<span class="fs" aria-hidden="true">${esc(c)}</span>`).join('');
+    if(REDUCED)return;
+    [...el.querySelectorAll('.fl')].forEach((sp,k)=>{
+      const digits=[...txt].map((c,j)=>[c,j]).filter(([c])=>/\d/.test(c)),[c,j]=digits[k];
+      const start=roll?0:+old[j],target=+c,steps=(target-start+10)%10;
+      if(!steps)return;
+      let n=0;const go=()=>{n++;const d=(start+n)%10;sp.firstChild.textContent=d;sp.classList.remove('flap');void sp.offsetWidth;sp.classList.add('flap');if(n<steps)setTimeout(go,60)};
+      setTimeout(go,250+i*90+k*70);
+    });
+  });
+  try{localStorage.setItem('nfl_rec',JSON.stringify(now))}catch(e){}
+})();
+(function(){                                 // the week as a rail: pool lines freeze Tuesday, then each kickoff window; a marker shows where we are
+  const G=D.games;if(!G.length)return;
+  const ET='America/New_York',fmtT=ms=>new Date(ms).toLocaleString('en-US',{timeZone:ET,hour:'numeric',minute:'2-digit'}).replace(/ ([AP])M/,(m,a)=>a.toLowerCase());
+  const day=ms=>new Date(ms).toLocaleString('en-US',{timeZone:ET,weekday:'short'});
+  const first=Math.min(...G.map(x=>Date.parse(x.ko_iso)));
+  const tueNoon=ms=>{for(let d=0;d<8;d++){const t=ms-d*864e5;if(day(t)==='Tue'){const ymd=new Date(t).toLocaleDateString('en-CA',{timeZone:ET});
+      for(const h of [16,17]){const c=Date.parse(`${ymd}T${h}:00:00Z`);if(+new Date(c).toLocaleString('en-US',{timeZone:ET,hour:'numeric',hour12:false})===12)return c}}}return ms-5*864e5};
+  const S=[{ms:tueNoon(first),lab:'Tue',t:'12p',lines:true,g:[]}].concat(D.slots.map((s,i)=>{const gs=G.filter(x=>x.slot===i),ms=Math.min(...gs.map(x=>Date.parse(x.ko_iso)));
+    return {ms,lab:day(ms),t:fmtT(ms),g:gs}}));
+  const n=S.length,P=i=>6+88*i/(n-1);
+  const now=Date.now();
+  const prog=()=>{if(now<=S[0].ms)return 0;for(let i=0;i<n-1;i++)if(now<S[i+1].ms)return i+(now-S[i].ms)/(S[i+1].ms-S[i].ms);return n-1};
+  const pr=prog();
+  const fin=G.filter(x=>x.res==='W'||x.res==='L'),w=fin.filter(x=>x.res==='W').length;
+  const lk=G.filter(x=>x.status==='final').length;
+  let k=0;
+  $('rail').hidden=false;
+  $('rail').innerHTML=`<div class="rail-t"><span>The week</span><span><b>${lk}</b> of ${G.length} picks locked${fin.length?` · <b>${w}–${fin.length-w}</b> so far`:''}</span></div>
+    <div class="rail-b"><div class="rail-line"><i class="rail-fill" id="rail-fill"></i></div><div class="rail-now" id="rail-now" title="Now"></div>
+    ${S.map((s,i)=>`<div class="rail-st${s.ms<=now?' past':''}" style="left:${P(i)}%"><span class="rail-n"></span><b>${esc(s.lab)}</b><span>${esc(s.t)}</span>
+      ${s.lines?'<span title="Pool lines freeze">lines</span>':`<div class="rail-g">${s.g.map(x=>`<i class="${x.res==='W'?'w':x.res==='L'?'l':x.status==='final'?'lk':''}" style="--i:${k++}" title="${esc(x.away)} @ ${esc(x.home)}"></i>`).join('')}</div>`}</div>`).join('')}</div>`;
+  const pos=6+88*pr/(n-1);
+  if(REDUCED){$('rail-fill').style.transition=$('rail-now').style.transition='none'}
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{$('rail-fill').style.width=(pos-6)/88*100+'%';$('rail-now').style.left=pos+'%'}));
+})();
 const pg=Math.min(100,D.graded/D.claim_at*100);
 $('ev-a').textContent=`${D.graded} of ${D.claim_at} graded games before any claim of skill`;
 $('ev-b').textContent=`±${Math.round(50/Math.sqrt(Math.max(D.graded,1)))} pts standard error at ${D.graded} games`;
@@ -716,6 +902,31 @@ $('ev-m').setAttribute('aria-label',`${D.graded} of ${D.claim_at} games graded`)
       <div class="key tb-key"><span><i class="tbk tbk-50"></i>Half of games</span><span><i class="tbk tbk-80"></i>8 in 10</span><span><i class="tbk-g"></i>Guess</span><span><i class="tbk-a"></i>Final total</span></div>
       ${done.length?`<p class="sub">So far the final landed in the half-of-games range <b>${in50} of ${done.length}</b> weeks and the 8-in-10 range <b>${in80} of ${done.length}</b>.</p>`:''}`;
   };
+  const drawDarts=()=>{
+    const box=$('tb-darts'),done=T.filter(r=>r.actual!=null&&r.guess!=null);
+    if(!done.length){box.innerHTML='';return}
+    const S=300,cx=S/2,cy=S/2,R=124,MAXP=25,k=R/MAXP;
+    let o='';
+    [25,20,15,10,5].forEach((p,i)=>o+=`<circle cx="${cx}" cy="${cy}" r="${p*k}" class="dg-ring r${i%2}"/>`);
+    o+=`<circle cx="${cx}" cy="${cy}" r="${2*k}" class="dg-bull"/>`;
+    [5,10,15,20].forEach(p=>o+=`<text class="dg-t" x="${cx}" y="${cy+p*k+11}" text-anchor="middle">${p}</text>`);
+    o+=`<text class="dg-t" x="${cx-R}" y="${S-4}" text-anchor="start">◂ under the guess</text><text class="dg-t" x="${cx+R}" y="${S-4}" text-anchor="end">over ▸</text>`;
+    const hash=w=>((w*2654435761)>>>0)%1000/1000;
+    const darts=done.map((r,i)=>{const d=r.actual-r.guess,rad=Math.min(Math.abs(d),MAXP*1.06)*k,jit=(hash(r.week)-.5)*Math.PI*.62;
+      const ang=(d>=0?0:Math.PI)+jit,x=cx+rad*Math.cos(ang),y=cy+rad*Math.sin(ang);
+      return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><circle class="dg-ring2" r="6"/>
+        <g class="dfly" style="--d:${i}"><g class="dwob" style="--d:${i};transform-origin:0 0">
+          <line class="dg-shaft" x1="0" y1="0" x2="13" y2="-21"/><polygon class="dg-fl" points="9,-15 21,-19 15,-9"/><polygon class="dg-fl" points="13,-21 19,-31 7,-25"/>
+          <circle class="dg-tip" r="2.6"/></g></g>
+        <text class="dg-w" x="${d>=0?10:-10}" y="14" text-anchor="${d>=0?'start':'end'}">W${r.week}</text></g>`}).join('');
+    const avg=done.reduce((a,r)=>a+Math.abs(r.actual-r.guess),0)/done.length;
+    box.innerHTML=`<svg viewBox="0 0 ${S} ${S+8}" role="img" aria-label="Dartboard: how far each week's final total landed from our guess. Average miss ${avg.toFixed(1)} points.">${o}${darts}</svg>
+      <div class="dg-list">${done.map(r=>`<span>W${r.week} <b>${r.actual-r.guess>0?'+':r.actual-r.guess<0?'−':''}${Math.abs(r.actual-r.guess)}</b></span>`).join('')}</div>
+      <p class="sub" style="margin-top:6px">Each dart is a week's final total against our guess: bullseye is an exact hit, each ring is 5 points. Average miss so far <b>${avg.toFixed(1)}</b> points (about 10 is typical).</p>`;
+    if(REDUCED||!window.IntersectionObserver)box.classList.add('go');
+    else{const io2=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){box.classList.add('go');io2.disconnect()}},{threshold:.5});io2.observe(box)}
+  };
+  drawDarts();
   const cur0=cur;drawTB();if(window.ResizeObserver){let w0=0;new ResizeObserver(es=>{const w=Math.round(es[0].contentRect.width);if(w&&w!==w0){w0=w;drawTB()}}).observe($('tb-chart'))}
   $('tb-note').textContent='The guess is the betting market total for the game, rounded (a .5 rounds down). Since 2010 nothing we tried beat it: the miss averages about 10 points, so the tiebreaker is mostly luck. Enter it as late as the pool allows and use the market total at that time.';
   $('tb-tab').innerHTML='<thead><tr><th>Week</th><th>Game</th><th class="n">Total</th><th class="n">Guess</th><th class="n">Final</th><th class="n">Miss</th></tr></thead><tbody>'
@@ -732,6 +943,9 @@ $('ev-m').setAttribute('aria-label',`${D.graded} of ${D.claim_at} games graded`)
     ['keynum','Key-number variant','var(--ink-2)','6 3',1.75],['favorite','Always the favorite','var(--ink-3)','2 4',1.5],
     ['home','Always the home team','var(--ink-3)','1 3',1.5]].filter(z=>C.cum[z[0]]);
   let on=null;                                 // highlighted series (tap a legend item), null = all
+  let ghosts=false,gprog=1,graf=0,GH=null;
+  const GN=200,rng=seed=>()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+  const ghostPaths=n=>{if(GH&&GH[0].length===n)return GH;const r=rng(2026);GH=Array.from({length:GN},()=>{let c=0;return Array.from({length:n},()=>(c+=r()<.5?-1:1))});return GH};
   const fin=k=>C.cum[k][C.cum[k].length-1],sg=v=>v>0?'+'+v:v<0?'−'+(-v):'0';
   const sw=(c,d,w)=>`<svg width="22" height="6" aria-hidden="true" style="flex:none"><line x1="0" x2="22" y1="3" y2="3" stroke="${c}" stroke-width="${Math.max(2,w)}"${d?` stroke-dasharray="${d}"`:''}/></svg>`;
   $('curve-note').textContent='Cumulative wins minus losses against the pool line, game by game. The band is where a coin-flipper would land 95% of the time. Tap a name to highlight its line. Player (v3) skips games where the injury report was not out at the pick. Weeks marked backtest were not picked live (see Season by week).';
@@ -746,6 +960,9 @@ $('ev-m').setAttribute('aria-label',`${D.graded} of ${D.claim_at} games graded`)
     let o='';
     for(let v=-mx;v<=mx;v+=mx/2)o+=`<line class="c-grid" x1="${m.l}" x2="${W-m.r}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${m.l-6}" y="${Y(v)+4}" text-anchor="end">${v>0?'+':''}${v}</text>`;
     o+=`<polygon class="c-band" points="${C.band.map((b,i)=>X(i)+','+Y(b)).join(' ')} ${[...C.band].reverse().map((b,i)=>X(n-1-i)+','+Y(-b)).join(' ')}"/>`;
+    if(ghosts){const P=ghostPaths(n);
+      o+=`<defs><clipPath id="ghc"><rect id="ghr" x="0" y="${m.t}" width="${m.l+gprog*pw}" height="${ph}"/></clipPath></defs><g clip-path="url(#ghc)">`
+        +P.map(q=>`<polyline class="c-ghost" points="${q.map((v,i)=>X(i).toFixed(1)+','+Y(v).toFixed(1)).join(' ')}"/>`).join('')+'</g>'}
     let first=C.games.findIndex(g=>g.kind==='live');if(first<0)first=n;
     if(first>0)o+=`<text x="${X(0)+4}" y="${m.t+10}" style="fill:var(--ink-3)">backtest</text>`;
     if(first>0&&first<n)o+=`<line class="c-cross" x1="${X(first)}" x2="${X(first)}" y1="${m.t}" y2="${H-m.b}"/><text x="${X(first)+4}" y="${m.t+10}" style="fill:var(--ink-3)">live</text>`;
@@ -755,7 +972,7 @@ $('ev-m').setAttribute('aria-label',`${D.graded} of ${D.claim_at} games graded`)
     for(const w of wks){const i=C.games.findIndex(g=>g.week===w);o+=`<text x="${X(i)}" y="${H-8}" text-anchor="start">W${w}</text>`}
     o+=`<line class="c-cross" id="cxh" x1="0" x2="0" y1="${m.t}" y2="${H-m.b}" hidden/>`;
     box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" tabindex="0" aria-label="Cumulative wins minus losses by game for the official pick, four tracked models and two baselines, with a 95% luck band">${o}</svg><div class="tip" id="ctip" hidden></div>`;
-    G={W,X,n};
+    G={W,X,n,m,pw};
     const svg=box.querySelector('svg'),tip=$('ctip'),xh=$('cxh');
     const show=i=>{const px=X(i),gm=C.games[i];xh.removeAttribute('hidden');xh.setAttribute('x1',px);xh.setAttribute('x2',px);
       const rows=S.map(([k,l,c,d,w])=>{const r=(gm.d||{})[k];return `<span class="tr">${sw(c,d,w)}${esc(l)} <b>${sg(C.cum[k][i])}</b>${r==null?'':r>0?' <span class="ok">✓</span>':' <span class="no">✕</span>'}</span>`}).join('');
@@ -768,6 +985,15 @@ $('ev-m').setAttribute('aria-label',`${D.graded} of ${D.claim_at} games graded`)
     let ki=n-1;svg.onkeydown=e=>{if(e.key==='ArrowLeft'){ki=Math.max(0,ki-1);show(ki);e.preventDefault()}
       else if(e.key==='ArrowRight'){ki=Math.min(n-1,ki+1);show(ki);e.preventDefault()}else if(e.key==='Escape')hide()};
   };
+  const gnote=()=>{const n=C.games.length,P=ghostPaths(n),end=P.map(q=>q[n-1]);
+    const share=k=>{const c=end.filter(v=>v>=fin(k)).length;return `${c} of ${GN}`};
+    $('ghost-note').hidden=false;
+    $('ghost-note').innerHTML=`<b>Simulated, not data:</b> ${GN} coin-flip pickers over the same ${n} games, drawn behind our lines. Finished at or above: Official ${sg(fin('official'))} → <b>${share('official')}</b> · Player (v3) ${sg(fin('v3'))} → <b>${share('v3')}</b> · Hybrid ${sg(fin('hybrid'))} → <b>${share('hybrid')}</b>. The fewer ghosts that match a line, the less likely it is luck.`};
+  const animG=()=>{const t0=performance.now(),dur=2800;const step=now=>{const k=Math.min(1,(now-t0)/dur);gprog=1-Math.pow(1-k,2.2);
+      const r=document.getElementById('ghr');if(r&&G)r.setAttribute('width',G.m.l+gprog*G.pw);if(k<1)graf=requestAnimationFrame(step)};graf=requestAnimationFrame(step)};
+  $('ghost-tog').onclick=()=>{ghosts=!ghosts;const b=$('ghost-tog');b.setAttribute('aria-pressed',ghosts);b.textContent=ghosts?'Hide the coin-flip ghosts':'Show 200 coin-flip ghosts';
+    cancelAnimationFrame(graf);
+    if(ghosts){gprog=REDUCED?1:0;draw();gnote();if(!REDUCED)animG()}else{draw();$('ghost-note').hidden=true}};
   key();draw();if(window.ResizeObserver){let w0=0;new ResizeObserver(es=>{const w=Math.round(es[0].contentRect.width);if(w&&w!==w0){w0=w;draw()}}).observe($('curve-chart'))}
   $('curve-tab').innerHTML='<thead><tr><th>#</th><th>Game</th>'+S.map(([,l])=>`<th class="n">${esc(l)}</th>`).join('')+'</tr></thead><tbody>'
     +C.games.map((g,i)=>`<tr><td>${i+1}</td><td>${esc(g.label)}${g.kind==='backtest'?' <span class="m hook">backtest</span>':''}</td>${S.map(([k])=>`<td class="n">${C.cum[k][i]>0?'+':''}${C.cum[k][i]}</td>`).join('')}</tr>`).join('')+'</tbody>';
@@ -787,10 +1013,41 @@ function track(x){
   const lbl=`Pool line ${x.home} ${sgn(x.line)}, market ${x.market==null?'unknown':sgn(x.market)}: ${toward}`;
   return `<div class="track" role="img" aria-label="${esc(lbl)}" title="${esc(lbl)}"><span class="base"></span>${ticks}<span class="seg" style="left:${lo}%;width:${wd}%"></span><span class="pool"></span><span class="dot" style="left:${pos}%"></span><span class="end l">${esc(x.home)}</span><span class="end r">${esc(x.away)}</span></div>`;
 }
-const REDUCED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 const mvSeen=new Set();                      // each card's move animates once, the first time it scrolls into view
 const mvIO=window.IntersectionObserver?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('go');mvIO.unobserve(e.target);mvSeen.add(e.target.dataset.g)}}),{threshold:.6}):null;
-function watchMoves(){document.querySelectorAll('.mv2.anim:not(.go)').forEach(e=>mvIO?mvIO.observe(e):e.classList.add('go'))}
+function watchMoves(){document.querySelectorAll('.mv2.anim:not(.go),.kn.anim:not(.go)').forEach(e=>mvIO?mvIO.observe(e):e.classList.add('go'));armFlips()}
+function crossKey(x){                        // same rule as the backtest: the move passes strictly through a 3 or a 7
+  if(x.line==null||x.market==null||x.market==='')return null;
+  const a=Math.abs(x.line),b=Math.abs(+x.market);
+  for(const k of [3,7])if(Math.min(a,b)<k&&k<Math.max(a,b))return k;return null}
+function hurdle(x){
+  const k=crossKey(x);if(!k)return '';
+  const anim=!REDUCED&&!mvSeen.has(x.id);
+  return `<div class="kn${anim?' anim':''}" data-g="${esc(x.id)}"><svg viewBox="0 0 300 66" role="img" aria-label="The line moved through the key number ${k}">
+    <line class="kn-base" x1="20" x2="280" y1="54" y2="54"/>
+    <g transform="translate(150 54)"><rect class="kn-post" x="-2" y="-28" width="4" height="28" rx="1.5"/><rect class="kn-bar" x="-12" y="-28" width="24" height="4" rx="2"/><text class="kn-k" x="0" y="-34" text-anchor="middle">${k}</text></g>
+    <circle class="kn-from" cx="36" cy="48" r="5"/><g class="kn-hx"><g class="kn-hy"><circle class="kn-dot" cx="36" cy="48" r="6"/></g></g></svg>
+    <p>Crossed the key number <b>${k}</b>. Moves through a 3 or 7 covered 68% in 2014–24 (59% expected) but 13 of 26 in 2025. It does not change the pick.</p></div>`}
+const flipSeen=new Set();
+function flipWhy(x,f){
+  const when=new Date(f.at).toLocaleString('en-US',{timeZone:'America/New_York',weekday:'short',hour:'numeric',minute:'2-digit'});
+  const dm=x.market!=null&&x.market!==''&&f.mk!==''?Math.abs(+x.market-+f.mk):0;
+  return dm>0?`the line moved ${pts(dm)} since ${when} ET`:`changed since ${when} ET`}
+function armFlips(){                         // the pick bar slides from the old pick to the new one, once, when the card first scrolls into view
+  if(REDUCED||!window.IntersectionObserver)return;
+  document.querySelectorAll('.card[data-flip]:not([data-armed])').forEach(card=>{
+    const id=card.dataset.id;card.dataset.armed='1';if(flipSeen.has(id))return;
+    const x=g.find(z=>z.id===id),f=D.flips[id],tm=card.querySelector('.teams');if(!x||!f||!tm)return;
+    const rows=[...tm.querySelectorAll('.team')],was=x.away===f.was?rows[0]:rows[1],nu=x.away===f.was?rows[1]:rows[0];
+    if(!was||!nu||was===nu)return;
+    const bar=document.createElement('i');bar.className='flipbar';bar.style.top=was.offsetTop+'px';bar.style.height=was.offsetHeight+'px';tm.prepend(bar);
+    nu.classList.add('pre');was.classList.add('ghostpick');
+    const io=new IntersectionObserver(es=>{if(!es.some(e=>e.isIntersecting))return;io.disconnect();flipSeen.add(id);
+      const dy=nu.offsetTop-was.offsetTop;
+      setTimeout(()=>{const a=bar.animate([{transform:'translateY(0)'},{transform:`translateY(${dy}px)`}],{duration:700,easing:'cubic-bezier(.6,0,.2,1)',fill:'forwards'});
+        setTimeout(()=>{was.classList.remove('ghostpick');nu.classList.add('hot')},330);
+        a.onfinish=()=>{nu.classList.remove('pre','hot');bar.remove()}},450)},{threshold:.7});
+    io.observe(tm)})}
 function move(x){
   if(x.drift==null&&x.status==='started_no_final_pick')return '<div class="cover">No pick was recorded before kickoff.</div>';
   const side=x.pick||x.home,fl=v=>side===x.home?v:-v;                 // spreads from the pick's side
@@ -855,6 +1112,47 @@ function foot(x){
   return bits.length?`<div class="cover">${bits.join(' · ')}</div>`:'';
 }
 
+/* ---- the week replayed ---- */
+(function(){
+  const SL=D.slate||{},Gs=SL.games||[];if(!Gs.length)return;
+  $('slate-panel').hidden=false;
+  const ET='America/New_York',H3=3*36e5,s1=v=>(v>0?'+':v<0?'−':'')+(Math.abs(v)%1?Math.abs(v).toFixed(1):String(Math.abs(v)));
+  $('sl-h').textContent=`Week ${SL.week} in 20 seconds`;
+  $('sl-sub').textContent=`Every official pick of week ${SL.week}, replayed on one clock: each box shows how far the pick was from covering the pool line. Green is covering, red is not. Idle stretches between kickoff windows are skipped, and games are drawn running about three hours each from kickoff (an approximation: play-by-play has game time, not stoppages).`;
+  const gm=Gs.map(x=>({...x,ko:Date.parse(x.ko),Tg:Math.max(60,x.flow[x.flow.length-1][0])}));
+  const iv=[];gm.map(x=>[x.ko-15*6e4,x.ko+H3]).sort((a,b)=>a[0]-b[0]).forEach(([a,b])=>{const l=iv[iv.length-1];if(l&&a<=l[1])l[1]=Math.max(l[1],b);else iv.push([a,b])});
+  const A=iv.reduce((t,[a,b])=>t+b-a,0);
+  const tAt=p=>{let a=p*A;for(const [s,e] of iv){if(a<=e-s)return s+a;a-=e-s}return iv[iv.length-1][1]};
+  const covAt=(x,min)=>{let c=x.flow[0][1];for(const q of x.flow){if(q[0]<=min)c=q[1];else break}return c};
+  $('sl-grid').innerHTML=gm.map((x,i)=>`<div class="slc" id="slc${i}"><div class="t"><span class="code">${esc(x.pick)}<span class="bd" id="slb${i}"></span></span><span class="ln">${s1(x.line)}</span></div><div class="m na" id="slm${i}">—</div>
+    <svg viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true"><line class="z" x1="0" x2="100" y1="10" y2="10"/><path class="p" id="slp${i}" d=""/></svg></div>`).join('');
+  const clk=ms=>new Date(ms).toLocaleString('en-US',{timeZone:ET,weekday:'short',hour:'numeric',minute:'2-digit'});
+  const render=p=>{
+    const t=tAt(p);let w=0,l=0,live=0;
+    gm.forEach((x,i)=>{
+      const el=$('slc'+i),m=$('slm'+i),b=$('slb'+i),el_=t-x.ko;
+      const started=el_>=0,done=el_>=H3,min=Math.min(x.Tg,Math.max(0,el_/H3*x.Tg)),c=started?(done?x.fin:covAt(x,min)):null;
+      el.classList.toggle('fin',done);el.classList.toggle('w',done&&x.res==='W');el.classList.toggle('l',done&&x.res==='L');el.classList.toggle('live',started&&!done);
+      if(done){x.res==='W'?w++:l++}else if(started)live++;
+      if(c==null){m.className='m na';m.textContent=new Date(x.ko).toLocaleString('en-US',{timeZone:ET,hour:'numeric',minute:'2-digit'});el.style.removeProperty('--tint');b.innerHTML='';$('slp'+i).setAttribute('d','');return}
+      m.className='m '+(c>0?'up':c<0?'dn':'na');m.textContent=s1(c);
+      const q=Math.min(1,Math.abs(c)/14),col=c>0?'var(--win)':c<0?'var(--loss)':'var(--ink-3)';
+      el.style.setProperty('--tint',`color-mix(in srgb, ${col} ${Math.round(6+q*30)}%, transparent)`);
+      b.innerHTML=done?(x.res==='W'?'✓':'✕'):'<i class="ld"></i>';
+      let d='',last=null;x.flow.forEach(pt=>{if(pt[0]>min)return;const px=pt[0]/x.Tg*100,py=10-Math.max(-9,Math.min(9,pt[1]/14*9));d+=(d?`L${px.toFixed(1)} ${last.toFixed(1)}L${px.toFixed(1)} ${py.toFixed(1)}`:`M${px.toFixed(1)} ${py.toFixed(1)}`);last=py});
+      d+=last==null?'':`L${(min/x.Tg*100).toFixed(1)} ${last.toFixed(1)}`;$('slp'+i).setAttribute('d',d);
+    });
+    $('sl-clock').innerHTML=`${esc(clk(t))}<small>ET${live?` · ${live} game${live>1?'s':''} in progress`:''}</small>`;
+    $('sl-rec').innerHTML=`${w}–${l}<small>record so far</small>`;
+  };
+  let raf=0,pos=1;const seek=$('sl-seek'),btn=$('sl-play');
+  const set=p=>{pos=p;seek.value=Math.round(p*1000);render(p)};
+  const play=()=>{cancelAnimationFrame(raf);if(pos>=.999)set(0);btn.textContent='❚❚ Pause';const t0=performance.now(),p0=pos,dur=20000*(1-p0);
+    const step=now=>{const k=Math.min(1,(now-t0)/dur);set(p0+(1-p0)*k);if(k<1)raf=requestAnimationFrame(step);else btn.textContent='↻ Replay'};raf=requestAnimationFrame(step)};
+  btn.onclick=()=>{if(btn.textContent.startsWith('❚❚')){cancelAnimationFrame(raf);btn.textContent='▶ Resume'}else play()};
+  seek.oninput=()=>{cancelAnimationFrame(raf);btn.textContent=seek.value>=1000?'↻ Replay':'▶ Resume';set(seek.value/1000)};
+  set(1);                                    // opens on the finished day; Replay rewinds and runs it
+})();
 /* ---- loss review ---- */
 (function(){
   const R=D.loss_review||{},Ls=R.losses||[],Sm=R.summary||{};if(!Ls.length)return;
@@ -1079,8 +1377,8 @@ function epaPanel(x){
 }
 function card(x){
   const pa=x.pick===x.away,ph=x.pick===x.home;
-  return `<article class="card" data-id="${esc(x.id)}"><div class="card-h"><span class="ko">${esc(x.ko)}</span>${stateBadge(x)}</div>
-    <div class="teams">${team(x,'a',pa)}${team(x,'h',ph)}</div>${move(x)}${meter(x)}${proj(x)}${hyb(x)}${xDrivers(x)}${xExpand(x)}${foot(x)}<button class="more" data-id="${esc(x.id)}">Book-by-book lines ›</button></article>`;
+  return `<article class="card" data-id="${esc(x.id)}"${(D.flips||{})[x.id]?' data-flip="1"':''}><div class="card-h"><span class="ko">${esc(x.ko)}</span>${stateBadge(x)}</div>
+    <div class="teams">${team(x,'a',pa)}${team(x,'h',ph)}</div>${(D.flips||{})[x.id]?`<div class="flipnote"><b>↺ Flipped</b> from ${esc(D.flips[x.id].was)} · ${flipWhy(x,D.flips[x.id])}</div>`:''}${move(x)}${hurdle(x)}${meter(x)}${proj(x)}${hyb(x)}${xDrivers(x)}${xExpand(x)}${foot(x)}<button class="more" data-id="${esc(x.id)}">Book-by-book lines ›</button></article>`;
 }
 const cols=n=>n===4||n===10?2:3;      // fill the rows: 4 games make 2x2, not 3+1
 const pred={all:()=>true,strong:x=>x.sig==='strong',differs:x=>x.ppick&&x.pick&&x.ppick!==x.pick,hybrid:x=>x.hysrc==='v1'&&x.hy&&x.pick&&x.hy!==x.pick};
@@ -1214,20 +1512,64 @@ function detailHTML(x){
     <p class="sub">Spread on ${esc(x.home)} across every book. Higher on the chart means the market favors ${esc(x.home)} more; lower favors ${esc(x.away)} more.</p>
     ${has?`<div class="key"><span><i class="k-line"></i>${esc(refName(d))}${d.src===(d.ref_book||'pinnacle')?' (model input)':''}</span><span><i class="k-mdash"></i>Median of books${d.src==='median'?' (model input)':''}</span><span><i class="k-band"></i>Range across books</span><span><i class="k-dash"></i>Pool line</span><span><i class="k-mkt"></i>${x.status==='final'?'Pick captured':'Latest capture'}</span></div>${d.src==='median'&&x.status==='final'?`<p class="sub">This pick used the median of books: it was made before the switch to ${esc(refName(d))}, or ${esc(refName(d))} had no line at the pick.</p>`:''}<div class="chart" id="chart"></div>${snapTable(d)}`:'<p class="sub">No book lines were captured for this game yet.</p>'}
   </section>
+  ${swarmHTML(x,d)}
   <section class="panel"><h3>Every book${d.lock?` at ${esc(d.lock.at)} ET`:''}${d.lock&&x.status!=='final'?' · latest':''}</h3>${booksTable(x,d)}</section>
   <section class="panel"><h3>What the projection used</h3>${inputsPanel(x,d)}</section>`;
 }
-let saved=0,ro=null;
+let saved=0,ro=null,swarmRaf=0;
+function swarmHTML(x,d){
+  if(!d.t||d.t.length<2)return '';
+  return `<section class="panel"><h3>The market, book by book</h3>
+    <p class="sub">Each dot is one sportsbook's spread on ${esc(x.home)}. Press play to watch the week: the books drift, cluster and agree. The yellow dot is ${esc(refName(d))}, the dashed line is the pool line.</p>
+    <div class="sw-ctl"><button class="sw-play" id="sw-play" type="button">▶ Play the week</button><span class="sw-clock" id="sw-clock"></span></div>
+    <div class="swarm" id="swarm"></div><input id="sw-seek" class="sw-seek" type="range" min="0" max="${(d.t.length-1)*100}" value="${(d.t.length-1)*100}" aria-label="Scrub through the week"></section>`}
+function initSwarm(x,d){
+  const box=$('swarm');if(!box)return;
+  const books=Object.keys(d.b),n=d.t.length,P=x.line,R=d.ref_book||'pinnacle',ms=d.t.map(t=>Date.parse(t));
+  const vals=books.flatMap(b=>d.b[b].filter(v=>v!=null)).concat(P==null?[]:[P]);
+  const lo=Math.floor((Math.min(...vals)-.5)*2)/2,hi=Math.ceil((Math.max(...vals)+.5)*2)/2;
+  const W=Math.max(280,Math.floor(box.clientWidth||320)),H=196,m={l:16,r:16},base=112,X=v=>m.l+(v-lo)/(hi-lo)*(W-m.l-m.r);
+  const step=hi-lo>8?1:.5;let o='';
+  for(let v=Math.ceil(lo/step)*step;v<=hi+1e-9;v+=step)o+=`<line class="sw-g" x1="${X(v)}" x2="${X(v)}" y1="30" y2="${H-26}"/><text x="${X(v)}" y="${H-10}" text-anchor="middle">${sgn(v)}</text>`;
+  if(P!=null)o+=`<line class="sw-pool" x1="${X(P)}" x2="${X(P)}" y1="22" y2="${H-26}"/><text x="${X(P)}" y="14" text-anchor="middle">pool line ${esc(x.home)} ${sgn(P)}</text>`;
+  o+=`<text x="${m.l}" y="${H-26}" text-anchor="start" style="font-size:9.5px"></text>`;
+  const order=[R,...books.filter(b=>b!==R)].filter(b=>books.includes(b));
+  o+=order.slice().reverse().map(b=>`<g id="swd-${esc(b)}" visibility="hidden"><circle class="sw-d${b===R?' ref':''}" r="${b===R?7.5:6}"><title>${esc(bk(b))}</title></circle></g>`).join('');
+  o+=`<text id="sw-ref" class="sw-lab" text-anchor="middle" visibility="hidden">${esc(refName(d))}</text><text id="sw-pick" class="sw-pick" x="${W-m.r}" y="${H-26}" text-anchor="end" visibility="hidden">▍pick made</text>`;
+  box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Every book's spread on ${esc(x.home)} through the week, animated">${o}</svg>`;
+  const ease=f=>f*f*(3-2*f),lev=[0,-1,1,-2,2,-3,3,-4,4,-5,5];
+  const at=(b,u)=>{const a=d.b[b],i=Math.min(n-2,Math.floor(u)),f=u-i,p=a[i],q=a[i+1];if(p==null&&q==null)return null;if(p==null)return u-i>.5?q:null;if(q==null)return f<.5?p:null;return p+(q-p)*ease(f)};
+  const lockI=d.lock?d.lock.i:null;
+  const render=u=>{
+    const placed=[];
+    for(const b of order){const v=at(b,u),g=document.getElementById('swd-'+b);if(!g)continue;
+      if(v==null){g.setAttribute('visibility','hidden');if(b===R)$('sw-ref').setAttribute('visibility','hidden');continue}
+      const px=X(v);let L=0;for(const l of lev){if(!placed.some(q=>q.l===l&&Math.abs(q.x-px)<14)){L=l;break}}placed.push({x:px,l:L});
+      const py=base+L*14;g.setAttribute('visibility','visible');const c=g.firstChild;c.setAttribute('cx',px);c.setAttribute('cy',py);
+      if(b===R){const t=$('sw-ref');t.setAttribute('visibility','visible');t.setAttribute('x',Math.max(34,Math.min(W-34,px)));t.setAttribute('y',py-13)}}
+    const i=Math.min(n-2,Math.floor(u)),t=ms[i]+(ms[i+1]-ms[i])*(u-i);
+    $('sw-clock').textContent=new Date(t).toLocaleString('en-US',{timeZone:'America/New_York',weekday:'short',month:'numeric',day:'numeric',hour:'numeric',minute:'2-digit'})+' ET';
+    $('sw-pick').setAttribute('visibility',lockI!=null&&u>=lockI-.01&&x.status==='final'?'visible':'hidden');
+  };
+  let u=n-1;const seek=$('sw-seek'),btn=$('sw-play');
+  const set=v=>{u=v;seek.value=Math.round(v*100);render(v)};
+  const play=()=>{cancelAnimationFrame(swarmRaf);if(u>=n-1-.01)set(0);btn.textContent='❚❚ Pause';const t0=performance.now(),u0=u,dur=Math.min(11000,500*(n-1))*(1-u0/(n-1));
+    const stp=now=>{const k=Math.min(1,(now-t0)/dur);set(u0+(n-1-u0)*k);if(k<1)swarmRaf=requestAnimationFrame(stp);else btn.textContent='↻ Play again'};swarmRaf=requestAnimationFrame(stp)};
+  btn.onclick=()=>{if(btn.textContent.startsWith('❚❚')){cancelAnimationFrame(swarmRaf);btn.textContent='▶ Resume'}else play()};
+  seek.oninput=()=>{cancelAnimationFrame(swarmRaf);btn.textContent='▶ Resume';set(seek.value/100)};
+  set(n-1);
+}
 function showGame(id){
   const x=byId[id];if(!x)return false;
   saved=window.scrollY;$('board').hidden=true;const el=$('detail');el.hidden=false;el.innerHTML=detailHTML(x);
   const d=(D.details||{})[id]||{};
   if(d.t&&d.t.length){drawChart(x,d);if(window.ResizeObserver){let w=0;ro&&ro.disconnect();ro=new ResizeObserver(es=>{const nw=Math.round(es[0].contentRect.width);if(nw&&nw!==w){w=nw;drawChart(x,d)}});ro.observe($('chart'))}}
+  initSwarm(x,d);
   $('back').onclick=()=>{try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}showBoard()};
   window.scrollTo(0,0);$('back').focus();return true;
 }
 function showBoard(){
-  ro&&ro.disconnect();$('detail').hidden=true;$('detail').innerHTML='';$('board').hidden=false;window.scrollTo(0,saved);
+  ro&&ro.disconnect();cancelAnimationFrame(swarmRaf);$('detail').hidden=true;$('detail').innerHTML='';$('board').hidden=false;window.scrollTo(0,saved);
 }
 function open(id){try{location.hash=id}catch(e){}showGame(id)}
 $('slots').addEventListener('click',e=>{

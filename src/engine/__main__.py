@@ -59,6 +59,8 @@ def main(argv=None) -> int:
     db.add_argument("--season", type=int, required=True)
     db.add_argument("--week", type=int, default=None, help="default: the earliest week with an unfinished game")
     db.add_argument("--out", default=None)
+    db.add_argument("--log-provisional", action="store_true",
+                    help="append changed provisional picks to data/predictions/provisional_log.csv (the published build)")
     al = sub.add_parser("alert", help="print phone-alert lines for locked picks (see docs/scheduling.md)")
     al.add_argument("--since", default=None, help="ISO time; only picks created after it (default: last 30 min)")
     al.add_argument("--local", action="store_true", help="read predictions.csv from the working tree, not origin/main")
@@ -323,14 +325,33 @@ def main(argv=None) -> int:
         except Exception as e:
             print("team EPA unavailable:", repr(e), file=sys.stderr)
             epa_tab = {}
+        _paths = {}
+        try:
+            from engine.picks import loss_review as _lr
+            _paths = _lr.game_paths(_pbp) if _pbp is not None else {}
+        except Exception as e:
+            print("game paths unavailable:", repr(e), file=sys.stderr)
         try:
             from engine.data import store as _store
             from engine.picks import final as _final, loss_review as _lr
-            lr_data = _lr.build(graded, _store.read_rows(_final.predictions_path()), sched,
-                                _lr.game_paths(_pbp) if _pbp is not None else {})
+            lr_data = _lr.build(graded, _store.read_rows(_final.predictions_path()), sched, _paths)
         except Exception as e:
             print("loss review unavailable:", repr(e), file=sys.stderr)
             lr_data = {}
+        try:
+            from engine.picks import slate_replay as _sr
+            slate_data = _sr.build(graded, sched, _paths, a.season)
+        except Exception as e:
+            print("slate replay unavailable:", repr(e), file=sys.stderr)
+            slate_data = {}
+        try:
+            from engine.picks import provisional as _pv
+            flips_data = _pv.flips(rows, _pv.load())
+            if a.log_provisional:
+                print("provisional log: +", _pv.record(rows, _dt.datetime.now(_dt.timezone.utc)), "rows", file=sys.stderr)
+        except Exception as e:
+            print("provisional log unavailable:", repr(e), file=sys.stderr)
+            flips_data = {}
         try:
             from engine.picks import curve as _curve
             curve_data = _curve.build(sched, a.season, graded)
@@ -346,7 +367,7 @@ def main(argv=None) -> int:
         out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
         open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results,
                                               details, season_tab, market.credits_left(), epa_tab, curve_data, tb_rows,
-                                              lr_data))
+                                              lr_data, flips_data, slate_data))
         print(out)
         return 0
     if a.cmd == "check-league-lines":
