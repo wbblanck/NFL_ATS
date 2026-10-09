@@ -77,6 +77,7 @@ def main(argv=None) -> int:
     c = sub.add_parser("check-league-lines")
     c.add_argument("--season", type=int)
     c.add_argument("--week", type=int)
+    sub.add_parser("bettable", help="bettable record of each model against the closing line (docs/bettable_preregistration.md)")
     pv3 = sub.add_parser("players-v3")
     pv3.add_argument("--cache", default=None)
     pe = sub.add_parser("efficiency-residual")
@@ -143,6 +144,10 @@ def main(argv=None) -> int:
         out = E6.run(a.cache)
         (config.ROOT / "data" / "backtests" / "projection_v6.json").write_text(json.dumps(out, indent=1, default=str))
         print("validation pass", out["validation"]["pass"], "decision", out.get("test", {}).get("decision"))
+        return 0
+    if a.cmd == "bettable":
+        from engine.backtest import bettable
+        bettable.main()
         return 0
     if a.cmd == "players-v3":
         import json
@@ -345,6 +350,13 @@ def main(argv=None) -> int:
             print("slate replay unavailable:", repr(e), file=sys.stderr)
             slate_data = {}
         try:
+            from engine.data import store as _st2
+            from engine.picks import bettable as _bt, final as _fin2
+            bet_data = {"live": _bt.live(graded, _st2.read_rows(_fin2.predictions_path()), sched), "backtest": _bt.backtest()}
+        except Exception as e:
+            print("bettable record unavailable:", repr(e), file=sys.stderr)
+            bet_data = {}
+        try:
             from engine.picks import provisional as _pv
             flips_data = _pv.flips(rows, _pv.load())
             if a.log_provisional:
@@ -367,7 +379,7 @@ def main(argv=None) -> int:
         out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
         open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results,
                                               details, season_tab, market.credits_left(), epa_tab, curve_data, tb_rows,
-                                              lr_data, flips_data, slate_data))
+                                              lr_data, flips_data, slate_data, bet_data))
         print(out)
         return 0
     if a.cmd == "check-league-lines":

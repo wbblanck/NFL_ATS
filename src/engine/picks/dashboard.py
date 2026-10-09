@@ -78,7 +78,7 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
            results: dict | None = None, details: dict | None = None, season_table: list | None = None,
            credits: int | None = None, epa: dict | None = None, curve: dict | None = None,
            tiebreak: list | None = None, loss_review: dict | None = None, flips: dict | None = None,
-           slate: dict | None = None) -> str:
+           slate: dict | None = None, bettable: dict | None = None) -> str:
     """results: game_id -> graded row from live.compute (result, proj_<version> strings); optional.
     details: game_id -> per-game detail from game_detail.build (book lines over time, why, inputs); optional."""
     results = results or {}
@@ -127,7 +127,7 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                        "note": f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"})
     nxt = min(upcoming) if upcoming else None
     from engine.picks.season import MODELS as _SM
-    data = json.dumps({"flips": flips or {}, "slate": slate or {}, "loss_review": loss_review or {}, "tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
+    data = json.dumps({"bettable": bettable or {}, "flips": flips or {}, "slate": slate or {}, "loss_review": loss_review or {}, "tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
                        "next_lock": None if nxt is None else {"at": _clock(nxt[0]), "game": nxt[1]},
                        "due": [{"iso": a.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "at": _clock(a), "game": g}
@@ -166,6 +166,24 @@ header{display:flex;flex-direction:column;gap:10px}
 .next{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink)}
 .next[hidden]{display:none}
 /* week rail */
+.bt-chart>svg{display:block;width:100%;height:auto;overflow:visible}
+.chart .bt-key svg{display:inline-block;width:auto;height:auto;flex:none;overflow:visible}
+.bt-chart text{font:400 10.5px var(--mono);fill:var(--ink-3)}
+.bt-chart .bt-m{font:600 12px var(--body);fill:var(--ink)}
+.bt-chart .bt-g{stroke:var(--rule);stroke-width:1}
+.bt-chart .bt-50{stroke:var(--ink-3);stroke-width:1.2;stroke-dasharray:3 3}
+.bt-chart .bt-be{stroke:var(--loss);stroke-width:1.8}
+.bt-chart .bt-lab{fill:var(--loss);font-weight:600}
+.bt-chart .bt-w{stroke:var(--ink-3);stroke-width:2.5;stroke-linecap:round}
+.bt-chart .bt-w.l{stroke:var(--ink)}
+.bt-chart .bt-d{fill:var(--panel);stroke:var(--ink-2);stroke-width:2}
+.bt-chart .bt-p{fill:var(--flag);stroke:var(--ink);stroke-width:2}
+.bt-key{display:flex;flex-wrap:wrap;gap:6px 16px;font:400 11.5px var(--mono);color:var(--ink-2);margin:2px 0 6px}
+.bt-key span{display:inline-flex;align-items:center;gap:6px}
+.bt-key .win{color:var(--win)}.bt-key .loss{color:var(--loss)}
+#bet-tab td.pos{color:var(--win)}#bet-tab td.neg{color:var(--loss)}
+#bet-tab{table-layout:fixed;width:100%;min-width:0}#bet-tab th:first-child{width:36%}#bet-tab th,#bet-tab td{overflow-wrap:anywhere}
+#bet-tab td.n{white-space:normal}#bet-tab td small{display:block;font:400 11px var(--mono);color:var(--ink-3)}
 .rail{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:14px 12px 10px}
 .rail[hidden]{display:none}
 .rail-t{display:flex;justify-content:space-between;gap:10px;font:400 11px var(--mono);color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
@@ -722,6 +740,13 @@ details p{margin:0}
     <p class="sub" id="season-note"></p>
     <div class="tbl"><table id="season-tab"></table></div>
   </section>
+  <section class="panel" id="bet-panel" hidden aria-label="If these were bets">
+    <h3>If these were bets</h3>
+    <p class="sub" id="bet-sub"></p>
+    <div class="chart bt-chart" id="bet-chart"></div>
+    <div class="tbl"><table id="bet-tab"></table></div>
+    <p class="sub" id="bet-note"></p>
+  </section>
   <section class="panel" id="slate-panel" hidden aria-label="The week replayed">
     <h3 id="sl-h"></h3>
     <p class="sub" id="sl-sub"></p>
@@ -1112,6 +1137,37 @@ function foot(x){
   return bits.length?`<div class="cover">${bits.join(' · ')}</div>`:'';
 }
 
+/* ---- if these were bets ---- */
+(function(){
+  const B=D.bettable||{},L=B.live||{},BT=(B.backtest||{}),K=BT.models||{},BE=(BT.break_even||110/210)*100;
+  if(!Object.values(L).some(x=>x&&x.n))return;
+  $('bet-panel').hidden=false;
+  const ROWS=[['official','Official pick'],['keynum','Key-number variant'],['v3','Player projection'],['v1','Team-only projection'],['hybrid','Hybrid']];
+  const pc=v=>v==null?'—':(v*100).toFixed(1)+'%',sr=v=>v==null?'—':(v>0?'+':v<0?'−':'')+Math.abs(v*100).toFixed(1)+'%',su=v=>(v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(1);
+  $('bet-sub').innerHTML=`A bet only pays above <b>${BE.toFixed(1)}%</b> at −110, not 50%. The pool grades picks against the frozen Tuesday line; a sportsbook bet gets the line that is on the board when you bet. Hollow diamonds are each model's pool pick bet at the <b>closing line</b> in past seasons; yellow dots are 2026 picks bet at the line on the board when the pick was made. Bars are 95% intervals.`;
+  const lo=30,hi=88;
+  const draw=()=>{
+    const box=$('bet-chart'),W=Math.max(280,Math.floor(box.clientWidth||320)),rh=62,m={l:8,r:10,t:30,b:24},H=m.t+m.b+ROWS.length*rh,X=v=>m.l+(Math.max(lo,Math.min(hi,v))-lo)/(hi-lo)*(W-m.l-m.r);
+    let o='';
+    for(let v=40;v<=80;v+=10)o+=`<line class="bt-g" x1="${X(v)}" x2="${X(v)}" y1="${m.t-6}" y2="${H-m.b}"/><text x="${X(v)}" y="${H-8}" text-anchor="middle">${v}%</text>`;
+    o+=`<line class="bt-50" x1="${X(50)}" x2="${X(50)}" y1="${m.t-6}" y2="${H-m.b}"/><text x="${X(50)-4}" y="12" text-anchor="end">50%</text>`;
+    o+=`<line class="bt-be" x1="${X(BE)}" x2="${X(BE)}" y1="${m.t-6}" y2="${H-m.b}"/><text class="bt-lab" x="${X(BE)+5}" y="12">break-even ${BE.toFixed(1)}%</text>`;
+    ROWS.forEach(([k,lab],i)=>{const y0=m.t+i*rh,b=K[k],l=L[k];
+      o+=`<text class="bt-m" x="${m.l}" y="${y0+8}">${esc(lab)}</text>`;
+      if(b&&b.n){const y=y0+24;o+=`<line class="bt-w" x1="${X(b.ci95[0]*100)}" x2="${X(b.ci95[1]*100)}" y1="${y}" y2="${y}"/><path class="bt-d" d="M${X(b.win_rate*100)} ${y-6.5} l6.5 6.5 l-6.5 6.5 l-6.5 -6.5 Z"><title>${esc(lab)} backtest: ${pc(b.win_rate)} over ${b.n} bets</title></path>`}
+      else o+=`<text x="${m.l+2}" y="${y0+28}">no backtest</text>`;
+      if(l&&l.n){const y=y0+46;o+=`<line class="bt-w l" x1="${X(l.ci95[0]*100)}" x2="${X(l.ci95[1]*100)}" y1="${y}" y2="${y}"/><circle class="bt-p" cx="${X(l.win_rate*100)}" cy="${y}" r="6"><title>${esc(lab)} 2026: ${l.W}–${l.L}, ${pc(l.win_rate)}</title></circle>`}
+    });
+    box.innerHTML=`<div class="bt-key"><span><svg width="16" height="14"><path class="bt-d" d="M8 1 l6 6 l-6 6 l-6 -6 Z"/></svg>Past seasons, bet at the closing line</span><span><svg width="14" height="14"><circle class="bt-p" cx="7" cy="7" r="5"/></svg>2026, bet at the line at the pick</span></div>
+      <svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Win rate with 95% interval for each model, past seasons bet at the closing line and 2026 bet at the line at the pick, against the 52.4% break-even at minus 110">${o}</svg>`;
+  };
+  draw();if(window.ResizeObserver){let w0=0;new ResizeObserver(es=>{const w=Math.round(es[0].contentRect.width);if(w&&w!==w0){w0=w;draw()}}).observe($('bet-chart'))}
+  $('bet-tab').innerHTML='<thead><tr><th>Model</th><th class="n">Past seasons<br><small>win % · return</small></th><th class="n">2026<br><small>record · return</small></th></tr></thead><tbody>'+ROWS.map(([k,lab])=>{const b=K[k],l=L[k];
+    return `<tr><td title="${b&&b.n?b.n+' bets':''}">${esc(lab)}</td><td class="n ${b&&b.roi>0?'pos':b&&b.roi<0?'neg':''}">${b&&b.n?`${pc(b.win_rate)}<br><small>${sr(b.roi)}</small>`:'<small>no backtest</small>'}</td>
+      <td class="n">${l&&l.n?`${l.W}–${l.L}<br><small>${sr(l.roi)}</small>`:'—'}</td></tr>`}).join('')+'</tbody>';
+  const dec=BT.decision||{},passed=Object.keys(dec).filter(k=>dec[k]['profitable_at_-110']);
+  $('bet-note').innerHTML=`Past seasons: 2008–2025 for the official pick, 2007–2021 for the others (Hybrid: outside the seasons it was chosen on); the player projection has no backtest. Return is per unit bet at −110 (a win pays 0.91, a loss costs 1). ${Object.keys(dec).length?(passed.length?`Backtests: <b>${passed.map(esc).join(', ')}</b> cleared break-even with 95% confidence (rules fixed in advance in docs/bettable_preregistration.md).`:`<b>No backtested model cleared break-even with 95% confidence</b> (rules fixed in advance in docs/bettable_preregistration.md).`):''} The 2026 intervals are very wide: a strong 2026 record on a few dozen bets is not evidence of an edge.`;
+})();
 /* ---- the week replayed ---- */
 (function(){
   const SL=D.slate||{},Gs=SL.games||[];if(!Gs.length)return;
