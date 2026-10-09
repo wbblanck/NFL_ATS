@@ -78,6 +78,7 @@ def main(argv=None) -> int:
     c.add_argument("--season", type=int)
     c.add_argument("--week", type=int)
     sub.add_parser("bettable", help="bettable record of each model against the closing line (docs/bettable_preregistration.md)")
+    sub.add_parser("skip-filters", help="skip rules on each model's picks at the closing line (docs/skip_filters_preregistration.md)")
     sub.add_parser("strong-calls", help="tiers by market-move size, out of sample (docs/strong_calls_preregistration.md)")
     v3h = sub.add_parser("v3-history", help="per-game v3 picks for 2022-2025 (docs/v3_history_preregistration.md)")
     v3h.add_argument("--cache", default=None)
@@ -152,6 +153,9 @@ def main(argv=None) -> int:
         from engine.backtest import bettable
         bettable.main()
         return 0
+    if a.cmd == "skip-filters":
+        from engine.backtest import skip_filters
+        return skip_filters.main()
     if a.cmd == "strong-calls":
         from engine.backtest import strong_calls
         strong_calls.main()
