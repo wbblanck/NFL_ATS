@@ -1,0 +1,624 @@
+[
+ {
+  "name": "napi_registry",
+  "url": "https://api.cbssports.com/napi/resource/endpoint/registry",
+  "status": 200,
+  "bytes": 80590,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [],
+  "top_keys": [
+   "BaseballPlayerMetaResource",
+   "BoxscoreResource",
+   "BulkResourceController",
+   "ClientConfigurationResource",
+   "CoachRankingsResource",
+   "CoachTeamAssociationsResource",
+   "ConferenceResource",
+   "DepthChartsResource",
+   "DivisionResource",
+   "EndpointRegistryResource",
+   "EventEntrantsResource",
+   "EventLeaderboardResource",
+   "EventResource",
+   "EventSeasonsResource",
+   "EventVenuesResource",
+   "FeaturedGameResource",
+   "GameBettingSplitsResource",
+   "GameContentPreviewResource",
+   "GameContentRecapResource",
+   "GameContentStoryResource",
+   "GameHqOddsResource",
+   "GameLineupResource",
+   "GameOddsResource",
+   "GameOutcomesResource",
+   "GamePropsResource",
+   "GameRTWPResource",
+   "GameResource",
+   "GameScoringBoxscoresResource",
+   "GameScoringDrivesResource",
+   "GameScoringLeadersResource"
+  ]
+ },
+ {
+  "name": "napi_odds_w3_MIN@TB_played",
+  "url": "https://api.cbssports.com/napi/resource/odds/50029242",
+  "status": 200,
+  "bytes": 191,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [],
+  "top_keys": [
+   "errors"
+  ]
+ },
+ {
+  "name": "napi_game_odds_w3_MIN@TB_played",
+  "url": "https://api.cbssports.com/napi/resource/game/odds/50029242",
+  "status": 200,
+  "bytes": 30356,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [
+   "openingOdds",
+   "openingSpread",
+   "openingTotal"
+  ],
+  "top_keys": [
+   "awayRotationNumber",
+   "consensus",
+   "correctHomeTeam",
+   "createDate",
+   "filteringDataRecords",
+   "homeRotationNumber",
+   "markets",
+   "marketsLastUpdated",
+   "showHiddenOdds",
+   "sportRadarAwayTeamId",
+   "sportRadarHomeTeamId",
+   "teamConsensus",
+   "teamMarkets",
+   "updateDate"
+  ]
+ },
+ {
+  "name": "napi_hq_odds_w3_MIN@TB_played",
+  "url": "https://api.cbssports.com/napi/resource/game/odds/hq/50029242",
+  "status": 200,
+  "bytes": 1236,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [],
+  "top_keys": [
+   "hqOdds"
+  ]
+ },
+ {
+  "name": "napi_splits_w3_MIN@TB_played",
+  "url": "https://api.cbssports.com/napi/resource/game/bettingSplits/50029242",
+  "status": 200,
+  "bytes": 1140,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [],
+  "top_keys": [
+   "bettingSplits"
+  ]
+ },
+ {
+  "name": "napi_odds_w4_NE@BUF_played",
+  "url": "https://api.cbssports.com/napi/resource/odds/50029213",
+  "status": 200,
+  "bytes": 191,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [],
+  "top_keys": [
+   "errors"
+  ]
+ },
+ {
+  "name": "napi_game_odds_w4_NE@BUF_played",
+  "url": "https://api.cbssports.com/napi/resource/game/odds/50029213",
+  "status": 200,
+  "bytes": 30023,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [
+   "openingOdds",
+   "openingSpread",
+   "openingTotal"
+  ],
+  "top_keys": [
+   "awayRotationNumber",
+   "consensus",
+   "correctHomeTeam",
+   "createDate",
+   "filteringDataRecords",
+   "homeRotationNumber",
+   "markets",
+   "marketsLastUpdated",
+   "showHiddenOdds",
+   "sportRadarAwayTeamId",
+   "sportRadarHomeTeamId",
+   "teamConsensus",
+   "teamMarkets",
+   "updateDate"
+  ]
+ },
+ {
+  "name": "napi_hq_odds_w4_NE@BUF_played",
+  "url": "https://api.cbssports.com/napi/resource/game/odds/hq/50029213",
+  "status": 200,
+  "bytes": 1225,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [],
+  "top_keys": [
+   "hqOdds"
+  ]
+ },
+ {
+  "name": "napi_splits_w4_NE@BUF_played",
+  "url": "https://api.cbssports.com/napi/resource/game/bettingSplits/50029213",
+  "status": 200,
+  "bytes": 1138,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [],
+  "top_keys": [
+   "bettingSplits"
+  ]
+ },
+ {
+  "name": "napi_odds_w5_TB@DAL",
+  "url": "https://api.cbssports.com/napi/resource/odds/50029260",
+  "status": 200,
+  "bytes": 191,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [],
+  "top_keys": [
+   "errors"
+  ]
+ },
+ {
+  "name": "napi_game_odds_w5_TB@DAL",
+  "url": "https://api.cbssports.com/napi/resource/game/odds/50029260",
+  "status": 200,
+  "bytes": 30022,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [
+   "openingOdds",
+   "openingSpread",
+   "openingTotal"
+  ],
+  "top_keys": [
+   "awayRotationNumber",
+   "consensus",
+   "correctHomeTeam",
+   "createDate",
+   "filteringDataRecords",
+   "homeRotationNumber",
+   "markets",
+   "marketsLastUpdated",
+   "showHiddenOdds",
+   "sportRadarAwayTeamId",
+   "sportRadarHomeTeamId",
+   "teamConsensus",
+   "teamMarkets",
+   "updateDate"
+  ]
+ },
+ {
+  "name": "napi_hq_odds_w5_TB@DAL",
+  "url": "https://api.cbssports.com/napi/resource/game/odds/hq/50029260",
+  "status": 200,
+  "bytes": 1087,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [],
+  "top_keys": [
+   "hqOdds"
+  ]
+ },
+ {
+  "name": "napi_splits_w5_TB@DAL",
+  "url": "https://api.cbssports.com/napi/resource/game/bettingSplits/50029260",
+  "status": 200,
+  "bytes": 1139,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [],
+  "top_keys": [
+   "bettingSplits"
+  ]
+ },
+ {
+  "name": "napi_game_odds_w5_TB@DAL_state_open",
+  "url": "https://api.cbssports.com/napi/resource/game/odds/50029260?state=open",
+  "status": 200,
+  "bytes": 30022,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [
+   "openingOdds",
+   "openingSpread",
+   "openingTotal"
+  ],
+  "top_keys": [
+   "awayRotationNumber",
+   "consensus",
+   "correctHomeTeam",
+   "createDate",
+   "filteringDataRecords",
+   "homeRotationNumber",
+   "markets",
+   "marketsLastUpdated",
+   "showHiddenOdds",
+   "sportRadarAwayTeamId",
+   "sportRadarHomeTeamId",
+   "teamConsensus",
+   "teamMarkets",
+   "updateDate"
+  ]
+ },
+ {
+  "name": "napi_game_odds_w5_TB@DAL_state_opening",
+  "url": "https://api.cbssports.com/napi/resource/game/odds/50029260?state=opening",
+  "status": 200,
+  "bytes": 30022,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [
+   "openingOdds",
+   "openingSpread",
+   "openingTotal"
+  ],
+  "top_keys": [
+   "awayRotationNumber",
+   "consensus",
+   "correctHomeTeam",
+   "createDate",
+   "filteringDataRecords",
+   "homeRotationNumber",
+   "markets",
+   "marketsLastUpdated",
+   "showHiddenOdds",
+   "sportRadarAwayTeamId",
+   "sportRadarHomeTeamId",
+   "teamConsensus",
+   "teamMarkets",
+   "updateDate"
+  ]
+ },
+ {
+  "name": "napi_game_odds_w5_TB@DAL_state_pre",
+  "url": "https://api.cbssports.com/napi/resource/game/odds/50029260?state=pre",
+  "status": 200,
+  "bytes": 30022,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [
+   "openingOdds",
+   "openingSpread",
+   "openingTotal"
+  ],
+  "top_keys": [
+   "awayRotationNumber",
+   "consensus",
+   "correctHomeTeam",
+   "createDate",
+   "filteringDataRecords",
+   "homeRotationNumber",
+   "markets",
+   "marketsLastUpdated",
+   "showHiddenOdds",
+   "sportRadarAwayTeamId",
+   "sportRadarHomeTeamId",
+   "teamConsensus",
+   "teamMarkets",
+   "updateDate"
+  ]
+ },
+ {
+  "name": "napi_game_odds_w5_TB@DAL_state_current",
+  "url": "https://api.cbssports.com/napi/resource/game/odds/50029260?state=current",
+  "status": 200,
+  "bytes": 30022,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [
+   "openingOdds",
+   "openingSpread",
+   "openingTotal"
+  ],
+  "top_keys": [
+   "awayRotationNumber",
+   "consensus",
+   "correctHomeTeam",
+   "createDate",
+   "filteringDataRecords",
+   "homeRotationNumber",
+   "markets",
+   "marketsLastUpdated",
+   "showHiddenOdds",
+   "sportRadarAwayTeamId",
+   "sportRadarHomeTeamId",
+   "teamConsensus",
+   "teamMarkets",
+   "updateDate"
+  ]
+ },
+ {
+  "name": "napi_game_odds_w5_TB@DAL_state_closing",
+  "url": "https://api.cbssports.com/napi/resource/game/odds/50029260?state=closing",
+  "status": 200,
+  "bytes": 30022,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [
+   "openingOdds",
+   "openingSpread",
+   "openingTotal"
+  ],
+  "top_keys": [
+   "awayRotationNumber",
+   "consensus",
+   "correctHomeTeam",
+   "createDate",
+   "filteringDataRecords",
+   "homeRotationNumber",
+   "markets",
+   "marketsLastUpdated",
+   "showHiddenOdds",
+   "sportRadarAwayTeamId",
+   "sportRadarHomeTeamId",
+   "teamConsensus",
+   "teamMarkets",
+   "updateDate"
+  ]
+ },
+ {
+  "name": "napi_odds_w6_WAS@SF",
+  "url": "https://api.cbssports.com/napi/resource/odds/50029286",
+  "status": 200,
+  "bytes": 191,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [],
+  "top_keys": [
+   "errors"
+  ]
+ },
+ {
+  "name": "napi_game_odds_w6_WAS@SF",
+  "url": "https://api.cbssports.com/napi/resource/game/odds/50029286",
+  "status": 200,
+  "bytes": 16638,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [
+   "openingOdds",
+   "openingSpread",
+   "openingTotal"
+  ],
+  "top_keys": [
+   "awayRotationNumber",
+   "consensus",
+   "correctHomeTeam",
+   "createDate",
+   "filteringDataRecords",
+   "homeRotationNumber",
+   "markets",
+   "marketsLastUpdated",
+   "showHiddenOdds",
+   "sportRadarAwayTeamId",
+   "sportRadarHomeTeamId",
+   "teamConsensus",
+   "teamMarkets",
+   "updateDate"
+  ]
+ },
+ {
+  "name": "napi_hq_odds_w6_WAS@SF",
+  "url": "https://api.cbssports.com/napi/resource/game/odds/hq/50029286",
+  "status": 200,
+  "bytes": 205,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [],
+  "top_keys": [
+   "errors"
+  ]
+ },
+ {
+  "name": "napi_splits_w6_WAS@SF",
+  "url": "https://api.cbssports.com/napi/resource/game/bettingSplits/50029286",
+  "status": 200,
+  "bytes": 206,
+  "ctype": "application/json; charset=utf-8",
+  "open_keys": [],
+  "top_keys": [
+   "errors"
+  ]
+ },
+ {
+  "name": "root_registry",
+  "url": "https://api.cbssports.com/resource/endpoint/registry",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_odds_w3_MIN@TB_played",
+  "url": "https://api.cbssports.com/resource/odds/50029242",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_game_odds_w3_MIN@TB_played",
+  "url": "https://api.cbssports.com/resource/game/odds/50029242",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_hq_odds_w3_MIN@TB_played",
+  "url": "https://api.cbssports.com/resource/game/odds/hq/50029242",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_splits_w3_MIN@TB_played",
+  "url": "https://api.cbssports.com/resource/game/bettingSplits/50029242",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_odds_w4_NE@BUF_played",
+  "url": "https://api.cbssports.com/resource/odds/50029213",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_game_odds_w4_NE@BUF_played",
+  "url": "https://api.cbssports.com/resource/game/odds/50029213",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_hq_odds_w4_NE@BUF_played",
+  "url": "https://api.cbssports.com/resource/game/odds/hq/50029213",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_splits_w4_NE@BUF_played",
+  "url": "https://api.cbssports.com/resource/game/bettingSplits/50029213",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_odds_w5_TB@DAL",
+  "url": "https://api.cbssports.com/resource/odds/50029260",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_game_odds_w5_TB@DAL",
+  "url": "https://api.cbssports.com/resource/game/odds/50029260",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_hq_odds_w5_TB@DAL",
+  "url": "https://api.cbssports.com/resource/game/odds/hq/50029260",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_splits_w5_TB@DAL",
+  "url": "https://api.cbssports.com/resource/game/bettingSplits/50029260",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_game_odds_w5_TB@DAL_state_open",
+  "url": "https://api.cbssports.com/resource/game/odds/50029260?state=open",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_game_odds_w5_TB@DAL_state_opening",
+  "url": "https://api.cbssports.com/resource/game/odds/50029260?state=opening",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_game_odds_w5_TB@DAL_state_pre",
+  "url": "https://api.cbssports.com/resource/game/odds/50029260?state=pre",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_game_odds_w5_TB@DAL_state_current",
+  "url": "https://api.cbssports.com/resource/game/odds/50029260?state=current",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_game_odds_w5_TB@DAL_state_closing",
+  "url": "https://api.cbssports.com/resource/game/odds/50029260?state=closing",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_odds_w6_WAS@SF",
+  "url": "https://api.cbssports.com/resource/odds/50029286",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_game_odds_w6_WAS@SF",
+  "url": "https://api.cbssports.com/resource/game/odds/50029286",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_hq_odds_w6_WAS@SF",
+  "url": "https://api.cbssports.com/resource/game/odds/hq/50029286",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ },
+ {
+  "name": "root_splits_w6_WAS@SF",
+  "url": "https://api.cbssports.com/resource/game/bettingSplits/50029286",
+  "status": 404,
+  "bytes": 196,
+  "ctype": "text/html; charset=iso-8859-1",
+  "open_keys": [],
+  "top_keys": "not json"
+ }
+]
