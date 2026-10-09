@@ -1,0 +1,37 @@
+name: openmarkets-site-probe
+
+# One-off probe of the OpenMarkets site for its API docs. Unauthenticated GETs only: no API key
+# is passed to this job. Prints status codes, page titles and doc-like links. Runs on a push that
+# changes this file, or when dispatched by hand.
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/nfl-ats-league-engine-q5vkbf]
+    paths: ['.github/workflows/openmarkets-site-probe.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Unauthenticated GETs (no credentials)
+        run: |
+          for host in app.openmarkets.ai openmarkets.ai; do
+            if getent hosts "$host" >/dev/null; then echo "$host: DNS resolves"; else echo "$host: no DNS record"; fi
+          done
+          for url in \
+            https://app.openmarkets.ai/ https://app.openmarkets.ai/docs https://app.openmarkets.ai/api \
+            https://app.openmarkets.ai/sitemap.xml \
+            https://openmarkets.ai/ https://openmarkets.ai/docs https://openmarkets.ai/api \
+            https://openmarkets.ai/sitemap.xml \
+            https://docs.openmarkets.ai/ https://api.openmarkets.ai/; do
+            out=$(mktemp)
+            code=$(curl -sS -L -o "$out" -w '%{http_code} final=%{url_effective}' --max-time 20 "$url" 2>&1 || true)
+            echo "GET $url => $code"
+            grep -oiE '<title>[^<]{0,120}' "$out" | head -1 | sed 's/^/  /' || true
+            grep -oiE 'href="[^"]*(api|doc|developer)[^"]*"' "$out" | sort -u | head -20 | sed 's/^/  link: /' || true
+            rm -f "$out"
+          done
