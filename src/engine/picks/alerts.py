@@ -22,7 +22,7 @@ import urllib.request
 import polars as pl
 
 from engine import config
-from engine.picks import dashboard
+from engine.picks import dashboard, strength
 
 MAX_LEN = 200
 MISSING_LEAD_MIN = 3        # warn when a game locks within this many minutes and still has no pick
@@ -136,6 +136,7 @@ def full_message(rows: list[dict], projs: dict | None = None, max_bytes: int = F
     Models that disagree with the official pick are marked with ≠."""
     if not rows:
         return ""
+    tbl = strength.table()
     rows = sorted(rows, key=lambda r: (r["kickoff_utc"], r["game_id"]))
     lines = [message(rows, max_len=10_000)]
     for r in rows:
@@ -149,7 +150,8 @@ def full_message(rows: list[dict], projs: dict | None = None, max_bytes: int = F
         rest = " · ".join(f"{tag} {_team_spread(r, mp[k])}" + (" ≠" if mp[k] and off and mp[k] != off else "")
                           + (" (no injury report)" if k == "proj-players-v3" and noinj and mp[k] else "")
                           for k, tag in MODEL_TAGS)
-        lines.append(f"{r['away_team']}@{r['home_team']}: Pick {_team_spread(r, off)} ({_move(r.get('drift'))}{pc}) | {rest}")
+        tg = strength.tag(r.get("drift"), tbl)
+        lines.append(f"{r['away_team']}@{r['home_team']}: Pick {_team_spread(r, off)} ({_move(r.get('drift'))}{pc}{', ' + tg if tg else ''}) | {rest}")
     text = "\n".join(lines)
     while len(text.encode("utf-8")) > max_bytes and len(lines) > 2:
         lines.pop()

@@ -1,0 +1,15 @@
+{
+ "scored_test_a": 815,
+ "published_test_a": 815,
+ "scored_test_b": 272,
+ "published_test_b": 272,
+ "half_point_2025_n": 210,
+ "published_n": 210,
+ "v3_w": 104,
+ "published_v3_w": 104,
+ "v1_w": 107,
+ "published_v1_w": 107,
+ "D": 365,
+ "k": 500,
+ "reproduces": true
+}

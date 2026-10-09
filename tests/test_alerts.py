@@ -145,7 +145,8 @@ def test_week3_replay_would_have_warned():
     assert len(flagged) == 14          # every week 3 pick except PHI@CHI (5 min)
 
 
-def test_full_message_lists_every_model_and_marks_disagreements():
+def test_full_message_lists_every_model_and_marks_disagreements(monkeypatch):
+    monkeypatch.setattr(A.strength, "table", lambda: {})            # no validated tiers: no strength tag
     r = _p("2026_04_NE_BUF", "NE", "BUF", "BUF", -6.5, _k(27, 13))
     r.update(drift="-0.5", p_home_cover="0.506", p_away_cover="0.494", shadow_pick_keynum="BUF")
     projs = {"2026_04_NE_BUF": {"proj-poisson-v1": "NE", "proj-players-v3": "NE"}}
@@ -153,6 +154,15 @@ def test_full_message_lists_every_model_and_marks_disagreements():
     assert m[0] == "Picks locked (Sun 1:00 PM): BUF −6.5"
     assert m[1] == ("NE@BUF: Pick BUF −6.5 (moved ½ pt, 51%) | Hybrid NE +6.5 ≠ · v1 NE +6.5 ≠ · v3 NE +6.5 ≠"
                     " · Key BUF −6.5")
+
+
+def test_full_message_tags_the_strength_tier_only_when_validated(monkeypatch):
+    r = _p("2026_04_ARI_NYG", "ARI", "NYG", "ARI", 0.5, _k(27, 13))
+    r.update(drift="3.0", p_home_cover="0.40", p_away_cover="0.60")
+    monkeypatch.setattr(A.strength, "table", lambda: {"ok": True, "tiers": {}})
+    assert "moved 3 pts, 60%, Max)" in A.full_message([r]).split("\n")[1]
+    monkeypatch.setattr(A.strength, "table", lambda: {"ok": False, "tiers": {}})
+    assert "Max" not in A.full_message([r]).split("\n")[1]
 
 
 def test_full_message_big_move_keeps_hybrid_on_the_pick_and_handles_missing_models():

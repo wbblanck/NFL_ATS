@@ -62,7 +62,7 @@ def backtest() -> dict:
     d = json.loads(p.read_text())
     out = {}
     for k, v in d.get("models", {}).items():
-        if k == "live_sbro_frame":
+        if k in ("live_sbro_frame", "v1_v3_games", "live_v3_games"):
             continue
         k = "official" if k == "live" else k            # the backtest calls the official pick "live"
         s = v.get("decision") or v["all"]

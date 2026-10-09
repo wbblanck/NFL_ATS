@@ -78,6 +78,9 @@ def main(argv=None) -> int:
     c.add_argument("--season", type=int)
     c.add_argument("--week", type=int)
     sub.add_parser("bettable", help="bettable record of each model against the closing line (docs/bettable_preregistration.md)")
+    sub.add_parser("strong-calls", help="tiers by market-move size, out of sample (docs/strong_calls_preregistration.md)")
+    v3h = sub.add_parser("v3-history", help="per-game v3 picks for 2022-2025 (docs/v3_history_preregistration.md)")
+    v3h.add_argument("--cache", default=None)
     pv3 = sub.add_parser("players-v3")
     pv3.add_argument("--cache", default=None)
     pe = sub.add_parser("efficiency-residual")
@@ -149,6 +152,13 @@ def main(argv=None) -> int:
         from engine.backtest import bettable
         bettable.main()
         return 0
+    if a.cmd == "strong-calls":
+        from engine.backtest import strong_calls
+        strong_calls.main()
+        return 0
+    if a.cmd == "v3-history":
+        from engine.backtest import v3_history
+        return v3_history.main(a.cache)
     if a.cmd == "players-v3":
         import json
         from engine import config
@@ -357,6 +367,12 @@ def main(argv=None) -> int:
             print("bettable record unavailable:", repr(e), file=sys.stderr)
             bet_data = {}
         try:
+            from engine.picks import strength as _st
+            strength_tbl = _st.table()
+        except Exception as e:
+            print("strength tiers unavailable:", repr(e), file=sys.stderr)
+            strength_tbl = {}
+        try:
             from engine.picks import provisional as _pv
             flips_data = _pv.flips(rows, _pv.load())
             if a.log_provisional:
@@ -379,7 +395,7 @@ def main(argv=None) -> int:
         out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
         open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results,
                                               details, season_tab, market.credits_left(), epa_tab, curve_data, tb_rows,
-                                              lr_data, flips_data, slate_data, bet_data))
+                                              lr_data, flips_data, slate_data, bet_data, strength_tbl))
         print(out)
         return 0
     if a.cmd == "check-league-lines":

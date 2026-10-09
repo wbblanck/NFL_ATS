@@ -6,7 +6,7 @@ Rules: `docs/bettable_preregistration.md` (committed before the new tests, `cbb1
 ## Result: no model cleared break-even
 
 Each model's pool pick, bet at the closing line, one unit at -110 (break-even 52.38%). Decision z is one-sided
-against break-even, Holm-corrected over the four models.
+against break-even, Holm-corrected over the four models (five once v3 was added).
 
 | Model | Decision window | Bets | Win rate (95%) | Return | z vs break-even | Profitable? |
 |---|---|---|---|---|---|---|
@@ -14,8 +14,9 @@ against break-even, Holm-corrected over the four models.
 | Key-number variant | 2007-2021 | 3,655 | 51.3% (49.7-52.9) | -2.0% | -1.28 | no |
 | v1 (team-only projection) | 2007-2021 | 3,655 | 49.7% (48.0-51.3) | -5.2% | -3.30 | no |
 | Hybrid | 2007-2013 + 2020-2021 | 2,202 | 52.2% (50.1-54.3) | -0.4% | -0.19 | no |
+| v3 (player projection), added by docs/v3_history_report.md | 2022-2025 | 1,039 | 48.7% (45.7-51.7) | -7.0% | -2.38 | no |
 
-v3 has no backtest here (its historical per-game picks are not stored); it is judged by live tracking only.
+v3 was added afterwards (see docs/v3_history_report.md); it is also below break-even, by more than two standard errors.
 
 ## The same picks against the stale line (the pool's game)
 

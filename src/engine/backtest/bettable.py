@@ -113,9 +113,23 @@ def run() -> dict:
                                "by_period": {lab: summarize(g[(season >= a) & (season <= b)]) for lab, a, b in
                                              (("2007-2013", 2007, 2013), ("2014-2019", 2014, 2019), ("2020-2021", 2020, 2021))},
                                "vs_stale_line": summarize(np.where(pick, np.sign(margin + openl), -np.sign(margin + openl)))}
-    # --- decision: live (2008-2025 all), keynum, v1 (2007-2021), hybrid (outside its selection years); Holm over four ---
+    # --- v3 (docs/v3_history_preregistration.md): the as-registered model on 2022-2025, same bet ---
+    v3p = config.ROOT / "data" / "backtests" / "v3_history.csv"
+    if v3p.exists():
+        h = pl.read_csv(v3p)
+        hm, hc, hl, hs = (h[c].to_numpy() for c in ("margin", "close", "line", "season"))
+        for name, col in (("v3", "p_v3"), ("v1_v3_games", "p_v1"), ("live_v3_games", "p_live")):
+            pick = h[col].to_numpy() > 0.5
+            g = grade(pick, hm, hc)
+            out["models"][name] = {"window": "2022-2025", "all": summarize(g),
+                                   "by_period": {"2022-2024": summarize(g[hs <= 2024]), "2025": summarize(g[hs == 2025])},
+                                   "vs_stale_line": summarize(grade(pick, hm, hl))}
+    # --- decision: live (2008-2025 all), keynum, v1 (2007-2021), hybrid (outside its selection years), v3 (2022-2025);
+    #     Holm over the family (four before v3 existed, five with it) ---
     dec = {"live": out["models"]["live"]["all"], "keynum": out["models"]["keynum"]["all"],
            "v1": out["models"]["v1"]["all"], "hybrid": out["models"]["hybrid"]["decision"]}
+    if "v3" in out["models"]:
+        dec["v3"] = out["models"]["v3"]["all"]
     ok = holm({k: v["p_one_sided"] for k, v in dec.items()})
     out["decision"] = {k: {**{kk: v[kk] for kk in ("n", "win_rate", "ci95", "roi", "z_vs_break_even", "p_one_sided")},
                            "profitable_at_-110": ok[k]} for k, v in dec.items()}
