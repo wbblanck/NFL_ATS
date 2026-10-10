@@ -45,3 +45,27 @@ not just unhelpful.
   record. That logging was never set up, so no 2026 shadow predictions exist.
 - Live picks and all live models were unchanged throughout.
 - The FTN lag log (`docs/evidence/ftn/lag_log.csv`) continues only if someone runs it weekly.
+
+## Audit (2026-10-10, after the result)
+
+An independent re-implementation of the features, the walk-forward fits and the bootstrap was run from a separate
+script, which is not committed.
+
+- **Re-implementation matches.** Mean log-loss differences 0.018064, 0.011297 and 0.008140 for 2023, 2024 and 2025.
+  Pooled 0.012414, with bootstrap interval 0.001501 to 0.022931.
+- **Sign convention confirmed.** When the home team is favored (spread above 0), home teams won 68.6% of games. When
+  the away team is favored, home teams won 33.4%. The cover rule (margin minus spread) is consistent with that.
+- **Data checks.** No duplicate play keys in FTN or play-by-play. The fits converged (largest gradient about 1e-14).
+  Predicted probabilities stayed between 0.21 and 0.75. The lag log has 65 rows and one snapshot, with the
+  registered columns.
+- **Missing data.** Five team-games had no blitz data: ARI and LAC in 2024 week 7, ATL and SEA in 2024 week 7, and LAC
+  in 2025 week 3. Shrinkage filled them.
+- **Minor design note.** The shrinkage target for 2022 training rows is the whole 2022 season's average. It uses
+  charting rates, not results, and it affects training rows only.
+
+**Process deviation.** The registration says every pre-grading check, including check 3 (the lag), must pass before
+the test runs. Check 3 could not pass on the day the test ran, and the test ran anyway. The test does not use the
+lag, so the result stands. The deviation should have been flagged before running. The registration should say check 3
+gates only the 2026 shadow.
+
+No other computational bugs were found in the FTN test. The sign error above was the only one.
