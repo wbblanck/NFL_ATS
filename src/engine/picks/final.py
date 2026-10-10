@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import datetime as dt
 import hashlib
+import time
 import uuid
 
 import polars as pl
@@ -208,6 +209,24 @@ def next_lock(sched: pl.DataFrame, now: dt.datetime, window_minutes: int, done: 
 
 EARLY_PICK_MIN = 15    # a pick made more than this long before lock used a stale market (week 3 picks ran 44-64 min early)
 MIN_BOOKS = 5          # fewer books than this at lock: the market median is thin (week 3 low was 8)
+PINNACLE_RETRY_WAIT_S = 60   # one retry, this long after the first capture, before a pick falls back to the median
+
+
+def retry_missing_pinnacle(caps: list[dict], due: pl.DataFrame, events: list[dict] | None = None, *,
+                           capture_fn=None, sleep_fn=None, wait_s: int | None = None) -> list[dict]:
+    """Once, for games in `due` with no Pinnacle line in this capture: wait, capture again, and take the retry's rows
+    for a game only when the retry has Pinnacle for it. A game's rows never mix two captures."""
+    capture_fn = capture_fn or market.capture
+    have = {r.get("game_id") for r in caps if r.get("book") == MARKET_BOOK and r.get("status") == "ok"}
+    missing = due.filter(~pl.col("game_id").is_in(list(have)))
+    if missing.height == 0:
+        return caps
+    (sleep_fn or time.sleep)(PINNACLE_RETRY_WAIT_S if wait_s is None else wait_s)
+    again = capture_fn(missing, now=dt.datetime.now(dt.timezone.utc), events=events, all_games=True)
+    got = {r.get("game_id") for r in again if r.get("book") == MARKET_BOOK and r.get("status") == "ok"}
+    if not got:
+        return caps
+    return [r for r in caps if r.get("game_id") not in got] + [r for r in again if r.get("game_id") in got]
 
 
 def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int = 25,
@@ -227,6 +246,7 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
     if due.height == 0:
         return []
     caps = market.capture(due, now=now, window_minutes=window_minutes, events=events, all_games=True)
+    caps = retry_missing_pinnacle(caps, due, events=events)
     ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
     cbs = _cbs_frozen()
     dist, period = fit_dist(sched, now)

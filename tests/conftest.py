@@ -21,6 +21,13 @@ def tmp_root(tmp_path, monkeypatch):
     c.data.cache_clear(); c.league.cache_clear(); c.model.cache_clear()
 
 
+@pytest.fixture(autouse=True)
+def no_pinnacle_retry_wait(monkeypatch):
+    """The pick path waits once before a Pinnacle retry. Tests use fake market events, so do not sleep."""
+    from engine.picks import final
+    monkeypatch.setattr(final, "PINNACLE_RETRY_WAIT_S", 0)
+
+
 @pytest.fixture
 def week3_schedule():
     """Subset of the real 2026 week-3 schedule (nflverse, pulled 2026-09-24)."""
