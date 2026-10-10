@@ -222,7 +222,10 @@ def retry_missing_pinnacle(caps: list[dict], due: pl.DataFrame, events: list[dic
     if missing.height == 0:
         return caps
     (sleep_fn or time.sleep)(PINNACLE_RETRY_WAIT_S if wait_s is None else wait_s)
-    again = capture_fn(missing, now=dt.datetime.now(dt.timezone.utc), events=events, all_games=True)
+    try:
+        again = capture_fn(missing, now=dt.datetime.now(dt.timezone.utc), events=events, all_games=True)
+    except Exception:
+        return caps            # a failed retry must never block a pick: keep the first capture's rows
     got = {r.get("game_id") for r in again if r.get("book") == MARKET_BOOK and r.get("status") == "ok"}
     if not got:
         return caps

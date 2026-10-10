@@ -42,3 +42,13 @@ def test_fallback_rows_kept_when_retry_still_has_no_pinnacle():
                                        capture_fn=lambda due, **k: [_row("g1", "draftkings", -2.0)],
                                        sleep_fn=lambda s: None)
     assert out == caps                        # g1 keeps its first capture; g2 was never retried
+
+
+def test_failed_retry_keeps_the_first_capture():
+    caps = [_row("g1", "draftkings")]
+
+    def broken_capture(due, **k):
+        raise RuntimeError("network down")
+
+    out = final.retry_missing_pinnacle(caps, _due("g1"), capture_fn=broken_capture, sleep_fn=lambda s: None)
+    assert out == caps                        # a raised error never reaches the pick
