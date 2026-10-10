@@ -70,3 +70,24 @@ not beat the closing line. A true 2-point edge needs about 5,900 bets to confirm
 - **Scope:** four features only. Adding any feature is a new registration.
 - **Multiplicity:** one primary test. The secondary results are descriptive.
 - **Not in scope:** nflverse participation, weather, Action Network lines, and any opposite-side bet.
+
+## Amendment 1 (dated 2026-10-10, before any grading)
+
+Reason: the registration left the denominators undefined. Also, `date_pulled` in the FTN data records nflverse
+rebuild times, not when charting appeared, so check (c) can't be measured from it. The definitions below were set
+after the pre-grading checks, which looked at the distributions of the feature columns. No game outcome was examined
+for this amendment.
+
+Changes (definitions only):
+1. **Dropback** means nflverse `qb_dropback` = 1, which includes sacks and scrambles.
+2. **Blitz rate** is the share of dropbacks with `n_pass_rushers` of 5 or more. Dropbacks with `n_pass_rushers` = 0
+   (0.8% of dropbacks) or above 11 (two rows) count as missing and are removed from both numerator and denominator.
+3. **Play-action rate** is the share of dropbacks with `is_play_action` set.
+4. **Screen rate** is the share of dropbacks with `is_screen_pass` set.
+5. **Motion rate** is the share of offensive plays (`play_type` run or pass) with `is_motion` set.
+6. **Check (c)** is measured by a weekly log, `docs/evidence/ftn/lag_log.csv`, written by
+   `scripts/ftn/lag_snapshot.py` and started 2026-10-10. The log records counts only, not FTN play rows. The 2026
+   eligibility rule is unchanged: a game is shadowed only if its prior games' charting is present at lock.
+
+Unchanged: the hypothesis; the purpose of each feature; the shrinkage (k = 8); the model (L2 logistic, λ = 1.0,
+walk-forward from 2022); the test seasons; the primary decision rule; the shadow-only rule; and the expectation.
