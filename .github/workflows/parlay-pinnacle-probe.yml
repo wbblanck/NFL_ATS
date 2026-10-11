@@ -1,0 +1,56 @@
+name: parlay-pinnacle-probe
+
+# One-off probe: is Pinnacle missing from the provider's NFL spread feed, and does it appear under another region?
+# Same endpoint and parameters as src/engine/data/market.py. Prints counts, book keys and status codes only.
+# The key is read from the PARLAY_API_KEY secret, sent only to the provider, and never printed.
+on:
+  workflow_dispatch:
+  push:
+    branches: [claude/nfl-ats-league-engine-q5vkbf]
+    paths: ['.github/workflows/parlay-pinnacle-probe.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+    steps:
+      - name: Provider feed, Pinnacle presence by region
+        run: |
+          python3 -I - <<'PY'
+          import json, os, urllib.error, urllib.parse, urllib.request
+
+          KEY = os.environ.get("PARLAY_API_KEY", "")
+          print("PARLAY_API_KEY visible:", bool(KEY))
+          BASE = "https://parlay-api.com/v1/sports/americanfootball_nfl/odds"
+
+          for region in ["us", "eu", "us,eu"]:
+              q = urllib.parse.urlencode({"apiKey": KEY, "markets": "spreads", "regions": region})
+              req = urllib.request.Request(f"{BASE}?{q}", headers={"User-Agent": "nfl-ats-engine-probe/0.1"})
+              try:
+                  with urllib.request.urlopen(req, timeout=45) as r:
+                      status, body, headers = r.status, r.read().decode("utf-8", "replace"), dict(r.headers)
+              except urllib.error.HTTPError as e:
+                  status, body, headers = e.code, e.read().decode("utf-8", "replace")[:200], dict(e.headers)
+              except Exception as e:
+                  print(f"region {region}: request failed ({type(e).__name__})")
+                  continue
+              remaining = {k: v for k, v in headers.items() if "remaining" in k.lower()}
+              print(f"== regions={region} status={status} credit headers={remaining}")
+              if status != 200:
+                  print("   body (truncated, no key):", body[:200].replace(KEY, "***") if KEY else body[:200])
+                  continue
+              events = json.loads(body)
+              pin = [e for e in events if any(b.get("key") == "pinnacle" for b in e.get("bookmakers", []))]
+              print(f"   events: {len(events)} | events with pinnacle: {len(pin)}")
+              books = sorted({b.get("key") for e in events for b in e.get("bookmakers", [])})
+              print(f"   distinct book keys: {len(books)} -> {books}")
+              for e in events:
+                  if "Jacksonville" in (e.get("home_team") or "") or "Philadelphia" in (e.get("away_team") or ""):
+                      keys = sorted(b.get("key") for b in e.get("bookmakers", []))
+                      print(f"   PHI@JAX ({e.get('away_team')} @ {e.get('home_team')}): {len(keys)} books {keys}")
+          PY
