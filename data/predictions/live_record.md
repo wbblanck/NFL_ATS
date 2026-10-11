@@ -1,16 +1,16 @@
 # Live record vs the league line
 
-Updated 2026-10-08T23:55:29+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+Updated 2026-10-11T13:11:20+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
 
-**17-13** (30 graded), win rate 0.567 ± 0.090 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
+**17-14** (31 graded), win rate 0.548 ± 0.089 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
 
 No skill claim is made: fewer than 256 graded games (pre-registered).
 
-Shadow key-number estimator (recorded, not used to pick): 20-10; it disagreed with the live pick 7 times and won 5 of those.
+Shadow key-number estimator (recorded, not used to pick): 21-10; it disagreed with the live pick 8 times and won 6 of those.
 
-Score-projection models (tracked comparisons, not used to pick): proj-players-v3 20-8 (2 excluded: injury statuses not yet published); proj-poisson-v1 22-8.
+Score-projection models (tracked comparisons, not used to pick): proj-players-v3 21-8 (2 excluded: injury statuses not yet published); proj-poisson-v1 23-8.
 
-Hybrid (tracked, docs/hybrid_tracking.md): 22-8; it picked differently from the live pick 9 times: hybrid right 7, live right 2.
+Hybrid (tracked, docs/hybrid_tracking.md): 22-9; it picked differently from the live pick 9 times: hybrid right 7, live right 2.
 
 | Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |
 |---|---|---|---|---|---|---|---|
@@ -44,3 +44,4 @@ Hybrid (tracked, docs/hybrid_tracking.md): 22-8; it picked differently from the 
 | 2026 | 4 | 2026_04_LAC_SEA | LAC | -7.5 | 23-30 | W | LAC W |
 | 2026 | 4 | 2026_04_DEN_SF | SF | -2.5 | 14-24 | W | SF W |
 | 2026 | 4 | 2026_04_DET_CAR | DET | +3.5 | 26-32 | L | CAR W |
+| 2026 | 5 | 2026_05_TB_DAL | DAL | -8.5 | 24-16 | L | TB W |
