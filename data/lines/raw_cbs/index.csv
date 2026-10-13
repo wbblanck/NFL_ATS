@@ -100,3 +100,5 @@ capture_id,url,url_key,parsed_digest,file
 20261013T023533Z,https://www.cbssports.com/nfl/odds/2026/regular/week-7/,91f17551ab,d26989f6706402f01f64254ab98afc69625829d1925cc60d3f5d9a192650e48d,20261013T023533Z_91f17551ab.html.gz
 20261013T122336Z,https://www.cbssports.com/nfl/odds/,f3db15dfb0,ed7a904315a04795dc4dfab7e556c47fb0a6f782d82bd391df31d1e0a3f39575,20261013T122336Z_f3db15dfb0.html.gz
 20261013T122336Z,https://www.cbssports.com/nfl/odds/2026/regular/week-6/,56496d0f55,ed7a904315a04795dc4dfab7e556c47fb0a6f782d82bd391df31d1e0a3f39575,20261013T122336Z_56496d0f55.html.gz
+20261013T150123Z,https://www.cbssports.com/nfl/odds/,f3db15dfb0,fd9eeedb35389cc43c06a3c82f2b81225d447c0336afacec19e25edab5bfecdf,20261013T150123Z_f3db15dfb0.html.gz
+20261013T150123Z,https://www.cbssports.com/nfl/odds/2026/regular/week-6/,56496d0f55,fd9eeedb35389cc43c06a3c82f2b81225d447c0336afacec19e25edab5bfecdf,20261013T150123Z_56496d0f55.html.gz
