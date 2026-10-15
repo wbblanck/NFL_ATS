@@ -1,6 +1,6 @@
 # Live record vs the league line
 
-Updated 2026-10-15T01:45:01+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+Updated 2026-10-15T01:53:33+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
 
 **22-19** (41 graded), win rate 0.537 ± 0.078 (SE). Pending: 0. Ungradable (no league line recorded): 0. Late picks included: 0.
 
