@@ -23,9 +23,8 @@ signal the model uses.
 - **Cost:** one job per slot, up to about 3 hours for the Sunday afternoon slot, i.e. billed Actions minutes for the
   wait.
 
-The weekly scheduler (a Claude routine, Wednesday 14:47Z) creates one timer per slot for the whole week, including
-Thursday, Saturday and international games. Week 3's Thursday game was missed only because the scheduler was first
-set up on the Friday of that week.
+The six slot jobs on cron-job.org (below) dispatch these runs. The earlier weekly Claude routine that created one
+timer per slot no longer exists (checked 2026-10-15); do not recreate it.
 
 ## Pick alerts (ntfy)
 
@@ -43,77 +42,52 @@ it commits them. It does not depend on any Claude session. Without the secret it
 - **Not covered:** the "PICK MISSING" warning exists only in `alert --watch` (prints from a Claude session,
   which cannot reach a phone). A game that gets no pick sends nothing.
 
-## How the lock run behaves (immediate mode, the original design)
+## Immediate mode (retired)
 
-Each call picks every game whose lock (kickoff − 15 min) is **within the next
-25 minutes** and that has no prediction yet.
+Without `wait`, a call picks at once every game whose lock is within `window_minutes` (default 25). It was run from
+a timer every 10 minutes until week 3. It is retired: do not create every-10-minute jobs, and do not dispatch with
+the bare body `{"ref":"main"}`, which runs in this mode. Two jobs covering the same game can pick it twice.
 
-With the timer firing **every 10 minutes**, each game is picked 15–25 minutes
-before its lock. If one run fails, the next run 10 minutes later still lands
-before lock. A game already picked is never touched again, because
-predictions are immutable.
+## Timer jobs (cron-job.org, set up by the repo owner)
 
-A run with no games due does nothing and costs about 1 billed Actions minute.
+Six recurring jobs, time zone **America/New_York**, each dispatching `lock-run.yml` in waiting mode:
 
-## One-time setup (done by the repo owner)
+| Fires (ET) | Covers | `window_minutes` |
+|---|---|---|
+| Thu 7:15 PM | 8:15 PM kickoff | 55 |
+| Sun 8:30 AM | 9:30 AM (international) | 55 |
+| Sun 12:00 PM | 1:00 PM games | 55 |
+| Sun 3:05 PM | 4:05 / 4:25 PM games | 75 |
+| Sun 7:20 PM | 8:20 PM kickoff | 55 |
+| Mon 7:15 PM | 8:15 PM kickoff | 55 |
 
-### 1. Create a GitHub token that can only start workflows in this repo
+A job covers a game only if it fires before that game's pick time (kickoff − 20 min) and the game's lock is inside
+its window. Any other kickoff needs a **one-off job**: Saturday, Thanksgiving afternoon, Christmas, Friday games, an
+earlier Monday doubleheader game, an international game not at 9:30 AM Sunday. Check each week's kickoffs against
+the table. Never add a job for a game a recurring job already covers.
 
-GitHub → Settings → Developer settings → **Fine-grained personal access
-tokens** → Generate new token:
-- **Repository access:** Only select repositories → `wbblanck/NFL_ATS`.
-- **Permissions:** Repository permissions → **Actions: Read and write**.
-  Nothing else is needed.
-- **Expiration:** your choice. When it expires, the timer stops working, so
-  note the date.
-
-### 2. Create the timer job
-
-Use any service that can send a scheduled HTTP POST with custom headers, for
-example cron-job.org. That service's features and terms are **UNVERIFIED**
-here; check them yourself.
-
+**Request** (same for recurring and one-off jobs):
 - **URL:** `https://api.github.com/repos/wbblanck/NFL_ATS/actions/workflows/lock-run.yml/dispatches`
 - **Method:** `POST`
-- **Headers:**
-  - `Accept: application/vnd.github+json`
-  - `Authorization: Bearer <the token from step 1>`
-  - `X-GitHub-Api-Version: 2022-11-28`
-- **Body:** `{"ref":"main"}`
+- **Headers:** `Accept: application/vnd.github+json`, `Authorization: Bearer <token>`,
+  `X-GitHub-Api-Version: 2022-11-28`
+- **Body:**
+  `{"ref":"main","inputs":{"wait":"true","lead_minutes":"5","window_minutes":"55"}}`
+  (fire about 45 minutes before the first kickoff; widen `window_minutes` if the slot has several kickoff times)
 - **Success response:** HTTP **204**.
-- **Schedule** (time zone **America/New_York**), every 10 minutes during:
-  - Thursday 19:00–20:50
-  - Sunday 08:30–20:50
-  - Monday 18:30–20:50
-  - **Add as the season requires:** Saturday games (usually December),
-    Thanksgiving Thursday afternoon, Christmas and other special dates. Cover
-    from 30 minutes before the earliest lock to the latest lock that day.
 
-   As cron expressions (America/New_York):
-   ```
-   */10 19-20 * * 4
-   */10 8-20  * * 0     # set the first hour to start at :30 if the service allows
-   */10 18-20 * * 1
-   ```
+**Token:** a fine-grained personal access token limited to `wbblanck/NFL_ATS`, with only **Actions: Read and
+write**. When it expires, every job stops, so note the date. It lives only in cron-job.org.
 
-   The budget is about 100 runs a week, roughly 450 billed Actions minutes a
-   month.
+**Verify:** after a slot, `data/predictions/predictions.csv` has a row per game with `minutes_to_lock` about 5.
 
-### 3. Verify
+## Missed locks
 
-- Trigger the timer job once by hand. It should return 204, and a "Lock run"
-  run should appear under the repo's **Actions** tab within seconds.
-- On a game day, `data/predictions/predictions.csv` gains a row for each game
-  15–25 minutes before its lock. `minutes_to_lock` in each row records the
-  real margin.
+A missed lock stays missed. Never pick a game after its lock, and never write or edit a pick after the fact.
 
-## Manual fallback
-
-- **Actions tab:** Actions → **Lock run (final picks)** → Run workflow. Set
-  `game_id` (e.g. `2026_04_KC_BUF`) to pick one game right now.
-- **Locally:** `python -m engine run --game <game_id>`.
-- A pick made after lock is still written, but it is flagged
-  `LATE_AFTER_LOCK`.
+The `game_id` input (Actions → **Lock run (final picks)** → Run workflow) and `python -m engine run --game <id>`
+pick one game immediately. Use them only **before** that game's lock, for example when its slot job failed to
+start. After lock the engine would still write the pick (flagged `LATE_AFTER_LOCK`); do not run them then.
 
 ## Dashboard (private, on Streamlit)
 

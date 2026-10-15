@@ -18,7 +18,7 @@ Against-the-spread pick engine for the CBS "Bonsai Pool 2026". The goal is to wi
 
 - **Spread sign (canonical):** negative = home favored. Home covers when `margin > -spread`. nflverse `spread_line` has the opposite sign (positive = home favored).
 - **Lock** = kickoff − 15 min. Picks are made 5 min before lock (`lead_minutes` 5).
-- **Market input:** the Pinnacle line from the pick-time capture. One retry 60 s later if Pinnacle is missing; then the median of all books, flagged `MARKET_MEDIAN_FALLBACK` (and `FEW_BOOKS` under 5 books).
+- **Market input:** the Pinnacle line from the pick-time capture. One retry 60 s later if Pinnacle is missing; then the median of all books, flagged `MARKET_MEDIAN_FALLBACK`. `FEW_BOOKS` marks any pick with fewer than 5 books, Pinnacle or median.
 - **Record:** `data/predictions/live_record.md`, graded against the pool line. No skill claim before 256 graded games (pre-registered).
 - Projection models (team-only v1, player v3, hybrid, key-number) are tracked for comparison only. Only the official pick counts.
 
@@ -35,16 +35,18 @@ Against-the-spread pick engine for the CBS "Bonsai Pool 2026". The goal is to wi
   | Sun 7:20 PM | 8:20 PM kickoff | 55 |
   | Mon 7:15 PM | 8:15 PM kickoff | 55 |
 
-  Saturday, Thanksgiving and Christmas games need one-off jobs. Do not also dispatch a slot from Claude: a game could be picked twice. GitHub's own cron starts hours late, so it is not used for locks.
+  Any kickoff these jobs miss needs a one-off job (Saturday, Thanksgiving afternoon, Christmas, Friday, an earlier Monday doubleheader game, an international game not at 9:30 AM Sunday); check each week's kickoffs against the table, and never add a job for a game a recurring job already covers. Request body and details: `docs/scheduling.md`. Missed locks stay missed: never use the `game_id` input or `engine run --game` after a game's lock. Do not also dispatch a slot from Claude: a game could be picked twice. GitHub's own cron starts hours late, so it is not used for locks.
 - Each lock run picks, grades finished games, commits, sends the ntfy alert, and dispatches `publish-dashboard.yml` (rebuilds `site/dashboard.html`, shown in the private Streamlit app). Do not republish the retired claude.ai artifact.
-- **Pool lines:** the owner sends CBS pool screenshots on Tuesday. Transcribe them into `data/lines/league_lines.csv` (`spread` = home team's spread, `favorite`, source with the phone-clock time in ET, `recorded_at` in UTC), confirm with the owner, commit to `main`, then run `python -m engine cbs-lines` and report exact matches per source.
+- **Pool lines:** the owner sends CBS pool screenshots on Tuesday. Transcribe them into `data/lines/league_lines.csv` (`spread` = home team's spread, `favorite`, source with the phone-clock time in ET, `recorded_at` in UTC), confirm with the owner, commit to `main`, then run `python -m engine cbs-lines` and report exact matches per source from the regenerated `docs/cbs_lines_report.md` (the command itself prints only a count).
 - **Captures:** `capture-market.yml` (`all_games` true) and `capture-cbs.yml`. Never dispatch `backfill-market.yml` (the provider's history endpoint is unusable).
 
 ## Known limits
 
 - GitHub Free: 2,000 Actions minutes a month, shared with the owner's other private repos; a small budget covers overage. When minutes run out, jobs fail within seconds with no steps and no logs.
-- The odds provider's feed has often lacked Pinnacle since 2026-10-08; most picks then use the median.
+- As of 2026-10-15, the odds provider's feed has often lacked Pinnacle (since 2026-10-08), so most picks use the median. Check the `MARKET_MEDIAN_FALLBACK` share of recent rows in `data/predictions/predictions.csv` before assuming this still holds.
 
 ## Branches
 
 - `claude/nfl-ats-league-engine-q5vkbf`: research (FTN shadow model, bettable record, skip filters). Unmerged. Holds two one-off probe workflows (`parlay-pinnacle-probe.yml`, `openmarkets-auth-probe.yml`) to remove before any merge.
+- `claude/cbs-lines-w6`: 1 commit not on `main`. Status unreviewed.
+- `claude/nfl-alt-markets`: 229 commits not on `main`. Status unreviewed.
