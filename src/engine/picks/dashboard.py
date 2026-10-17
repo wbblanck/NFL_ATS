@@ -23,7 +23,7 @@ def _signal(drift):
     if drift in (None, "", "UNAVAILABLE"):
         return ("none", "No data")
     a = abs(float(drift))
-    return ("strong", "Moved 1+ pt") if a >= 1 else (("lean", "Moved ½ pt") if a > 0 else ("flat", "No move"))
+    return ("strong", "1+ pt off pool line") if a >= 1 else (("lean", "½ pt off pool line") if a > 0 else ("flat", "Same as pool line"))
 
 
 def _clock(d: dt.datetime) -> str:
@@ -745,15 +745,15 @@ details p{margin:0}
   <section class="controls">
     <div class="filters" role="group" aria-label="Filter games">
       <button id="f-all" aria-pressed="true">All games</button>
-      <button id="f-strong" aria-pressed="false">Moved 1+ pt</button>
+      <button id="f-strong" aria-pressed="false">1+ pt off pool line</button>
       <button id="f-differs" aria-pressed="false">Projection disagrees</button>
       <button id="f-hybrid" aria-pressed="false">Hybrid disagrees</button>
     </div>
     <div class="legend">
       <span><i class="k-pool"></i>Pool line (frozen Tuesday)</span>
       <span><i class="k-mkt"></i>Market at lock</span>
-      <span><b class="chip strong">Moved 1+ pt</b> historically 57%</span>
-      <span><b class="chip lean">Moved ½ pt</b> ~51%</span>
+      <span><b class="chip strong">1+ pt off pool line</b> historically 57%</span>
+      <span><b class="chip lean">½ pt off pool line</b> ~51%</span>
       <span><b class="chip flat">No move</b> ~52%</span>
     </div>
   </section>
@@ -1032,7 +1032,7 @@ const flipSeen=new Set();
 function flipWhy(x,f){
   const when=new Date(f.at).toLocaleString('en-US',{timeZone:'America/New_York',weekday:'short',hour:'numeric',minute:'2-digit'});
   const dm=x.market!=null&&x.market!==''&&f.mk!==''?Math.abs(+x.market-+f.mk):0;
-  return dm>0?`the line moved ${pts(dm)} since ${when} ET`:`changed since ${when} ET`}
+  return dm>0?`market moved ${pts(dm)} since ${when} ET`:`changed since ${when} ET`}
 function armFlips(){                         // the pick bar slides from the old pick to the new one, once, when the card first scrolls into view
   if(REDUCED||!window.IntersectionObserver)return;
   document.querySelectorAll('.card[data-flip]:not([data-armed])').forEach(card=>{
@@ -1070,7 +1070,7 @@ function move(x){
 function meter(x){
   if(x.pick_p==null)return '';
   const p=x.pick_p*100,lo=45,hi=62,X=v=>(Math.max(lo,Math.min(hi,v))-lo)/(hi-lo)*100;
-  const H={strong:[57,'1+ pt moves: 57%'],lean:[51,'½ pt moves: ~51%'],flat:[52,'no move: ~52%']}[x.sig];
+  const H={strong:[57,'1+ pt off: 57%'],lean:[51,'½ pt off: ~51%'],flat:[52,'same line: ~52%']}[x.sig];
   const edge=p-50,l=Math.min(X(50),X(p)),w=Math.abs(X(p)-X(50));
   return `<div class="pick-meter"><span class="lab">Cover chance · ${esc(x.pick)}</span><span class="pct">${p.toFixed(1)}%</span>
     <div class="g2" role="img" aria-label="${p.toFixed(1)}% to cover, ${Math.abs(edge).toFixed(1)} points ${edge>=0?'above':'below'} a coin flip">
