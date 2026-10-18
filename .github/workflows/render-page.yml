@@ -23,6 +23,7 @@ jobs:
         env:
           RENDER_URLS: |
             https://oddslink.app/docs/
+            https://oddslink.app/docs/guides/odds/
         run: python scripts/fetch/render_page.py
       - name: Commit
         run: |
