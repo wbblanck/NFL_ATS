@@ -10,6 +10,7 @@ on:
     - cron: '30 1 * * 1'       # Sun ~9:30 PM ET: late games final
     - cron: '30 5 * * 1,2,5'   # ~1:30 AM ET after Sun/Mon/Thu night games
     - cron: '0 13 * * 2'       # Tue morning: week wrap-up
+    - cron: '0 12 * * 6'       # Sat ~8 AM ET: Friday injury statuses on the cards
 
 permissions:
   contents: write
