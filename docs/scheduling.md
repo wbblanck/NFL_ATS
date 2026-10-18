@@ -97,5 +97,6 @@ the app is deployed from this private repo, so only invited viewers can open it.
 
 - **After every group of picks:** the lock run dispatches it from its `notify` step.
 - **For final scores:** crons on Sunday evening, after the Sunday/Monday/Thursday night games, and Tuesday morning.
+- **For injury statuses:** a Saturday morning cron, after the Friday game statuses reach nflverse.
   GitHub's cron can start late (audit 0.10), so scores may appear later than the cron time.
 - **Any time:** dispatch it manually.
