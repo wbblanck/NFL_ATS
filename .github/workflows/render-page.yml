@@ -22,7 +22,8 @@ jobs:
       - name: Render
         env:
           RENDER_URLS: |
-            https://www.reddit.com/r/sportsanalytics/s/2QwZbckAer
+            https://oddslink.app/docs/
+            https://oddslink.app/docs/guides/odds/
         run: python scripts/fetch/render_page.py
       - name: Commit
         run: |
