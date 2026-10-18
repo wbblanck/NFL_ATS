@@ -247,3 +247,53 @@ def main_spread_live(fixture: dict, book: str, smap: dict, max_hold: float = 0.1
     flagged = [c for c in cands if c["main_flag"] and c["hold"] <= max_hold]
     best = flagged[0] if len(flagged) == 1 else _balanced(cands, max_hold)
     return {**best, "n_lines": len(cands)} if best else None
+
+
+def pinnacle_capture_rows(due_games: list[dict], now: dt.datetime, smap: dict, *, call_fn=None,
+                          capture_id: str = "") -> list[dict]:
+    """Pinnacle's live full-game spread for each due game, as market_captures rows (book "pinnacle",
+    reason "oddspapi"). 2 requests: /fixtures around the due kickoffs (team names) and
+    odds-by-tournaments for Pinnacle. Games OddsPapi does not list, or lists without an active
+    Pinnacle line, get no row. Owner decision 2026-10-18: Pinnacle source while Parlay API is down."""
+    from engine.teams import UnknownTeam, to_canonical
+    call_fn = call_fn or call
+    if not due_games:
+        return []
+    ks = [g["kickoff_utc"] for g in due_games]
+    lo, hi = min(ks) - dt.timedelta(hours=2), max(ks) + dt.timedelta(hours=2)
+    s, fx = call_fn("fixtures", tournamentId=NFL_TOURNAMENT,
+                    **{"from": lo.strftime("%Y-%m-%dT%H:%M:%SZ"), "to": hi.strftime("%Y-%m-%dT%H:%M:%SZ")})
+    names = {}
+    for f in items_of(fx):
+        try:
+            names[f.get("fixtureId")] = (to_canonical(f.get("participant1Name") or ""),
+                                         to_canonical(f.get("participant2Name") or ""))
+        except UnknownTeam:
+            continue
+    if not names:
+        return []
+    s, live = call_fn("odds-by-tournaments", bookmaker="pinnacle", tournamentIds=NFL_TOURNAMENT)
+    rows = []
+    for f in items_of(live):
+        teams = names.get(f.get("fixtureId"))
+        if not teams:
+            continue
+        home, away = teams                                   # participant1 = home (verified 2026-10-18)
+        g = next((g for g in due_games if g["home_team"] == home and g["away_team"] == away), None)
+        if g is None:
+            continue
+        start = parse_ts(f.get("startTime"))
+        if start is not None and abs((start - g["kickoff_utc"]).total_seconds()) > 36 * 3600:
+            continue
+        m = main_spread_live(f, "pinnacle", smap)
+        if not m:
+            continue
+        rows.append({"capture_id": capture_id, "captured_at": now.isoformat(), "game_id": g["game_id"],
+                     "season": g["season"], "week": g["week"], "home_team": home, "away_team": away,
+                     "kickoff_utc": g["kickoff_utc"].isoformat(), "lock_utc": g["lock_utc"].isoformat(),
+                     "minutes_to_lock": round((g["lock_utc"] - now).total_seconds() / 60, 1),
+                     "book": "pinnacle", "home_spread": m["home_spread"],
+                     "home_price_decimal": m["home_price_decimal"], "book_last_update": m["changed_at"],
+                     "market_last_update": m["changed_at"], "provider_event_id": f.get("fixtureId"),
+                     "status": "ok", "reason": "oddspapi"})
+    return rows

@@ -40,6 +40,7 @@ jobs:
       - name: Final picks
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
+          ODDSPAPI_API_KEY: ${{ secrets.ODDS_PAPI }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           GH_TOKEN: ${{ github.token }}
         run: |
