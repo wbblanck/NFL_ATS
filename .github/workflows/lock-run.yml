@@ -41,6 +41,7 @@ jobs:
         env:
           PARLAY_API_KEY: ${{ secrets.PARLAY_API_KEY }}
           ODDSPAPI_API_KEY: ${{ secrets.ODDS_PAPI }}
+          ODDSLINK_API_KEY: ${{ secrets.ODDS_LINK }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           GH_TOKEN: ${{ github.token }}
         run: |

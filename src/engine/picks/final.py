@@ -28,7 +28,7 @@ import uuid
 import polars as pl
 
 from engine import config
-from engine.data import league_lines, market, oddspapi, store
+from engine.data import league_lines, market, oddslink, oddspapi, store
 from engine.models.margin_dist import MarginDist, TotalDist
 from engine.picks.grading import is_half_point
 
@@ -261,6 +261,28 @@ def oddspapi_pinnacle_fallback(caps: list[dict], due: pl.DataFrame, now: dt.date
     return caps + extra
 
 
+def oddslink_pinnacle_fallback(caps: list[dict], due: pl.DataFrame, now: dt.datetime, *, rows_fn=None) -> list[dict]:
+    """Owner decision 2026-10-18: OddsLink is the backup after OddsPapi, same rules and expiry; reason "oddslink",
+    flag MARKET_ODDSLINK. Any OddsLink failure leaves the capture as it was."""
+    if now >= ODDSPAPI_FALLBACK_UNTIL:
+        return caps
+    have = {r.get("game_id") for r in caps if r.get("status") == "ok" and r.get("book") == MARKET_BOOK}
+    missing = [g for g in due.to_dicts() if g["game_id"] not in have]
+    if not missing:
+        return caps
+    try:
+        rows_fn = rows_fn or (lambda games, t: oddslink.pinnacle_capture_rows(
+            games, t, capture_id="oddslink-" + t.strftime("%Y%m%dT%H%M%SZ")))
+        extra = rows_fn(missing, now)
+    except Exception as e:
+        print(f"OddsLink Pinnacle fallback failed: {type(e).__name__}", file=sys.stderr)
+        return caps
+    if extra:
+        store.append_rows(config.path("lines") / "market_captures.csv", market.FIELDS, extra)
+        print(f"OddsLink Pinnacle: {len(extra)} of {len(missing)} games still without a Pinnacle line", file=sys.stderr)
+    return caps + extra
+
+
 def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int = 25,
         events: list[dict] | None = None, snapshot_id: str = "", game_id: str | None = None,
         totals: list[dict] | None = None, proj_games=None, v3: dict | None = None) -> list[dict]:
@@ -280,6 +302,7 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
     caps = market.capture(due, now=now, window_minutes=window_minutes, events=events, all_games=True)
     caps = retry_missing_pinnacle(caps, due, events=events)
     caps = oddspapi_pinnacle_fallback(caps, due, now)
+    caps = oddslink_pinnacle_fallback(caps, due, now)
     ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
     cbs = _cbs_frozen()
     dist, period = fit_dist(sched, now)
@@ -315,6 +338,8 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
             flags.append("MARKET_MEDIAN_FALLBACK")
         if use_ref and any(r.get("book") == MARKET_BOOK and r.get("reason") == "oddspapi" for r in rows):
             flags.append("MARKET_ODDSPAPI")
+        if use_ref and any(r.get("book") == MARKET_BOOK and r.get("reason") == "oddslink" for r in rows):
+            flags.append("MARKET_ODDSLINK")
         if 0 < cons["n_books"] < MIN_BOOKS:
             flags.append("FEW_BOOKS")
         if use_total and t_flag:

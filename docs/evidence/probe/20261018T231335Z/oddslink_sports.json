@@ -1,0 +1,1394 @@
+[
+ {
+  "key": "nfl",
+  "group": "American Football",
+  "title": "NFL",
+  "description": "US Football",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "ncaaf",
+  "group": "American Football",
+  "title": "NCAAF",
+  "description": "US College Football",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "nba",
+  "group": "Basketball",
+  "title": "NBA",
+  "description": "US Basketball",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "wnba",
+  "group": "Basketball",
+  "title": "WNBA",
+  "description": "US Basketball",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "mlb",
+  "group": "Baseball",
+  "title": "MLB",
+  "description": "Major League Baseball",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "nhl",
+  "group": "Ice Hockey",
+  "title": "NHL",
+  "description": "US Ice Hockey",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "mma",
+  "group": "Mixed Martial Arts",
+  "title": "MMA",
+  "description": "Mixed Martial Arts",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "soccer",
+  "group": "Soccer",
+  "title": "Soccer",
+  "description": "Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "argentina_primera_division",
+  "group": "Soccer",
+  "title": "Primera Divisi\u00f3n - Argentina",
+  "description": "Argentine Primera Divisi\u00f3n",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "austria_bundesliga",
+  "group": "Soccer",
+  "title": "Austrian Football Bundesliga",
+  "description": "Austrian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "belgium_first_div",
+  "group": "Soccer",
+  "title": "Belgium First Div",
+  "description": "Belgian First Division A",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "brazil_campeonato",
+  "group": "Soccer",
+  "title": "Brazil S\u00e9rie A",
+  "description": "Brasileir\u00e3o S\u00e9rie A",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "brazil_serie_b",
+  "group": "Soccer",
+  "title": "Brazil S\u00e9rie B",
+  "description": "Campeonato Brasileiro S\u00e9rie B",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "chile_campeonato",
+  "group": "Soccer",
+  "title": "Primera Divisi\u00f3n - Chile",
+  "description": "Campeonato Chileno",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "china_superleague",
+  "group": "Soccer",
+  "title": "Super League - China",
+  "description": "Chinese Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "copa_libertadores",
+  "group": "Soccer",
+  "title": "Copa Libertadores",
+  "description": "CONMEBOL Copa Libertadores",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "conmebol_copa_sudamericana",
+  "group": "Soccer",
+  "title": "Copa Sudamericana",
+  "description": "CONMEBOL Copa Sudamericana",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "denmark_superliga",
+  "group": "Soccer",
+  "title": "Denmark Superliga",
+  "description": "Danish Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "efl_champ",
+  "group": "Soccer",
+  "title": "Championship",
+  "description": "EFL Championship",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "england_league1",
+  "group": "Soccer",
+  "title": "League 1",
+  "description": "EFL League 1",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "england_league2",
+  "group": "Soccer",
+  "title": "League 2",
+  "description": "EFL League 2",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "england_efl_cup",
+  "group": "Soccer",
+  "title": "EFL Cup",
+  "description": "League Cup",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "epl",
+  "group": "Soccer",
+  "title": "EPL",
+  "description": "English Premier League",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "finland_veikkausliiga",
+  "group": "Soccer",
+  "title": "Veikkausliiga - Finland",
+  "description": "Finnish Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "france_ligue_one",
+  "group": "Soccer",
+  "title": "Ligue 1 - France",
+  "description": "French Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "germany_bundesliga",
+  "group": "Soccer",
+  "title": "Bundesliga - Germany",
+  "description": "German Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "concacaf_leagues_cup",
+  "group": "Soccer",
+  "title": "Leagues Cup",
+  "description": "CONCACAF Leagues Cup",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "league_of_ireland",
+  "group": "Soccer",
+  "title": "League of Ireland",
+  "description": "Airtricity League Premier Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "italy_serie_a",
+  "group": "Soccer",
+  "title": "Serie A - Italy",
+  "description": "Italian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "korea_kleague1",
+  "group": "Soccer",
+  "title": "K League 1",
+  "description": "Korean Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "mexico_ligamx",
+  "group": "Soccer",
+  "title": "Liga MX",
+  "description": "Mexican Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "netherlands_eredivisie",
+  "group": "Soccer",
+  "title": "Dutch Eredivisie",
+  "description": "Dutch Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "norway_eliteserien",
+  "group": "Soccer",
+  "title": "Eliteserien - Norway",
+  "description": "Norwegian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "poland_ekstraklasa",
+  "group": "Soccer",
+  "title": "Ekstraklasa - Poland",
+  "description": "Polish Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "portugal_primeira_liga",
+  "group": "Soccer",
+  "title": "Primeira Liga - Portugal",
+  "description": "Portugese Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "russia_premier_league",
+  "group": "Soccer",
+  "title": "Premier League - Russia",
+  "description": "Russian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "spl",
+  "group": "Soccer",
+  "title": "Premiership - Scotland",
+  "description": "Scottish Premiership",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "la_liga",
+  "group": "Soccer",
+  "title": "La Liga - Spain",
+  "description": "Spanish Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "sweden_allsvenskan",
+  "group": "Soccer",
+  "title": "Allsvenskan - Sweden",
+  "description": "Swedish Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "sweden_superettan",
+  "group": "Soccer",
+  "title": "Superettan - Sweden",
+  "description": "Swedish Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "saudi_professional_league",
+  "group": "Soccer",
+  "title": "Saudi Pro League",
+  "description": "Saudi Arabian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "switzerland_superleague",
+  "group": "Soccer",
+  "title": "Swiss Superleague",
+  "description": "Swiss Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "uefa_champs_league",
+  "group": "Soccer",
+  "title": "UEFA Champions League",
+  "description": "European Champions League",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "uefa_conference_league",
+  "group": "Soccer",
+  "title": "UEFA Conference League",
+  "description": "European Conference League",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "uefa_europa_league",
+  "group": "Soccer",
+  "title": "UEFA Europa League",
+  "description": "European Europa League",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "uefa_nations_league",
+  "group": "Soccer",
+  "title": "UEFA Nations League",
+  "description": "UEFA Nations League",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "usa_mls",
+  "group": "Soccer",
+  "title": "MLS",
+  "description": "Major League Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "australia_a_league",
+  "group": "Soccer",
+  "title": "A-League",
+  "description": "Aussie Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "fa_cup",
+  "group": "Soccer",
+  "title": "FA Cup",
+  "description": "Football Association Challenge Cup",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "france_coupe_de_france",
+  "group": "Soccer",
+  "title": "Coupe de France",
+  "description": "French Soccer",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "ligue_2",
+  "group": "Soccer",
+  "title": "Ligue 2 - France",
+  "description": "French Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "germany_2_bundesliga",
+  "group": "Soccer",
+  "title": "Bundesliga 2 - Germany",
+  "description": "German Soccer",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "germany_dfb_cup",
+  "group": "Soccer",
+  "title": "DFB-Pokal",
+  "description": "German Soccer",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "greece_super_league",
+  "group": "Soccer",
+  "title": "Super League - Greece",
+  "description": "Greek Soccer",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "italy_coppa_italia",
+  "group": "Soccer",
+  "title": "Coppa Italia",
+  "description": "Italian Soccer",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "italy_serie_b",
+  "group": "Soccer",
+  "title": "Serie B - Italy",
+  "description": "Italian Soccer",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "japan_j1_league",
+  "group": "Soccer",
+  "title": "J League",
+  "description": "Japan Soccer League",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "spain_copa_del_rey",
+  "group": "Soccer",
+  "title": "Copa del Rey",
+  "description": "Spanish Soccer",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "spain_la_liga_2",
+  "group": "Soccer",
+  "title": "La Liga 2 - Spain",
+  "description": "Spanish Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "super_lig",
+  "group": "Soccer",
+  "title": "Turkey Super League",
+  "description": "Turkish Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "argentina_copa_argentina",
+  "group": "Soccer",
+  "title": "Copa Argentina",
+  "description": "Argentine Cup",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "argentina_primera_nacional",
+  "group": "Soccer",
+  "title": "Primera Nacional",
+  "description": "Argentina Primera Nacional",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "armenia_premier_league",
+  "group": "Soccer",
+  "title": "Armenian Premier League",
+  "description": "Armenia Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "austria_2_liga",
+  "group": "Soccer",
+  "title": "Austria 2. Liga",
+  "description": "Austrian Second Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "bolivia_primera_division",
+  "group": "Soccer",
+  "title": "Bolivia Primera Divisi\u00f3n",
+  "description": "Bolivian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "bulgaria_parva_liga",
+  "group": "Soccer",
+  "title": "Bulgaria Parva Liga",
+  "description": "Bulgarian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "colombia_primera_a",
+  "group": "Soccer",
+  "title": "Colombia Primera A",
+  "description": "Colombian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "costa_rica_primera_division",
+  "group": "Soccer",
+  "title": "Costa Rica Primera Divisi\u00f3n",
+  "description": "Costa Rican Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "czechia_first_league",
+  "group": "Soccer",
+  "title": "Czechia First League",
+  "description": "Czech Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "czechia_fnl",
+  "group": "Soccer",
+  "title": "Czechia FNL",
+  "description": "Czech Second Division",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "denmark_1st_division",
+  "group": "Soccer",
+  "title": "Denmark 1st Division",
+  "description": "Danish Second Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "estonia_premium_liiga",
+  "group": "Soccer",
+  "title": "Estonia Premium Liiga",
+  "description": "Estonian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "finland_ykkonen",
+  "group": "Soccer",
+  "title": "Finland Ykk\u00f6nen",
+  "description": "Finnish Second Division",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "georgia_erovnuli_liga",
+  "group": "Soccer",
+  "title": "Georgia Erovnuli Liga",
+  "description": "Georgian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "iceland_urvalsdeild",
+  "group": "Soccer",
+  "title": "Iceland \u00darvalsdeild",
+  "description": "Icelandic Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "ireland_first_division",
+  "group": "Soccer",
+  "title": "Ireland First Division",
+  "description": "Irish Second Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "korea_kleague2",
+  "group": "Soccer",
+  "title": "K League 2",
+  "description": "Korean Second Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "latvia_virsliga",
+  "group": "Soccer",
+  "title": "Latvia Virsliga",
+  "description": "Latvian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "mexico_liga_expansion_mx",
+  "group": "Soccer",
+  "title": "Liga de Expansi\u00f3n MX",
+  "description": "Mexican Second Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "paraguay_primera_division",
+  "group": "Soccer",
+  "title": "Paraguay Primera Divisi\u00f3n",
+  "description": "Paraguayan Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "peru_liga1",
+  "group": "Soccer",
+  "title": "Peru Liga 1",
+  "description": "Peruvian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "poland_i_liga",
+  "group": "Soccer",
+  "title": "Poland I Liga",
+  "description": "Polish Second Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "romania_liga_i",
+  "group": "Soccer",
+  "title": "Romania Liga I",
+  "description": "Romanian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "scotland_championship",
+  "group": "Soccer",
+  "title": "Scottish Championship",
+  "description": "Scotland Second Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "scotland_league_one",
+  "group": "Soccer",
+  "title": "Scottish League One",
+  "description": "Scotland Third Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "scotland_league_two",
+  "group": "Soccer",
+  "title": "Scottish League Two",
+  "description": "Scotland Fourth Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "scotland_league_cup",
+  "group": "Soccer",
+  "title": "Scottish League Cup",
+  "description": "Scotland League Cup",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "serbia_superliga",
+  "group": "Soccer",
+  "title": "Serbia SuperLiga",
+  "description": "Serbian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "slovakia_2_liga",
+  "group": "Soccer",
+  "title": "Slovakia 2. Liga",
+  "description": "Slovak Second Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "slovakia_superliga",
+  "group": "Soccer",
+  "title": "Slovakia Super Liga",
+  "description": "Slovak Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "slovenia_prvaliga",
+  "group": "Soccer",
+  "title": "Slovenia PrvaLiga",
+  "description": "Slovenian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "switzerland_challenge_league",
+  "group": "Soccer",
+  "title": "Swiss Challenge League",
+  "description": "Swiss Second Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "ukraine_premier_league",
+  "group": "Soccer",
+  "title": "Ukraine Premier League",
+  "description": "Ukrainian Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "usa_nwsl",
+  "group": "Soccer",
+  "title": "NWSL",
+  "description": "US Women's Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "usa_usl_championship",
+  "group": "Soccer",
+  "title": "USL Championship",
+  "description": "US Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "wales_premier_league",
+  "group": "Soccer",
+  "title": "Wales Premier League",
+  "description": "Welsh Soccer",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "belgium_2nd_div",
+  "group": "Soccer",
+  "title": "Belgium Challenger Pro League",
+  "description": "Belgium Challenger Pro League",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "belgium_cup",
+  "group": "Soccer",
+  "title": "Belgium Cup",
+  "description": "Belgium Cup",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "canadian_premier_league",
+  "group": "Soccer",
+  "title": "Canadian Premier League",
+  "description": "Canadian Premier League",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "colombia_primera_b",
+  "group": "Soccer",
+  "title": "Colombia Primera B",
+  "description": "Colombia Primera B",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "croatia_hnl",
+  "group": "Soccer",
+  "title": "Croatian HNL",
+  "description": "Croatian HNL",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "ecuador_liga_pro_serie_a",
+  "group": "Soccer",
+  "title": "Ecuador Liga Pro Serie A",
+  "description": "Ecuador Liga Pro Serie A",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "japan_league_cup",
+  "group": "Soccer",
+  "title": "Japan League Cup",
+  "description": "Japan League Cup",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "lithuania_a_league",
+  "group": "Soccer",
+  "title": "Lithuania A League",
+  "description": "Lithuania A League",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "netherlands_eerste_divisie",
+  "group": "Soccer",
+  "title": "Netherlands Eerste Divisie",
+  "description": "Netherlands Eerste Divisie",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "netherlands_knvb_cup",
+  "group": "Soccer",
+  "title": "KNVB Cup",
+  "description": "KNVB Cup",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "norway_1st_div",
+  "group": "Soccer",
+  "title": "Norway 1st Division",
+  "description": "Norway 1st Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "portugal_segunda_liga",
+  "group": "Soccer",
+  "title": "Portugal Segunda Liga",
+  "description": "Portugal Segunda Liga",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "portugal_taca_de_portugal",
+  "group": "Soccer",
+  "title": "Ta\u00e7a de Portugal",
+  "description": "Ta\u00e7a de Portugal",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "scotland_fa_cup",
+  "group": "Soccer",
+  "title": "Scottish FA Cup",
+  "description": "Scottish FA Cup",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "slovakia_cup",
+  "group": "Soccer",
+  "title": "Slovakia Cup",
+  "description": "Slovakia Cup",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "turkey_cup",
+  "group": "Soccer",
+  "title": "Turkey Cup",
+  "description": "Turkey Cup",
+  "active": false,
+  "has_outrights": false
+ },
+ {
+  "key": "turkey_tff_1_lig",
+  "group": "Soccer",
+  "title": "Turkey TFF 1. Lig",
+  "description": "Turkey TFF 1. Lig",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "uruguay_primera_division",
+  "group": "Soccer",
+  "title": "Uruguay Primera Division",
+  "description": "Uruguay Primera Division",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis",
+  "group": "Tennis",
+  "title": "Tennis",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_atp_almaty",
+  "group": "Tennis",
+  "title": "ATP Almaty",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_atp_almaty_doubles",
+  "group": "Tennis",
+  "title": "ATP Almaty Doubles",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_atp_brussels",
+  "group": "Tennis",
+  "title": "ATP Brussels",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_atp_brussels_doubles",
+  "group": "Tennis",
+  "title": "ATP Brussels Doubles",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_atp_lyon",
+  "group": "Tennis",
+  "title": "ATP Lyon",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_atp_lyon_doubles",
+  "group": "Tennis",
+  "title": "ATP Lyon Doubles",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_challenger_cali",
+  "group": "Tennis",
+  "title": "ATP Challenger Cali",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_challenger_cali_doubles",
+  "group": "Tennis",
+  "title": "ATP Challenger Cali Doubles",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_challenger_florence",
+  "group": "Tennis",
+  "title": "ATP Challenger Florence",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_challenger_florence_doubles",
+  "group": "Tennis",
+  "title": "ATP Challenger Florence Doubles",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_challenger_fort_worth",
+  "group": "Tennis",
+  "title": "ATP Challenger Fort Worth",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_challenger_fort_worth_doubles",
+  "group": "Tennis",
+  "title": "ATP Challenger Fort Worth Doubles",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_challenger_guangzhou",
+  "group": "Tennis",
+  "title": "ATP Challenger Guangzhou",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_challenger_guangzhou_doubles",
+  "group": "Tennis",
+  "title": "ATP Challenger Guangzhou Doubles",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_challenger_lisbon",
+  "group": "Tennis",
+  "title": "ATP Challenger Lisbon",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_challenger_lisbon_doubles",
+  "group": "Tennis",
+  "title": "ATP Challenger Lisbon Doubles",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_challenger_rome_doubles",
+  "group": "Tennis",
+  "title": "ATP Challenger Rome Doubles",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_challenger_santa_cruz",
+  "group": "Tennis",
+  "title": "ATP Challenger Santa Cruz",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_men_austin",
+  "group": "Tennis",
+  "title": "ITF Men Austin",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_men_luanda",
+  "group": "Tennis",
+  "title": "ITF Men Luanda",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_men_macei_bra_q",
+  "group": "Tennis",
+  "title": "ITF Men Macei Bra Q",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_men_maceio",
+  "group": "Tennis",
+  "title": "ITF Men Maceio",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_men_mumbai",
+  "group": "Tennis",
+  "title": "ITF Men Mumbai",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_men_mumbai_ind_q",
+  "group": "Tennis",
+  "title": "ITF Men Mumbai Ind Q",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_men_quito",
+  "group": "Tennis",
+  "title": "ITF Men Quito",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_men_redbridge_gbr_q",
+  "group": "Tennis",
+  "title": "ITF Men Redbridge Gbr Q",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_men_santa_margherita_di_pula",
+  "group": "Tennis",
+  "title": "ITF Men Santa Margherita Di Pula",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_men_sarreguemines",
+  "group": "Tennis",
+  "title": "ITF Men Sarreguemines",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_men_sarreguemines_fra_q",
+  "group": "Tennis",
+  "title": "ITF Men Sarreguemines Fra Q",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_men_singapore_sgp_q",
+  "group": "Tennis",
+  "title": "ITF Men Singapore Sgp Q",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_austin",
+  "group": "Tennis",
+  "title": "ITF Women Austin",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_campina_grande",
+  "group": "Tennis",
+  "title": "ITF Women Campina Grande",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_cherbourg_en_cotentin",
+  "group": "Tennis",
+  "title": "ITF Women Cherbourg En Cotentin",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_edmond",
+  "group": "Tennis",
+  "title": "ITF Women Edmond",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_karlovy_vary",
+  "group": "Tennis",
+  "title": "ITF Women Karlovy Vary",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_karlovy_vary_cze_q",
+  "group": "Tennis",
+  "title": "ITF Women Karlovy Vary Cze Q",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_qian_daohu",
+  "group": "Tennis",
+  "title": "ITF Women Qian Daohu",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_quebec_city",
+  "group": "Tennis",
+  "title": "ITF Women Quebec City",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_redding",
+  "group": "Tennis",
+  "title": "ITF Women Redding",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_saguenay",
+  "group": "Tennis",
+  "title": "ITF Women Saguenay",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_saguenay_can_q",
+  "group": "Tennis",
+  "title": "ITF Women Saguenay Can Q",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_singapore_sgp_q",
+  "group": "Tennis",
+  "title": "ITF Women Singapore Sgp Q",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_villena",
+  "group": "Tennis",
+  "title": "ITF Women Villena",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_villena_doubles",
+  "group": "Tennis",
+  "title": "ITF Women Villena Doubles",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_villena_esp_q",
+  "group": "Tennis",
+  "title": "ITF Women Villena Esp Q",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_wrexham",
+  "group": "Tennis",
+  "title": "ITF Women Wrexham",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_itf_women_wrexham_gbr_q",
+  "group": "Tennis",
+  "title": "ITF Women Wrexham Gbr Q",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_utr_men_carvoeiro",
+  "group": "Tennis",
+  "title": "UTR Pro Men Carvoeiro",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_utr_men_lubbock",
+  "group": "Tennis",
+  "title": "UTR Pro Men Lubbock",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_utr_men_newport_beach",
+  "group": "Tennis",
+  "title": "UTR Pro Men Newport Beach",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_utr_women_carvoeiro",
+  "group": "Tennis",
+  "title": "UTR Pro Women Carvoeiro",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_utr_women_lubbock",
+  "group": "Tennis",
+  "title": "UTR Pro Women Lubbock",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_utr_women_newport_beach",
+  "group": "Tennis",
+  "title": "UTR Pro Women Newport Beach",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_utr_women_ptt_lubbock",
+  "group": "Tennis",
+  "title": "UTR Pro Women Ptt Lubbock",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_utr_women_saitama",
+  "group": "Tennis",
+  "title": "UTR Pro Women Saitama",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_wta_ningbo",
+  "group": "Tennis",
+  "title": "WTA Ningbo",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_wta_ningbo_doubles",
+  "group": "Tennis",
+  "title": "WTA Ningbo Doubles",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_wta_osaka",
+  "group": "Tennis",
+  "title": "WTA Osaka",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ },
+ {
+  "key": "tennis_wta_osaka_doubles",
+  "group": "Tennis",
+  "title": "WTA Osaka Doubles",
+  "description": "Tennis",
+  "active": true,
+  "has_outrights": false
+ }
+]

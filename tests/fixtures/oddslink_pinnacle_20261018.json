@@ -1,0 +1,576 @@
+[
+ {
+  "id": "nfl:dallascowboys-greenbaypackers:2026-10-19",
+  "sport_key": "nfl",
+  "sport_title": "NFL",
+  "commence_time": "2026-10-19T00:20:00.000Z",
+  "is_live": false,
+  "status": "scheduled",
+  "home_team": "Green Bay Packers",
+  "away_team": "Dallas Cowboys",
+  "bookmakers": [
+   {
+    "key": "pinnacle",
+    "title": "Pinnacle",
+    "link": "https://www.pinnacle.com/en/football/nfl/green-bay-packers-vs-dallas-cowboys/1637651206/",
+    "last_update": "2026-10-18T23:13:32.041Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-10-18T23:13:32.041Z",
+      "outcomes": [
+       {
+        "name": "Dallas Cowboys",
+        "price": 1.98,
+        "point": -1.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": true
+       },
+       {
+        "name": "Green Bay Packers",
+        "price": 1.93,
+        "point": 1.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": true
+       },
+       {
+        "name": "Dallas Cowboys",
+        "price": 2.1,
+        "point": -2.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Green Bay Packers",
+        "price": 1.81,
+        "point": 2.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Dallas Cowboys",
+        "price": 2.36,
+        "point": -3.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Green Bay Packers",
+        "price": 1.65,
+        "point": 3.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Dallas Cowboys",
+        "price": 3.62,
+        "point": -7.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Green Bay Packers",
+        "price": 1.31,
+        "point": 7.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Dallas Cowboys",
+        "price": 2.74,
+        "point": -3.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Green Bay Packers",
+        "price": 1.49,
+        "point": 3.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Dallas Cowboys",
+        "price": 2.16,
+        "point": -2.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Green Bay Packers",
+        "price": 1.76,
+        "point": 2.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Dallas Cowboys",
+        "price": 2.05,
+        "point": -1.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Green Bay Packers",
+        "price": 1.86,
+        "point": 1.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Dallas Cowboys",
+        "price": 1.87,
+        "point": 1.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Green Bay Packers",
+        "price": 2.03,
+        "point": -1.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Dallas Cowboys",
+        "price": 1.81,
+        "point": 1.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Green Bay Packers",
+        "price": 2.09,
+        "point": -1.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Dallas Cowboys",
+        "price": 1.76,
+        "point": 2.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Green Bay Packers",
+        "price": 2.15,
+        "point": -2.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Dallas Cowboys",
+        "price": 1.72,
+        "point": 2.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Green Bay Packers",
+        "price": 2.21,
+        "point": -2.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Dallas Cowboys",
+        "price": 1.61,
+        "point": 3.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Green Bay Packers",
+        "price": 2.42,
+        "point": -3.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Dallas Cowboys",
+        "price": 1.49,
+        "point": 3.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Green Bay Packers",
+        "price": 2.76,
+        "point": -3.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 100000.0
+        },
+        "main": false
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "unmatched_bookmakers": []
+ },
+ {
+  "id": "nfl:sanfrancisco49ers-washingtoncommanders:2026-10-20",
+  "sport_key": "nfl",
+  "sport_title": "NFL",
+  "commence_time": "2026-10-20T00:15:00.000Z",
+  "is_live": false,
+  "status": "scheduled",
+  "home_team": "San Francisco 49ers",
+  "away_team": "Washington Commanders",
+  "bookmakers": [
+   {
+    "key": "pinnacle",
+    "title": "Pinnacle",
+    "link": "https://www.pinnacle.com/en/football/nfl/san-francisco-49ers-vs-washington-commanders/1637707533/",
+    "last_update": "2026-10-18T23:13:32.041Z",
+    "markets": [
+     {
+      "key": "spreads",
+      "last_update": "2026-10-18T23:13:32.041Z",
+      "outcomes": [
+       {
+        "name": "Washington Commanders",
+        "price": 1.93,
+        "point": 7.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": true
+       },
+       {
+        "name": "San Francisco 49ers",
+        "price": 1.96,
+        "point": -7.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": true
+       },
+       {
+        "name": "Washington Commanders",
+        "price": 2.83,
+        "point": 3.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "San Francisco 49ers",
+        "price": 1.46,
+        "point": -3.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Washington Commanders",
+        "price": 2.4,
+        "point": 5.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "San Francisco 49ers",
+        "price": 1.61,
+        "point": -5.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Washington Commanders",
+        "price": 2.34,
+        "point": 5.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "San Francisco 49ers",
+        "price": 1.64,
+        "point": -5.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Washington Commanders",
+        "price": 2.25,
+        "point": 6.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "San Francisco 49ers",
+        "price": 1.69,
+        "point": -6.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Washington Commanders",
+        "price": 2.17,
+        "point": 6.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "San Francisco 49ers",
+        "price": 1.74,
+        "point": -6.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Washington Commanders",
+        "price": 2.05,
+        "point": 7.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "San Francisco 49ers",
+        "price": 1.84,
+        "point": -7.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Washington Commanders",
+        "price": 1.88,
+        "point": 8.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "San Francisco 49ers",
+        "price": 2.01,
+        "point": -8.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Washington Commanders",
+        "price": 1.83,
+        "point": 8.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "San Francisco 49ers",
+        "price": 2.06,
+        "point": -8.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Washington Commanders",
+        "price": 1.79,
+        "point": 9.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "San Francisco 49ers",
+        "price": 2.1,
+        "point": -9.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Washington Commanders",
+        "price": 1.76,
+        "point": 9.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "San Francisco 49ers",
+        "price": 2.13,
+        "point": -9.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Washington Commanders",
+        "price": 1.69,
+        "point": 10.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "San Francisco 49ers",
+        "price": 2.25,
+        "point": -10.0,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "Washington Commanders",
+        "price": 1.35,
+        "point": 14.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       },
+       {
+        "name": "San Francisco 49ers",
+        "price": 3.33,
+        "point": -14.5,
+        "size": {
+         "kind": "posted_limit",
+         "amount": 50000.0
+        },
+        "main": false
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "unmatched_bookmakers": []
+ }
+]
