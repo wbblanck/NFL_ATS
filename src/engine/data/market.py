@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import datetime as dt
 import os
+import re
 import statistics
 import sys
 
@@ -215,6 +216,31 @@ def consensus(rows: list[dict], reference_book: str | None = None) -> dict:
             "reference": ref[0] if ref else None}
 
 
+def redact(text: str) -> str:
+    """Remove API keys from error text before it is written to a committed file."""
+    return re.sub(r"(?i)(api_?key=)[^&\s'\"]+", r"\1REDACTED", text)
+
+
+def latest_ok_rows(game_ids, now: dt.datetime, max_age_hours: float, captures: list[dict] | None = None) -> dict:
+    """Per game: the 'ok' rows of the newest capture taken at or before `now` and at most `max_age_hours` old.
+    Used only when the pick-time capture failed for that game."""
+    if captures is None:
+        captures = store.read_rows(config.path("lines") / "market_captures.csv")
+    want, oldest, best = set(game_ids), now - dt.timedelta(hours=max_age_hours), {}
+    for r in captures:
+        g = r.get("game_id")
+        if g not in want or r.get("status") != "ok" or r.get("home_spread") in (None, ""):
+            continue
+        at = dt.datetime.fromisoformat(r["captured_at"])
+        if not (oldest <= at <= now):
+            continue
+        if g not in best or at > best[g][0]:
+            best[g] = (at, [r])
+        elif at == best[g][0]:
+            best[g][1].append(r)
+    return {g: [{**r, "home_spread": float(r["home_spread"])} for r in rows] for g, (at, rows) in best.items()}
+
+
 def capture(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int | None = None,
             events: list[dict] | None = None, all_games: bool = False, capture_prefix: str = "",
             reason: str = "") -> list[dict]:
@@ -229,7 +255,7 @@ def capture(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes:
         events = events if events is not None else fetch_spreads()
     except Exception as e:
         row = {"capture_id": capture_id, "captured_at": now.isoformat(), "status": "fetch_error",
-               "reason": repr(e)[:300]}
+               "reason": redact(repr(e))[:300]}
         store.append_rows(config.path("lines") / "market_captures.csv", FIELDS, [row])
         return [row]
     parsed = parse_events(events)

@@ -162,3 +162,27 @@ def test_median_fallback_is_flagged_without_pinnacle(tmp_root, week3_schedule):
     r = final.run(week3_schedule, now=LOCK - dt.timedelta(minutes=5), window_minutes=25, events=EVENTS)[0]
     assert r["feature_version"] == "market:median" and "MARKET_MEDIAN_FALLBACK" in r["flags"]
     assert r["pick_team"] == "ATL"                                                  # median ~-5: moved toward ATL
+
+
+def test_failed_capture_uses_recent_capture_flagged_stale(tmp_root, week3_schedule):
+    from engine.data import market
+    _league(tmp_root, "2026_03_ATL_GB,2026,3,GB,ATL,-6.5,GB,test,x\n")
+    market.capture(week3_schedule, now=LOCK - dt.timedelta(hours=2), events=EVENTS, all_games=True)
+    r = final.run(week3_schedule, now=LOCK - dt.timedelta(minutes=5), window_minutes=25, events=[])[0]
+    assert "STALE_MARKET" in r["flags"] and "NO_MARKET" not in r["flags"]
+    assert r["market_at_lock"] is not None and r["pick_team"] == "ATL"            # same as the fresh-median pick
+
+
+def test_capture_older_than_limit_is_not_used(tmp_root, week3_schedule):
+    from engine.data import market
+    _league(tmp_root, "2026_03_ATL_GB,2026,3,GB,ATL,-6.5,GB,test,x\n")
+    market.capture(week3_schedule, now=LOCK - dt.timedelta(hours=7), events=EVENTS, all_games=True)
+    r = final.run(week3_schedule, now=LOCK - dt.timedelta(minutes=5), window_minutes=25, events=[])[0]
+    assert "NO_MARKET" in r["flags"] and "STALE_MARKET" not in r["flags"]
+
+
+def test_fetch_error_reason_has_no_api_key():
+    from engine.data import market
+    msg = "HTTPError('502 Server Error: Bad Gateway for url: https://x.example/v1/odds?apiKey=abc123&markets=spreads')"
+    out = market.redact(msg)
+    assert "abc123" not in out and "apiKey=REDACTED&markets=spreads" in out

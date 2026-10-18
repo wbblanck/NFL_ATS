@@ -209,6 +209,7 @@ def next_lock(sched: pl.DataFrame, now: dt.datetime, window_minutes: int, done: 
 
 EARLY_PICK_MIN = 15    # a pick made more than this long before lock used a stale market (week 3 picks ran 44-64 min early)
 MIN_BOOKS = 5          # fewer books than this at lock: the market median is thin (week 3 low was 8)
+STALE_MARKET_MAX_HOURS = 6   # pick-time capture failed: fall back to the newest capture this recent (flag STALE_MARKET)
 PINNACLE_RETRY_WAIT_S = 60   # one retry, this long after the first capture, before a pick falls back to the median
 
 
@@ -250,6 +251,9 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
         return []
     caps = market.capture(due, now=now, window_minutes=window_minutes, events=events, all_games=True)
     caps = retry_missing_pinnacle(caps, due, events=events)
+    have = {r.get("game_id") for r in caps if r.get("status") == "ok"}
+    lost = [g for g in due["game_id"].to_list() if g not in have]
+    stale = market.latest_ok_rows(lost, now, STALE_MARKET_MAX_HOURS) if lost else {}
     ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
     cbs = _cbs_frozen()
     dist, period = fit_dist(sched, now)
@@ -266,6 +270,9 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
     out = []
     for g in due.sort("kickoff_utc").to_dicts():
         rows = [r for r in caps if r.get("game_id") == g["game_id"] and r.get("status") == "ok"]
+        is_stale = not rows and g["game_id"] in stale
+        if is_stale:
+            rows = stale[g["game_id"]]
         cons = market.consensus(rows, reference_book=MARKET_BOOK)
         use_ref = cons["reference"] is not None
         mkt_in = cons["reference"] if use_ref else cons["median"]
@@ -281,6 +288,8 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
             flags.append("LATE_AFTER_LOCK")
         elif mtl > EARLY_PICK_MIN:
             flags.append("EARLY_PICK")
+        if is_stale:
+            flags.append("STALE_MARKET")
         if mkt_in is not None and not use_ref:
             flags.append("MARKET_MEDIAN_FALLBACK")
         if 0 < cons["n_books"] < MIN_BOOKS:
