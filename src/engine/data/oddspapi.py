@@ -24,6 +24,7 @@ The key comes only from env ODDSPAPI_API_KEY and is never printed or logged.
 from __future__ import annotations
 
 import datetime as dt
+import json
 import os
 import sys
 import time
@@ -155,3 +156,94 @@ def book_markets(fixture: dict, book: str) -> dict:
         if outs:
             out[str(mid)] = outs
     return out
+
+
+# --- NFL spreads (verified by the 2026-10-18 probe; .claude/skills/oddspapi-api/SKILL.md) ---
+
+NFL_SPORT, NFL_TOURNAMENT = 14, 31
+SPREAD_MARKETS_FILE = "oddspapi_nfl_spread_markets.json"     # under config.path("lines")
+
+
+def load_spread_markets(path) -> dict[str, tuple[float, str, str]]:
+    """{marketId: (home handicap, home outcomeId, away outcomeId)}: full-game spreads only
+    (period "result"). Outcome "1" is participant1 = the home team; handicap is the home line."""
+    with open(path) as fh:
+        return {k: (float(v[0]), str(v[1]), str(v[2])) for k, v in json.load(fh).items()}
+
+
+def _dec(q) -> float | None:
+    try:
+        p = float(q.get("price"))
+        return p if p > 1 else None
+    except (TypeError, ValueError):
+        return None
+
+
+def _snapshots(outcome) -> list[dict]:
+    players = (outcome or {}).get("players")
+    x = next(iter(players.values())) if isinstance(players, dict) and players else outcome
+    x = x if isinstance(x, list) else [x]
+    return [s for s in x if isinstance(s, dict)]
+
+
+def _row(handicap, hq, aq, ts_field):
+    h, a = _dec(hq), _dec(aq)
+    if h is None or a is None:
+        return None
+    ph, pa = 1 / h, 1 / a
+    return {"home_spread": handicap, "home_price_decimal": h, "away_price_decimal": a,
+            "hold": round(ph + pa - 1, 4), "p_home_devig": round(ph / (ph + pa), 4),
+            "changed_at": hq.get(ts_field) or aq.get(ts_field)}
+
+
+def _balanced(cands: list[dict], max_hold: float) -> dict | None:
+    ok = [c for c in cands if c and c["hold"] <= max_hold]
+    return min(ok, key=lambda c: abs(c["p_home_devig"] - 0.5)) if ok else None
+
+
+def main_spread_at(book_hist: dict, smap: dict, t: dt.datetime, max_hold: float = 0.10) -> dict | None:
+    """From one book's /historical-odds markets: the most balanced full-game home spread whose
+    latest snapshots at or before `t` are active on both sides (history has no mainLine flag).
+    Adds n_lines (two-sided active lines at t) and first_seen (earliest snapshot of any line)."""
+    cands, first = [], None
+    for mid, md in (book_hist.get("markets") or {}).items():
+        if mid not in smap:
+            continue
+        hcap, ho, ao = smap[mid]
+        outs = (md or {}).get("outcomes") or {}
+        side = {}
+        for oid in (ho, ao):
+            snaps = [s for s in _snapshots(outs.get(oid)) if parse_ts(s.get("createdAt"))]
+            for s in snaps:
+                ts = parse_ts(s["createdAt"])
+                first = ts if first is None or ts < first else first
+            before = [s for s in snaps if parse_ts(s["createdAt"]) <= t]
+            side[oid] = max(before, key=lambda s: parse_ts(s["createdAt"])) if before else None
+        hq, aq = side[ho], side[ao]
+        if hq and aq and hq.get("active") and aq.get("active"):
+            cands.append(_row(hcap, hq, aq, "createdAt"))
+    best = _balanced(cands, max_hold)
+    if best:
+        best["n_lines"] = sum(1 for c in cands if c)
+    return {**best, "first_seen": first.isoformat() if first else None} if best else None
+
+
+def main_spread_live(fixture: dict, book: str, smap: dict, max_hold: float = 0.10) -> dict | None:
+    """From odds-by-tournaments: the full-game spread the book flags mainLine (else the most
+    balanced active one), with limit and n_lines."""
+    cands = []
+    for mid, outs in book_markets(fixture, book).items():
+        if mid not in smap:
+            continue
+        hcap, ho, ao = smap[mid]
+        hq, aq = outs.get(ho), outs.get(ao)
+        if not (hq and aq and hq.get("active") and aq.get("active")):
+            continue
+        r = _row(hcap, hq, aq, "changedAt")
+        if r:
+            r["main_flag"] = bool(hq.get("mainLine") or aq.get("mainLine"))
+            r["limit"] = hq.get("limit")
+            cands.append(r)
+    flagged = [c for c in cands if c["main_flag"] and c["hold"] <= max_hold]
+    best = flagged[0] if len(flagged) == 1 else _balanced(cands, max_hold)
+    return {**best, "n_lines": len(cands)} if best else None
