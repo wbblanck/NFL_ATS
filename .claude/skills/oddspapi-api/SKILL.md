@@ -8,8 +8,7 @@ description: How to call OddsPapi (api.oddspapi.io/v4) correctly from this repo 
 The verified facts come from wbblanck/kmodel (MLB pitcher strikeouts), which has called
 OddsPapi from GitHub Actions since 2026-09 (`fetch_fd_lines.py`, `fetch_fd_timeline.py`,
 `probe_oddspapi.py`, `probe_oddspapi_live.py`, `docs/project_reference.md` "Data access").
-Nothing has been verified for the NFL yet. Run the probe (below) before relying on any NFL detail,
-then move what it shows from "Unverified" to "Verified" here, citing the evidence folder.
+NFL details below come from one probe run (2026-10-18); add what later runs verify, citing the evidence.
 
 Code: `src/engine/data/oddspapi.py` (client helpers, tests in `tests/test_oddspapi.py`),
 `scripts/fetch/oddspapi_probe.py` + `.github/workflows/oddspapi-probe.yml` (discovery).
@@ -60,16 +59,37 @@ America/New_York for display).
   BetRivers, ESPN Bet, Hard Rock (BetMGM only from first pitch) and none for DraftKings, Pinnacle,
   Fanatics, bet365. Coverage for NFL spreads is a separate question (below).
 
-## Unverified for the NFL (the probe answers these)
+## NFL: verified by the probe (2026-10-18, docs/evidence/probe/20261018T211124Z/)
 
-- American-football sport id and NFL tournament id.
-- The spread `marketType` name, and whose side `handicap` is (home or away, sign). This repo's
-  canonical sign is negative = home favored (CLAUDE.md); map to it and test on a known game before
-  any use.
-- Whether game-line outcomes nest under `players` like props do (`oddspapi.book_markets` handles
-  both, unconfirmed).
-- Which of Pinnacle, DraftKings and FanDuel carry NFL spreads live and in `/historical-odds`.
-- How fixture team names are spelled (`engine.teams.to_canonical` must map them).
+- Ids: American Football is sport 14; the NFL is tournament 31 (233 is NFL Preseason).
+- `/markets?sportId=14`: 4,751 market ids. Spreads are `marketType` "spreads", one market id per
+  handicap and period (1,049 ids). The full game is `period` "result", `marketName`
+  "Handicap (incl. overtime)" (281 ids). The others are halves and quarters (`p1`, `p1+p2`, ...):
+  filter on `period == "result"` or a first-quarter line gets read as the game line.
+- Side and sign: outcome "1" is participant1, which is the HOME team (15 of 15 week 6 fixtures vs our
+  schedule; the London JAX v PHI game lists the designated home team first). `handicap` is the home
+  team's line, so it already uses our canonical sign (negative = home favored). Check: WAS @ SF,
+  Pinnacle full-game main line -7.5 on outcome "1" (-104 / -108); our Parlay capture of 2026-10-17
+  had SF -7.5. Pinnacle's own `bookmakerOutcomeId` reads "-7.5/home" / "-7.5/away".
+- Quotes for game lines also nest under `players` (as player props do), so
+  `oddspapi.book_markets` works as written. Each quote has `mainLine`: Pinnacle flags one market
+  per period, so the game line is the `period == "result"` market with `mainLine` true. Quotes also
+  carry `limit` (Pinnacle's stake limit) and `bookmakerChangedAt`.
+- Live fixtures (`odds-by-tournaments`) carry `participant1Id` / `participant2Id` but no team names
+  (`participant1Name` was null). `/fixtures` has the names: map ids to teams from it (1 request) and
+  then through `engine.teams.to_canonical`, which handled all 30 names in week 6.
+- Coverage live, Sunday 2026-10-18 at 21:11 UTC: DraftKings and FanDuel had spreads for 16 fixtures,
+  Pinnacle for only 2 (that night's SNF and Monday's MNF). Why Pinnacle listed so few is not known
+  (a guess: it only shows games close to kickoff in this feed). Check before counting on it at lock.
+- History: `/historical-odds` for JAX v PHI (2026-10-11) had Pinnacle 79 spread markets / 16,410
+  snapshots, DraftKings 150 / 96,217, FanDuel 124 / 58,435. One game's response is over 3 MB, which
+  is where the probe's saved copy was cut off: parse in memory, save only what you need.
+- Cost: the probe used 7 requests (26 -> 33 of 250 this month, on the key shared with kmodel).
+
+## Still unverified
+
+- Pinnacle's live coverage at the lock times we pick at (5 minutes before lock).
+- How far back Pinnacle NFL history goes (the docs say January 2026; only week 6 was checked).
 
 ## Before OddsPapi feeds a pick
 
