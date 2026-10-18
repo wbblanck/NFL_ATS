@@ -64,6 +64,12 @@ def credits_left() -> int | None:
         return None
 
 
+def _scrub(text: str) -> str:
+    """Error text can hold the request URL, and the key is a query parameter: never write it to a file."""
+    key = os.environ.get(config.data()["market"]["api_key_env"], "")
+    return text.replace(key, "***") if key else text
+
+
 def fetch_spreads() -> list[dict]:
     c = config.data()["market"]
     key = os.environ.get(c["api_key_env"])
@@ -229,7 +235,7 @@ def capture(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes:
         events = events if events is not None else fetch_spreads()
     except Exception as e:
         row = {"capture_id": capture_id, "captured_at": now.isoformat(), "status": "fetch_error",
-               "reason": repr(e)[:300]}
+               "reason": _scrub(repr(e))[:300]}
         store.append_rows(config.path("lines") / "market_captures.csv", FIELDS, [row])
         return [row]
     parsed = parse_events(events)

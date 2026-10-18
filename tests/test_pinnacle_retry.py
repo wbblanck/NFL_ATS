@@ -52,3 +52,40 @@ def test_failed_retry_keeps_the_first_capture():
 
     out = final.retry_missing_pinnacle(caps, _due("g1"), capture_fn=broken_capture, sleep_fn=lambda s: None)
     assert out == caps                        # a raised error never reaches the pick
+
+
+def test_oddspapi_fallback_adds_pinnacle_only_for_games_missing_it(monkeypatch):
+    import datetime as dt
+    written = []
+    monkeypatch.setattr(final.store, "append_rows", lambda p, f, rows: written.extend(rows))
+    caps = [_row("g1", "pinnacle"), _row("g2", "draftkings")]
+    seen = []
+
+    def rows_fn(games, now):
+        seen.extend(g["game_id"] for g in games)
+        return [{**_row("g2", "pinnacle", -2.5), "reason": "oddspapi"}]
+    out = final.oddspapi_pinnacle_fallback(caps, _due("g1", "g2"), dt.datetime(2026, 10, 18, 23, 55, tzinfo=dt.timezone.utc), rows_fn=rows_fn)
+    assert seen == ["g2"]
+    assert len(out) == 3 and written == out[2:]
+    assert final.market.consensus([r for r in out if r["game_id"] == "g2"], "pinnacle")["reference"] == -2.5
+
+
+def test_oddspapi_fallback_failure_leaves_capture_unchanged(monkeypatch):
+    import datetime as dt
+    monkeypatch.setattr(final.store, "append_rows", lambda *a: (_ for _ in ()).throw(AssertionError("no write")))
+    caps = [_row("g2", "draftkings")]
+
+    def boom(games, now):
+        raise RuntimeError("HTTP 503")
+    assert final.oddspapi_pinnacle_fallback(caps, _due("g2"), dt.datetime.now(dt.timezone.utc), rows_fn=boom) == caps
+    assert final.oddspapi_pinnacle_fallback([_row("g2", "pinnacle")], _due("g2"), dt.datetime.now(dt.timezone.utc),
+                                            rows_fn=boom) == [_row("g2", "pinnacle")]   # not called when present
+
+
+def test_oddspapi_fallback_is_off_after_its_expiry():
+    import datetime as dt
+    caps = [_row("g2", "draftkings")]
+    called = []
+    out = final.oddspapi_pinnacle_fallback(caps, _due("g2"), final.ODDSPAPI_FALLBACK_UNTIL + dt.timedelta(minutes=1),
+                                           rows_fn=lambda g, n: called.append(1) or [])
+    assert out == caps and called == []

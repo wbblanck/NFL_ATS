@@ -21,13 +21,14 @@ from __future__ import annotations
 
 import datetime as dt
 import hashlib
+import sys
 import time
 import uuid
 
 import polars as pl
 
 from engine import config
-from engine.data import league_lines, market, store
+from engine.data import league_lines, market, oddspapi, store
 from engine.models.margin_dist import MarginDist, TotalDist
 from engine.picks.grading import is_half_point
 
@@ -232,6 +233,34 @@ def retry_missing_pinnacle(caps: list[dict], due: pl.DataFrame, events: list[dic
     return [r for r in caps if r.get("game_id") not in got] + [r for r in again if r.get("game_id") in got]
 
 
+# Owner asked for the 2026-10-18 SNF and 2026-10-19 MNF games only; off after that unless renewed.
+ODDSPAPI_FALLBACK_UNTIL = dt.datetime(2026, 10, 20, 12, 0, tzinfo=dt.timezone.utc)
+
+
+def oddspapi_pinnacle_fallback(caps: list[dict], due: pl.DataFrame, now: dt.datetime, *, rows_fn=None) -> list[dict]:
+    """Owner decision 2026-10-18 (Parlay API down): for due games still without a Parlay Pinnacle line, take
+    Pinnacle from OddsPapi, recorded as a pinnacle capture row with reason "oddspapi" and flagged
+    MARKET_ODDSPAPI on the pick. Any OddsPapi failure leaves the capture as it was."""
+    if now >= ODDSPAPI_FALLBACK_UNTIL:
+        return caps
+    have = {r.get("game_id") for r in caps if r.get("status") == "ok" and r.get("book") == MARKET_BOOK}
+    missing = [g for g in due.to_dicts() if g["game_id"] not in have]
+    if not missing:
+        return caps
+    try:
+        if rows_fn is None:
+            smap = oddspapi.load_spread_markets(config.path("lines") / oddspapi.SPREAD_MARKETS_FILE)
+            rows_fn = lambda games, t: oddspapi.pinnacle_capture_rows(games, t, smap, capture_id="oddspapi-" + t.strftime("%Y%m%dT%H%M%SZ"))
+        extra = rows_fn(missing, now)
+    except Exception as e:
+        print(f"OddsPapi Pinnacle fallback failed: {type(e).__name__}", file=sys.stderr)
+        return caps
+    if extra:
+        store.append_rows(config.path("lines") / "market_captures.csv", market.FIELDS, extra)
+        print(f"OddsPapi Pinnacle: {len(extra)} of {len(missing)} games without a Parlay Pinnacle line", file=sys.stderr)
+    return caps + extra
+
+
 def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int = 25,
         events: list[dict] | None = None, snapshot_id: str = "", game_id: str | None = None,
         totals: list[dict] | None = None, proj_games=None, v3: dict | None = None) -> list[dict]:
@@ -250,6 +279,7 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
         return []
     caps = market.capture(due, now=now, window_minutes=window_minutes, events=events, all_games=True)
     caps = retry_missing_pinnacle(caps, due, events=events)
+    caps = oddspapi_pinnacle_fallback(caps, due, now)
     ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
     cbs = _cbs_frozen()
     dist, period = fit_dist(sched, now)
@@ -283,6 +313,8 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
             flags.append("EARLY_PICK")
         if mkt_in is not None and not use_ref:
             flags.append("MARKET_MEDIAN_FALLBACK")
+        if use_ref and any(r.get("book") == MARKET_BOOK and r.get("reason") == "oddspapi" for r in rows):
+            flags.append("MARKET_ODDSPAPI")
         if 0 < cons["n_books"] < MIN_BOOKS:
             flags.append("FEW_BOOKS")
         if use_total and t_flag:
