@@ -1,0 +1,107 @@
+--- frame https://oddslink.app/docs/
+Skip to content
+OddsLink
+Search
+Ctrl
+K
+Product
+Live board
+Try it
+Pricing
+Tools
+Getting Started
+Introduction
+Quickstart
+Authentication
+Guides
+Odds
+Props
+History
+Live feed (WebSocket)
+Best practices
+API Reference
+WebSocket feed reference
+Speed limits and errors
+Reference tables
+Sport keys
+Bookmaker keys
+Market keys
+Per-book coverage
+Changelog
+On this page
+Overview
+What one response looks like
+Where to go next
+Introduction
+
+OddsLink is a JSON API for live odds and prices. Every sportsbook, exchange and prediction market we cover is joined onto one shared fixture and returned in one response, in the same shape, whether the price came from a sportsbook’s posted line or an exchange’s resting order book.
+
+What one response looks like
+Section titled “What one response looks like”
+
+A fixture carries home_team, away_team and is_live (true within the scheduled kickoff and sport-specific time limit). This flag is time-derived, not confirmed game status; see the In-play odds guide for delayed-start and finish limitations; each of its bookmakers[] carries markets[]; each market carries outcomes[{name, price, point}]. A few things about that shape are worth knowing up front:
+
+A market’s key is its family alone, never a period: totals is always totals. A period market such as the first-5-innings total instead carries a separate period field ({"key": "totals", "period": "f5"}); a full-game market has no period field at all. Ask for periods with the periods request parameter. The market-key reference explains the worked examples and the full list of periods.
+Outcomes are named after the fixture’s teams. On h2h and spreads, a team outcome’s name is exactly the fixture’s away_team or home_team, listed away first, then home, then Draw on a three-way moneyline.
+price is one number. Under the default oddsFormat=american it is always an integer; under oddsFormat=decimal it is a decimal number above 1. point is a decimal number and is absent on a moneyline.
+size is typed. A sportsbook’s posted limit, an exchange’s resting depth, and a prediction market’s contract count are three different quantities and are never rendered the same way; see the Odds guide.
+last_update can be null. That means the book’s latest confirmation time is unavailable, never that the price is old.
+Errors are nested under error, with a stable code, a human message, a docs_url pointing back here, and a request_id for support.
+Where to go next
+Section titled “Where to go next”
+Quickstart gets a first odds response on the page.
+Authentication covers the X-API-Key header.
+The Guides cover the implemented odds and history endpoint families.
+The API Reference in the sidebar is generated straight from the OpenAPI file that also drives the code samples on this page and on the main site. Examples illustrate the response shape; discover a current fixture ID through /events before calling a live single-fixture route. Recorded history and market coverage depend on what was captured at the time.
+Speed limits and Errors and the Reference tables (sport keys, bookmaker keys, market keys, per-book coverage) round out what a client needs to handle every case, not just the happy path.
+
+Each API reference operation states whether it counts against your monthly allowance. The odds request in the Quickstart counts once, regardless of the number of fixtures or books returned.
+
+Covered live soccer and tennis fixtures may include a score with updated_at. Scores, tennis sets, points and serving always follow the fixture’s home_team and away_team. Soccer clocks show observed cumulative match time. Scores are absent when coverage or a fresh observation is unavailable.
+
+Product
+Live board
+Try it
+Pricing
+Tools
+Build with AI
+Coverage
+Security
+Docs
+Contact
+Sports APIs
+NFL odds API
+College football odds API
+NBA odds API
+WNBA odds API
+MLB odds API
+NHL odds API
+UFC and MMA odds API
+Soccer odds API
+Tennis odds API
+Bookmaker APIs
+Pinnacle odds API
+bet365 odds API
+DraftKings odds API
+FanDuel odds API
+BetMGM odds API
+Caesars odds API
+Betfair odds API
+Sky Bet odds API
+Polymarket odds API
+Kalshi odds API
+Learn
+Guides
+Blog
+What is an odds API?
+NFL historical line movement
+Line movement tracker
+Docs
+Coverage
+Tools
+Compare odds APIs
+Terms of Service
+Refund Policy
+Privacy Policy
+
+Odds data for developers. OddsLink is a data service: we are not a bookmaker, we take no bets and we run no contests or prize draws.

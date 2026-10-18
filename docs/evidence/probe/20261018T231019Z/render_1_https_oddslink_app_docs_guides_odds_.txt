@@ -1,0 +1,175 @@
+--- frame https://oddslink.app/docs/guides/odds/
+Skip to content
+OddsLink
+Search
+Ctrl
+K
+Product
+Live board
+Try it
+Pricing
+Tools
+Getting Started
+Introduction
+Quickstart
+Authentication
+Guides
+Odds
+Props
+History
+Live feed (WebSocket)
+Best practices
+API Reference
+WebSocket feed reference
+Speed limits and errors
+Reference tables
+Sport keys
+Bookmaker keys
+Market keys
+Per-book coverage
+Changelog
+On this page
+Overview
+Odds
+
+/v1/sports/{sport}/odds returns only fixtures that have not started. /odds/live returns fixtures in play now: started and not finished. It needs in-play odds (Growth and up), NOT the live feed add-on. Selectors and formats work on both lists; aggregate soccer and tennis lists have no date cap.
+
+GET /v1/sports/{sport}/odds lists upcoming fixtures for one sport with at least one bookmaker after your bookmakers, markets and periods filters and price availability checks. Use /events to discover listed fixtures without prices. GET /v1/sports/{sport}/events/{id}/odds scopes odds to one fixture you already have the id for. Both odds calls count once against your plan's request allowance no matter how many fixtures, books or markets come back.
+
+In-play odds
+
+In-play odds are prices for a fixture that has already started, included from the Growth plan up. /odds, /events and /props return only fixtures that have not started, on every plan: a fixture leaves them at kickoff and appears on /odds/live, /events/live and /props/live, which return only fixtures in play now (started and not finished). On Free and Starter, every /live list is refused with 403 PLAN_REQUIRED naming growth as the required plan, as is asking for a started fixture directly by its id; it is the same response shape player props and history give below their own minimum plan.
+
+Every fixture the API returns carries is_live, so you do not have to compare commence_time with your own clock: true from the scheduled kickoff until a sport-specific time limit after kickoff, false outside that window. This is a time-derived live window, not a confirmed game status: a delayed start can read live and an early finish can remain live until the time limit. A long-running fixture can pass the limit while still playing. It is worked out when the response is served, so it flips at kickoff even while the prices are unchanged. It is on /events, /odds, their /live lists, a single event's odds, /props, the historical routes (historical fixtures beyond the sport-specific time limit read false) and the live feed.
+
+Soccer and tennis competition filters
+
+soccer and tennis are aggregate keys. With no selector they return every currently available competition in one response. That response can be larger and may take longer than one competition, so add ?league=epl for one soccer competition or ?tournament=atp_beijing for one tennis tournament when a client already knows what it needs. The first aggregate call while canonical data is cold can take tens of seconds, so allow for that in a client timeout; the supplied Python sample allows 60 seconds. It is not a response-time guarantee. The existing keys such as epl and tennis_atp_beijing remain supported. Use GET /v1/sports to discover current tennis keys.
+
+Markets and periods
+
+Outside soccer, three-way moneylines including Draw use h2h_3_way, separate from two-way h2h prices. Soccer keeps its standard result including Draw under h2h. NHL regulation-time results use h2h_3_way with period: reg. Request markets=h2h,h2h_3_way for both contracts; choose periods separately, such as periods=1h,1q. Default markets remain h2h,spreads,totals, so request h2h_3_way explicitly for those results.
+
+The markets parameter takes a comma-separated list of market keys, and the key is always the family alone (h2h, spreads, totals), never a period. Ask for periods separately with periods: omit it for the full game only, periods=1h for the first half, periods=f5 for baseball's first 5 innings, periods=full,1h for the full game plus the first half, or periods=all for everything. A period market's response object carries a matching period field; a full-game market has none. The Reference tables explain the worked examples and the full list of periods.
+
+Main line and ladders
+
+Every spread, total and team-total ladder puts its main line first, including period markets. Each outcome carries main: true on that line and main: false on alternate lines. The main line is the book's own featured line when it names one, otherwise the two-sided line with the smallest difference in implied probabilities. A line whose implied probabilities sum above 1.25 is never main while a two-sided line at or below 1.25 exists. A one-sided line is main only when no two-sided line exists. With default markets you receive only the full-game main line; explicitly requesting a ladder family includes its available alternates. The same selection applies to single-fixture odds, the live lists, the live feed and opening/closing history. Series points retain recorded order without main flags.
+
+An extreme thin quote from an exchange or prediction market is that venue's own quote, often backed by little money. It is served as quoted, including extreme prices; it is not filtered out. Inspect size where available to understand the money behind the price.
+
+Bookmaker links
+
+A bookmaker's optional link opens its fixture page, or its competition page where that is the link the book provides. It does not select an outcome or populate a bet slip. The field is absent when no link is available.
+
+Sizes
+
+Where a book publishes one, an outcome carries a typed size: a sportsbook's posted_limit is one number shared by both legs of a market; an exchange's or prediction market's resting_depth is the money available at the best price, per leg, and changes by the second. A missing size means the book does not publish one there, not that the limit is zero.
+
+Example
+A sport
+One fixture
+GET
+/v1/sports/soccer/odds?league=epl&markets=h2h,spreads
+curl
+Python
+JavaScript
+Go
+PHP
+curl --request GET \
+  --url "https://oddslink.app/v1/sports/soccer/odds?league=epl&markets=h2h,spreads" \
+  --header "X-API-Key: ok_live_..." \
+  --compressed
+200 OK
+response.json
+[
+  {
+    "id": "soccer:crystalpalace-nottinghamforest:2026-10-11",
+    "sport_key": "soccer",
+    "sport_title": "Soccer",
+    "commence_time": "2026-10-11T13:00:00.000Z",
+    "is_live": false,
+    "status": "scheduled",
+    "home_team": "Crystal Palace",
+    "away_team": "Nottingham Forest",
+    "bookmakers": [
+      {
+        "key": "betmgm",
+        "title": "BetMGM",
+        "link": "https://sports.nj.betmgm.com/en/sports/events/crystal-palace-nottingham-forest-2:7865814",
+        "last_update": "2026-10-10T22:06:51.003Z",
+        "markets": [
+          {
+            "key": "spreads",
+            "last_update": "2026-10-10T22:06:51.003Z",
+            "outcomes": [
+              {
+                "name": "Nottingham Forest",
+                "price": 145,
+                "point": -0.5,
+                "main": true
+              },
+              {
+                "name": "Crystal Palace",
+                "price": -210,
+                "point": 0.5,
+                "main": true
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "unmatched_bookmakers": []
+  }
+]
+Formats
+
+oddsFormat (american, the default, or decimal) and dateFormat (iso, the default, or unix) apply to every odds and history response the same way. ISO timestamps use UTC with exactly three fractional digits and a trailing Z, such as 2026-10-11T13:00:00.000Z. Sub-millisecond digits are truncated. Recognized team outcomes are ordered away team, home team, then Draw, including each spread rung; totals put Over before Under. The EPL example uses that away/home order.
+
+Product
+Live board
+Try it
+Pricing
+Tools
+Build with AI
+Coverage
+Security
+Docs
+Contact
+Sports APIs
+NFL odds API
+College football odds API
+NBA odds API
+WNBA odds API
+MLB odds API
+NHL odds API
+UFC and MMA odds API
+Soccer odds API
+Tennis odds API
+Bookmaker APIs
+Pinnacle odds API
+bet365 odds API
+DraftKings odds API
+FanDuel odds API
+BetMGM odds API
+Caesars odds API
+Betfair odds API
+Sky Bet odds API
+Polymarket odds API
+Kalshi odds API
+Learn
+Guides
+Blog
+What is an odds API?
+NFL historical line movement
+Line movement tracker
+Docs
+Coverage
+Tools
+Compare odds APIs
+Terms of Service
+Refund Policy
+Privacy Policy
+
+Odds data for developers. OddsLink is a data service: we are not a bookmaker, we take no bets and we run no contests or prize draws.
