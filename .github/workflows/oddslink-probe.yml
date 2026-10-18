@@ -1,0 +1,31 @@
+name: Probe OddsLink (NFL)
+# One-off discovery: NFL sport key, Pinnacle spreads now, allowance headers
+# (scripts/fetch/oddslink_probe.py -> docs/evidence/probe/*/oddslink_*). About 3 of the key's
+# monthly allowance, so workflow_dispatch only: never on push or a schedule.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - run: python scripts/fetch/oddslink_probe.py
+        env:
+          ODDSLINK_API_KEY: ${{ secrets.ODDS_LINK }}
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name "nfl-ats-engine"
+          git config user.email "nfl-ats-engine@users.noreply.github.com"
+          if [ -d docs/evidence/probe ]; then git add docs/evidence/probe; fi
+          git commit -m "evidence: OddsLink NFL probe" || exit 0
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep 5; done
