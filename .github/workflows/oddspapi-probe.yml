@@ -20,7 +20,7 @@ jobs:
       - run: pip install -e .
       - run: python scripts/fetch/oddspapi_probe.py
         env:
-          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+          ODDSPAPI_API_KEY: ${{ secrets.ODDS_PAPI }}
       - name: Commit
         if: always()
         run: |

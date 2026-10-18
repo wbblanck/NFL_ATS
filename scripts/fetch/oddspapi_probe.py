@@ -45,7 +45,7 @@ def main():
     try:
         before = op.request_count()
     except op.MissingKey:
-        print("ODDSPAPI_API_KEY is not set: add it as a repository secret (Settings > Secrets > Actions).")
+        print("ODDSPAPI_API_KEY is not set: the workflow passes it from the repository secret ODDS_PAPI.")
         return 1
     OUT.mkdir(parents=True, exist_ok=True)
     log(f"# OddsPapi NFL probe {OUT.name}\n\nrequests before: {before[0]} of {before[1]}")

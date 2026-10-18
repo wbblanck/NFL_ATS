@@ -43,7 +43,7 @@ Against-the-spread pick engine for the CBS "Bonsai Pool 2026". The goal is to wi
 ## Known limits
 
 - GitHub Free: 2,000 Actions minutes a month, shared with the owner's other private repos; a small budget covers overage. When minutes run out, jobs fail within seconds with no steps and no logs.
-- OddsPapi (`ODDSPAPI_API_KEY`, 250 requests a month, maybe shared with kmodel): read the `oddspapi-api` skill (`.claude/skills/oddspapi-api/SKILL.md`) first. Not used by the pick pipeline; NFL details are unverified until `oddspapi-probe.yml` has run.
+- OddsPapi (secret `ODDS_PAPI`, passed as env `ODDSPAPI_API_KEY`; 250 requests a month, maybe shared with kmodel): read the `oddspapi-api` skill (`.claude/skills/oddspapi-api/SKILL.md`) first. Not used by the pick pipeline; NFL details are unverified until `oddspapi-probe.yml` has run.
 - As of 2026-10-15, the odds provider's feed has often lacked Pinnacle (since 2026-10-08), so most picks use the median. Check the `MARKET_MEDIAN_FALLBACK` share of recent rows in `data/predictions/predictions.csv` before assuming this still holds.
 
 ## Branches

@@ -17,9 +17,10 @@ Code: `src/engine/data/oddspapi.py` (client helpers, tests in `tests/test_oddspa
 ## Access and quota
 
 - Base URL `https://api.oddspapi.io/v4`, key as the `apiKey` query parameter.
-- Key: env `ODDSPAPI_API_KEY`, a GitHub Actions secret. Never print, log or commit it; use
-  `oddspapi.call`, which strips it from error text. The owner adds the secret to this repo
-  (Settings > Secrets and variables > Actions); never ask for the value.
+- Key: the repo's GitHub Actions secret is named `ODDS_PAPI`. Workflows pass it to the code as env
+  `ODDSPAPI_API_KEY` (`env: ODDSPAPI_API_KEY: ${{ secrets.ODDS_PAPI }}`), the name kmodel uses.
+  Never print, log or commit it, and never ask for the value; use `oddspapi.call`, which strips it
+  from error text.
 - Free plan: 250 requests a month. If this repo uses the same key as kmodel, the quota is shared:
   kmodel spends about 2 a day (slate + late slate) and had used 26 of 250 by 2026-10-18.
 - Every data endpoint costs 1 request. `/account` is free (`subscriptions[].request_count`,
