@@ -116,3 +116,23 @@ def test_usage_is_recorded_and_floor_read(tmp_path, monkeypatch):
 
     M._record_usage(Bad(), "spreads")
     assert M.credits_left() == 642
+
+
+def test_fetch_error_reason_never_holds_the_api_key(monkeypatch, tmp_path):
+    """A provider 502 raised requests.HTTPError whose text includes the URL with apiKey (2026-10-18)."""
+    import datetime as dt
+    import polars as pl
+    from engine import config
+    from engine.data import market
+    key_env = config.data()["market"]["api_key_env"]
+    monkeypatch.setenv(key_env, "TESTKEY987654321")
+    written = []
+    monkeypatch.setattr(market.store, "append_rows", lambda path, fields, rows: written.extend(rows))
+
+    def boom():
+        raise RuntimeError("502 Server Error for url: https://x/odds?apiKey=TESTKEY987654321&markets=spreads")
+    monkeypatch.setattr(market, "fetch_spreads", boom)
+    rows = market.capture(pl.DataFrame(), now=dt.datetime(2026, 10, 18, 20, 0, tzinfo=dt.timezone.utc))
+    assert rows[0]["status"] == "fetch_error"
+    assert "TESTKEY987654321" not in rows[0]["reason"] and "apiKey=***" in rows[0]["reason"]
+    assert all("TESTKEY987654321" not in r["reason"] for r in written)
