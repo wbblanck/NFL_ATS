@@ -54,3 +54,14 @@ def test_missing_play_by_play_still_lists_the_loss():
                    [{"game_id": "g1", "pick": "home", "drift": ""}], sched, {})
     [x] = out["losses"]
     assert x["flow"] is None and x["cov5"] is None and x["tags"] == ["far"]
+
+
+def test_no_market_pick_with_unavailable_cover_chance_still_lists_the_loss():
+    """2026-10-18: no-market picks store p_home_cover 'UNAVAILABLE'; the build raised and the panel went empty."""
+    sched = pl.DataFrame({"game_id": ["g1"], "home_team": ["AAA"], "away_team": ["BBB"], "home_score": [10],
+                          "away_score": [30]})
+    out = LR.build([{"game_id": "g1", "week": 6, "pick": "AAA", "league_line": -3.5, "result": "L"}],
+                   [{"game_id": "g1", "pick": "home", "drift": "UNAVAILABLE", "p_home_cover": "UNAVAILABLE",
+                     "p_away_cover": "UNAVAILABLE"}], sched, {})
+    [x] = out["losses"]
+    assert x["p"] is None and x["drift"] is None

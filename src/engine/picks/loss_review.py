@@ -99,7 +99,7 @@ def build(graded: list[dict], preds: list[dict], sched: pl.DataFrame, paths: dic
             "id": gid, "week": int(r["week"]), "away": away, "home": home, "pick": r["pick"], "opp": opp,
             "line": pl_line, "fin": fin, "cov5": cov5, "as": int(g["away_score"]), "hs": int(g["home_score"]),
             "drift": float(p["drift"]) if p.get("drift") not in (None, "", "UNAVAILABLE") else None,
-            "p": float(pk) if pk not in (None, "") else None, "to": tos, "tags": tags,
+            "p": float(pk) if pk not in (None, "", "UNAVAILABLE") else None, "to": tos, "tags": tags,
             "peak": max((f[1] for f in flow[1:]), default=None) if flow else None,
             "flow": flow, "tos": [[t, "pick" if tm == r["pick"] else "opp"] for t, tm in (path or {}).get("to", [])],
             "others": {k: (r.get(f) or "").strip()[-1:] or None for k, f in
