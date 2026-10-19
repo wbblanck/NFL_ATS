@@ -318,7 +318,7 @@ header{display:flex;flex-direction:column;gap:10px}
 .filters button:hover{border-color:var(--ink-3)}
 .filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .filters button:focus-visible,summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12px;color:var(--ink-2);align-items:center}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12px;font-family:var(--body);color:var(--ink-2);align-items:center}
 .legend span{display:inline-flex;align-items:center;gap:7px}
 .k-pool{width:9px;height:9px;transform:rotate(45deg);border:2px solid var(--ink);background:var(--panel);flex:none}
 .k-mkt{width:11px;height:11px;border-radius:50%;background:var(--flag);border:2px solid var(--ink);flex:none}
@@ -327,8 +327,8 @@ header{display:flex;flex-direction:column;gap:10px}
 #slots{display:flex;flex-direction:column;gap:32px}
 .slot{display:flex;flex-direction:column;gap:12px}
 .slot-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 16px;border-bottom:2px solid var(--ink);padding-bottom:8px}
-.slot-h h2 small{font:500 14px var(--mono);letter-spacing:0;color:var(--ink-2);margin-left:10px;text-transform:none}
-.slot-h .st{font:500 12px var(--mono);color:var(--ink-2)}
+.slot-h h2 small{font:500 15px var(--body);letter-spacing:0;color:var(--ink-2);margin-left:10px;text-transform:none}
+.slot-h .st{font:500 13px var(--body);color:var(--ink-2)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:14px}
 @media (min-width:900px){.grid{grid-template-columns:repeat(var(--cols,3),minmax(0,1fr))}}
 .card{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:14px;min-width:0}
@@ -680,9 +680,61 @@ tr.med td{font-weight:600;background:var(--panel-2)}
 /* notes */
 details{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:14px 18px}
 summary{cursor:pointer;font:600 14px var(--body)}
-details div{display:flex;flex-direction:column;gap:10px;margin-top:12px;font-size:13px;color:var(--ink-2);max-width:78ch}
+details:not(.rowd)>div{display:flex;flex-direction:column;gap:10px;margin-top:12px;font-size:13px;color:var(--ink-2);max-width:78ch}
 details p{margin:0}
 @media (prefers-reduced-motion:no-preference){.meter i,.gauge i{transition:width .3s}}
+
+/* ---- 2026-10 redesign: the week as a pick sheet ---- */
+.eyebrow,.lab,.pick-meter .lab,.proj .lab,.drivers .lab,.mvb span,.team .tag,.rail-t,th,.pill,.lrc-h .wk{font-family:var(--body);text-transform:none;letter-spacing:0}
+.eyebrow{font-size:13px;color:var(--ink-2)}
+.pill{font-size:12px;font-weight:600}
+.rows{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+.rows>.card.gr{border:0;border-radius:0;padding:0;gap:0;background:none;box-shadow:none}
+.gr>details{border:0;border-radius:0;padding:0;background:none}
+.fold{border:0;border-radius:0;padding:0;background:none}
+.gr+.gr{border-top:1px solid var(--rule)}
+.gr>details>summary{list-style:none;cursor:pointer}
+.gr>details>summary::-webkit-details-marker{display:none}
+.gr-s{display:grid;grid-template-columns:150px 90px 84px 96px 1fr 14px;align-items:center;gap:6px 14px;padding:10px 16px 10px 20px;position:relative}
+.gr-s::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:4px;border-radius:0 3px 3px 0;background:transparent}
+.r-W .gr-s::before{background:var(--win)} .r-L .gr-s::before{background:var(--loss)}
+.gr-s:hover{background:var(--panel-2)}
+.gr-s:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+.gr-pick{display:flex;align-items:baseline;gap:8px;white-space:nowrap}
+.gr-pick b{font:800 28px/1 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.gr-ln{font:500 15px var(--mono);color:var(--ink-2)}
+.gr-none{font:800 22px/1 var(--display);text-transform:uppercase;color:var(--ink-3)}
+.gr-opp{color:var(--ink-2);font-size:15px;white-space:nowrap}
+.gr-sc{font:800 26px/1 var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.gr-ko{font:500 13px var(--body);color:var(--ink-3)}
+.gr-res{font-size:13px;font-weight:600;white-space:nowrap}
+.gr-res.w{color:var(--win)} .gr-res.l{color:var(--loss)} .gr-res.p,.gr-res.k{color:var(--ink-3)}
+.gr-meta{display:flex;align-items:center;justify-content:flex-end;gap:8px;white-space:nowrap}
+.gr-pc{font:500 14px var(--mono);color:var(--ink)}
+.gr-flag{font-size:12px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--flat-bg);color:var(--ink-2)}
+.gr-flag.hot{background:var(--flag);color:var(--on-flag)}
+.gr-chev{width:8px;height:8px;border-right:2px solid var(--ink-3);border-bottom:2px solid var(--ink-3);transform:rotate(45deg) translateY(-2px);transition:transform .15s}
+.gr details[open] .gr-chev{transform:rotate(225deg) translateY(-2px)}
+.gr-d{padding:4px 16px 18px;max-width:560px;display:flex;flex-direction:column;gap:14px;animation:gr-open .18s ease-out}
+@keyframes gr-open{from{opacity:0;transform:translateY(-4px)}}
+.gr details[open]{background:var(--panel-2)}
+.slot-rec{font:800 22px/1 var(--display);color:var(--ink);margin-right:10px;vertical-align:-2px}
+.season{display:flex;flex-direction:column;gap:14px;margin-top:10px}
+.season-h{font:800 44px/1 var(--display);text-transform:uppercase;border-bottom:3px solid var(--ink);padding-bottom:6px}
+.fold>summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 14px;padding-right:28px;position:relative}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary::after{content:"";position:absolute;right:4px;top:8px;width:9px;height:9px;border-right:2px solid var(--ink-3);border-bottom:2px solid var(--ink-3);transform:rotate(45deg);transition:transform .15s}
+.fold[open]>summary::after{transform:rotate(225deg);top:12px}
+.fold>summary:focus-visible{outline:2px solid var(--ink);outline-offset:4px;border-radius:4px}
+.fold-s{color:var(--ink-3);font-size:14px;font-weight:400}
+.fold[open]>summary{margin-bottom:14px}
+@media (max-width:700px){
+  .gr-s{grid-template-columns:1fr auto 14px;grid-template-areas:"who sc chev" "meta res chev";gap:6px 12px;padding:11px 14px 11px 18px}
+  .gr-pick{grid-area:who}.gr-opp{grid-area:who;justify-self:end;margin-right:6px;align-self:center}
+  .gr-sc{grid-area:sc}.gr-res{grid-area:res;justify-self:end}.gr-meta{grid-area:meta;justify-content:flex-start}.gr-chev{grid-area:chev}
+  .gr-pick b{font-size:26px}
+}
+@media (prefers-reduced-motion:reduce){.gr-d{animation:none}.gr-chev,.fold>summary::after{transition:none}}
 </style>
 <div class="wrap" id="board">
   <header>
@@ -698,49 +750,6 @@ details p{margin:0}
       <div class="top"><span id="ev-a"></span><span id="ev-b"></span></div>
       <div class="meter" role="img" id="ev-m"><i id="ev-i"></i></div>
     </div>
-  </section>
-  <section class="panel" id="curve-panel" hidden aria-label="Season path">
-    <h3>Season path</h3>
-    <p class="sub" id="curve-note"></p>
-    <div class="key" id="curve-key"></div>
-    <div class="ghost-row"><button class="ghost-tog" id="ghost-tog" type="button" aria-pressed="false">Show 200 coin-flip ghosts</button></div>
-    <div class="chart" id="curve-chart"></div>
-    <p class="sub" id="ghost-note" hidden></p>
-    <p class="sub" id="curve-verdict"></p>
-    <details><summary>As a table</summary><div class="tbl"><table id="curve-tab"></table></div></details>
-  </section>
-  <section class="panel" id="tb-panel" hidden aria-label="Tiebreaker">
-    <h3>Tiebreaker: total points in the last game</h3>
-    <div id="tb-now"></div>
-    <div class="chart tb-chart" id="tb-chart"></div>
-    <div class="darts" id="tb-darts"></div>
-    <p class="sub" id="tb-note"></p>
-    <details><summary>Every week</summary><div class="tbl"><table id="tb-tab"></table></div></details>
-  </section>
-  <section class="panel" id="season-panel" hidden aria-label="Season by week">
-    <h3>Season by week</h3>
-    <p class="sub" id="season-note"></p>
-    <div class="tbl"><table id="season-tab"></table></div>
-  </section>
-  <section class="panel" id="slate-panel" hidden aria-label="The week replayed">
-    <h3 id="sl-h"></h3>
-    <p class="sub" id="sl-sub"></p>
-    <div class="sl-top"><div class="sl-clock" id="sl-clock"></div><div class="sl-rec" id="sl-rec"></div></div>
-    <div class="sl-grid" id="sl-grid"></div>
-    <div class="sl-ctl"><button id="sl-play" type="button">▶ Replay</button><input id="sl-seek" type="range" min="0" max="1000" value="1000" aria-label="Scrub through the day"></div>
-  </section>
-  <section class="panel lr-panel" id="lr-panel" hidden aria-label="Loss review">
-    <h3>Loss review</h3>
-    <p class="sub">Every official loss, play by play: the line is how far the pick was from covering the pool line at each moment of the game. Above the number = covering. Descriptive only; nothing here changes a pick.</p>
-    <div class="lr-tiles" id="lr-tiles"></div>
-    <div class="lr-swing" id="lr-swing"></div>
-    <button class="lr-tog" id="lr-tog" aria-expanded="false" aria-controls="lr-body"></button>
-    <div id="lr-body" hidden>
-    <div class="filters" role="group" aria-label="Filter losses" id="lr-filters"></div>
-    <div class="lr-grid" id="lr-grid"></div>
-    <button class="lr-more" id="lr-more" hidden></button>
-    </div>
-    <details><summary>As a table</summary><div class="tbl"><table id="lr-tab"></table></div></details>
   </section>
   <section class="controls">
     <div class="filters" role="group" aria-label="Filter games">
@@ -758,6 +767,62 @@ details p{margin:0}
     </div>
   </section>
   <main id="slots"></main>
+  <section class="season" aria-label="Season">
+  <h2 class="season-h">Season</h2>
+  <section class="panel" id="curve-panel" hidden aria-label="Season path">
+    <details class="fold"><summary><h3>Season path</h3><span class="fold-s">Wins minus losses, game by game, for every model</span></summary>
+    
+    <p class="sub" id="curve-note"></p>
+    <div class="key" id="curve-key"></div>
+    <div class="ghost-row"><button class="ghost-tog" id="ghost-tog" type="button" aria-pressed="false">Show 200 coin-flip ghosts</button></div>
+    <div class="chart" id="curve-chart"></div>
+    <p class="sub" id="ghost-note" hidden></p>
+    <p class="sub" id="curve-verdict"></p>
+    <details><summary>As a table</summary><div class="tbl"><table id="curve-tab"></table></div></details>
+      </details>
+  </section>
+  <section class="panel" id="tb-panel" hidden aria-label="Tiebreaker">
+    <details class="fold"><summary><h3>Tiebreaker: total points in the last game</h3><span class="fold-s">This week's guess and how past guesses landed</span></summary>
+    
+    <div id="tb-now"></div>
+    <div class="chart tb-chart" id="tb-chart"></div>
+    <div class="darts" id="tb-darts"></div>
+    <p class="sub" id="tb-note"></p>
+    <details><summary>Every week</summary><div class="tbl"><table id="tb-tab"></table></div></details>
+      </details>
+  </section>
+  <section class="panel" id="season-panel" hidden aria-label="Season by week">
+    <details class="fold"><summary><h3>Season by week</h3><span class="fold-s">Each model's record, week by week</span></summary>
+    
+    <p class="sub" id="season-note"></p>
+    <div class="tbl"><table id="season-tab"></table></div>
+      </details>
+  </section>
+  <section class="panel" id="slate-panel" hidden aria-label="The week replayed">
+    <details class="fold"><summary><h3 id="sl-h"></h3><span class="fold-s">Replay last week's picks on one clock</span></summary>
+    
+    <p class="sub" id="sl-sub"></p>
+    <div class="sl-top"><div class="sl-clock" id="sl-clock"></div><div class="sl-rec" id="sl-rec"></div></div>
+    <div class="sl-grid" id="sl-grid"></div>
+    <div class="sl-ctl"><button id="sl-play" type="button">▶ Replay</button><input id="sl-seek" type="range" min="0" max="1000" value="1000" aria-label="Scrub through the day"></div>
+      </details>
+  </section>
+  <section class="panel lr-panel" id="lr-panel" hidden aria-label="Loss review">
+    <details class="fold"><summary><h3>Loss review</h3><span class="fold-s">Every official loss, play by play</span></summary>
+    
+    <p class="sub">Every official loss, play by play: the line is how far the pick was from covering the pool line at each moment of the game. Above the number = covering. Descriptive only; nothing here changes a pick.</p>
+    <div class="lr-tiles" id="lr-tiles"></div>
+    <div class="lr-swing" id="lr-swing"></div>
+    <button class="lr-tog" id="lr-tog" aria-expanded="false" aria-controls="lr-body"></button>
+    <div id="lr-body" hidden>
+    <div class="filters" role="group" aria-label="Filter losses" id="lr-filters"></div>
+    <div class="lr-grid" id="lr-grid"></div>
+    <button class="lr-more" id="lr-more" hidden></button>
+    </div>
+    <details><summary>As a table</summary><div class="tbl"><table id="lr-tab"></table></div></details>
+      </details>
+  </section>
+  </section>
   <details>
     <summary>How to read this page</summary>
     <div>
@@ -1036,6 +1101,7 @@ function flipWhy(x,f){
 function armFlips(){                         // the pick bar slides from the old pick to the new one, once, when the card first scrolls into view
   if(REDUCED||!window.IntersectionObserver)return;
   document.querySelectorAll('.card[data-flip]:not([data-armed])').forEach(card=>{
+    const dd=card.querySelector('details');if(dd&&!dd.open)return;   // closed rows have no layout to animate yet
     const id=card.dataset.id;card.dataset.armed='1';if(flipSeen.has(id))return;
     const x=g.find(z=>z.id===id),f=D.flips[id],tm=card.querySelector('.teams');if(!x||!f||!tm)return;
     const rows=[...tm.querySelectorAll('.team')],was=x.away===f.was?rows[0]:rows[1],nu=x.away===f.was?rows[1]:rows[0];
@@ -1377,8 +1443,24 @@ function epaPanel(x){
 }
 function card(x){
   const pa=x.pick===x.away,ph=x.pick===x.home;
-  return `<article class="card" data-id="${esc(x.id)}"${(D.flips||{})[x.id]?' data-flip="1"':''}><div class="card-h"><span class="ko">${esc(x.ko)}</span>${stateBadge(x)}</div>
-    <div class="teams">${team(x,'a',pa)}${team(x,'h',ph)}</div>${(D.flips||{})[x.id]?`<div class="flipnote"><b>↺ Flipped</b> from ${esc(D.flips[x.id].was)} · ${flipWhy(x,D.flips[x.id])}</div>`:''}${move(x)}${hurdle(x)}${meter(x)}${proj(x)}${hyb(x)}${xDrivers(x)}${xExpand(x)}${foot(x)}<button class="more" data-id="${esc(x.id)}">Book-by-book lines ›</button></article>`;
+  const body=`<div class="card-h"><span class="ko">${esc(x.ko)}</span>${stateBadge(x)}</div>
+    <div class="teams">${team(x,'a',pa)}${team(x,'h',ph)}</div>${(D.flips||{})[x.id]?`<div class="flipnote"><b>↺ Flipped</b> from ${esc(D.flips[x.id].was)} · ${flipWhy(x,D.flips[x.id])}</div>`:''}${move(x)}${hurdle(x)}${meter(x)}${proj(x)}${hyb(x)}${xDrivers(x)}${xExpand(x)}${foot(x)}<button class="more" data-id="${esc(x.id)}">Book-by-book lines ›</button>`;
+  return `<article class="card gr${x.res?' r-'+x.res:''}" data-id="${esc(x.id)}"${(D.flips||{})[x.id]?' data-flip="1"':''}><details class="rowd"><summary class="gr-s">${row(x)}</summary><div class="gr-d">${body}</div></details></article>`;
+}
+// One line per game: the pick and its pool line, the opponent, score or kickoff, result, cover chance and one flag.
+function row(x){
+  const has=!!x.pick,home=x.pick===x.home,opp=has?(home?x.away:x.home):null;
+  const ln=x.line==null||!has?null:(home?x.line:-x.line);
+  const ps=has?(home?x.hs:x.as):null,os=has?(home?x.as:x.hs):null;
+  const who=has?`<span class="gr-pick"><b>${esc(x.pick)}</b><span class="gr-ln">${ln==null?'':sgn(ln)}</span></span><span class="gr-opp">${home?'vs':'@'} ${esc(opp)}</span>`
+               :`<span class="gr-pick gr-none">${esc(x.away)} @ ${esc(x.home)}</span><span class="gr-opp">No pick</span>`;
+  const sc=x.hs==null?`<span class="gr-sc gr-ko">${esc(String(x.ko).replace(/^[A-Za-z]{3} /,''))}</span>`:`<span class="gr-sc">${has?ps+'–'+os:x.as+'–'+x.hs}</span>`;
+  const res=x.res==='W'?'<span class="gr-res w">Covered</span>':x.res==='L'?'<span class="gr-res l">Missed</span>'
+           :x.status==='provisional'?'<span class="gr-res p">Provisional</span>':x.status==='final'&&x.hs==null?'<span class="gr-res k">Locked</span>':'<span class="gr-res"></span>';
+  const f=(D.flips||{})[x.id]?'Flipped':x.hysrc==='v1'&&x.hy&&x.pick&&x.hy!==x.pick?'Hybrid differs'
+          :x.sig==='strong'?'Moved 1+ pt':x.ppick&&x.pick&&x.ppick!==x.pick?'Projection differs':x.drift==null&&has?'No market':'';
+  const pc=x.pick_p==null?'':`<span class="gr-pc">${Math.round(x.pick_p*100)}%</span>`;
+  return `${who}${sc}${res}<span class="gr-meta">${pc}${f?`<span class="gr-flag${f==='Moved 1+ pt'?' hot':''}">${f}</span>`:''}</span><span class="gr-chev" aria-hidden="true"></span>`;
 }
 const cols=n=>n===4||n===10?2:3;      // fill the rows: 4 games make 2x2, not 3+1
 const pred={all:()=>true,strong:x=>x.sig==='strong',differs:x=>x.ppick&&x.pick&&x.ppick!==x.pick,hybrid:x=>x.hysrc==='v1'&&x.hy&&x.pick&&x.hy!==x.pick};
@@ -1388,7 +1470,8 @@ function draw(k){
     if(!gs.length)return '';
     const all=g.filter(x=>x.slot===i),prov=all.filter(x=>x.status==='provisional').length,played=all.every(x=>x.hs!=null);
     const st=played?'Final':prov?`${prov} provisional`:'All picks locked';
-    return `<section class="slot"><div class="slot-h"><h2>${esc(s.day)}<small>${esc(s.times)} ET</small></h2><span class="st">${all.length} game${all.length>1?'s':''} · ${st}</span></div><div class="grid" style="--cols:${cols(gs.length)}">${gs.map(card).join('')}</div></section>`;
+    const sw=all.filter(x=>x.res==='W').length,sl=all.filter(x=>x.res==='L').length;
+    return `<section class="slot"><div class="slot-h"><h2>${esc(s.day)}<small>${esc(s.times)} ET</small></h2><span class="st">${sw+sl?`<b class="slot-rec">${sw}–${sl}</b>`:''}${all.length} game${all.length>1?'s':''}, ${st.toLowerCase()}</span></div><div class="rows">${gs.map(card).join('')}</div></section>`;
   }).join('');
   $('slots').innerHTML=out||'<p class="empty">No games match this filter.</p>';
   watchMoves();
@@ -1579,8 +1662,9 @@ $('slots').addEventListener('click',e=>{
     const box=card.querySelector('.xp'),btn=card.querySelector('.xbtn');
     box.hidden=!want;btn.setAttribute('aria-expanded',want);btn.lastElementChild.textContent=want?'▴':'▾';
     if(!want)btn.focus();return}
-  if(e.target.closest('.xp'))return;
+  if(e.target.closest('.xp')||e.target.closest('summary'))return;   // the row's summary only opens and closes the row
   const c=e.target.closest('.card');if(c)open(c.dataset.id)});
+$('slots').addEventListener('toggle',()=>armFlips(),true);           // flip animations arm when their row is opened
 function route(){const id=(location.hash||'').slice(1);if(id&&byId[id])showGame(id);else if(!$('detail').hidden)showBoard()}
 window.addEventListener('hashchange',route);route();
 </script>
