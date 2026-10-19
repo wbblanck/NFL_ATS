@@ -142,6 +142,8 @@ def live_summary() -> dict:
 
 
 TEMPLATE = r"""<title>__TITLE__</title>
+<meta name="theme-color" content="#0b1510">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: a scoreboard header, one summary panel, then kickoff-slot sections of game cards.
@@ -695,26 +697,9 @@ details p{margin:0}
 .gr+.gr{border-top:1px solid var(--rule)}
 .gr>details>summary{list-style:none;cursor:pointer}
 .gr>details>summary::-webkit-details-marker{display:none}
-.gr-s{display:grid;grid-template-columns:150px 90px 84px 96px 1fr 14px;align-items:center;gap:6px 14px;padding:10px 16px 10px 20px;position:relative}
-.gr-s::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:4px;border-radius:0 3px 3px 0;background:transparent}
-.r-W .gr-s::before{background:var(--win)} .r-L .gr-s::before{background:var(--loss)}
-.gr-s:hover{background:var(--panel-2)}
-.gr-s:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
-.gr-pick{display:flex;align-items:baseline;gap:8px;white-space:nowrap}
-.gr-pick b{font:800 28px/1 var(--display);text-transform:uppercase;letter-spacing:.01em}
-.gr-ln{font:500 15px var(--mono);color:var(--ink-2)}
-.gr-none{font:800 22px/1 var(--display);text-transform:uppercase;color:var(--ink-3)}
-.gr-opp{color:var(--ink-2);font-size:15px;white-space:nowrap}
-.gr-sc{font:800 26px/1 var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
-.gr-ko{font:500 13px var(--body);color:var(--ink-3)}
-.gr-res{font-size:13px;font-weight:600;white-space:nowrap}
-.gr-res.w{color:var(--win)} .gr-res.l{color:var(--loss)} .gr-res.p,.gr-res.k{color:var(--ink-3)}
-.gr-meta{display:flex;align-items:center;justify-content:flex-end;gap:8px;white-space:nowrap}
-.gr-pc{font:500 14px var(--mono);color:var(--ink)}
-.gr-flag{font-size:12px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--flat-bg);color:var(--ink-2)}
-.gr-flag.hot{background:var(--flag);color:var(--on-flag)}
-.gr-chev{width:8px;height:8px;border-right:2px solid var(--ink-3);border-bottom:2px solid var(--ink-3);transform:rotate(45deg) translateY(-2px);transition:transform .15s}
-.gr details[open] .gr-chev{transform:rotate(225deg) translateY(-2px)}
+.gr-s{display:grid;grid-template-columns:116px minmax(0,1fr) 124px;align-items:stretch;min-height:64px;padding:0;position:relative;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.gr-s:hover .field{filter:brightness(1.07)}
+.gr-s:focus-visible{outline:3px solid var(--line);outline-offset:-3px}
 .gr-d{padding:4px 16px 18px;max-width:560px;display:flex;flex-direction:column;gap:14px;animation:gr-open .18s ease-out}
 @keyframes gr-open{from{opacity:0;transform:translateY(-4px)}}
 .gr details[open]{background:var(--panel-2)}
@@ -728,14 +713,62 @@ details p{margin:0}
 .fold>summary:focus-visible{outline:2px solid var(--ink);outline-offset:4px;border-radius:4px}
 .fold-s{color:var(--ink-3);font-size:14px;font-weight:400}
 .fold[open]>summary{margin-bottom:14px}
-@media (max-width:700px){
-  .gr-s{grid-template-columns:1fr auto 14px;grid-template-areas:"who sc chev" "meta res chev";gap:6px 12px;padding:11px 14px 11px 18px}
-  .gr-pick{grid-area:who}.gr-opp{grid-area:who;justify-self:end;margin-right:6px;align-self:center}
-  .gr-sc{grid-area:sc}.gr-res{grid-area:res;justify-self:end}.gr-meta{grid-area:meta;justify-content:flex-start}.gr-chev{grid-area:chev}
-  .gr-pick b{font-size:26px}
+@media (prefers-reduced-motion:reduce){.gr-d{animation:none}.fold>summary::after{transition:none}}
+
+/* field strips (2026-10 concept, docs/concepts/field_dashboard) */
+:root{--turf:#2d6a44;--turf-dim:#6f8c79;--chalk:rgba(255,255,255,.42);--chalk-2:rgba(255,255,255,.18);--line:#f6c700;--on-line:#1a1500;--ball:#7a3b16;--lace:#f4ead9}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--turf:#1f4d31;--turf-dim:#2b3b31;--chalk:rgba(255,255,255,.30);--chalk-2:rgba(255,255,255,.12);--ball:#9a4f22}}
+:root[data-theme="dark"]{--turf:#1f4d31;--turf-dim:#2b3b31;--chalk:rgba(255,255,255,.30);--chalk-2:rgba(255,255,255,.12);--ball:#9a4f22}
+html{scroll-padding-top:56px}
+h1,h2,h3{text-wrap:balance}
+.skip{position:absolute;left:-999px;top:8px;z-index:9;background:var(--ink);color:var(--bg);padding:8px 12px;border-radius:6px}
+.skip:focus{left:16px}
+.bug{position:sticky;top:0;z-index:6;display:flex;align-items:stretch;background:#0b1510;color:#f2f6f3;box-shadow:0 2px 0 var(--line);margin:-28px -16px 22px;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+.bug-wk{background:var(--line);color:var(--on-line);font:800 22px/1 var(--display);text-transform:uppercase;padding:9px 14px;display:flex;align-items:center}
+.bug-rec{display:flex;align-items:center;gap:18px;padding:6px 16px;flex:1;min-width:0;overflow:hidden}
+.bug-rec span{display:flex;align-items:baseline;gap:7px;white-space:nowrap}
+.bug-rec b{font:800 24px/1 var(--display);font-variant-numeric:tabular-nums}
+.bug-rec small{font:500 13px var(--body);opacity:.75}
+.bug-next{display:flex;align-items:center;padding:6px 16px;font:500 14px var(--body);white-space:nowrap;border-left:1px solid rgba(255,255,255,.15)}
+.bug-next:empty{display:none}
+.gr-pick{display:flex;flex-direction:column;justify-content:center;padding:8px 12px;line-height:1.1;min-width:0}
+.gr-pick b{font:800 28px/1 var(--display);text-transform:uppercase;white-space:nowrap}
+.gr-pick b span{font:600 16px var(--mono);color:var(--ink-2);margin-left:6px;text-transform:none}
+.gr-pick small{font-size:13px;color:var(--ink-3);margin-top:3px}
+.gr-pick.none b{color:var(--ink-3);font-size:19px}
+.field{position:relative;overflow:hidden;background:var(--turf);display:block}
+.field.dim{background:var(--turf-dim)}
+.mow{position:absolute;top:0;bottom:0;background:rgba(255,255,255,.05)}
+.yd{position:absolute;top:0;bottom:0;width:1px;background:var(--chalk-2)}
+.yd.td{background:var(--chalk)}
+.fdl{position:absolute;top:-2px;bottom:-2px;width:4px;margin-left:-2px;background:var(--line);box-shadow:0 0 10px rgba(246,199,0,.55)}
+.trail{position:absolute;top:50%;height:6px;margin-top:-3px;border-radius:3px;background:rgba(255,255,255,.34)}
+.ball{position:absolute;top:50%;width:30px;height:18px;margin:-9px 0 0 -15px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+.fnote{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.fnote>span{display:inline-flex;align-items:baseline;gap:8px;background:rgba(6,16,10,.72);color:#fff;font:600 14px var(--body);padding:4px 12px;border-radius:999px;position:relative;z-index:2;white-space:nowrap}
+.fnote b{font:800 18px var(--display)}
+.fflag{position:absolute;left:8px;top:6px;z-index:2;font:600 11.5px var(--body);padding:1px 7px;border-radius:999px;background:rgba(6,16,10,.62);color:#fff;white-space:nowrap}
+.fflag.hot{background:var(--line);color:var(--on-line)}
+.gr-res{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;padding:8px 14px;line-height:1.1}
+.gr-res b{font:800 26px/1 var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.gr-res b.m{font-size:18px}
+.gr-res span{font:600 13px var(--body);margin-top:4px;white-space:nowrap}
+.gr-res .w{color:var(--win)} .gr-res .l{color:var(--loss)} .gr-res .m{color:var(--ink-3)}
+.rows{gap:6px;background:none;border:0;border-radius:0;overflow:visible}
+.rows>.card.gr{background:var(--panel);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.gr+.gr{border-top:1px solid var(--rule)}
+.gr details[open]{background:var(--panel)}
+.gr details[open]>summary{border-bottom:1px solid var(--rule)}
+.gr-d{padding:14px 16px 18px}
+@media (max-width:640px){
+  .bug-rec small,.bug-next{display:none}
+  .gr-s{grid-template-columns:98px minmax(0,1fr) 100px}
+  .gr-pick{padding:8px 8px 8px 10px}.gr-pick b{font-size:23px}.gr-pick b span{font-size:12px;margin-left:3px}
+  .gr-res b{font-size:22px}.gr-res{padding:8px 8px}.gr-res span{font-size:12px}
 }
-@media (prefers-reduced-motion:reduce){.gr-d{animation:none}.gr-chev,.fold>summary::after{transition:none}}
 </style>
+<a class="skip" href="#slots">Skip to this week's games</a>
+<div class="bug" aria-label="Season record"><span class="bug-wk" id="bug-wk"></span><span class="bug-rec" id="bug-rec"></span><span class="bug-next" id="bug-next"></span></div>
 <div class="wrap" id="board">
   <header>
     <div class="eyebrow">Bonsai Pool 2026 · NFL_ATS</div>
@@ -744,13 +777,6 @@ details p{margin:0}
     <div class="next" id="next" hidden><i></i><span id="next-t"></span></div>
   </header>
   <section class="rail" id="rail" hidden aria-label="The week so far"></section>
-  <section class="summary" aria-label="Season record">
-    <div class="records" id="records"></div>
-    <div class="bar-row">
-      <div class="top"><span id="ev-a"></span><span id="ev-b"></span></div>
-      <div class="meter" role="img" id="ev-m"><i id="ev-i"></i></div>
-    </div>
-  </section>
   <section class="controls">
     <div class="filters" role="group" aria-label="Filter games">
       <button id="f-all" aria-pressed="true">All games</button>
@@ -769,6 +795,13 @@ details p{margin:0}
   <main id="slots"></main>
   <section class="season" aria-label="Season">
   <h2 class="season-h">Season</h2>
+  <section class="summary" aria-label="Season record">
+    <div class="records" id="records"></div>
+    <div class="bar-row">
+      <div class="top"><span id="ev-a"></span><span id="ev-b"></span></div>
+      <div class="meter" role="img" id="ev-m"><i id="ev-i"></i></div>
+    </div>
+  </section>
   <section class="panel" id="curve-panel" hidden aria-label="Season path">
     <details class="fold"><summary><h3>Season path</h3><span class="fold-s">Wins minus losses, game by game, for every model</span></summary>
     
@@ -860,6 +893,10 @@ $('meta').textContent=`${D.season} regular season · snapshot ${D.updated}`+(D.c
   tick();setInterval(tick,1000);
 })();
 const g=D.games, locked=g.filter(x=>x.status==='final').length;
+(()=>{const off=D.models.find(m=>/^Official/.test(m.label)),hy=D.models.find(m=>/^Hybrid/.test(m.label));
+  $('bug-wk').textContent=`Week ${D.week}`;
+  $('bug-rec').innerHTML=[[off,'official'],[hy,'hybrid']].filter(a=>a[0]).map(([m,k])=>`<span><b>${m.W}–${m.L}</b><small>${k}</small></span>`).join('');
+  $('bug-next').textContent=D.next_lock&&D.next_lock.game?`Next lock ${D.next_lock.at} · ${D.next_lock.game}`:'';})();
 $('records').innerHTML=D.models.map(m=>{const p=pct(m.W,m.L);
   return `<div class="rec"><span class="v">${m.W}–${m.L}</span><span class="l">${esc(m.label)}</span><span class="s">${p?`${p[0]}% ± ${p[1]} · vs pool line`:'no games graded yet'}${m.note?`<br>${esc(m.note)}`:''}</span></div>`}).join('')
   +`<div class="rec"><span class="v">${locked}/${g.length}</span><span class="l">Picks locked this week</span><span class="s">${g.length-locked?`${g.filter(x=>x.status==='provisional').length} still provisional`:'nothing left to lock'}</span></div>`;
@@ -1447,20 +1484,54 @@ function card(x){
     <div class="teams">${team(x,'a',pa)}${team(x,'h',ph)}</div>${(D.flips||{})[x.id]?`<div class="flipnote"><b>↺ Flipped</b> from ${esc(D.flips[x.id].was)} · ${flipWhy(x,D.flips[x.id])}</div>`:''}${move(x)}${hurdle(x)}${meter(x)}${proj(x)}${hyb(x)}${xDrivers(x)}${xExpand(x)}${foot(x)}<button class="more" data-id="${esc(x.id)}">Book-by-book lines ›</button>`;
   return `<article class="card gr${x.res?' r-'+x.res:''}" data-id="${esc(x.id)}"${(D.flips||{})[x.id]?' data-flip="1"':''}><details class="rowd"><summary class="gr-s">${row(x)}</summary><div class="gr-d">${body}</div></details></article>`;
 }
-// One line per game: the pick and its pool line, the opponent, score or kickoff, result, cover chance and one flag.
+// One strip of turf per game: the yellow first-down line is the pool line and the ball sits where the game
+// finished relative to it, in points the pick covered by. Yard marks every 7 points (a touchdown); +/-21 fills the strip.
+const FR21=21,FX=m=>50+Math.max(-FR21,Math.min(FR21,m))/FR21*46;
+const BALL=`<svg class="ball" viewBox="0 0 30 18" aria-hidden="true"><ellipse cx="15" cy="9" rx="14" ry="8" fill="var(--ball)"/><path d="M3.5 9h23" stroke="var(--lace)" stroke-width=".8" opacity=".35"/><path d="M10 9h10M11.5 6.6v4.8M14 6.6v4.8M16.5 6.6v4.8M19 6.6v4.8" stroke="var(--lace)" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+function pickSide(x){
+  if(!x.pick)return null;
+  const home=x.pick===x.home,ln=x.line==null?null:(home?x.line:-x.line),ps=home?x.hs:x.as,os=home?x.as:x.hs;
+  return {home,opp:home?x.away:x.home,ln,ps,os,m:x.hs==null||ln==null?null:ps-os+ln};
+}
+function fflag(x){
+  if(x.sig==='strong')return '<span class="fflag hot">Market moved 1+</span>';
+  if(x.hysrc==='v1'&&x.hy&&x.pick&&x.hy!==x.pick)return `<span class="fflag">Hybrid took ${esc(x.hy)}</span>`;
+  if((D.flips||{})[x.id])return '<span class="fflag">Flipped since Wednesday</span>';
+  if(x.ppick&&x.pick&&x.ppick!==x.pick)return '<span class="fflag">Projection differs</span>';
+  return '';
+}
+function strip(x,s){
+  let mk='';for(const p of [-28,-14,0,14])mk+=`<i class="mow" style="left:${FX(p)}%;width:${FX(p+7)-FX(p)}%"></i>`;
+  for(const p of [-21,-14,-7,7,14,21])mk+=`<i class="yd td" style="left:${FX(p)}%"></i>`;
+  for(let p=-17.5;p<=17.5;p+=7)mk+=`<i class="yd" style="left:${FX(p)}%;top:40%;bottom:40%"></i>`;
+  let inner='',label='';
+  if(s&&s.m!=null){
+    const a=FX(0),b=FX(s.m);label=`${x.pick} ${s.m>0?'covered by':s.m<0?'missed by':'pushed at'} ${pts(Math.abs(s.m))}`;
+    inner=`<i class="trail" style="left:${Math.min(a,b)}%;width:${Math.abs(b-a)}%"></i>${BALL.replace('class="ball"',`class="ball" style="left:${b}%"`)}`;
+  }else if(s){
+    label=`${x.pick} kicks off ${x.ko}`;
+    inner=`<span class="fnote"><span>${x.pick_p!=null?`<b>${Math.round(x.pick_p*100)}%</b> to cover · `:''}${esc(String(x.ko).replace(/^[A-Za-z]{3} /,''))}</span></span>`;
+  }else{label='No pick recorded';inner='<span class="fnote"><span>No pick recorded</span></span>'}
+  return `<span class="field${s&&s.m!=null?'':' dim'}" role="img" aria-label="${esc(label)}">${mk}${s?fflag(x):''}<i class="fdl" style="left:${FX(0)}%"></i>${inner}</span>`;
+}
 function row(x){
-  const has=!!x.pick,home=x.pick===x.home,opp=has?(home?x.away:x.home):null;
-  const ln=x.line==null||!has?null:(home?x.line:-x.line);
-  const ps=has?(home?x.hs:x.as):null,os=has?(home?x.as:x.hs):null;
-  const who=has?`<span class="gr-pick"><b>${esc(x.pick)}</b><span class="gr-ln">${ln==null?'':sgn(ln)}</span></span><span class="gr-opp">${home?'vs':'@'} ${esc(opp)}</span>`
-               :`<span class="gr-pick gr-none">${esc(x.away)} @ ${esc(x.home)}</span><span class="gr-opp">No pick</span>`;
-  const sc=x.hs==null?`<span class="gr-sc gr-ko">${esc(String(x.ko).replace(/^[A-Za-z]{3} /,''))}</span>`:`<span class="gr-sc">${has?ps+'–'+os:x.as+'–'+x.hs}</span>`;
-  const res=x.res==='W'?'<span class="gr-res w">Covered</span>':x.res==='L'?'<span class="gr-res l">Missed</span>'
-           :x.status==='provisional'?'<span class="gr-res p">Provisional</span>':x.status==='final'&&x.hs==null?'<span class="gr-res k">Locked</span>':'<span class="gr-res"></span>';
-  const f=(D.flips||{})[x.id]?'Flipped':x.hysrc==='v1'&&x.hy&&x.pick&&x.hy!==x.pick?'Hybrid differs'
-          :x.sig==='strong'?'Moved 1+ pt':x.ppick&&x.pick&&x.ppick!==x.pick?'Projection differs':x.drift==null&&has?'No market':'';
-  const pc=x.pick_p==null?'':`<span class="gr-pc">${Math.round(x.pick_p*100)}%</span>`;
-  return `${who}${sc}${res}<span class="gr-meta">${pc}${f?`<span class="gr-flag${f==='Moved 1+ pt'?' hot':''}">${f}</span>`:''}</span><span class="gr-chev" aria-hidden="true"></span>`;
+  const s=pickSide(x);
+  const who=s?`<span class="gr-pick"><b>${esc(x.pick)}<span>${s.ln==null?'':sgn(s.ln)}</span></b><small>${s.home?'vs':'@'} ${esc(s.opp)}</small></span>`
+             :`<span class="gr-pick none"><b>${esc(x.away)} @ ${esc(x.home)}</b><small>No pick</small></span>`;
+  let res;
+  if(!s)res=x.hs==null?'':`<b>${x.as}–${x.hs}</b><span class="m">no pick</span>`;
+  else if(x.hs==null)res=`<b class="m">${x.status==='provisional'?'Provisional':'Locked'}</b><span class="m">${x.status==='provisional'?'may change':'pick is in'}</span>`;
+  else{const r=x.res==='W'?['w','Covered']:x.res==='L'?['l','Missed']:['m','Push'];res=`<b>${s.ps}–${s.os}</b><span class="${r[0]}">${r[1]}${s.m?' '+half(Math.abs(s.m)):''}</span>`}
+  return `${who}${strip(x,s)}<span class="gr-res">${res}</span>`;
+}
+function armBalls(){                          // the page's one moment of motion: each ball rolls from the line to where its game ended
+  if(REDUCED||!window.IntersectionObserver)return;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);
+    const ball=e.target.querySelector('.ball'),tr=e.target.querySelector('.trail');if(!ball)return;
+    const to=parseFloat(ball.style.left),dx=(FX(0)-to)/100*e.target.clientWidth,o=to>FX(0)?'left':'right',ez='cubic-bezier(.2,.8,.2,1)';
+    ball.animate([{transform:`translateX(${dx}px) rotate(-200deg)`},{transform:'none'}],{duration:900,easing:ez});
+    tr&&tr.animate([{transform:'scaleX(0)',transformOrigin:o},{transform:'scaleX(1)',transformOrigin:o}],{duration:900,easing:ez})}),{threshold:.6});
+  document.querySelectorAll('#slots .field:not([data-roll])').forEach(f=>{f.dataset.roll='1';io.observe(f)});
 }
 const cols=n=>n===4||n===10?2:3;      // fill the rows: 4 games make 2x2, not 3+1
 const pred={all:()=>true,strong:x=>x.sig==='strong',differs:x=>x.ppick&&x.pick&&x.ppick!==x.pick,hybrid:x=>x.hysrc==='v1'&&x.hy&&x.pick&&x.hy!==x.pick};
@@ -1474,7 +1545,7 @@ function draw(k){
     return `<section class="slot"><div class="slot-h"><h2>${esc(s.day)}<small>${esc(s.times)} ET</small></h2><span class="st">${sw+sl?`<b class="slot-rec">${sw}–${sl}</b>`:''}${all.length} game${all.length>1?'s':''}, ${st.toLowerCase()}</span></div><div class="rows">${gs.map(card).join('')}</div></section>`;
   }).join('');
   $('slots').innerHTML=out||'<p class="empty">No games match this filter.</p>';
-  watchMoves();
+  watchMoves();armBalls();
 }
 function setF(k){for(const n of ['all','strong','differs','hybrid'])$('f-'+n).setAttribute('aria-pressed',n===k);draw(k)}
 for(const n of ['all','strong','differs','hybrid'])$('f-'+n).onclick=()=>setF(n);
