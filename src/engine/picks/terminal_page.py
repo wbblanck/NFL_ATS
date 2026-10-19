@@ -72,6 +72,11 @@ main:focus{outline:none}
 .kicker{font-size:13px;color:var(--ink-3);margin:0}
 .hero h1{font-size:clamp(40px,8vw,72px);line-height:.95;font-weight:800;font-stretch:118%;letter-spacing:-.01em}
 .hero p{margin:10px 0 0;color:var(--ink-2);max-width:66ch}
+.key{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--ink-2);font-size:14px}
+.key i{display:inline-block;vertical-align:-2px;margin-right:6px}
+.k-line{width:4px;height:15px;background:var(--line);border-radius:2px}
+.k-bar{width:9px;height:13px;background:var(--turf);border-radius:2px;box-shadow:inset 0 0 0 2px #fff}
+.k-ball{width:16px;height:10px;border-radius:50%;background:#7a3b16}
 .big{font-weight:800;font-stretch:70%;font-variant-numeric:tabular-nums;line-height:1}
 
 /* controls */
@@ -123,6 +128,7 @@ main:focus{outline:none}
 .nav{display:flex;gap:6px}
 .nav a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border:1px solid var(--rule);border-radius:10px;background:var(--panel);text-decoration:none;font-size:20px}
 .nav a[aria-disabled="true"]{opacity:.35;pointer-events:none}
+.nav a:hover,.toggles button:hover{border-color:var(--ink-3);background:var(--panel-2)}
 .facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .fact{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:12px 14px}
 .fact dt{font-size:12.5px;color:var(--ink-3)}
@@ -137,6 +143,9 @@ main:focus{outline:none}
 .whatif label{font-size:13.5px}
 .whatif input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--line);min-height:32px}
 .whatif output{font-size:30px;font-weight:800;font-stretch:72%;font-variant-numeric:tabular-nums;color:var(--line)}
+.dtab{padding:4px 16px 14px;background:rgba(0,0,0,.26)}
+.dtab summary{color:#fff}
+.dtab table{color:#fff}.dtab th{color:rgba(255,255,255,.75)}.dtab td,.dtab th{border-color:rgba(255,255,255,.15)}
 .tip{position:absolute;pointer-events:none;background:#0b1220;color:#fff;font-size:12.5px;line-height:1.35;padding:6px 9px;border-radius:6px;white-space:nowrap;z-index:5;box-shadow:0 4px 14px rgba(0,0,0,.3)}
 .tip[hidden]{display:none}
 .why{margin:0;padding:0 0 0 18px;display:flex;flex-direction:column;gap:8px;max-width:76ch;color:var(--ink-2)}
@@ -200,7 +209,7 @@ details.more>summary{cursor:pointer;font-size:14px;font-weight:600;padding:8px 0
   ::view-transition-old(root),::view-transition-new(root){animation-duration:.22s}
   .rise{animation:rise .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*40ms)}
   @keyframes rise{from{opacity:0;transform:translateY(8px)}}
-  .grow{transform-origin:bottom;animation:grow .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*9ms + 120ms)}
+  .grow{transform-box:fill-box;transform-origin:bottom;animation:grow .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*9ms + 120ms)}
   @keyframes grow{from{transform:scaleY(0)}}
 }
 </style>
@@ -208,14 +217,14 @@ details.more>summary{cursor:pointer;font-size:14px;font-weight:600;padding:8px 0
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="bar">
-  <a class="brand" href="#/slate" aria-label="Bonsai ATS, this week's slate"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="5" fill="#23613f"/><path d="M13 3v20" stroke="#f2c200" stroke-width="3"/><path d="M6 3v20M20 3v20" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/></svg><span>Bonsai ATS</span></a>
+  <a class="brand" translate="no" href="#/slate" aria-label="Bonsai ATS, this week’s slate"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="5" fill="#23613f"/><path d="M13 3v20" stroke="#f2c200" stroke-width="3"/><path d="M6 3v20M20 3v20" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/></svg><span>Bonsai ATS</span></a>
   <span class="wk" id="wk"></span>
   <span class="recs" id="recs"></span>
   <nav class="tabs" aria-label="Sections"><a href="#/slate" data-v="slate">Slate</a><a href="#/game" data-v="game">Matchup</a><a href="#/performance" data-v="performance">Performance</a><a href="#/method" data-v="method">Method</a></nav>
   <span class="clock" id="clock" hidden><i></i><span></span></span>
 </header>
 <main id="main" tabindex="-1">
-  <section class="view" id="v-slate" aria-label="This week's slate"></section>
+  <section class="view" id="v-slate" aria-label="This week’s slate"></section>
   <section class="view" id="v-game" aria-label="Matchup" hidden></section>
   <section class="view" id="v-performance" aria-label="Model performance" hidden></section>
   <section class="view" id="v-method" aria-label="How the model works" hidden></section>
@@ -274,8 +283,8 @@ const FILTERS=[['all','All games',()=>true],['open','Still to play',g=>g.hs==nul
   ['moved','Market moved 1+',g=>g.sig==='strong'],['split','Models disagree',g=>(g.ppick&&g.pick&&g.ppick!==g.pick)||(g.hy&&g.pick&&g.hy!==g.pick)]];
 const SORTS={kick:['Kickoff',(a,b)=>a.ko_iso.localeCompare(b.ko_iso)],chance:['Cover chance',(a,b)=>(b.pick_p??-1)-(a.pick_p??-1)],
   move:['Market move',(a,b)=>Math.abs(b.drift??-1)-Math.abs(a.drift??-1)]};
-let st={f:'all',s:'kick'};
-try{const s=JSON.parse(sessionStorage.getItem('ats-slate')||'{}');if(s.f)st.f=s.f;if(s.s)st.s=s.s}catch(e){}
+let st={f:'all',s:'kick'};                     // the address is the only source of the slate's state
+function readQ(q){const u=new URLSearchParams(q||'');st={f:'all',s:'kick'};if(FILTERS.some(x=>x[0]===u.get('f')))st.f=u.get('f');if(SORTS[u.get('s')])st.s=u.get('s')}
 function tag(g){
   if(g.sig==='strong')return '<span class="tag hot">Market moved 1+</span>';
   if(g.hy&&g.pick&&g.hy!==g.pick)return `<span class="tag">Hybrid took ${esc(g.hy)}</span>`;
@@ -293,6 +302,8 @@ function miniSVG(g,s,idx){
     f.pts.forEach(([m,p],i)=>{if(m<-XR||m>XR)return;const h=p/mx*(H-18),c=m>Lc?'var(--chalk)':'var(--chalk-2)';
       o+=`<rect class="grow" style="--i:${i}" x="${x(m)-2.6}" y="${H-h}" width="5.2" height="${h}" fill="${c}" rx="1"/>`});
   }
+  if(!f&&s&&s.m!=null){const a=x(-s.L),bb=x(Math.max(-XR,Math.min(XR,s.ps-s.os)));
+    o+=`<rect x="${Math.min(a,bb)}" y="${H/2-3}" width="${Math.abs(bb-a)}" height="6" rx="3" fill="${s.m>0?'var(--chalk)':'var(--chalk-2)'}"/>`}
   if(s&&s.L!=null)o+=`<line x1="${x(-s.L)}" x2="${x(-s.L)}" y1="0" y2="${H}" stroke="var(--line)" stroke-width="3"/>`;
   if(s&&s.m!=null){const pm=s.ps-s.os,X=x(Math.max(-XR,Math.min(XR,pm)));
     o+=`<g transform="translate(${X},${H/2})"><ellipse rx="9" ry="5.5" fill="#7a3b16" stroke="#fff" stroke-width="1.2"/><path d="M-4 0h8M-2 -2v4M0 -2v4M2 -2v4" stroke="#fff" stroke-width=".9"/></g>`}
@@ -307,9 +318,9 @@ function gameRow(g,i){
     out=`<span class="p">${s.ps}–${s.os}</span><span class="s ${r[0]}">${r[1]} ${s.m?fmtH(Math.abs(s.m)):''}</span>`}
   else if(s)out=`<span class="p">${pct(g.pick_p)}</span><span class="s m">${g.status==='provisional'?'provisional':'locked'}</span>`;
   else out=g.hs!=null?`<span class="p">${g.as}–${g.hs}</span><span class="s m">final</span>`:'';
-  const note=!f?`<span class="note"><span>${s?'No market at the pick':'No pick'}</span></span>`:'';
+  const note=!f?`<span class="note"><span>${s?(g.hs!=null?'No market':'No market yet'):'No pick'}</span></span>`:'';
   const label=s?`${s.team} ${sgn(s.L)} ${s.home?'versus':'at'} ${s.opp}${g.pick_p!=null?`, ${pct(g.pick_p,1)} to cover`:''}${g.res?`, ${g.res==='W'?'covered':'missed'}`:''}`:`${g.away} at ${g.home}, no pick`;
-  return `<a class="g rise" style="--i:${i}" href="#/game/${esc(g.id)}" aria-label="${esc(label)}">${who}<span class="mini${f?'':' dim'}">${miniSVG(g,s,i)}${s?tag(g):''}${note}</span><span class="out">${out}</span></a>`;
+  return `<a class="g rise" style="--i:${i}" href="#/game/${esc(g.id)}" aria-label="${esc(label)}">${who}<span class="mini${f||(s&&s.m!=null)?'':' dim'}">${miniSVG(g,s,i)}${s?tag(g):''}${note}</span><span class="out">${out}</span></a>`;
 }
 function slate(){
   const v=$('v-slate'),pf=FILTERS.find(x=>x[0]===st.f)[2],gs=G.filter(pf).sort(SORTS[st.s][1]);
@@ -322,7 +333,7 @@ function slate(){
       return `<div class="slot"><div class="slot-h"><h2>${esc(sl.day)}<small>${esc(sl.times)} ET</small></h2>${sw+sl2?`<span class="big rec">${sw}–${sl2}</span>`:''}</div><div class="games">${ss.map(gameRow).join('')}</div></div>`}).join('');
   }else body=`<div class="games">${gs.map(gameRow).join('')}</div>`;
   v.innerHTML=`<div class="hero"><p class="kicker">${esc(D.season)} season · updated ${esc(D.updated)}</p><h1>Week ${D.week}</h1>
-    <p>${w}–${l} against the pool line so far${left?`, ${left} to play`:', all final'}. Each strip is the model's spread of possible final margins for the side it took: the yellow line is the pool line, bright bars are outcomes that cover, the ball is where the game ended.</p></div>
+    <p>${w}–${l} against the pool line so far${left?`, ${left} to play`:', all final'}.</p><p>Each strip shows the final margins the model expected for the side it took:</p><ul class="key"><li><i class="k-line"></i>Yellow line: the pool line</li><li><i class="k-bar"></i>Bright bars: outcomes that cover</li><li><i class="k-ball"></i>Ball: where the game ended</li></ul></div>
     <div class="ctrl"><div class="chips" role="group" aria-label="Show">${FILTERS.map(([k,lab,fn])=>`<button class="chip" aria-pressed="${st.f===k}" data-f="${k}">${lab}<span class="c">${G.filter(fn).length}</span></button>`).join('')}</div>
     <label class="sel">Sort <select id="sort">${Object.entries(SORTS).map(([k,[lab]])=>`<option value="${k}"${st.s===k?' selected':''}>${lab}</option>`).join('')}</select></label></div>
     ${body||'<p class="empty">No games match. Choose All games to see the full week.</p>'}
@@ -331,7 +342,8 @@ function slate(){
   v.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{st.f=b.dataset.f;save();slate()});
   $('sort').onchange=e=>{st.s=e.target.value;save();slate()};
 }
-function save(){try{sessionStorage.setItem('ats-slate',JSON.stringify(st))}catch(e){}}
+function slateHref(){const q=new URLSearchParams();if(st.f!=='all')q.set('f',st.f);if(st.s!=='kick')q.set('s',st.s);return '#/slate'+(q.toString()?'?'+q:'')}
+function save(){history.replaceState(null,'',slateHref());document.querySelectorAll('a[href^="#/slate"]').forEach(a=>a.setAttribute('href',slateHref()))}
 
 /* ---------- matchup ---------- */
 function order(){return G.slice().sort(SORTS.kick[1])}
@@ -353,9 +365,9 @@ function game(id){
     ${f?`<div class="field" id="field"></div>`:`<div class="panel"><div class="pb"><p class="empty">No margin distribution: ${s?'no market line was captured when this pick was made, so the pick has no cover chance':'no pick was made for this game'}.</p></div></div>`}
     <div class="side">
       <div class="panel"><div class="ph"><h2>Why this pick</h2></div><div class="pb">${(det.why||[]).length?`<ul class="why">${det.why.map(w=>`<li>${esc(w)}</li>`).join('')}</ul>`:'<p class="empty">No explanation was recorded.</p>'}</div></div>
-      <div class="panel"><div class="ph"><h2>What drives the projection</h2><p>Points added to each team's expected score</p></div><div class="pb">${drivers(g)}</div></div>
+      <div class="panel"><div class="ph"><h2>What drives the projection</h2><p>Points added to each team’s expected score</p></div><div class="pb">${drivers(g)}</div></div>
     </div>
-    <div class="panel"><div class="ph"><h2>How the line moved</h2><p>${team}'s spread at every book we captured; Pinnacle in bold</p></div><div class="pb"><div class="chart" id="lm"></div><div class="legend" id="lm-key"></div></div></div>`;
+    <div class="panel"><div class="ph"><h2>How the line moved</h2><p>${esc(team)}’s spread at every book captured; Pinnacle in bold</p></div><div class="pb"><div class="chart" id="lm"></div><div class="legend" id="lm-key"></div></div></div>`;
   if(f)fieldChart(g,s,team,f,L);
   lineMove(g,team,L);
 }
@@ -374,22 +386,35 @@ function fieldChart(g,s,team,f,L0){
   let base='';for(let k=-R;k<=R;k+=7)base+=`<line x1="${x(k)}" x2="${x(k)}" y1="${m.t-8}" y2="${m.t+ph}" stroke="var(--chalk-3)"/><text x="${x(k)}" y="${H-12}" text-anchor="middle" font-size="12" fill="rgba(255,255,255,.75)">${k>0?'+':k<0?MINUS:''}${Math.abs(k)}</text>`;
   base+=`<text x="${m.l}" y="16" font-size="12.5" fill="rgba(255,255,255,.8)">${esc(team)} loses by</text><text x="${W-m.r}" y="16" text-anchor="end" font-size="12.5" fill="rgba(255,255,255,.8)">${esc(team)} wins by</text>`;
   const bars=vis.map(([k,p],i)=>`<rect class="grow fb" data-k="${k}" style="--i:${i}" x="${x(k)-bw/2}" y="${y(p)}" width="${bw}" height="${m.t+ph-y(p)}" rx="1.5"/>`).join('');
-  box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Distribution of ${esc(team)}'s final margin; ${pct(pCover(f,L0),1)} beyond the pool line">${base}
+  box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Distribution of ${esc(team)}’s final margin; ${pct(pCover(f,L0),1)} beyond the pool line">${base}
       <g id="bars">${bars}</g>
       <line x1="${x(c0)}" x2="${x(c0)}" y1="${m.t-6}" y2="${m.t+ph}" stroke="#fff" stroke-dasharray="3 4" stroke-width="1.5"/>
       <line id="pl" y1="${m.t-12}" y2="${m.t+ph+4}" stroke="var(--line)" stroke-width="4"/>
-      ${act!=null?`<g transform="translate(${x(Math.max(-R,Math.min(R,act)))},${m.t+ph-10})"><ellipse rx="12" ry="7" fill="#7a3b16" stroke="#fff" stroke-width="1.5"/><path d="M-5 0h10M-2.5 -2.6v5.2M0 -2.6v5.2M2.5 -2.6v5.2" stroke="#fff" stroke-width="1.1"/></g>`:''}
+      ${act!=null?`<g transform="translate(${x(Math.max(-R,Math.min(R,act)))},${m.t+ph-10})"><g id="ball"><ellipse rx="12" ry="7" fill="#7a3b16" stroke="#fff" stroke-width="1.5"/><path d="M-5 0h10M-2.5 -2.6v5.2M0 -2.6v5.2M2.5 -2.6v5.2" stroke="#fff" stroke-width="1.1"/></g></g>`:''}
       <rect id="hit" x="${m.l}" y="${m.t}" width="${pw}" height="${ph}" fill="transparent"/></svg>
-    <div class="cap"><span><i style="background:var(--line)"></i>Pool line</span><span><i style="background:repeating-linear-gradient(90deg,#fff 0 3px,transparent 3px 6px)"></i>Market's expected margin <b>${sgn(c0)}</b></span>
+    <div class="cap"><span><i style="background:var(--line)"></i>Pool line</span><span><i style="background:repeating-linear-gradient(90deg,#fff 0 3px,transparent 3px 6px)"></i>Market’s expected margin <b>${sgn(c0)}</b></span>
       <span>Middle half <b>${sgn(quant(f,.25))} to ${sgn(quant(f,.75))}</b></span><span>8 in 10 <b>${sgn(quant(f,.1))} to ${sgn(quant(f,.9))}</b></span>${act!=null?`<span>Final <b>${sgn(act)}</b></span>`:''}</div>
     <div class="whatif"><label for="wl">Move the pool line to see the cover chance at any number</label><output id="wo" for="wl"></output>
-      <input type="range" id="wl" min="-20.5" max="20.5" step="1" value="${L0}" aria-describedby="wd"><span class="kicker" id="wd" style="color:rgba(255,255,255,.85)"></span></div>`;
+      <input type="range" id="wl" min="-20.5" max="20.5" step="1" value="${L0}" aria-describedby="wd"><span class="kicker" id="wd" style="color:rgba(255,255,255,.85)"></span></div>
+    <details class="more dtab"><summary>The distribution as a table</summary><div class="tbl"><table><thead><tr><th>${esc(team)} final margin</th><th>Chance</th><th>Covers ${esc(team)} ${sgn(L0)}</th></tr></thead><tbody>${f.pts.filter(q=>q[1]>=.002).map(([k,p])=>`<tr><td>${k>0?'wins by '+k:k<0?'loses by '+(-k):'tie'}</td><td>${pct(p,1)}</td><td>${k>-L0?'yes':'no'}</td></tr>`).join('')}</tbody></table></div><p class="kicker" style="color:rgba(255,255,255,.8)">Margins under 0.2% are left out; the table covers ${pct(f.pts.filter(q=>q[1]>=.002).reduce((s,q)=>s+q[1],0),1)} of outcomes.</p></details>`;
   const pl=box.querySelector('#pl'),rs=box.querySelectorAll('.fb'),wl=$('wl'),wo=$('wo'),wd=$('wd');
   const set=L=>{pl.setAttribute('x1',x(-L));pl.setAttribute('x2',x(-L));
     rs.forEach(r=>{const on=+r.dataset.k>-L;r.setAttribute('fill',on?'#fff':'rgba(255,255,255,.34)')});
     const p=pCover(f,L);wo.textContent=pct(p,1);
     wd.textContent=`${team} ${sgn(L)}${L===L0?' (the pool line)':''}: covers ${pct(p,1)}, misses ${pct(1-p,1)}${L!==L0?` · pool line ${sgn(L0)}: ${pct(pCover(f,L0),1)}`:''}`};
-  set(L0);wl.oninput=e=>set(+e.target.value);
+  set(L0);wl.oninput=e=>{run&&run.forEach(a=>a.finish());set(+e.target.value)};
+  // The one orchestrated moment: bars rise, the pool line drops in, the ball rolls from the market's expected
+  // margin to the final margin, and the cover chance counts up from a coin flip. Skipped under reduced motion.
+  let run=null;
+  if(!REDUCED&&box.animate){
+    const ez='cubic-bezier(.2,.8,.2,1)',ball=box.querySelector('#ball');run=[];
+    run.push(pl.animate([{transform:'translateY(-30px)',opacity:0},{transform:'none',opacity:1}],{duration:420,delay:420,easing:ez,fill:'backwards'}));
+    if(ball){const dx=x(Math.max(-R,Math.min(R,c0)))-x(Math.max(-R,Math.min(R,act)));ball.style.transformBox='fill-box';ball.style.transformOrigin='center';
+      run.push(ball.animate([{transform:`translateX(${dx}px) rotate(-540deg)`,opacity:0},{opacity:1,offset:.12},{transform:'none',opacity:1}],{duration:1100,delay:820,easing:ez,fill:'backwards'}))}
+    const p1=pCover(f,L0),t0=performance.now()+420;
+    const step=now=>{const k=Math.min(1,Math.max(0,(now-t0)/800)),e=1-Math.pow(1-k,3);wo.textContent=pct(.5+(p1-.5)*e,1);if(k<1&&+wl.value===L0)requestAnimationFrame(step);else if(+wl.value===L0)wo.textContent=pct(p1,1)};
+    requestAnimationFrame(step);
+  }
   const tip=$('tip'),hit=box.querySelector('#hit'),svg=box.querySelector('svg');
   hit.addEventListener('pointermove',e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)*(W/r.width),k=Math.round((px-m.l)/pw*2*R-R),q=f.pts.find(z=>z[0]===k);if(!q){tip.hidden=true;return}
     tip.hidden=false;tip.innerHTML=`${esc(team)} ${k>0?'wins by '+k:k<0?'loses by '+(-k):'ties'}<br>${pct(q[1],1)} of outcomes`;
@@ -425,11 +450,11 @@ function perf(){
   const v=$('v-performance'),mk=k=>(D.models||[]).find(x=>x.label.startsWith(k));
   const tiles=[['Official',mk('Official'),'--s-off'],['Hybrid',mk('Hybrid'),'--s-hy'],['Team-only',mk('Team-only'),'--s-v1'],['Player',mk('Player'),'--s-v3']].filter(t=>t[1]);
   const n=D.graded||0,claim=D.claim_at||256,cal=D.calib||[];
-  v.innerHTML=`<div class="hero"><p class="kicker">Graded against the pool line · ${n} live games</p><h1>Is it working?</h1>
-      <p>Too early to say. A coin-flipper's record after ${n} games lands within ±${Math.round(1.96*Math.sqrt(n))} wins of even 95% of the time, and the pre-registered rule makes no claim of skill before ${claim} graded games.</p></div>
+  v.innerHTML=`<div class="hero"><p class="kicker">Graded against the pool line · ${n} live games</p><h1>Too early to call</h1>
+      <p>After ${n} games, a coin-flipper’s record lands within ±${Math.round(1.96*Math.sqrt(n))} wins of even 95% of the time. The pre-registered rule makes no claim of skill before ${claim} graded games.</p></div>
     <div class="tiles">${tiles.map(([k,x,c])=>{const t=x.W+x.L,[a,b]=wilson(x.W,t);return `<div class="tile" style="--c:var(${c})"><span class="big">${x.W}–${x.L}</span><b>${esc(x.label.replace(' (tracked)',''))}</b><small>${t?pct(x.W/t):'—'} · 95% range ${pct(a)}–${pct(b)}</small></div>`}).join('')}
       <div class="tile"><span class="big">${n}<span class="m" style="font-size:.45em">/${claim}</span></span><b>Games toward a verdict</b><div class="prog" style="margin-top:8px"><i style="width:${Math.min(100,n/claim*100)}%"></i></div></div></div>
-    <div class="panel"><div class="ph"><h2>Wins minus losses, game by game</h2><p>${esc(D.curve&&D.curve.verdict||'')}</p></div>
+    <div class="panel"><div class="ph"><h2>Wins minus losses against the pool line, game by game</h2><p>${esc(D.curve&&D.curve.verdict||'')}</p></div>
       <div class="pb" style="display:flex;flex-direction:column;gap:12px"><div class="toggles" id="tog"></div><div class="chart" id="cum"></div>
       <details class="more"><summary>As a table</summary><div class="tbl" id="cum-t"></div></details></div></div>
     <div class="side">
@@ -483,7 +508,7 @@ function calib(cal){
   bins.forEach(b=>{const [a,c]=wilson(b.w,b.n),r=b.w/b.n;o+=`<line x1="${X(b.mp)}" x2="${X(b.mp)}" y1="${Y(Math.min(hi,c))}" y2="${Y(Math.max(lo,a))}" stroke="var(--s-off)" stroke-width="2"/><circle cx="${X(b.mp)}" cy="${Y(Math.max(lo,Math.min(hi,r)))}" r="${4+Math.sqrt(b.n)*1.4}" fill="var(--s-off)" stroke="var(--panel)" stroke-width="2"><title>${pct(b.a)}–${pct(b.b)} stated: ${b.w} of ${b.n} covered (${pct(r)}), 95% range ${pct(a)}–${pct(c)}</title></circle><text x="${X(b.mp)+8+Math.sqrt(b.n)*1.4}" y="${Y(Math.max(lo,Math.min(hi,r)))+4}" font-size="11.5" fill="var(--ink-2)">${b.n}</text>`});
   box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Calibration of the stated cover chance">${o}</svg>`;
   const brier=cal.reduce((s,c)=>s+(c.p-c.w)**2,0)/cal.length,ll=-cal.reduce((s,c)=>s+(c.w?Math.log(c.p):Math.log(1-c.p)),0)/cal.length;
-  $('cal-n').textContent=`${cal.length} graded picks with a stated chance. Brier score ${brier.toFixed(3)} (a coin flip scores 0.250), log loss ${ll.toFixed(3)} (coin flip 0.693). Each dot is a group of picks, labelled with how many; the bar is its 95% range. Dots on the dashed line would be perfect calibration. With this few picks every range is wide.`;
+  $('cal-n').textContent=`${cal.length} graded picks with a stated chance. Brier score (mean squared error of the stated chance, lower is better) ${brier.toFixed(3)}; a coin flip scores 0.250. Log loss ${ll.toFixed(3)}; a coin flip scores 0.693. Each dot is a group of picks, labelled with how many; the bar is its 95% range. Dots on the dashed line would be perfect calibration. With this few picks every range is wide.`;
 }
 function weeks(){
   const T=(D.season_tab||[]).filter(r=>r.kind==='live');const box=$('wk-t');if(!T.length){box.innerHTML='<p class="empty">No live weeks yet.</p>';return}
@@ -495,11 +520,11 @@ function weeks(){
 /* ---------- method ---------- */
 function method(){
   const c=D.dist_check||{},one=Object.values(DIST)[0];
-  $('v-method').innerHTML=`<div class="hero"><p class="kicker">How a pick is made</p><h1>Method</h1></div>
+  $('v-method').innerHTML=`<div class="hero"><p class="kicker">How a pick is made</p><h1>Method</h1><p>Bonsai ATS picks every game against the spread (ATS) for the CBS Bonsai pool: one side per game, graded against the pool’s line.</p></div>
   <div class="prose">
-    <h2>The pick</h2><p>Every week the pool freezes a line on Tuesday. By kickoff the betting market has often moved off it. The model takes the side the market moved toward: <b>Pinnacle's line at the lock</b>, 20 minutes before kickoff, is the market input. If Pinnacle is missing it retries once, then reads Pinnacle from OddsPapi, then from OddsLink, and only then uses the median of every book.</p>
-    <h2>The cover chance</h2><p>Given the market spread at the lock and the market total, the model predicts the whole distribution of the final margin: every NFL game since 1999 with a closing line, re-centred on that game's spread and scaled by its total${one?` (${esc(one.model)})`:''}. The cover chance is the share of that distribution beyond the pool line. The matchup page draws it and lets you move the line.</p>
-    <p>${c.n?`Check on this page's data: the exported distribution reproduces the recorded cover chance for <b>${c.ok} of ${c.n}</b> picks this week.`:''} Picks made with no market line have no distribution and no cover chance.</p>
+    <h2>The pick</h2><p>The pool freezes its line on Tuesday. By kickoff the betting market may have moved off it. The model takes the side the market moved toward: <b>Pinnacle's line at the lock</b>, 20 minutes before kickoff, is the market input. If Pinnacle is missing it retries once, then reads Pinnacle from OddsPapi, then from OddsLink, and only then uses the median of every book.</p>
+    <h2>The cover chance</h2><p>The model predicts the whole distribution of the final margin from two inputs: the market spread at the lock and the market total. It uses every NFL game since 1999 with a closing line, re-centred on this game’s spread and scaled by its total${one?` (${esc(one.model)})`:''}. The cover chance is the share of that distribution beyond the pool line. The matchup page draws it and lets you move the line.</p>
+    <p>${c.n?`Check on this page’s data: the exported distribution reproduces the recorded cover chance for <b>${c.ok} of ${c.n}</b> picks this week.`:''} Picks made with no market line have no distribution and no cover chance.</p>
     <h2>The record</h2><p>Every official pick is graded against the pool line, the number the pool grades on. Nothing is filtered and missed picks stay missed. The test was registered in advance: <b>no claim of skill before ${D.claim_at||256} graded games</b>. The projections and the hybrid are tracked for comparison and never make the pick.</p>
     <h2>Freshness</h2><p>Updated ${esc(D.updated)}. Odds-feed credits left: ${D.credits??'unknown'}.</p>
   </div>`;
@@ -508,7 +533,8 @@ function method(){
 /* ---------- router ---------- */
 const views=['slate','game','performance','method'];let cur=null;
 function route(){
-  const h=(location.hash||'#/slate').slice(2).split('/'),name=views.includes(h[0])?h[0]:'slate',arg=decodeURIComponent(h[1]||'');
+  const [path,qs]=(location.hash||'#/slate').slice(2).split('?'),h=path.split('/'),name=views.includes(h[0])?h[0]:'slate',arg=decodeURIComponent(h[1]||'');
+  if(name==='slate'){readQ(qs);setTimeout(save)}
   const go=()=>{views.forEach(v=>$('v-'+v).hidden=v!==name);
     document.querySelectorAll('.tabs a').forEach(a=>a.setAttribute('aria-current',a.dataset.v===name?'page':'false'));
     ({slate,game:()=>game(arg),performance:perf,method})[name]();
