@@ -1,16 +1,16 @@
 # Live record vs the league line
 
-Updated 2026-10-18T20:04:20+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+Updated 2026-10-19T00:01:13+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
 
-**23-21** (44 graded), win rate 0.523 ± 0.075 (SE). Pending: 8. Ungradable (no league line recorded): 0. Late picks included: 0.
+**29-23** (52 graded), win rate 0.558 ± 0.069 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
 
 No skill claim is made: fewer than 256 graded games (pre-registered).
 
 Shadow key-number estimator (recorded, not used to pick): 27-16; it disagreed with the live pick 10 times and won 7 of those.
 
-Score-projection models (tracked comparisons, not used to pick): proj-players-v3 24-17 (2 excluded: injury statuses not yet published); proj-poisson-v1 27-16.
+Score-projection models (tracked comparisons, not used to pick): proj-players-v3 24-19 (2 excluded: injury statuses not yet published); proj-poisson-v1 27-18.
 
-Hybrid (tracked, docs/hybrid_tracking.md): 26-18; it picked differently from the live pick 11 times: hybrid right 7, live right 4.
+Hybrid (tracked, docs/hybrid_tracking.md): 32-20; it picked differently from the live pick 11 times: hybrid right 7, live right 4.
 
 | Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |
 |---|---|---|---|---|---|---|---|
@@ -57,4 +57,12 @@ Hybrid (tracked, docs/hybrid_tracking.md): 26-18; it picked differently from the
 | 2026 | 5 | 2026_05_BUF_LA | LA | -2.5 | 37-34 | L | LA L |
 | 2026 | 6 | 2026_06_SEA_DEN | SEA | +2.5 | 14-17 | L | SEA L |
 | 2026 | 6 | 2026_06_HOU_JAX | HOU | -2.5 | 34-31 | W | JAX L |
+| 2026 | 6 | 2026_06_CHI_ATL | CHI | +3.5 | 31-23 | W |   |
 | 2026 | 6 | 2026_06_BAL_CLE | BAL | +4.5 | 10-13 | L |   |
+| 2026 | 6 | 2026_06_TEN_IND | TEN | -6.5 | 26-20 | W |   |
+| 2026 | 6 | 2026_06_NYJ_NE | NYJ | -7.5 | 19-26 | W |   |
+| 2026 | 6 | 2026_06_NO_NYG | NO | -1.5 | 34-27 | W |   |
+| 2026 | 6 | 2026_06_CAR_PHI | CAR | -1.5 | 25-14 | W |   |
+| 2026 | 6 | 2026_06_PIT_TB | PIT | +2.5 | 26-19 | W |   |
+| 2026 | 6 | 2026_06_LAC_KC | LAC | -8.5 | 6-22 | L |   |
+| 2026 | 6 | 2026_06_BUF_LV | BUF | +5.5 | 33-30 | L |   |
