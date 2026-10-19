@@ -233,15 +233,16 @@ def retry_missing_pinnacle(caps: list[dict], due: pl.DataFrame, events: list[dic
     return [r for r in caps if r.get("game_id") not in got] + [r for r in again if r.get("game_id") in got]
 
 
-# Owner asked for the 2026-10-18 SNF and 2026-10-19 MNF games only; off after that unless renewed.
-ODDSPAPI_FALLBACK_UNTIL = dt.datetime(2026, 10, 20, 12, 0, tzinfo=dt.timezone.utc)
+# Owner decision 2026-10-19: the OddsPapi and OddsLink backups stay on with no end date. Set a UTC datetime here
+# to switch both off from that moment.
+ODDSPAPI_FALLBACK_UNTIL: dt.datetime | None = None
 
 
 def oddspapi_pinnacle_fallback(caps: list[dict], due: pl.DataFrame, now: dt.datetime, *, rows_fn=None) -> list[dict]:
-    """Owner decision 2026-10-18 (Parlay API down): for due games still without a Parlay Pinnacle line, take
+    """Owner decision 2026-10-18 (Parlay API down), kept on 2026-10-19: for due games still without a Parlay Pinnacle line, take
     Pinnacle from OddsPapi, recorded as a pinnacle capture row with reason "oddspapi" and flagged
     MARKET_ODDSPAPI on the pick. Any OddsPapi failure leaves the capture as it was."""
-    if now >= ODDSPAPI_FALLBACK_UNTIL:
+    if ODDSPAPI_FALLBACK_UNTIL is not None and now >= ODDSPAPI_FALLBACK_UNTIL:
         return caps
     have = {r.get("game_id") for r in caps if r.get("status") == "ok" and r.get("book") == MARKET_BOOK}
     missing = [g for g in due.to_dicts() if g["game_id"] not in have]
@@ -264,7 +265,7 @@ def oddspapi_pinnacle_fallback(caps: list[dict], due: pl.DataFrame, now: dt.date
 def oddslink_pinnacle_fallback(caps: list[dict], due: pl.DataFrame, now: dt.datetime, *, rows_fn=None) -> list[dict]:
     """Owner decision 2026-10-18: OddsLink is the backup after OddsPapi, same rules and expiry; reason "oddslink",
     flag MARKET_ODDSLINK. Any OddsLink failure leaves the capture as it was."""
-    if now >= ODDSPAPI_FALLBACK_UNTIL:
+    if ODDSPAPI_FALLBACK_UNTIL is not None and now >= ODDSPAPI_FALLBACK_UNTIL:
         return caps
     have = {r.get("game_id") for r in caps if r.get("status") == "ok" and r.get("book") == MARKET_BOOK}
     missing = [g for g in due.to_dicts() if g["game_id"] not in have]

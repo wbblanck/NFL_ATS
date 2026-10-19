@@ -82,10 +82,15 @@ def test_oddspapi_fallback_failure_leaves_capture_unchanged(monkeypatch):
                                             rows_fn=boom) == [_row("g2", "pinnacle")]   # not called when present
 
 
-def test_oddspapi_fallback_is_off_after_its_expiry():
+def test_oddspapi_fallback_has_no_end_date_unless_one_is_set(monkeypatch):
     import datetime as dt
+    assert final.ODDSPAPI_FALLBACK_UNTIL is None                       # owner decision 2026-10-19: stays on
     caps = [_row("g2", "draftkings")]
     called = []
-    out = final.oddspapi_pinnacle_fallback(caps, _due("g2"), final.ODDSPAPI_FALLBACK_UNTIL + dt.timedelta(minutes=1),
-                                           rows_fn=lambda g, n: called.append(1) or [])
-    assert out == caps and called == []
+    monkeypatch.setattr(final.store, "append_rows", lambda *a: None)
+    later = dt.datetime(2027, 1, 1, tzinfo=dt.timezone.utc)
+    final.oddspapi_pinnacle_fallback(caps, _due("g2"), later, rows_fn=lambda g, n: called.append(1) or [])
+    assert called == [1]
+    monkeypatch.setattr(final, "ODDSPAPI_FALLBACK_UNTIL", later)    # an end date, when set, still switches it off
+    out = final.oddspapi_pinnacle_fallback(caps, _due("g2"), later, rows_fn=lambda g, n: called.append(1) or [])
+    assert out == caps and called == [1]
