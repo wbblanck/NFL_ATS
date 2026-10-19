@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bonsai Pool Field</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Concept: each game is a strip of turf; the pool line is the TV first-down line. The ball sits where the
+   game finished relative to that line (in points the pick covered by). Yard marks every 7 points. */
+:root{
+  --bg:#e8ede7;--panel:#ffffff;--panel-2:#f3f6f2;--ink:#0e1b14;--ink-2:#3e5045;--ink-3:#5a6b61;--rule:#d2dcd3;
+  --turf:#2d6a44;--turf-dim:#6f8c79;--chalk:rgba(255,255,255,.42);--chalk-2:rgba(255,255,255,.18);
+  --line:#f6c700;--on-line:#1a1500;--ball:#7a3b16;--lace:#f4ead9;
+  --win:#13693a;--win-bg:#dff1e5;--loss:#b42318;--loss-bg:#fbe4e1;
+  --s-off:#2a6fdb;--s-hy:#c2560b;--band:rgba(14,27,20,.08);
+  --cond:"Barlow Condensed","Arial Narrow",sans-serif;--body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;--bg:#07100b;--panel:#0f1d15;--panel-2:#14261c;--ink:#e6efe8;--ink-2:#b2c2b7;--ink-3:#8fa196;--rule:#20372a;
+  --turf:#1f4d31;--turf-dim:#2b3b31;--chalk:rgba(255,255,255,.30);--chalk-2:rgba(255,255,255,.12);
+  --ball:#9a4f22;--win:#5fd38a;--win-bg:#11301e;--loss:#ff8d84;--loss-bg:#3d1714;
+  --s-off:#3f82e0;--s-hy:#d9722a;--band:rgba(230,239,232,.10)}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--body)}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--line);outline-offset:2px;border-radius:4px}
+
+/* scorebug: the record, always in view */
+.bug{position:sticky;top:0;z-index:5;background:#0b1510;color:#f2f6f3;display:flex;align-items:stretch;gap:0;
+  font-family:var(--cond);box-shadow:0 2px 0 var(--line)}
+.bug-wk{background:var(--line);color:var(--on-line);font-weight:800;font-size:22px;padding:6px 14px;display:flex;align-items:center;letter-spacing:.02em}
+.bug-rec{display:flex;align-items:center;gap:18px;padding:6px 16px;flex:1;min-width:0;overflow:hidden}
+.bug-rec span{display:flex;align-items:baseline;gap:7px;white-space:nowrap}
+.bug-rec b{font-weight:800;font-size:24px;font-variant-numeric:tabular-nums}
+.bug-rec small{font:500 13px var(--body);opacity:.75}
+.bug-next{display:flex;align-items:center;gap:8px;padding:6px 16px;font:500 14px var(--body);white-space:nowrap;border-left:1px solid rgba(255,255,255,.15)}
+.bug-next i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+
+.wrap{max-width:1040px;margin:0 auto;padding:22px 16px 64px;display:flex;flex-direction:column;gap:34px}
+h1{margin:0;font:800 clamp(44px,9vw,78px)/.92 var(--cond);letter-spacing:-.005em}
+h1 em{font-style:normal;color:var(--ink-3)}
+.lede{margin:8px 0 0;color:var(--ink-2);max-width:62ch}
+h2{margin:0;font:800 34px/1 var(--cond)}
+
+/* the field */
+.key{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:14px;color:var(--ink-2);margin-top:14px}
+.key .yl{display:inline-block;width:4px;height:16px;background:var(--line);border-radius:2px;vertical-align:-3px;margin-right:6px}
+.slot{display:flex;flex-direction:column;gap:6px}
+.slot-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:0 2px 4px}
+.slot-h h3{margin:0;font:700 22px/1 var(--cond)}
+.slot-h h3 small{font:500 15px var(--body);color:var(--ink-3);margin-left:8px}
+.slot-h .rec{font:800 22px/1 var(--cond);font-variant-numeric:tabular-nums}
+.games{display:flex;flex-direction:column;gap:6px}
+.g{background:var(--panel);border-radius:10px;overflow:hidden;border:1px solid var(--rule)}
+.g-row{display:grid;grid-template-columns:112px 1fr 104px;align-items:stretch;min-height:64px;width:100%;border:0;background:none;padding:0;text-align:left;cursor:pointer}
+.g-row:hover .field{filter:brightness(1.06)}
+.g-pick{display:flex;flex-direction:column;justify-content:center;padding:8px 12px;line-height:1.1}
+.g-pick b{font:800 28px/1 var(--cond)}
+.g-pick b span{font-weight:600;font-size:18px;color:var(--ink-2);margin-left:5px}
+.g-pick small{font-size:13px;color:var(--ink-3);margin-top:3px}
+.g-pick.none b{color:var(--ink-3);font-size:18px;white-space:nowrap}
+.field{position:relative;overflow:hidden;background:var(--turf)}
+.mow{position:absolute;top:0;bottom:0;background:rgba(255,255,255,.05)}
+.field.dim{background:var(--turf-dim)}
+.yd{position:absolute;top:0;bottom:0;width:1px;background:var(--chalk-2)}
+.yd.td{background:var(--chalk)}
+.fdl{position:absolute;top:-2px;bottom:-2px;width:4px;margin-left:-2px;background:var(--line);box-shadow:0 0 10px rgba(246,199,0,.55)}
+.trail{position:absolute;top:50%;height:6px;margin-top:-3px;border-radius:3px;background:rgba(255,255,255,.34)}
+.ball{position:absolute;top:50%;width:30px;height:18px;margin:-9px 0 0 -15px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+.ball.ghost{opacity:.5}
+.fnote{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.fnote>span{display:inline-flex;align-items:baseline;gap:8px;background:rgba(6,16,10,.72);color:#fff;font:600 14px var(--body);padding:4px 12px;border-radius:999px;position:relative;z-index:2}
+.fnote b{font:800 20px var(--cond)}
+.g-res{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;padding:8px 12px;line-height:1.1}
+.g-res b{font:800 26px/1 var(--cond);font-variant-numeric:tabular-nums;white-space:nowrap}
+.g-res b.m{font-size:18px}
+.g-res span{font:600 13px var(--body);margin-top:4px;white-space:nowrap}
+.w{color:var(--win)} .l{color:var(--loss)} .m{color:var(--ink-3)}
+.flag{position:absolute;left:8px;top:6px;z-index:2;font:600 11.5px var(--body);padding:1px 7px;border-radius:999px;background:rgba(6,16,10,.62);color:#fff;white-space:nowrap}
+.flag.hot{background:var(--line);color:var(--on-line)}
+
+/* a game opened */
+.g-more{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px 22px;padding:14px 14px 16px;border-top:1px solid var(--rule);background:var(--panel-2)}
+.g-more[hidden]{display:none}
+.fact{display:flex;flex-direction:column;gap:2px;margin:0}
+.fact dt{font-size:13px;color:var(--ink-3)}
+.fact dd{margin:0;font:700 20px/1.15 var(--cond)}
+.fact dd small{font:400 14px var(--body);color:var(--ink-2)}
+.drv{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px;color:var(--ink-2)}
+.drv b{font:700 16px var(--cond);color:var(--ink)}
+@media (prefers-reduced-motion:no-preference){
+  .g-more:not([hidden]){animation:open .18s ease-out}
+  @keyframes open{from{opacity:0;transform:translateY(-4px)}}
+}
+
+/* season */
+.season{display:flex;flex-direction:column;gap:18px}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.tile{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:14px 16px}
+.tile b{display:block;font:800 48px/1 var(--cond);font-variant-numeric:tabular-nums}
+.tile span{display:block;font-weight:600;margin-top:6px}
+.tile small{display:block;color:var(--ink-3);font-size:13px}
+.tile.main{border-top:4px solid var(--s-off)} .tile.hyb{border-top:4px solid var(--s-hy)}
+.chartbox{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px 16px 10px}
+.chartbox p{margin:0 0 10px;color:var(--ink-2);font-size:14px;max-width:70ch}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;color:var(--ink-2);margin-bottom:6px}
+.legend i{display:inline-block;width:18px;height:3px;border-radius:2px;vertical-align:4px;margin-right:6px}
+.legend .band{height:10px;vertical-align:0;background:var(--band)}
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto}
+.tip{position:absolute;top:0;pointer-events:none;background:var(--ink);color:var(--bg);font-size:13px;padding:6px 9px;border-radius:6px;white-space:nowrap}
+.tip[hidden]{display:none}
+.weeks{width:100%;border-collapse:collapse;font-size:15px}
+.weeks th,.weeks td{padding:8px 10px;border-bottom:1px solid var(--rule);text-align:right;font-variant-numeric:tabular-nums}
+.weeks th:first-child,.weeks td:first-child{text-align:left}
+.weeks th{font-weight:600;color:var(--ink-3);font-size:13px}
+.weeks td.up{color:var(--win);font-weight:600} .weeks td.dn{color:var(--loss);font-weight:600}
+footer{color:var(--ink-3);font-size:13px}
+
+@media (max-width:640px){
+  .bug-rec small{display:none}
+  .bug-next{display:none}
+  .g-row{grid-template-columns:92px 1fr 84px}
+  .g-pick b{font-size:24px}.g-pick b span{font-size:15px}
+  .g-res b{font-size:22px}
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tile b{font-size:40px}
+  .g-more{grid-template-columns:1fr 1fr;gap:12px 16px}
+  .fact dd{font-size:18px}
+}
+</style>
+</head>
+<body>
+<header class="bug" aria-label="Season record">
+  <div class="bug-wk" id="bug-wk"></div>
+  <div class="bug-rec" id="bug-rec"></div>
+  <div class="bug-next" id="bug-next" hidden><i></i><span id="bug-next-t"></span></div>
+</header>
+<div class="wrap">
+  <section aria-labelledby="h1">
+    <h1 id="h1"></h1>
+    <p class="lede" id="lede"></p>
+    <div class="key"><span><i class="yl"></i>Pool line</span><span>Ball past the line: covered. Short of it: missed.</span><span>Yard marks every 7 points</span></div>
+  </section>
+  <section id="field" aria-label="This week's games" style="display:flex;flex-direction:column;gap:26px"></section>
+  <section class="season" aria-labelledby="sh">
+    <h2 id="sh">Season</h2>
+    <div class="tiles" id="tiles"></div>
+    <div class="chartbox">
+      <p>Wins minus losses against the pool line since live picking began. The shaded band is where a coin-flipper lands 95% of the time.</p>
+      <div class="legend"><span><i style="background:var(--s-off)"></i>Official pick</span><span><i style="background:var(--s-hy)"></i>Hybrid (tracked)</span><span><i class="band"></i>Coin-flip range</span></div>
+      <div class="chart" id="chart"><div class="tip" id="tip" hidden></div></div>
+    </div>
+    <div class="chartbox"><table class="weeks" id="weeks"></table></div>
+  </section>
+  <footer id="foot"></footer>
+</div>
+<script>
+const D=__DATA__;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sgn=v=>v==null?'':v===0?'PK':(v>0?'+':'−')+Math.abs(v);
+const half=v=>{const a=Math.abs(v),w=Math.floor(a),f=a-w;return (f?(w?w:'')+'½':String(w))};
+const REDUCED=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const R=21;                                   // field half-width in points: three touchdowns
+const X=m=>50+Math.max(-R,Math.min(R,m))/R*46; // % across the strip; the pool line sits at 50%
+
+function side(x){
+  if(!x.pick)return null;
+  const home=x.pick===x.home,line=x.line==null?null:(home?x.line:-x.line);
+  const ps=home?x.hs:x.as,os=home?x.as:x.hs;
+  return {home,opp:home?x.away:x.home,line,ps,os,margin:x.hs==null||line==null?null:ps-os+line};
+}
+const BALL=`<svg class="ball" viewBox="0 0 30 18" aria-hidden="true"><ellipse cx="15" cy="9" rx="14" ry="8" fill="var(--ball)"/><path d="M3.5 9h23" stroke="var(--lace)" stroke-width=".8" opacity=".35"/><path d="M10 9h10M11.5 6.6v4.8M14 6.6v4.8M16.5 6.6v4.8M19 6.6v4.8" stroke="var(--lace)" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+
+function fieldHTML(x,s){
+  let marks='';for(const p of [-28,-14,0,14])marks+=`<i class="mow" style="left:${X(p)}%;width:${X(p+7)-X(p)}%"></i>`;
+  for(const p of [-21,-14,-7,7,14,21])marks+=`<i class="yd${Math.abs(p)%7===0?' td':''}" style="left:${X(p)}%"></i>`;
+  for(let p=-21;p<=21;p+=3.5)if(p%7)marks+=`<i class="yd" style="left:${X(p)}%;top:40%;bottom:40%"></i>`;
+  let inner='';
+  if(s&&s.margin!=null){
+    const a=X(0),b=X(s.margin);
+    inner=`<i class="trail" style="left:${Math.min(a,b)}%;width:${Math.abs(b-a)}%" data-to="${b}"></i><span class="ballwrap" style="position:absolute;inset:0" data-to="${b}">${BALL.replace('class="ball"',`class="ball" style="left:${b}%"`)}</span>`;
+  }else if(s){
+    inner=`<span class="fnote"><span>${x.pick_p!=null?`<b>${Math.round(x.pick_p*100)}%</b> to cover · `:''}kickoff ${esc(x.ko.replace(/^\w+ /,''))}</span></span>`;
+  }else inner=`<span class="fnote"><span>No pick recorded</span></span>`;
+  const label=s&&s.margin!=null?`${x.pick} ${s.margin>0?'covered by':s.margin<0?'missed by':'pushed at'} ${half(s.margin)}`:'';
+  return `<div class="field${s&&s.margin!=null?'':' dim'}" role="img" aria-label="${esc(label)}">${marks}${s?flag(x):''}<i class="fdl" style="left:${X(0)}%"></i>${inner}</div>`;
+}
+function flag(x){
+  if(x.sig==='strong')return '<span class="flag hot">Market moved 1+</span>';
+  if(x.hysrc==='v1'&&x.hy&&x.pick&&x.hy!==x.pick)return '<span class="flag">Hybrid took '+esc(x.hy)+'</span>';
+  if((D.flips||{})[x.id])return '<span class="flag">Flipped since Wednesday</span>';
+  return '';
+}
+function result(x,s){
+  if(!s)return x.hs==null?'':`<b>${x.as}–${x.hs}</b><span class="m">no pick</span>`;
+  if(x.hs==null)return `<b class="m">${x.status==='provisional'?'Provisional':'Locked'}</b><span class="m">${x.status==='provisional'?'can still change':'pick is in'}</span>`;
+  const r=x.res==='W'?['w','Covered']:x.res==='L'?['l','Missed']:['m','Push'];
+  return `<b>${s.ps}–${s.os}</b><span class="${r[0]}">${r[1]} ${s.margin?half(s.margin):''}</span>`;
+}
+function more(x,s){
+  const f=[];
+  if(s){
+    f.push(['Pool line',`${esc(x.pick)} ${sgn(s.line)}`]);
+    const mk=x.market==null||x.market===''?null:(s.home?+x.market:-x.market);
+    f.push(['Market at the pick',mk==null?'<small>No market captured</small>':`${esc(x.pick)} ${sgn(mk)} <small>${x.drift?`moved ${half(x.drift)}`:'no move'}</small>`]);
+    if(x.pick_p!=null)f.push(['Cover chance',`${(x.pick_p*100).toFixed(1)}%`]);
+  }
+  if(x.ppick)f.push(['Player projection',`${esc(x.away)} ${x.pa} – ${esc(x.home)} ${x.ph} <small>picks ${esc(x.ppick)}</small>`]);
+  if(x.hy)f.push(['Hybrid (tracked)',`${esc(x.hy)} <small>${x.hy===x.pick?'same pick':'differs'}</small>`]);
+  let drv='';
+  if(x.xp){const top=k=>(x.xp[k]?.items||[]).filter(i=>Math.abs(i.pts)>=.5).sort((a,b)=>Math.abs(b.pts)-Math.abs(a.pts)).slice(0,2).map(i=>`${esc(i.label)} ${i.pts>0?'+':'−'}${Math.abs(i.pts).toFixed(1)}`).join(' · ')||'Nothing above half a point';
+    drv=`<div class="drv"><b>${esc(x.away)} ${x.xp.away?.total??''}</b><span>${top('away')}</span><b>${esc(x.home)} ${x.xp.home?.total??''}</b><span>${top('home')}</span></div>`}
+  return f.map(([k,v])=>`<dl class="fact"><dt>${k}</dt><dd>${v}</dd></dl>`).join('')+drv;
+}
+function game(x){
+  const s=side(x);
+  const pick=s?`<b>${esc(x.pick)}<span>${sgn(s.line)}</span></b><small>${s.home?'vs':'@'} ${esc(s.opp)}</small>`:`<b>${esc(x.away)} @ ${esc(x.home)}</b><small>No pick</small>`;
+  return `<article class="g" id="g-${esc(x.id)}"><button class="g-row" aria-expanded="false" aria-controls="m-${esc(x.id)}">
+    <span class="g-pick${s?'':' none'}">${pick}</span>${fieldHTML(x,s)}<span class="g-res">${result(x,s)}</span></button>
+    <div class="g-more" id="m-${esc(x.id)}" hidden>${more(x,s)}</div></article>`;
+}
+function draw(){
+  const G=D.games;
+  $('bug-wk').textContent=`WK ${D.week}`;
+  const off=D.models.find(m=>m.label.startsWith('Official')),hy=D.models.find(m=>m.label.startsWith('Hybrid'));
+  $('bug-rec').innerHTML=[[off,'official'],[hy,'hybrid']].filter(a=>a[0]).map(([m,k])=>`<span><b>${m.W}–${m.L}</b><small>${k}</small></span>`).join('');
+  if(D.next_lock&&D.next_lock.game){$('bug-next').hidden=false;$('bug-next-t').textContent=`Next lock ${D.next_lock.at} · ${D.next_lock.game}`}
+  const w=G.filter(x=>x.res==='W').length,l=G.filter(x=>x.res==='L').length,left=G.filter(x=>x.hs==null).length;
+  $('h1').textContent=`Week ${D.week}`;
+  $('lede').textContent=`${w}–${l} so far${left?`, ${left} still to play`:', all final'}. Tap a game for the lines, the projection and the hybrid's pick.`;
+  $('field').innerHTML=D.slots.map((sl,i)=>{const gs=G.filter(x=>x.slot===i);if(!gs.length)return'';
+    const sw=gs.filter(x=>x.res==='W').length,sl2=gs.filter(x=>x.res==='L').length;
+    return `<div class="slot"><div class="slot-h"><h3>${esc(sl.day)}<small>${esc(sl.times)} ET</small></h3>${sw+sl2?`<span class="rec">${sw}–${sl2}</span>`:''}</div><div class="games">${gs.map(game).join('')}</div></div>`}).join('');
+  document.querySelectorAll('.g-row').forEach(b=>b.addEventListener('click',()=>{const m=$(b.getAttribute('aria-controls')),o=m.hidden;m.hidden=!o;b.setAttribute('aria-expanded',o)}));
+  if(!REDUCED&&window.IntersectionObserver){           // the one moment of motion: each ball rolls from the line to where the game ended
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);
+      const ball=e.target.querySelector('.ball'),tr=e.target.querySelector('.trail');if(!ball)return;
+      const to=parseFloat(ball.style.left),dx=(X(0)-to)/100*e.target.clientWidth;
+      ball.animate([{transform:`translateX(${dx}px) rotate(-200deg)`},{transform:'translateX(0) rotate(0)'}],{duration:900,easing:'cubic-bezier(.2,.8,.2,1)'});
+      tr&&tr.animate([{transform:'scaleX(0)',transformOrigin:to>X(0)?'left':'right'},{transform:'scaleX(1)',transformOrigin:to>X(0)?'left':'right'}],{duration:900,easing:'cubic-bezier(.2,.8,.2,1)'})}),{threshold:.6});
+    document.querySelectorAll('.field').forEach(f=>io.observe(f));
+  }
+  const order=m=>m.label.startsWith('Official')?0:m.label.startsWith('Hybrid')?1:2;
+  $('tiles').innerHTML=D.models.slice().sort((a,b)=>order(a)-order(b)).map(m=>{const n=m.W+m.L,cls=m.label.startsWith('Official')?'main':m.label.startsWith('Hybrid')?'hyb':'';
+    return `<div class="tile ${cls}"><b>${m.W}–${m.L}</b><span>${esc(m.label.replace(' (tracked)',''))}</span><small>${n?Math.round(m.W/n*100):0}% of ${n} graded</small></div>`}).join('');
+  chart();weeks();
+  $('foot').textContent=`Updated ${D.updated}. ${D.graded} of ${D.claim_at} graded games before any claim of skill. Display only: nothing here changes a pick.`;
+}
+function chart(){
+  const L=D.curve.games.map((g,i)=>({g,i})).filter(o=>o.g.kind==='live');
+  if(!L.length)return;
+  let o=0,h=0;const pts=L.map(({g},k)=>{o+=g.d.official||0;h+=g.d.hybrid||0;return {k,o,h,label:g.label,week:g.week}});
+  const box=$('chart'),W=Math.max(300,box.clientWidth||600),H=W<520?220:260,m={l:34,r:44,t:12,b:26},pw=W-m.l-m.r,ph=H-m.t-m.b;
+  const n=pts.length,bmax=1.96*Math.sqrt(n),ymax=Math.max(4,Math.ceil(Math.max(bmax,...pts.map(p=>Math.abs(p.o)),...pts.map(p=>Math.abs(p.h)))/4)*4);
+  const x=k=>m.l+(n<2?0:k/(n-1)*pw),y=v=>m.t+(ymax-v)/(2*ymax)*ph;
+  const band='M'+pts.map(p=>`${x(p.k)},${y(1.96*Math.sqrt(p.k+1))}`).join('L')+'L'+pts.slice().reverse().map(p=>`${x(p.k)},${y(-1.96*Math.sqrt(p.k+1))}`).join('L')+'Z';
+  const line=key=>'M'+pts.map(p=>`${x(p.k)},${y(p[key])}`).join('L');
+  let grid='';for(let v=-ymax;v<=ymax;v+=ymax/2)grid+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule)" stroke-width="${v===0?1.5:1}"/><text x="${m.l-8}" y="${y(v)+4}" text-anchor="end" font-size="12" fill="var(--ink-3)">${v>0?'+':''}${v}</text>`;
+  let wk='';let prev=null;pts.forEach(p=>{if(p.week!==prev){wk+=`<text x="${x(p.k)}" y="${H-6}" font-size="12" fill="var(--ink-3)">W${p.week}</text>`;prev=p.week}});
+  const last=pts[n-1];
+  const svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Official ${last.o>0?'+':''}${last.o}, hybrid ${last.h>0?'+':''}${last.h} after ${n} live games">${grid}<path d="${band}" fill="var(--band)"/>${wk}
+    <path d="${line('h')}" fill="none" stroke="var(--s-hy)" stroke-width="2" stroke-linejoin="round"/><path d="${line('o')}" fill="none" stroke="var(--s-off)" stroke-width="2" stroke-linejoin="round"/>
+    <text x="${x(n-1)+6}" y="${y(last.o)+4}" font-size="13" font-weight="600" fill="var(--ink)">${last.o>0?'+':''}${last.o}</text>
+    <text x="${x(n-1)+6}" y="${y(last.h)+4}" font-size="13" font-weight="600" fill="var(--ink)">${last.h>0?'+':''}${last.h}</text>
+    <line id="xh" y1="${m.t}" y2="${m.t+ph}" stroke="var(--ink-3)" stroke-width="1" visibility="hidden"/>
+    <circle id="d1" r="4.5" fill="var(--s-off)" stroke="var(--panel)" stroke-width="2" visibility="hidden"/><circle id="d2" r="4.5" fill="var(--s-hy)" stroke="var(--panel)" stroke-width="2" visibility="hidden"/>
+    <rect x="${m.l}" y="${m.t}" width="${pw}" height="${ph}" fill="transparent" id="hit"/></svg>`;
+  box.insertAdjacentHTML('beforeend',svg);
+  const s=box.querySelector('svg'),tip=$('tip'),xh=s.querySelector('#xh'),d1=s.querySelector('#d1'),d2=s.querySelector('#d2');
+  const show=px=>{const k=Math.max(0,Math.min(n-1,Math.round((px-m.l)/pw*(n-1)))),p=pts[k];
+    for(const [el,v] of [[d1,p.o],[d2,p.h]]){el.setAttribute('cx',x(k));el.setAttribute('cy',y(v));el.setAttribute('visibility','visible')}
+    xh.setAttribute('x1',x(k));xh.setAttribute('x2',x(k));xh.setAttribute('visibility','visible');
+    tip.hidden=false;tip.innerHTML=`Week ${p.week} · ${esc(p.label)}<br>Official ${p.o>0?'+':''}${p.o} · Hybrid ${p.h>0?'+':''}${p.h}`;
+    const r=s.getBoundingClientRect(),sc=r.width/W,tw=tip.offsetWidth;tip.style.left=Math.max(0,Math.min(r.width-tw,x(k)*sc-tw/2))+'px';tip.style.top='-6px'};
+  s.addEventListener('pointermove',e=>{const r=s.getBoundingClientRect();show((e.clientX-r.left)*(W/r.width))});
+  s.addEventListener('pointerleave',()=>{tip.hidden=true;[xh,d1,d2].forEach(el=>el.setAttribute('visibility','hidden'))});
+}
+function weeks(){
+  const T=D.season_tab.filter(r=>r.kind==='live');if(!T.length)return;
+  const cell=v=>v?`<td class="${v[0]>v[1]?'up':v[0]<v[1]?'dn':''}">${v[0]}–${v[1]}</td>`:'<td>—</td>';
+  $('weeks').innerHTML=`<thead><tr><th>Week</th><th>Official</th><th>Hybrid</th><th>Team-only</th><th>Player</th></tr></thead><tbody>`+
+    T.map(r=>`<tr><td>Week ${r.week}</td>${cell(r.rec.official)}${cell(r.rec.hybrid)}${cell(r.rec.v1)}${cell(r.rec.v3)}</tr>`).join('')+'</tbody>';
+}
+draw();
+</script>
+</body>
+</html>
