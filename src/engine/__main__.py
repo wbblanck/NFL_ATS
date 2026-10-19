@@ -33,6 +33,26 @@ import collections
 import sys
 
 
+def _write_terminal(path, tdata, sched, rows, graded):
+    """site/terminal.html: the dashboard's data plus margin distributions and calibration points."""
+    from engine.picks import terminal as _term
+    try:
+        tdata["dist"] = _term.distributions(sched, rows)
+        tdata["dist_check"] = _term.check_dist(tdata["dist"], rows)
+        print("margin distributions:", tdata["dist_check"]["ok"], "of", tdata["dist_check"]["n"],
+              "reproduce the recorded cover chance", file=sys.stderr)
+    except Exception as e:
+        print("margin distributions unavailable:", repr(e), file=sys.stderr)
+        tdata["dist"] = {}
+    try:
+        tdata["calib"] = _term.calibration(graded)
+    except Exception as e:
+        print("calibration unavailable:", repr(e), file=sys.stderr)
+        tdata["calib"] = []
+    open(path, "w").write(_term.render(tdata))
+    print(path)
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="engine")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -59,6 +79,7 @@ def main(argv=None) -> int:
     db.add_argument("--season", type=int, required=True)
     db.add_argument("--week", type=int, default=None, help="default: the earliest week with an unfinished game")
     db.add_argument("--out", default=None)
+    db.add_argument("--terminal-out", default=None, help="also write the redesigned page (site/terminal.html)")
     db.add_argument("--log-provisional", action="store_true",
                     help="append changed provisional picks to data/predictions/provisional_log.csv (the published build)")
     al = sub.add_parser("alert", help="print phone-alert lines for locked picks (see docs/scheduling.md)")
@@ -365,11 +386,17 @@ def main(argv=None) -> int:
             print("tiebreaker unavailable:", repr(e), file=sys.stderr)
             tb_rows = []
         out = a.out or str(config.path("predictions") / f"dashboard_{a.season}_w{a.week:02d}.html")
-        open(out, "w").write(dashboard.render(rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results,
-                                              details, season_tab, market.credits_left(), epa_tab, curve_data, tb_rows,
-                                              lr_data, flips_data, slate_data))
+        _args = (rows, a.season, a.week, lv, _dt.datetime.now(_dt.timezone.utc), results, details, season_tab,
+                 market.credits_left(), epa_tab, curve_data, tb_rows, lr_data, flips_data, slate_data)
+        open(out, "w").write(dashboard.render(*_args))
         print(out)
+        if a.terminal_out:                            # the redesigned page; any failure here must not stop the dashboard
+            try:
+                _write_terminal(a.terminal_out, dashboard.build_data(*_args), sched, rows, graded)
+            except Exception as e:
+                print("terminal page unavailable:", repr(e), file=sys.stderr)
         return 0
+
     if a.cmd == "check-league-lines":
         from engine.data import league_lines
         rows = league_lines.load()

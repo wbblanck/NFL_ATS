@@ -31,11 +31,12 @@ jobs:
           cache: pip
       - run: pip install -e .
       - name: Build
-        run: python -m engine dashboard --season 2026 --out site/dashboard.html --log-provisional
+        run: python -m engine dashboard --season 2026 --out site/dashboard.html --terminal-out site/terminal.html --log-provisional
       - name: Commit
         run: |
           git config user.name "nfl-ats-engine"
           git config user.email "nfl-ats-engine@users.noreply.github.com"
           git add site/dashboard.html data/predictions/provisional_log.csv
+          if [ -f site/terminal.html ]; then git add site/terminal.html; fi
           git commit -m "dashboard: rebuild $(date -u +%Y-%m-%dT%H:%MZ)" || exit 0
           for i in 1 2 3 4; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep $((i*3)); done

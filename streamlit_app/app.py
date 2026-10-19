@@ -25,7 +25,14 @@ def _live_strip() -> str:
         return ""
 
 
-page = Path(__file__).resolve().parent.parent / "site" / "dashboard.html"
+site = Path(__file__).resolve().parent.parent / "site"
+view = "Classic"
+if (site / "terminal.html").exists():
+    view = st.radio("View", ["Classic", "Terminal (new)"], horizontal=True, label_visibility="collapsed")
+if view != "Classic":                 # the redesigned page (engine/picks/terminal_page.py); a full document of its own
+    components.html((site / "terminal.html").read_text(encoding="utf-8"), height=2600, scrolling=True)
+    st.stop()
+page = site / "dashboard.html"
 if page.exists():
     doc = ("<!doctype html><html><head><meta charset='utf-8'>"
            "<meta name='viewport' content='width=device-width,initial-scale=1'></head><body>"

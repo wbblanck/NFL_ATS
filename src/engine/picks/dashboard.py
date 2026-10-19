@@ -74,11 +74,17 @@ def current_week(sched, season: int) -> int:
     return int(open_["week"].min() if open_.height else s["week"].max())
 
 
-def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.datetime,
-           results: dict | None = None, details: dict | None = None, season_table: list | None = None,
-           credits: int | None = None, epa: dict | None = None, curve: dict | None = None,
-           tiebreak: list | None = None, loss_review: dict | None = None, flips: dict | None = None,
-           slate: dict | None = None) -> str:
+def render(*args, **kwargs) -> str:
+    """The dashboard page for build_data's arguments."""
+    data = build_data(*args, **kwargs)
+    return TEMPLATE.replace("__DATA__", json.dumps(data)).replace("__TITLE__", html.escape(f"Week {data['week']} Picks"))
+
+
+def build_data(rows: list[dict], season: int, week: int, live: dict, updated: dt.datetime,
+               results: dict | None = None, details: dict | None = None, season_table: list | None = None,
+               credits: int | None = None, epa: dict | None = None, curve: dict | None = None,
+               tiebreak: list | None = None, loss_review: dict | None = None, flips: dict | None = None,
+               slate: dict | None = None) -> dict:
     """results: game_id -> graded row from live.compute (result, proj_<version> strings); optional.
     details: game_id -> per-game detail from game_detail.build (book lines over time, why, inputs); optional."""
     results = results or {}
@@ -127,13 +133,12 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                        "note": f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"})
     nxt = min(upcoming) if upcoming else None
     from engine.picks.season import MODELS as _SM
-    data = json.dumps({"flips": flips or {}, "slate": slate or {}, "loss_review": loss_review or {}, "tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
+    return {"flips": flips or {}, "slate": slate or {}, "loss_review": loss_review or {}, "tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
                        "next_lock": None if nxt is None else {"at": _clock(nxt[0]), "game": nxt[1]},
                        "due": [{"iso": a.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "at": _clock(a), "game": g}
                                for a, g in sorted(upcoming)],
-                       "updated": updated.astimezone(ET).strftime("%a %b %-d, %-I:%M %p ET")})
-    return TEMPLATE.replace("__DATA__", data).replace("__TITLE__", html.escape(f"Week {week} Picks"))
+                       "updated": updated.astimezone(ET).strftime("%a %b %-d, %-I:%M %p ET")}
 
 
 def live_summary() -> dict:
