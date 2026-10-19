@@ -57,6 +57,7 @@ def test_chain_oddslink_only_fills_what_oddspapi_left(monkeypatch):
 
 
 def test_oddslink_failure_or_expiry_changes_nothing(monkeypatch):
+    monkeypatch.setattr(final, "ODDSPAPI_FALLBACK_UNTIL", dt.datetime(2027, 1, 1, tzinfo=UTC))
     monkeypatch.setattr(final.store, "append_rows", lambda *a: (_ for _ in ()).throw(AssertionError("no write")))
     due = pl.DataFrame({"game_id": ["g2"]})
     caps = [_row("g2", "draftkings")]
@@ -64,7 +65,7 @@ def test_oddslink_failure_or_expiry_changes_nothing(monkeypatch):
     def boom(g, t):
         raise RuntimeError("OddsLink HTTP 503")
     assert final.oddslink_pinnacle_fallback(caps, due, dt.datetime(2026, 10, 18, 23, 55, tzinfo=UTC), rows_fn=boom) == caps
-    assert final.oddslink_pinnacle_fallback(caps, due, final.ODDSPAPI_FALLBACK_UNTIL, rows_fn=boom) == caps
+    assert final.oddslink_pinnacle_fallback(caps, due, dt.datetime(2027, 1, 1, tzinfo=UTC), rows_fn=boom) == caps
 
 
 def test_missing_key_raises_without_a_request(monkeypatch):
