@@ -1,0 +1,34 @@
+name: Reconstruct missed picks (hypothetical)
+# One-off research run: Pinnacle history from OddsPapi (free /historical-odds, plus about 5 /fixtures calls) for the live
+# games the engine never picked or picked without a market. Writes data/hypothetical/ and docs/missed_picks_report.md.
+# Never touches predictions.csv. workflow_dispatch only.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -e .
+      - name: Reconstruct
+        env:
+          ODDSPAPI_API_KEY: ${{ secrets.ODDS_PAPI }}
+        run: python -m engine.picks.hypothetical
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name "nfl-ats-engine"
+          git config user.email "nfl-ats-engine@users.noreply.github.com"
+          if [ -d data/hypothetical ]; then git add data/hypothetical; fi
+          if [ -f docs/missed_picks_report.md ]; then git add docs/missed_picks_report.md; fi
+          git commit -m "hypothetical: missed picks reconstructed from OddsPapi history" || exit 0
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep 5; done
