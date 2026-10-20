@@ -79,7 +79,7 @@ main:focus{outline:none}
 .key i{display:inline-block;vertical-align:-2px;margin-right:6px}
 .k-line{width:4px;height:15px;background:var(--line);border-radius:2px}
 .k-bar{width:9px;height:13px;background:var(--turf);border-radius:2px;box-shadow:inset 0 0 0 2px #fff}
-.k-ball{width:16px;height:10px;border-radius:50%;background:#7a3b16}
+.k-fb{display:inline-block;vertical-align:-3px;margin-right:6px}
 .big{font-weight:800;font-stretch:70%;font-variant-numeric:tabular-nums;line-height:1}
 
 /* controls */
@@ -112,7 +112,8 @@ main:focus{outline:none}
 .who.none b{font-size:20px;color:var(--ink-3)}
 .mini{position:relative;background:var(--turf);overflow:hidden}
 .mini.dim{background:var(--turf-dim)}
-.mini svg{position:absolute;inset:0;width:100%;height:100%}
+.mini>svg:not(.fball){position:absolute;inset:0;width:100%;height:100%}
+.fball{position:absolute;top:50%;width:48px;height:29px;margin:-15px 0 0 -24px;z-index:2;transform:rotate(-14deg);filter:drop-shadow(0 3px 2px rgba(0,0,0,.45));pointer-events:none}
 .mini .tag{position:absolute;left:8px;top:6px;z-index:2;font-size:11.5px;font-weight:600;background:rgba(5,14,9,.66);color:#fff;border-radius:999px;padding:1px 8px;white-space:nowrap}
 .mini .tag.hot{background:var(--line);color:var(--on-line)}
 .mini .note{position:absolute;right:8px;bottom:6px;z-index:2}
@@ -201,6 +202,7 @@ details.more>summary{cursor:pointer;font-size:14px;font-weight:600;padding:8px 0
   .side{grid-template-columns:1fr}
 }
 @media (max-width:560px){
+  .fball{width:38px;height:23px;margin:-12px 0 0 -19px}
   .recs small{display:none}
   .recs{gap:12px;padding:0 12px}
   .g{grid-template-columns:96px minmax(0,1fr) 92px;min-height:70px}
@@ -221,6 +223,17 @@ details.more>summary{cursor:pointer;font-size:14px;font-weight:600;padding:8px 0
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="fbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c0703a"/><stop offset=".5" stop-color="#8e4721"/><stop offset="1" stop-color="#55260f"/></linearGradient>
+<clipPath id="fbc"><path d="M2 18C14 -3 46 -3 58 18C46 39 14 39 2 18Z"/></clipPath>
+<symbol id="fb" viewBox="0 0 60 36">
+<path d="M2 18C14 -3 46 -3 58 18C46 39 14 39 2 18Z" fill="url(#fbg)"/>
+<g clip-path="url(#fbc)" fill="none" stroke="#fbf6ea" stroke-width="2.6"><path d="M13.5 2Q9.5 18 13.5 34"/><path d="M17.5 2Q13.5 18 17.5 34"/><path d="M46.5 2Q50.5 18 46.5 34"/><path d="M42.5 2Q46.5 18 42.5 34"/></g>
+<path d="M22.5 11.2Q30 9 37.5 11.2" fill="none" stroke="#f3ead8" stroke-width="1.5" stroke-linecap="round"/>
+<g stroke="#f3ead8" stroke-width="1.3" stroke-linecap="round"><path d="M24.5 8.6V13.8"/><path d="M27.3 7.9V13.2"/><path d="M30 7.7V13"/><path d="M32.7 7.9V13.2"/><path d="M35.5 8.6V13.8"/></g>
+<path d="M9 13C16 4 28 3 38 4.6" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M2 18C14 -3 46 -3 58 18C46 39 14 39 2 18Z" fill="none" stroke="#2f1305" stroke-width="1.1"/>
+</symbol></defs></svg>
 <header class="bar">
   <a class="brand" translate="no" href="#/slate" aria-label="Bonsai ATS, this week’s slate"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="5" fill="#23613f"/><path d="M13 3v20" stroke="#f2c200" stroke-width="3"/><path d="M6 3v20M20 3v20" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/></svg><span>Bonsai ATS</span></a>
   <span class="wk" id="wk"></span>
@@ -303,7 +316,7 @@ const XR=24;                                     // the strip spans -24..+24 poi
 function miniSVG(g,s,idx){
   const f=s&&distFor(g,s.team);
   const W=400,H=76,x=m=>W/2+m/XR*(W/2-8);
-  let o='';for(const p of [-21,-14,-7,7,14,21])o+=`<line x1="${x(p)}" x2="${x(p)}" y1="0" y2="${H}" stroke="var(--chalk-3)"/>`;
+  let o='';for(const p of [-21,-14,-7,7,14,21])o+=`<line x1="${x(p)}" x2="${x(p)}" y1="0" y2="${H}" stroke="var(--chalk-3)" vector-effect="non-scaling-stroke"/>`;
   if(f){
     const mx=Math.max(...f.pts.map(q=>q[1])),Lc=-s.L;
     f.pts.forEach(([m,p],i)=>{if(m<-XR||m>XR)return;const h=p/mx*(H-18),c=m>Lc?'var(--chalk)':'var(--chalk-2)';
@@ -311,10 +324,10 @@ function miniSVG(g,s,idx){
   }
   if(!f&&s&&s.m!=null){const a=x(-s.L),bb=x(Math.max(-XR,Math.min(XR,s.ps-s.os)));
     o+=`<rect x="${Math.min(a,bb)}" y="${H/2-3}" width="${Math.abs(bb-a)}" height="6" rx="3" fill="${s.m>0?'var(--chalk)':'var(--chalk-2)'}"/>`}
-  if(s&&s.L!=null)o+=`<line x1="${x(-s.L)}" x2="${x(-s.L)}" y1="0" y2="${H}" stroke="var(--line)" stroke-width="3"/>`;
-  if(s&&s.m!=null){const pm=s.ps-s.os,X=x(Math.max(-XR,Math.min(XR,pm)));
-    o+=`<g transform="translate(${X},${H/2})"><ellipse rx="9" ry="5.5" fill="#7a3b16" stroke="#fff" stroke-width="1.2"/><path d="M-4 0h8M-2 -2v4M0 -2v4M2 -2v4" stroke="#fff" stroke-width=".9"/></g>`}
-  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${o}</svg>`;
+  if(s&&s.L!=null)o+=`<line x1="${x(-s.L)}" x2="${x(-s.L)}" y1="0" y2="${H}" stroke="var(--line)" stroke-width="3" vector-effect="non-scaling-stroke"/>`;
+  let ball='';
+  if(s&&s.m!=null){const pm=Math.max(-XR,Math.min(XR,s.ps-s.os));ball=`<svg class="fball" viewBox="0 0 60 36" style="left:${50+pm/XR*48}%" aria-hidden="true"><use href="#fb"/></svg>`}
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${o}</svg>${ball}`;
 }
 function gameRow(g,i){
   const s=side(g),f=s&&distFor(g,s.team);
@@ -340,7 +353,7 @@ function slate(){
       return `<div class="slot"><div class="slot-h"><h2>${esc(sl.day)}<small>${esc(sl.times)} ET</small></h2>${sw+sl2?`<span class="big rec">${sw}-${sl2}</span>`:''}</div><div class="games">${ss.map(gameRow).join('')}</div></div>`}).join('');
   }else body=`<div class="games">${gs.map(gameRow).join('')}</div>`;
   v.innerHTML=`<div class="hero"><h1>Week ${D.week}</h1>
-    <p>${w}-${l} against the pool line so far${left?`, ${left} to play`:', all final'}.</p><p>Each strip shows the final margins the model expected for the side it took:</p><ul class="key"><li><i class="k-line"></i>Yellow line: the pool line</li><li><i class="k-bar"></i>Bright bars: outcomes that cover</li><li><i class="k-ball"></i>Ball: where the game ended</li></ul></div>
+    <p>${w}-${l} against the pool line so far${left?`, ${left} to play`:', all final'}.</p><p>Each strip shows the final margins the model expected for the side it took:</p><ul class="key"><li><i class="k-line"></i>Yellow line: the pool line</li><li><i class="k-bar"></i>Bright bars: outcomes that cover</li><li><svg class="k-fb" viewBox="0 0 60 36" width="24" height="14" aria-hidden="true"><use href="#fb"/></svg>Ball: where the game ended</li></ul></div>
     <div class="ctrl"><div class="chips" role="group" aria-label="Show">${FILTERS.map(([k,lab,fn])=>`<button class="chip" aria-pressed="${st.f===k}" data-f="${k}">${lab}<span class="c">${G.filter(fn).length}</span></button>`).join('')}</div>
     <label class="sel">Sort <select id="sort">${Object.entries(SORTS).map(([k,[lab]])=>`<option value="${k}"${st.s===k?' selected':''}>${lab}</option>`).join('')}</select></label></div>
     ${body||'<p class="empty">No games match. Choose All games to see the full week.</p>'}
@@ -398,7 +411,7 @@ function fieldChart(g,s,team,f,L0){
       <g id="bars">${bars}</g>
       <line x1="${x(c0)}" x2="${x(c0)}" y1="${m.t-6}" y2="${m.t+ph}" stroke="#fff" stroke-dasharray="3 4" stroke-width="1.5"/>
       <line id="pl" y1="${m.t-12}" y2="${m.t+ph+4}" stroke="var(--line)" stroke-width="4"/>
-      ${act!=null?`<g transform="translate(${x(Math.max(-R,Math.min(R,act)))},${m.t+ph-10})"><g id="ball"><ellipse rx="12" ry="7" fill="#7a3b16" stroke="#fff" stroke-width="1.5"/><path d="M-5 0h10M-2.5 -2.6v5.2M0 -2.6v5.2M2.5 -2.6v5.2" stroke="#fff" stroke-width="1.1"/></g></g>`:''}
+      ${act!=null?`<g transform="translate(${x(Math.max(-R,Math.min(R,act)))},${m.t+ph-20})"><g id="ball"><ellipse cy="21" rx="24" ry="3.6" fill="rgba(0,0,0,.3)"/><g transform="rotate(-14)"><use href="#fb" x="-32" y="-19" width="64" height="38"/></g></g></g>`:''}
       <rect id="hit" x="${m.l}" y="${m.t}" width="${pw}" height="${ph}" fill="transparent"/></svg>
     <div class="cap"><span><i style="background:var(--line)"></i>Pool line</span><span><i style="background:repeating-linear-gradient(90deg,#fff 0 3px,transparent 3px 6px)"></i>Market’s expected margin <b>${sgn(c0)}</b></span>
       <span>Middle half <b>${sgn(quant(f,.25))} to ${sgn(quant(f,.75))}</b></span><span>8 in 10 <b>${sgn(quant(f,.1))} to ${sgn(quant(f,.9))}</b></span>${act!=null?`<span>Final <b>${sgn(act)}</b></span>`:''}</div>
