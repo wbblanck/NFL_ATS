@@ -410,6 +410,52 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .lrc .oth { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 9px; padding-top: 8px; border-top: 1px solid var(--line); font: 11.5px var(--mono); color: var(--ink-3); }
 .lrc .oth .ok { color: var(--win); } .lrc .oth .no { color: var(--loss); }
 
+/* Tiebreaker */
+.tb { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; }
+@media (max-width: 860px) { .tb { grid-template-columns: minmax(0, 1fr); } }
+.tbhero { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; background: var(--well); border-radius: 6px; padding: 12px; }
+.tbhero .lg { display: flex; gap: 6px; } .tbhero img, .tbhero .logo-alt { width: 38px; height: 38px; object-fit: contain; }
+.tbg { font: 900 64px/1 var(--display); color: var(--amber); }
+.tbm { font: 12px/1.6 var(--mono); color: var(--ink-2); } .tbm b { color: var(--ink); font-weight: 500; }
+@media (max-width: 560px) { .tbhero { grid-template-columns: 1fr auto; } .tbhero > div:nth-child(2) { grid-column: 1 / -1; grid-row: 2; } }
+.tw { border-bottom: 1px solid var(--line); }
+.tw summary { list-style: none; display: grid; grid-template-columns: 30px 92px 1fr 44px; gap: 10px; align-items: center; padding: 9px 2px; cursor: pointer; min-height: 40px; }
+.tw summary::-webkit-details-marker { display: none; }
+.tw .wkn { color: var(--ink-3); font: 12px var(--mono); } .tw .twg { font-size: 12.5px; color: var(--ink); }
+.tw .trk { position: relative; height: 16px; background: var(--well); border-radius: 3px; }
+.tw .trk s { position: absolute; top: 5px; height: 6px; border-radius: 3px; text-decoration: none; } .tw .trk .b80 { background: rgba(61,165,255,.25); } .tw .trk .b50 { background: rgba(61,165,255,.6); }
+.tw .trk u { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--amber); margin-left: -1px; }
+.tw .trk i { position: absolute; top: 3px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: var(--ink-2); border: 2px solid var(--ground); }
+.tw .trk i.w { background: var(--win); } .tw .trk i.l { background: var(--loss); }
+.tw .ms { text-align: right; font: 12px var(--mono); color: var(--ink); } .tw .ms.l { color: var(--loss); } .tw .ms.w { color: var(--win); }
+.tw .twd { font: 11.5px/1.6 var(--mono); color: var(--ink-2); padding: 0 0 10px 40px; }
+.cal { margin-bottom: 14px; }
+.calr { display: grid; grid-template-columns: 62px 1fr 44px; gap: 10px; align-items: center; margin-top: 6px; font: 11.5px var(--mono); color: var(--ink-2); }
+.calt { position: relative; height: 10px; background: var(--well); border-radius: 3px; }
+.calt i { display: block; height: 100%; background: var(--amber); border-radius: 3px; } .calt i.h { background: var(--blue); }
+.calt u { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); margin-left: -1px; }
+.calr b { color: var(--ink); font-weight: 500; text-align: right; }
+.misses { display: flex; gap: 8px; align-items: flex-end; height: 130px; position: relative; margin-top: 20px; }
+.misses .avg { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--ink-3); pointer-events: none; }
+.misses .avg span { position: absolute; left: 0; top: -16px; font: 10.5px var(--mono); color: var(--ink-3); }
+.mb { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; gap: 3px; }
+.mb i { width: 100%; max-width: 34px; background: var(--ink-2); border-radius: 3px 3px 0 0; display: block; } .mb i.l { background: var(--loss); }
+.mb span { font: 10.5px var(--mono); color: var(--ink-3); } .mb b { font: 500 11px var(--mono); color: var(--ink); order: -1; }
+
+/* Tables, picks status, explainer */
+.tbl { overflow-x: auto; }
+table.gridt th, table.gridt td { white-space: nowrap; }
+table.gridt td.r.pos { color: var(--win); } table.gridt td.r.neg { color: var(--loss); }
+table.gridt tr.bt td { opacity: .55; } table.gridt tr.tot td { border-top: 1px solid var(--line-2); font-weight: 600; }
+table.gridt .tag { font-size: 10.5px; }
+details.fold > summary { cursor: pointer; font: 600 13px var(--body); color: var(--ink); letter-spacing: .02em; padding: 2px 0; }
+details.fold > summary .k { margin-left: 10px; }
+details.fold[open] > summary { margin-bottom: 12px; }
+.pstat { margin-top: 8px; font: 12px/1.5 var(--mono); color: var(--ink-2); }
+.pstat b { color: var(--ink); font-weight: 500; }
+.howto p { margin: 0 0 12px; font-size: 14px; max-width: 78ch; } .howto p b { color: var(--ink); }
+.note2 { font-size: 13px; margin: 10px 0 0; max-width: 80ch; }
+
 footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40px; font: 11px/1.7 var(--mono); color: var(--ink-3); }
 
 @media (max-width: 900px) {
@@ -431,7 +477,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
 <body>
 <nav><div class="wrap">
   <div class="brand">Bonsai <span>ATS</span></div>
-  <div class="navlinks"><a href="#board">This week</a><a href="#season">Season</a><a href="#models">Models</a><a href="#finals">Last week</a><a href="#whylost">Why we lost</a></div>
+  <div class="navlinks"><a href="#board">This week</a><a href="#season">Season</a><a href="#tiebreak">Tiebreaker</a><a href="#models">Models</a><a href="#finals">Last week</a><a href="#whylost">Why we lost</a></div>
   <a class="livepill" id="livepill" href="#board"><i></i><span id="livetxt"></span></a>
   <div class="updated" id="updated"></div>
 </div></nav>
@@ -456,6 +502,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
         <div class="cell"><div class="k">Last week</div><div class="v" id="lastrec"></div></div>
       </div>
       <div class="nextlock" id="nextlock"></div>
+      <div class="pstat" id="pstat"></div>
     </div>
   </section>
 
@@ -499,6 +546,15 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
         <p class="flag" style="margin-top:12px">Weeks 1–2 are backtest replays (faded) and are not in the live record.</p>
       </div>
     </div>
+    <details class="pane fold" style="margin-top:10px"><summary>Season by week: every model's record <span class="k">as a table</span></summary>
+      <div class="tbl"><table id="season-tab"></table></div><p class="flag" id="season-note" style="margin-top:10px"></p></details>
+  </section>
+
+  <section id="tiebreak" aria-label="Tiebreaker" hidden>
+    <div class="head"><h2>Tiebreaker</h2><span class="k">Total points in the week's last game · closest guess wins</span></div>
+    <div class="tb"><div class="pane"><div id="tb-now"></div><h3 style="margin-top:22px">Past weeks · tap to inspect</h3><div id="tb-weeks"></div></div>
+      <div class="pane"><h3 style="margin-top:0">Did the ranges hold?</h3><div id="tb-cal"></div><h3>Miss by week</h3><div id="tb-miss"></div></div></div>
+    <details class="pane fold" style="margin-top:10px"><summary>Every week <span class="k">as a table</span></summary><div class="tbl"><table id="tb-tab" class="gridt"></table></div></details>
   </section>
 
   <section id="models" aria-label="Model standings">
@@ -524,6 +580,16 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
     <div class="lr-grid" id="lr-grid"></div>
     <button class="lr-more" id="lr-more" hidden></button>
   </section>
+
+  <details class="pane fold howto" style="margin-top:40px"><summary>How to read this page</summary>
+    <p><b>Pool line and spreads.</b> Each team shows its spread on the pool line, the number the pool grades on. A minus sign means that team is favored. "Market" is where the betting market stood at pick time, in the home team's spread.</p>
+    <p><b>The pick</b> is the side the market moved toward, with a cover chance from how games have finished relative to the closing spread since 1999. <b>Provisional</b> picks use the latest market snapshot and can change. The official pick is locked about 20 minutes before kickoff and never changes. If no market line is available at pick time, the pick falls back to the away team.</p>
+    <p><b>The market line</b> is Pinnacle's when the odds feed has it. Otherwise it comes from a backup source or the median of all books, and a pick made on fewer than five books is flagged.</p>
+    <p><b>Historical win rates</b> are 2007–2021. The 2025 holdout was weaker, at 52% on 1+ point moves. No claim of skill is made before 256 graded games.</p>
+    <p><b>Projections</b> are tracked for comparison and do not make the pick. The player projection adjusts team scoring strength for the starting quarterback, injured starters weighted by snaps, rest, travel and roof. Against the market it was a coin flip in 2022–2025 testing. When injury statuses were not yet published, injuries are not reflected and the pick is not counted in the record.</p>
+    <p><b>Hybrid (tracked)</b> keeps the pick when the market moved 1+ point off the pool line and uses the team-only projection when it moved ½ point or not at all. It is followed for comparison only and never makes the pick.</p>
+    <p><b>The season path</b> counts covers minus misses. Its first two weeks are backtest replays; the chips quote live games only.</p>
+  </details>
 
   <footer>
     <div id="foot"></div>
@@ -1060,6 +1126,66 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
   }
   tiles(); grid();
   if (window.ResizeObserver) { let w0 = 0; new ResizeObserver(es => { const w = Math.round(es[0].contentRect.width); if (w && w !== w0) { w0 = w; paint(); } }).observe($("#lr-grid")); }
+})();
+
+/* Picks locked vs provisional */
+(function () {
+  const g = D.games, lock = g.filter(x => x.status === "official").length, prov = g.filter(x => x.status === "provisional").length, other = g.length - lock - prov;
+  $("#pstat").innerHTML = `Week ${D.week} picks: <b>${lock} of ${g.length} locked</b>${prov ? ` · <b>${prov} provisional</b> (based on the latest market snapshot; can still change)` : ""}${other ? ` · ${other} with no final pick` : ""}`;
+})();
+
+/* Tiebreaker: total points in the week's last game */
+(function () {
+  const T = (D.tiebreak || []).filter(r => r.guess != null); if (!T.length) return;
+  $("#tiebreak").hidden = false;
+  const ET = "America/New_York";
+  // actual total minus market total, nflverse 2010–2025 regular season (4,175 games with a market total), 2-point bins; 2018–25 last games of the week: 141
+  const HIST = [[-40,1],[-38,2],[-36,4],[-34,5],[-32,14],[-30,10],[-28,18],[-26,37],[-24,46],[-22,62],[-20,83],[-18,102],[-16,133],[-14,177],[-12,176],[-10,214],[-8,238],[-6,232],[-4,265],[-2,266],[0,242],[2,268],[4,223],[6,219],[8,176],[10,161],[12,161],[14,121],[16,96],[18,88],[20,79],[22,55],[24,41],[26,40],[28,36],[30,18],[32,15],[34,10],[36,16],[38,9],[40,2],[42,8],[44,2],[46,1],[48,3]], HN = 4175, LN = 141, L50 = 71, L80 = 116, TYP = 9.9;
+  const cur = T.find(r => r.week === D.week && r.actual == null) || T.find(r => r.actual == null), past = T.filter(r => r.actual != null);
+  if (cur) {
+    const mt = cur.market_total, g = cur.guess, W = 720, H = 190, lo = mt - 32, hi = mt + 40, xx = v => 20 + (W - 40) * (v - lo) / (hi - lo), mx = Math.max(...HIST.map(h => h[1]));
+    const bars = HIST.map(([k, v]) => { const a = mt + k; if (a < lo || a + 2 > hi) return ""; const mid = a + 1, o = mid >= cur.r50[0] && mid <= cur.r50[1] ? .9 : mid >= cur.r80[0] && mid <= cur.r80[1] ? .5 : .22;
+      return `<rect x="${(xx(a) + .5).toFixed(1)}" y="${(150 - 112 * v / mx).toFixed(1)}" width="${(xx(a + 2) - xx(a) - 1).toFixed(1)}" height="${(112 * v / mx).toFixed(1)}" fill="#3DA5FF" opacity="${o}" rx="1"/>`; }).join("");
+    const lab = (v, y = 188) => `<text x="${xx(v)}" y="${y}" text-anchor="middle" fill="#8993A3" font-size="10.5" font-family="IBM Plex Mono">${v}</text>`;
+    const ko = new Date(cur.kickoff_utc).toLocaleString("en-US", { weekday: "short", hour: "numeric", minute: "2-digit", timeZone: ET });
+    $("#tb-now").innerHTML = `<div class="tbhero"><div class="lg">${logo(cur.away)}${logo(cur.home)}</div><div><div class="k">Week ${cur.week} · ${esc(cur.away)} @ ${esc(cur.home)} · ${esc(ko)} ET</div>
+      <div class="tbm">Market total <b>${mt}</b> · half of games land in <b>${cur.r50[0]}–${cur.r50[1]}</b> · 8 in 10 in <b>${cur.r80[0]}–${cur.r80[1]}</b></div></div><div class="tbg" aria-label="Guess ${g}">${g}</div></div>
+      <div style="margin-top:12px"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Distribution of final total points for this game: guess ${g}, half of games between ${cur.r50[0]} and ${cur.r50[1]}, 8 in 10 between ${cur.r80[0]} and ${cur.r80[1]}">
+      <rect x="${xx(cur.r80[0])}" y="164" width="${xx(cur.r80[1]) - xx(cur.r80[0])}" height="6" rx="3" fill="rgba(61,165,255,.3)"/><rect x="${xx(cur.r50[0])}" y="164" width="${xx(cur.r50[1]) - xx(cur.r50[0])}" height="6" rx="3" fill="#3DA5FF"/>
+      ${bars}<line x1="20" x2="${W - 20}" y1="150.5" y2="150.5" stroke="rgba(140,170,255,.24)"/><line x1="${xx(g)}" x2="${xx(g)}" y1="4" y2="172" stroke="#FFB020" stroke-width="2"/>
+      <text x="${xx(g) + 6}" y="12" fill="#FFB020" font-size="12" font-family="IBM Plex Mono" font-weight="500">GUESS ${g}</text><text x="${xx(g) + 6}" y="26" fill="#8993A3" font-size="10.5" font-family="IBM Plex Mono">market ${mt}</text>
+      ${lab(cur.r50[0])}${lab(cur.r50[1])}${lab(cur.r80[0])}${lab(cur.r80[1])}</svg></div>
+      <div class="legend"><span><i style="background:#3DA5FF"></i>central 50%</span><span><i style="background:rgba(61,165,255,.5)"></i>central 80%</span><span><i style="background:rgba(61,165,255,.22)"></i>tails</span></div>
+      <p class="note2">The shape is final total minus market total for ${HN.toLocaleString("en-US")} regular-season games from 2010–2025, shifted onto this week's ${mt}. The guess is the market total rounded down at .5. Nothing we tried beat the market total out of sample, so there is no separate model marker.</p>`;
+  } else $("#tb-now").innerHTML = '<p class="k">No market total for the next last game yet.</p>';
+  const sc = v => (v - 20) / (80 - 20) * 100;
+  const rowHtml = t => { const a = t.actual, r50 = t.r50[0] <= a && a <= t.r50[1], r80 = t.r80[0] <= a && a <= t.r80[1], tag = r50 ? "inside the 50% range" : r80 ? "inside the 80% range" : "outside the 80% range", cl = r50 ? "w" : r80 ? "" : "l";
+    return `<details class="tw"><summary><span class="wkn">W${t.week}</span><span class="twg">${esc(t.away)} @ ${esc(t.home)}</span><span class="trk" aria-hidden="true"><s class="b80" style="left:${sc(t.r80[0])}%;width:${sc(t.r80[1]) - sc(t.r80[0])}%"></s><s class="b50" style="left:${sc(t.r50[0])}%;width:${sc(t.r50[1]) - sc(t.r50[0])}%"></s><u style="left:${sc(t.guess)}%"></u><i class="${cl}" style="left:${sc(a)}%"></i></span><span class="ms ${cl}">±${t.miss}</span></summary>
+      <div class="twd">Market ${t.market_total} · guess ${t.guess} · final ${a} · missed by ${t.miss} · ${tag}<br>50% range ${t.r50[0]}–${t.r50[1]} · 80% range ${t.r80[0]}–${t.r80[1]}</div></details>`; };
+  $("#tb-weeks").innerHTML = past.length ? past.map(rowHtml).join("") : '<p class="k">No finished weeks yet.</p>';
+  const in50 = past.filter(t => t.r50[0] <= t.actual && t.actual <= t.r50[1]).length, in80 = past.filter(t => t.r80[0] <= t.actual && t.actual <= t.r80[1]).length;
+  const cal = (lbl, nom, a, b, c, d) => `<div class="cal"><div class="k">${lbl} range · should hold ${nom}% of the time</div>
+    <div class="calr"><span>2026</span><div class="calt"><u style="left:${nom}%"></u><i style="width:${b ? a / b * 100 : 0}%"></i></div><b>${a}/${b}</b></div>
+    <div class="calr"><span>2018–25</span><div class="calt"><u style="left:${nom}%"></u><i class="h" style="width:${c / d * 100}%"></i></div><b>${Math.round(c / d * 100)}%</b></div></div>`;
+  $("#tb-cal").innerHTML = cal("50%", 50, in50, past.length, L50, LN) + cal("80%", 80, in80, past.length, L80, LN) + `<p class="note2">${past.length} weeks is too few to judge. The 2018–25 row is the ${LN} last games of those seasons.</p>`;
+  const avg = past.length ? past.reduce((a, t) => a + t.miss, 0) / past.length : 0, top = Math.max(25, ...past.map(t => t.miss));
+  $("#tb-miss").innerHTML = past.length ? `<div class="misses"><div class="avg" style="bottom:${TYP / top * 100}%"><span>${TYP} typical</span></div>${past.map(t => `<div class="mb"><i class="${t.miss > TYP ? "l" : ""}" style="height:${t.miss / top * 100}%"></i><span>W${t.week}</span><b>${t.miss}</b></div>`).join("")}</div>
+    <p class="note2">Points the final total missed our guess by. 2026 average: <b>${avg.toFixed(1)}</b>. About ${TYP} is typical, so the tiebreaker is mostly luck. Enter the guess as late as the pool allows, using the market total at that time.</p>` : "";
+  $("#tb-tab").innerHTML = '<thead><tr><th>Week</th><th>Game</th><th class="r">Total</th><th class="r">Guess</th><th class="r">Final</th><th class="r">Miss</th></tr></thead><tbody>' +
+    (D.tiebreak || []).map(r => `<tr><td>${r.week}</td><td>${esc(r.away)} @ ${esc(r.home)}</td><td class="r">${r.market_total ?? "—"}</td><td class="r">${r.guess ?? "—"}</td><td class="r">${r.actual ?? "—"}</td><td class="r">${r.miss ?? "—"}</td></tr>`).join("") + "</tbody>";
+})();
+
+/* Season by week: every model's record */
+(function () {
+  const SM = D.season_models || [], ST = D.season_tab || []; if (!SM.length || !ST.length) return;
+  const cell = rec => { if (!rec) return '<td class="r">—</td>'; const [w, l] = rec, c = w > l ? "pos" : w < l ? "neg" : ""; return `<td class="r ${c}">${w}–${l}</td>`; };
+  const sum = rows => SM.map(([k]) => rows.reduce((a, r) => { const x = r.rec[k]; return x ? [a[0] + x[0], a[1] + x[1]] : a; }, [0, 0]));
+  const live = ST.filter(r => r.kind !== "backtest");
+  $("#season-tab").className = "gridt";
+  $("#season-tab").innerHTML = `<thead><tr><th>Week</th>${SM.map(([, l]) => `<th class="r">${esc(l)}</th>`).join("")}</tr></thead><tbody>` +
+    ST.map(r => `<tr class="${r.kind === "backtest" ? "bt" : ""}"><td>${r.week}${r.kind === "backtest" ? ' <span class="tag">backtest</span>' : ""}</td>${SM.map(([k]) => cell(r.rec[k])).join("")}</tr>`).join("") +
+    `<tr class="tot"><td>Live total</td>${sum(live).map(cell).join("")}</tr><tr class="tot bt"><td>With backtest</td>${sum(ST).map(cell).join("")}</tr></tbody>`;
+  $("#season-note").textContent = "Wins–losses against the pool line, green above .500 and red below. Backtest weeks (faded) were not picked live: each model was re-run as it would have been at lock on the real pool lines, so only live weeks count toward the record. Player (v3) skips games where the injury report was not out at the pick.";
 })();
 
 $("#foot").textContent = `Week ${D.week}, ${D.season}. Data as of ${D.updated}.`;
