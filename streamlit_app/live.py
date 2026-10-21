@@ -12,6 +12,7 @@ import csv
 import datetime as dt
 import html
 import json
+import re
 import sys
 import urllib.request
 from pathlib import Path
@@ -41,12 +42,12 @@ def fetch_scoreboard(timeout: float = 6.0) -> dict | None:
     return None
 
 
-def live_games(board: dict | None) -> list[dict]:
-    """Games in progress (status state "in", which includes halftime)."""
+def live_games(board: dict | None, states: tuple[str, ...] = ("in",)) -> list[dict]:
+    """Games in progress (status state "in", which includes halftime); `states` adds e.g. "post" for finished games."""
     out = []
     for e in (board or {}).get("events") or []:
         st = (e.get("status") or {}).get("type") or {}
-        if st.get("state") != "in":
+        if st.get("state") not in states:
             continue
         comp = (e.get("competitions") or [{}])[0]
         side = {}
@@ -72,7 +73,7 @@ def live_games(board: dict | None) -> list[dict]:
                     "possession": "home" if poss and poss == side["home"]["id"] else
                                   "away" if poss and poss == side["away"]["id"] else None,
                     "down": sit.get("shortDownDistanceText") or sit.get("downDistanceText"),
-                    "redzone": bool(sit.get("isRedZone")), "start": e.get("date")})
+                    "redzone": bool(sit.get("isRedZone")), "start": e.get("date"), "state": st.get("state")})
     return out
 
 
@@ -214,3 +215,21 @@ def inject(page: str, strip: str) -> str:
     if not strip or "</header>" not in page:
         return page
     return page.replace("</header>", "</header>" + strip, 1)
+
+
+DATA_TAG = re.compile(r'(<script id="live-data" type="application/json">)[^<]*(</script>)')
+
+
+def page_data(board: dict | None, now: dt.datetime | None = None) -> dict:
+    """Scores for the redesigned page's own live layer: games in progress and games that finished on the board."""
+    now = now or dt.datetime.now(dt.timezone.utc)
+    games = [{"home": g["home"]["code"], "away": g["away"]["code"], "hs": g["home"]["score"], "as": g["away"]["score"],
+              "state": g["state"], "detail": g["detail"], "halftime": g["halftime"]}
+             for g in live_games(board, ("in", "post")) if g["home"]["code"] and g["away"]["code"]]
+    return {"asof": now.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "games": games}
+
+
+def inject_data(page: str, data: dict) -> str:
+    """Fill the `live-data` placeholder of the redesigned page; unchanged page if it has none."""
+    payload = json.dumps(data, separators=(",", ":")).replace("</", "<\\/")
+    return DATA_TAG.sub(lambda m: m.group(1) + payload + m.group(2), page, count=1)
