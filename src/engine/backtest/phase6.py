@@ -9,6 +9,7 @@ import polars as pl
 
 from engine import config
 from engine.backtest import calibration as C
+from engine.backtest.common import md_table as _tbl
 from engine.backtest.phase5 import oos_predictions
 from engine.data import nflverse
 from engine.features.efficiency import efficiency_feature, game_epa, ratings
@@ -80,14 +81,6 @@ def run(out_md=None) -> dict:
     if out_md:
         out_md.write_text(_md(res))
     return res
-
-
-def _tbl(df):
-    cols = df.columns
-    out = ["| " + " | ".join(cols) + " |", "|" + "---|" * len(cols)]
-    for r in df.to_dicts():
-        out.append("| " + " | ".join(f"{v:.4f}" if isinstance(v, float) else str(v) for v in r.values()) + " |")
-    return "\n".join(out)
 
 
 def _md(r):

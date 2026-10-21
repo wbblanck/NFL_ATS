@@ -7,8 +7,6 @@ import math
 import numpy as np
 import polars as pl
 
-from engine.backtest import patterns as PT
-from engine.backtest import total as T
 from engine.models import projection as P
 from engine.models.margin_dist import MarginDist, TotalDist
 

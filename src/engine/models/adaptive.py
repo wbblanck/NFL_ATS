@@ -9,7 +9,6 @@ age (half-life H seasons) with an L2 penalty on the slopes.
 """
 from __future__ import annotations
 
-import math
 from collections import defaultdict
 
 import numpy as np

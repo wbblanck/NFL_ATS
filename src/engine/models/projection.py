@@ -118,15 +118,9 @@ def points_pmf(lam_td: float, lam_fg: float, p_xp: float, p_2: float) -> np.ndar
     return out / out.sum()
 
 
-@dataclass
-class Projection:
-    home_pts: np.ndarray
-    away_pts: np.ndarray
-
-    @property
-    def margin_pmf(self):
-        m = np.convolve(self.home_pts, self.away_pts[::-1])   # index i -> margin i - MAXP
-        return m / m.sum()
+class PmfProjection:
+    """Read-outs shared by the projections. Subclasses provide margin_pmf (index i -> margin i - MAXP)
+    and home_pts / away_pts point pmfs (0..MAXP), or override mean_scores."""
 
     def mean_scores(self):
         x = np.arange(MAXP + 1)
@@ -145,6 +139,17 @@ class Projection:
         mg = np.arange(-MAXP, MAXP + 1)
         c = np.cumsum(self.margin_pmf)
         return float(mg[np.searchsorted(c, 0.5)])
+
+
+@dataclass
+class Projection(PmfProjection):
+    home_pts: np.ndarray
+    away_pts: np.ndarray
+
+    @property
+    def margin_pmf(self):
+        m = np.convolve(self.home_pts, self.away_pts[::-1])   # index i -> margin i - MAXP
+        return m / m.sum()
 
 
 def project(r: Ratings, home_team: str, away_team: str) -> Projection:

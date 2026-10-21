@@ -3,7 +3,6 @@ No pool lines were recorded for these weeks, so the line is a stand-in (CBS odds
 lines when supplied in `lines`); the market at lock is the nflverse closing spread and total."""
 from __future__ import annotations
 
-import datetime as dt
 import glob
 import re
 

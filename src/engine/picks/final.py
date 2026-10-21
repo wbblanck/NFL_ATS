@@ -20,7 +20,6 @@ Predictions are never overwritten. A game that already has a prediction is skipp
 from __future__ import annotations
 
 import datetime as dt
-import hashlib
 import sys
 import time
 import uuid

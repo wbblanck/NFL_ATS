@@ -14,8 +14,7 @@ from dataclasses import asdict, dataclass
 
 import numpy as np
 
-from engine.models.projection import MAXP
-from engine.picks.grading import validate_league_line
+from engine.models.projection import MAXP, PmfProjection
 
 VERSION = "proj-latent-v41"
 NODES = 5
@@ -127,7 +126,7 @@ def _points(td_pm: np.ndarray, fg_pm: np.ndarray, ext: np.ndarray) -> np.ndarray
 
 
 @dataclass
-class LatentProjection:
+class LatentProjection(PmfProjection):
     home_pts: np.ndarray
     away_pts: np.ndarray
     margin: np.ndarray
@@ -135,23 +134,6 @@ class LatentProjection:
     @property
     def margin_pmf(self):
         return self.margin
-
-    def mean_scores(self):
-        x = np.arange(MAXP + 1)
-        return float(self.home_pts @ x), float(self.away_pts @ x)
-
-    def model_line(self):
-        h, a = self.mean_scores()
-        return -(h - a)
-
-    def p_home_cover(self, league_line: float) -> float:
-        s = validate_league_line(league_line)
-        mg = np.arange(-MAXP, MAXP + 1)
-        return float(self.margin[mg > -s].sum())
-
-    def median_margin(self):
-        mg = np.arange(-MAXP, MAXP + 1)
-        return float(mg[np.searchsorted(np.cumsum(self.margin), 0.5)])
 
 
 def project(mu: tuple[float, float, float, float], p_xp: float, p_2: float, p: Params) -> LatentProjection:

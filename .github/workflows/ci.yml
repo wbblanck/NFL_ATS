@@ -1,6 +1,7 @@
 name: CI
 on:
   push:
+    branches: [main]          # branch pushes are tested through their pull request
     paths-ignore: ['data/**', 'docs/evidence/**']
   pull_request:
 
@@ -13,5 +14,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: pip
       - run: pip install -e ".[dev]"
       - run: pytest -q

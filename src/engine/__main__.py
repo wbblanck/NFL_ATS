@@ -126,8 +126,6 @@ def main(argv=None) -> int:
         return 0
     if a.cmd == "efficiency-residual":
         import json
-        import polars as pl
-        from pathlib import Path
         from engine import config
         from engine.backtest import efficiency_residual as ER
         from engine.backtest import projection_v6_eval as E6

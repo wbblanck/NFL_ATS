@@ -6,14 +6,12 @@ mean at a new season. They enter the same weekly re-fit logistic pick model as t
 """
 from __future__ import annotations
 
-import json
 import math
 from collections import defaultdict
 
 import numpy as np
 import polars as pl
 
-from engine.backtest import adaptive_eval as V
 from engine.models import adaptive as A
 
 HALF_LIFE, SHRINK = 8.0, 0.35
