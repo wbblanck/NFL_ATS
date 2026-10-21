@@ -6,9 +6,12 @@ design-taste style pack (in `.claude/skills/`) on top of the core
 
 | File | Style pack | Idea |
 |---|---|---|
-| `hero-1.html` | dark-tech | Pick-engine console: metrics strip, spec panel, week grid |
-| `hero-2.html` | editorial-minimal | Sports broadsheet: serif headline, record as a box score |
-| `hero-3.html` | brutalist-industrial | Field ledger: visible grid, mono gauges, week 6 table |
+| `hero-1.html` | dark-tech | Stadium scoreboard: amber W–L board, broadcast score bugs |
+| `hero-2.html` | brutalist-industrial | Gridiron: turf and chalk, 256 games drawn as 100 yards |
+| `hero-3.html` | retro-print | Game-day program: riso cover, ticket stub, printed scores |
+
+Round 1 (dark-tech, editorial-minimal, brutalist-industrial without football
+cues) was rejected as not looking like a football dashboard; see git history.
 
 Figures are copied from `data/predictions/live_record.md` (updated
 2026-10-19) and are static in these mockups.

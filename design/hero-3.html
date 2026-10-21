@@ -3,130 +3,152 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NFL_ATS · Hero 3 · Brutalist industrial</title>
+<title>NFL_ATS · Hero 3 · Game-day program</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* Style pack: brutalist-industrial. Design read: the pick log as a field
-     ledger; visible grid, mono coordinates, one safety-orange signal for wins. */
+  /* Style pack: retro-print, read as a vintage game-day program and ticket
+     stub. Two riso inks (red, blue) on warm stock, halftone, one stamp. */
   :root {
-    --ground: #F2F1EC;
-    --ink: #141414;
-    --ink-2: #6E6C64;
-    --signal: #E8540B;
-    --display: "Archivo", "Arial Black", Arial, sans-serif;
-    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --paper: #F4EDDE;
+    --paper-2: #EBE2CF;
+    --ink: #21201C;
+    --ink-2: #5D594F;
+    --red: #E4572E;
+    --blue: #355E8C;
+    --display: "Anton", "Archivo Narrow", Impact, sans-serif;
+    --serif: "Newsreader", Georgia, serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--ground); color: var(--ink); }
-  body { font: 400 16px/1.55 var(--display); }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); }
+  body { font: 17px/1.65 var(--serif); }
   .mono { font: 500 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
-  .frame { max-width: 1240px; margin: 0 auto; border-left: 1px solid var(--ink); border-right: 1px solid var(--ink); min-height: 100vh; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
 
-  .mast { display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--ink); }
-  .word { font: 900 20px var(--display); text-transform: uppercase; letter-spacing: -.01em; }
-  .mast .coords { display: flex; gap: 24px; color: var(--ink-2); }
+  .top { border-bottom: 2px solid var(--ink); }
+  .top .wrap { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; padding-bottom: 12px; }
+  .top nav { display: flex; gap: 22px; }
+  .top a { color: var(--ink); text-decoration: none; }
+  .top a:hover { color: var(--red); }
+  .stamp { display: inline-block; border: 1.5px dashed var(--ink); border-radius: 999px; padding: 4px 12px; transform: rotate(-2deg); }
 
-  .hero { display: grid; grid-template-columns: 7fr 5fr; border-bottom: 1px solid var(--ink); }
-  .hero .main { padding: 40px 24px 32px; border-right: 1px solid var(--ink); }
-  .kick { margin: 0 0 24px; }
-  .kick::before { content: "▪"; color: var(--signal); margin-right: 8px; }
-  h1 { font: 900 clamp(2.6rem, 7.4vw, 6rem)/.92 var(--display); text-transform: uppercase; letter-spacing: -.01em; margin: 0; }
-  h1 .rec { font-variant-numeric: tabular-nums; }
-  .side { display: grid; grid-template-rows: 1fr auto; }
-  .side p { padding: 40px 24px 24px; margin: 0; max-width: 34ch; align-self: end; }
-  .exit { display: flex; border-top: 1px solid var(--ink); }
-  .exit a { flex: 1; padding: 18px 24px; color: var(--ink); text-decoration: none; transition: background 100ms, color 100ms; }
-  .exit a + a { border-left: 1px solid var(--ink); }
-  .exit .go { background: var(--signal); color: var(--ink); font-weight: 800; text-transform: uppercase; }
-  .exit a:hover { background: var(--ink); color: var(--ground); }
+  .cover { display: grid; grid-template-columns: 7fr 5fr; gap: 0; border-bottom: 2px solid var(--ink); }
+  .cover .left { padding: 48px 32px 40px 0; border-right: 2px solid var(--ink); position: relative; overflow: hidden; }
+  .eyebrow { color: var(--red); margin: 0 0 10px; }
+  h1 { font: 400 clamp(3.4rem, 10vw, 8.5rem)/.9 var(--display); text-transform: uppercase; margin: 0; text-shadow: 3px 3px 0 var(--blue); letter-spacing: .005em; }
+  h1 .red { color: var(--red); text-shadow: 3px 3px 0 var(--blue); }
+  .deck { max-width: 34em; margin: 26px 0 30px; }
+  .cta { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .btn { background: var(--red); color: var(--paper); font: 400 22px var(--display); text-transform: uppercase; letter-spacing: .03em; padding: 12px 22px; text-decoration: none; border: 2px solid var(--ink); }
+  .btn:hover { background: var(--ink); }
+  .textlink { color: var(--ink); text-decoration: none; border-bottom: 2px solid var(--blue); }
+  .textlink:hover { color: var(--red); }
+  .colophon { margin-top: 36px; color: var(--ink-2); line-height: 1.8; }
 
-  .gauges { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--ink); }
-  .gauge { padding: 16px 24px 20px; border-left: 1px solid var(--ink); }
-  .gauge:first-child { border-left: 0; }
-  .gauge .mono { color: var(--ink-2); }
-  .gauge .v { font: 500 34px/1.1 var(--mono); margin-top: 6px; font-variant-numeric: tabular-nums; }
-  .gauge .v small { font-size: 14px; color: var(--ink-2); }
-  .ticks { display: grid; grid-template-columns: repeat(32, 1fr); gap: 2px; margin-top: 10px; }
-  .ticks i { height: 10px; border: 1px solid var(--ink); }
-  .ticks i.on { background: var(--ink); }
+  .ball { position: absolute; right: -60px; top: 30px; width: 300px; opacity: .9; pointer-events: none; }
 
-  table { width: 100%; border-collapse: collapse; font: 13px var(--mono); }
-  caption { text-align: left; padding: 14px 24px; border-bottom: 1px solid var(--ink); }
-  caption span { color: var(--ink-2); float: right; }
-  th, td { padding: 9px 24px; border-bottom: 1px solid var(--ink); text-align: left; }
-  th { font-weight: 500; font-size: 11px; letter-spacing: .1em; color: var(--ink-2); text-transform: uppercase; }
-  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-  td.res { font-weight: 500; text-align: center; width: 72px; }
-  tr.w td.res { background: var(--signal); }
-  tbody tr:hover td { background: var(--ink); color: var(--ground); }
+  /* Ticket stub with the season numbers */
+  .right { padding: 40px 0 40px 32px; display: grid; align-content: center; }
+  .ticket { border: 2px solid var(--ink); background: var(--paper-2); position: relative; }
+  .ticket::before, .ticket::after { content: ""; position: absolute; top: 50%; width: 22px; height: 22px; margin-top: -11px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); }
+  .ticket::before { left: -13px; } .ticket::after { right: -13px; }
+  .ticket header { display: flex; justify-content: space-between; padding: 12px 18px; border-bottom: 2px dashed var(--ink); }
+  .rec { text-align: center; padding: 18px 18px 8px; }
+  .rec .n { font: 400 clamp(4rem, 9vw, 6.5rem)/1 var(--display); color: var(--ink); text-shadow: 3px 3px 0 var(--red); }
+  .rec .mono { color: var(--ink-2); }
+  .ticket dl { display: grid; grid-template-columns: 1fr 1fr 1fr; margin: 14px 0 0; border-top: 2px dashed var(--ink); }
+  .ticket dl div { padding: 12px 14px; border-left: 1px solid rgba(33,32,28,.3); }
+  .ticket dl div:first-child { border-left: 0; }
+  .ticket dt { color: var(--ink-2); }
+  .ticket dd { margin: 2px 0 0; font: 400 28px/1.1 var(--display); }
+  .halftone { height: 26px; background-image: radial-gradient(var(--blue) 1.3px, transparent 1.5px); background-size: 9px 9px; border-top: 2px solid var(--ink); }
 
-  @media (max-width: 860px) {
-    .hero { grid-template-columns: 1fr; }
-    .hero .main { border-right: 0; border-bottom: 1px solid var(--ink); padding: 32px 16px 24px; }
-    .side p { padding: 24px 16px; }
-    .mast { padding: 14px 16px; }
-    .mast .coords span:nth-child(n+2) { display: none; }
-    .gauges { grid-template-columns: repeat(2, 1fr); }
-    .gauge { padding: 16px; }
-    .gauge:nth-child(3) { border-left: 0; }
-    .gauge:nth-child(n+3) { border-top: 1px solid var(--ink); }
-    th, td { padding: 9px 10px; }
-    .hide-sm { display: none; }
-    caption { padding: 14px 10px; }
+  /* Last week's scorecard, as a printed results column */
+  .scores { padding: 28px 0 96px; }
+  .scores h2 { font: 400 32px var(--display); text-transform: uppercase; margin: 0 0 12px; display: flex; justify-content: space-between; align-items: baseline; }
+  .scores h2 span { color: var(--ink-2); }
+  .rows { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; }
+  .row { display: grid; grid-template-columns: 3.4em 1fr auto auto; gap: 14px; align-items: baseline; padding: 9px 0; border-top: 1px solid rgba(33,32,28,.35); }
+  .row .p { font: 400 24px var(--display); }
+  .row .m { color: var(--ink-2); font-size: 15px; }
+  .row .s { font: 14px var(--mono); }
+  .row .r { font: 400 20px var(--display); width: 1.4em; text-align: center; color: var(--ink-2); }
+  .row.w .r { color: var(--paper); background: var(--red); }
+
+  @media (max-width: 880px) {
+    .wrap { padding: 0 16px; }
+    .cover { grid-template-columns: 1fr; }
+    .cover .left { border-right: 0; border-bottom: 2px solid var(--ink); padding: 36px 0 32px; }
+    .right { padding: 32px 10px; }
+    .ball { width: 180px; right: -50px; top: 10px; }
+    .rows { grid-template-columns: 1fr; }
+    .top nav { display: none; }
   }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
-<div class="frame">
-  <header class="mast">
-    <div class="word">NFL_ATS</div>
-    <div class="coords mono"><span>Bonsai Pool 2026</span><span>WK 07</span><span>Rev 6</span></div>
-  </header>
+<header class="top">
+  <div class="wrap">
+    <span class="stamp mono">Official program</span>
+    <nav class="mono"><a href="#">Picks</a><a href="#">Record</a><a href="#">Models</a><a href="#">Lines</a></nav>
+  </div>
+</header>
 
-  <section class="hero">
-    <div class="main">
-      <p class="kick mono">Live record — graded vs pool line</p>
-      <h1><span class="rec">29–24</span><br>against<br>the line</h1>
+<main class="wrap">
+  <section class="cover">
+    <div class="left">
+      <svg class="ball" viewBox="0 0 300 180" aria-hidden="true">
+        <defs><pattern id="dots" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="4.5" cy="4.5" r="2.4" fill="#E4572E"/></pattern></defs>
+        <ellipse cx="150" cy="90" rx="140" ry="78" fill="url(#dots)" transform="rotate(-18 150 90)"/>
+        <g transform="rotate(-18 150 90)" stroke="#21201C" stroke-width="5" stroke-linecap="square">
+          <line x1="100" y1="90" x2="200" y2="90"/>
+          <line x1="115" y1="78" x2="115" y2="102"/><line x1="135" y1="78" x2="135" y2="102"/><line x1="155" y1="78" x2="155" y2="102"/><line x1="175" y1="78" x2="175" y2="102"/>
+        </g>
+      </svg>
+      <p class="eyebrow mono">Bonsai Pool · 2026 season</p>
+      <h1>Week <span class="red">7</span><br>Game day</h1>
+      <p class="deck">Inside: one pick for every game, made five minutes before lock from the Pinnacle number and graded against the pool's own line. No skill claim until 256 games are in the books.</p>
+      <div class="cta">
+        <a class="btn" href="#">This week's picks</a>
+        <a class="textlink mono" href="#">Season record →</a>
+      </div>
+      <p class="colophon mono">14 games on the card · Lines from the pool, Tue 2:39 PM ET<br>Printed by the engine · Graded nightly</p>
     </div>
-    <div class="side">
-      <p>One pick per game, five minutes before lock, from the Pinnacle number. Every pick is graded against the pool's own line. Nothing is filtered. No skill claim before 256 games.</p>
-      <div class="exit">
-        <a class="go" href="#">Week 7 picks →</a>
-        <a class="mono" href="#">Full ledger</a>
+
+    <div class="right">
+      <div class="ticket" aria-label="Season record">
+        <header class="mono"><span>Admit one · Season</span><span>Sec. ATS</span></header>
+        <div class="rec"><div class="n">29–24</div><div class="mono">Against the pool line · 1 pending</div></div>
+        <dl class="mono">
+          <div><dt>Win rate</dt><dd>.547</dd></div>
+          <div><dt>Graded</dt><dd>53/256</dd></div>
+          <div><dt>Week 6</dt><dd>7–5</dd></div>
+        </dl>
+        <div class="halftone"></div>
       </div>
     </div>
   </section>
 
-  <section class="gauges" aria-label="Season record">
-    <div class="gauge"><div class="mono">01 / Record</div><div class="v">29–24</div></div>
-    <div class="gauge"><div class="mono">02 / Win rate</div><div class="v">.547 <small>±.068</small></div></div>
-    <div class="gauge"><div class="mono">03 / Graded</div><div class="v">053<small>/256</small></div>
-      <div class="ticks" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-    <div class="gauge"><div class="mono">04 / Pending</div><div class="v">001</div></div>
+  <section class="scores" aria-label="Week 6 results">
+    <h2>Last week's scores <span class="mono">Pick · matchup · final · result</span></h2>
+    <div class="rows">
+      <div class="row"><span class="p">SEA</span><span class="m">−2.5 at Denver</span><span class="s">14–17</span><span class="r">L</span></div>
+      <div class="row w"><span class="p">HOU</span><span class="m">+2.5 at Jacksonville</span><span class="s">34–31</span><span class="r">W</span></div>
+      <div class="row w"><span class="p">CHI</span><span class="m">−3.5 at Atlanta</span><span class="s">31–23</span><span class="r">W</span></div>
+      <div class="row"><span class="p">BAL</span><span class="m">−4.5 at Cleveland</span><span class="s">10–13</span><span class="r">L</span></div>
+      <div class="row w"><span class="p">TEN</span><span class="m">+6.5 at Indianapolis</span><span class="s">26–20</span><span class="r">W</span></div>
+      <div class="row w"><span class="p">NYJ</span><span class="m">+7.5 at New England</span><span class="s">19–26</span><span class="r">W</span></div>
+      <div class="row w"><span class="p">NO</span><span class="m">+1.5 at NY Giants</span><span class="s">34–27</span><span class="r">W</span></div>
+      <div class="row w"><span class="p">CAR</span><span class="m">+1.5 at Philadelphia</span><span class="s">25–14</span><span class="r">W</span></div>
+      <div class="row w"><span class="p">PIT</span><span class="m">−2.5 at Tampa Bay</span><span class="s">26–19</span><span class="r">W</span></div>
+      <div class="row"><span class="p">LAC</span><span class="m">+8.5 at Kansas City</span><span class="s">6–22</span><span class="r">L</span></div>
+      <div class="row"><span class="p">BUF</span><span class="m">−5.5 at Las Vegas</span><span class="s">33–30</span><span class="r">L</span></div>
+      <div class="row"><span class="p">DAL</span><span class="m">+1.5 at Green Bay</span><span class="s">13–23</span><span class="r">L</span></div>
+      <div class="row"><span class="p">WAS</span><span class="m">+7.5 at San Francisco</span><span class="s">—</span><span class="r">–</span></div>
+    </div>
   </section>
-
-  <table>
-    <caption class="mono">05 / Week 6 ledger <span>7–5</span></caption>
-    <thead><tr><th>Game</th><th>Pick</th><th class="num">Line</th><th class="num hide-sm">Score</th><th style="text-align:center">Res</th></tr></thead>
-    <tbody>
-      <tr><td>SEA @ DEN</td><td>SEA</td><td class="num">−2.5</td><td class="num hide-sm">14–17</td><td class="res">L</td></tr>
-      <tr class="w"><td>HOU @ JAX</td><td>HOU</td><td class="num">+2.5</td><td class="num hide-sm">34–31</td><td class="res">W</td></tr>
-      <tr class="w"><td>CHI @ ATL</td><td>CHI</td><td class="num">−3.5</td><td class="num hide-sm">31–23</td><td class="res">W</td></tr>
-      <tr><td>BAL @ CLE</td><td>BAL</td><td class="num">−4.5</td><td class="num hide-sm">10–13</td><td class="res">L</td></tr>
-      <tr class="w"><td>TEN @ IND</td><td>TEN</td><td class="num">+6.5</td><td class="num hide-sm">26–20</td><td class="res">W</td></tr>
-      <tr class="w"><td>NYJ @ NE</td><td>NYJ</td><td class="num">+7.5</td><td class="num hide-sm">19–26</td><td class="res">W</td></tr>
-      <tr class="w"><td>NO @ NYG</td><td>NO</td><td class="num">+1.5</td><td class="num hide-sm">34–27</td><td class="res">W</td></tr>
-      <tr class="w"><td>CAR @ PHI</td><td>CAR</td><td class="num">+1.5</td><td class="num hide-sm">25–14</td><td class="res">W</td></tr>
-      <tr class="w"><td>PIT @ TB</td><td>PIT</td><td class="num">−2.5</td><td class="num hide-sm">26–19</td><td class="res">W</td></tr>
-      <tr><td>LAC @ KC</td><td>LAC</td><td class="num">+8.5</td><td class="num hide-sm">6–22</td><td class="res">L</td></tr>
-      <tr><td>BUF @ LV</td><td>BUF</td><td class="num">−5.5</td><td class="num hide-sm">33–30</td><td class="res">L</td></tr>
-      <tr><td>DAL @ GB</td><td>DAL</td><td class="num">+1.5</td><td class="num hide-sm">13–23</td><td class="res">L</td></tr>
-      <tr><td>WAS @ SF</td><td>WAS</td><td class="num">+7.5</td><td class="num hide-sm">—</td><td class="res">—</td></tr>
-    </tbody>
-  </table>
-</div>
+</main>
 </body>
 </html>

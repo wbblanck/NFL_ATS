@@ -3,141 +3,162 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NFL_ATS · Hero 2 · Editorial minimal</title>
+<title>NFL_ATS · Hero 2 · Gridiron</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  /* Style pack: editorial-minimal. Design read: the weekly picks as a sports
-     broadsheet; the record is typeset like a box score, one vermillion accent. */
+  /* Style pack: brutalist-industrial, moved onto the field. Chalk-white rules
+     on turf, heavy condensed uppercase, one signal color: the yellow
+     first-down line. The 256-game sample is the length of the field. */
   :root {
-    --paper: #F5F1EA;
-    --paper-2: #EFEAE1;
-    --ink: #1A1A18;
-    --ink-2: #6B675E;
-    --rule: rgba(26,26,24,0.14);
-    --accent: #C73E1D;
-    --serif: "Fraunces", Georgia, "Times New Roman", serif;
-    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-    --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --turf: #17583A;
+    --turf-2: #1B6342;
+    --turf-dark: #0F3F29;
+    --chalk: #F5F7F2;
+    --chalk-2: rgba(245,247,242,0.72);
+    --chalk-3: rgba(245,247,242,0.45);
+    --rule: rgba(245,247,242,0.85);
+    --signal: #FFD60A;
+    --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    --body: "Public Sans", system-ui, sans-serif;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--paper); color: var(--ink); }
-  body { font: 17px/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
-  .label { font: 500 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+  html, body { margin: 0; background: var(--turf-dark); color: var(--chalk-2); }
+  body { font: 16px/1.55 var(--body); }
+  .mono { font: 500 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+  .frame { max-width: 1240px; margin: 0 auto; }
 
-  .masthead { border-bottom: 1px solid var(--ink); }
-  .masthead .wrap { display: flex; justify-content: space-between; align-items: baseline; padding-top: 22px; padding-bottom: 14px; }
-  .title { font: 500 22px var(--serif); letter-spacing: -.01em; }
-  .masthead nav { display: flex; gap: 28px; }
-  .masthead nav a { color: var(--ink); text-decoration: none; background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0 1px no-repeat; transition: background-size 400ms cubic-bezier(.22,1,.36,1); }
-  .masthead nav a:hover { background-size: 100% 1px; }
-  .dateline { border-bottom: 1px solid var(--rule); }
-  .dateline .wrap { display: flex; justify-content: space-between; padding-top: 8px; padding-bottom: 8px; }
+  .mast { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 2px solid var(--rule); }
+  .word { font: 900 24px var(--display); color: var(--chalk); text-transform: uppercase; letter-spacing: .02em; }
+  .mast .mono { color: var(--chalk-3); display: flex; gap: 22px; }
 
-  .hero { display: grid; grid-template-columns: 7fr 5fr; padding: 15vh 0 96px; }
-  .lead { padding-right: 56px; border-right: 1px solid var(--rule); }
-  .lead .label { margin: 0 0 28px; }
-  .lead .label b { color: var(--accent); font-weight: 500; }
-  h1 { font: 400 clamp(2.8rem, 6.4vw, 6rem)/1.0 var(--serif); letter-spacing: -.015em; margin: 0; max-width: 12em; font-variation-settings: "opsz" 144; }
-  h1 i { font-style: italic; }
-  .deck { max-width: 34em; margin: 32px 0 40px; }
-  .cta { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
-  .btn { background: var(--accent); color: var(--paper); text-decoration: none; padding: 14px 22px; font: 500 15px var(--sans); }
-  .btn:hover { background: var(--ink); }
-  .textlink { font: 500 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
-  .textlink:hover { color: var(--accent); border-color: var(--accent); }
+  .hero { display: grid; grid-template-columns: 7fr 5fr; border-bottom: 2px solid var(--rule); }
+  .hero .main { padding: 44px 24px 36px; border-right: 2px solid var(--rule); }
+  .kick { color: var(--signal); margin: 0 0 18px; }
+  h1 { font: 900 clamp(3rem, 8vw, 6.4rem)/.88 var(--display); text-transform: uppercase; color: var(--chalk); margin: 0; }
+  h1 em { font-style: normal; color: var(--signal); }
+  .side { display: grid; grid-template-rows: 1fr auto; }
+  .side p { margin: 0; padding: 36px 24px 24px; align-self: end; max-width: 36ch; }
+  .exit { display: flex; border-top: 2px solid var(--rule); }
+  .exit a { flex: 1; padding: 18px 24px; text-decoration: none; color: var(--chalk); }
+  .exit .go { background: var(--signal); color: #1A1500; font: 900 20px var(--display); text-transform: uppercase; letter-spacing: .03em; }
+  .exit a + a { border-left: 2px solid var(--rule); }
+  .exit a:hover { background: var(--chalk); color: var(--turf-dark); }
 
-  .index { padding-left: 40px; }
-  .index h2 { margin: 0 0 18px; }
-  .row { display: grid; grid-template-columns: 2.5em 1fr auto; gap: 12px; padding: 14px 0; border-top: 1px solid var(--rule); align-items: baseline; }
-  .row:last-of-type { border-bottom: 1px solid var(--rule); }
-  .row .n { font: 12px var(--mono); color: var(--ink-2); }
-  .row .k { font-size: 15px; }
-  .row .k small { display: block; color: var(--ink-2); font-size: 13px; line-height: 1.4; }
-  .row .v { font: 500 22px var(--mono); font-variant-numeric: tabular-nums; }
-  .row.big .v { font: 400 44px/1 var(--serif); }
-  .footnote { font-size: 13px; color: var(--ink-2); margin-top: 18px; max-width: 30em; }
+  /* The drive chart: 0 to 256 graded games laid out as 100 yards. */
+  .drive { padding: 22px 24px 30px; border-bottom: 2px solid var(--rule); }
+  .drive-head { display: flex; justify-content: space-between; color: var(--chalk-2); margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .drive-head b { color: var(--chalk); font-weight: 500; }
+  .field { position: relative; display: grid; grid-template-columns: 1fr repeat(10, 1fr) 1fr; height: 150px; border: 2px solid var(--rule);
+           background: repeating-linear-gradient(90deg, var(--turf) 0 calc(100% / 12), var(--turf-2) calc(100% / 12) calc(200% / 12)); }
+  .ez { display: grid; place-items: center; background: var(--turf-dark); }
+  .ez span { writing-mode: vertical-rl; transform: rotate(180deg); font: 900 22px var(--display); color: var(--chalk-3); letter-spacing: .15em; text-transform: uppercase; }
+  .ez.goal span { color: var(--chalk); }
+  .yd { border-left: 2px solid var(--rule); position: relative; }
+  .yd:last-of-type { border-right: 2px solid var(--rule); }
+  .yd::before, .yd::after { content: ""; position: absolute; left: 50%; width: 2px; height: 10px; background: var(--chalk-3); }
+  .yd::before { top: 34%; } .yd::after { bottom: 34%; }
+  .yd i { position: absolute; left: -.6em; bottom: 8px; font: 700 20px var(--display); font-style: normal; color: var(--chalk-2); }
+  .marker { position: absolute; top: -2px; bottom: -2px; width: 4px; margin-left: -2px; }
+  .line-to-gain { left: calc((1 + 64 / 256 * 10) / 12 * 100%); background: var(--signal); }
+  .ball { position: absolute; top: 50%; left: calc((1 + 53 / 256 * 10) / 12 * 100%); width: 34px; height: 20px; margin: -10px 0 0 -17px;
+          background: #7A3E1D; border-radius: 50%; border: 2px solid var(--chalk); }
+  .ball::after { content: ""; position: absolute; left: 9px; right: 9px; top: 7px; height: 2px; background: var(--chalk); }
+  .scrim { left: calc((1 + 53 / 256 * 10) / 12 * 100%); background: #3B82F6; width: 3px; }
+  .legend { display: flex; gap: 24px; margin-top: 12px; color: var(--chalk-2); flex-wrap: wrap; }
+  .legend i { display: inline-block; width: 14px; height: 4px; margin-right: 8px; vertical-align: middle; }
 
-  .boxscore { border-top: 1px solid var(--ink); padding: 18px 0 120px; }
-  .boxscore header { display: flex; justify-content: space-between; margin-bottom: 12px; }
-  .strip { display: grid; grid-template-columns: repeat(13, 1fr); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-  .strip div { padding: 12px 8px; border-left: 1px solid var(--rule); font: 13px var(--mono); }
-  .strip div:first-child { border-left: 0; }
-  .strip b { display: block; font-weight: 500; }
-  .strip span { color: var(--ink-2); }
-  .strip em { font-style: normal; display: block; margin-top: 6px; }
-  .strip .w em { color: var(--ink); }
-  .strip .l em { color: var(--ink-2); }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 2px solid var(--rule); }
+  .stat { padding: 16px 24px 20px; border-left: 2px solid var(--rule); }
+  .stat:first-child { border-left: 0; }
+  .stat .mono { color: var(--chalk-3); }
+  .stat .v { font: 900 46px/1 var(--display); color: var(--chalk); margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .stat .v small { font: 500 14px var(--mono); color: var(--chalk-3); }
 
-  .reveal { animation: rise 400ms cubic-bezier(.22,1,.36,1) both; }
-  .reveal.d2 { animation-delay: 120ms; }
-  @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+  .wk { display: grid; grid-template-columns: repeat(13, 1fr); }
+  .g { padding: 14px 10px 16px; border-left: 2px solid rgba(245,247,242,.25); text-align: center; }
+  .g:first-child { border-left: 0; }
+  .g b { display: block; font: 900 24px/1 var(--display); color: var(--chalk); }
+  .g span { font: 12px var(--mono); color: var(--chalk-3); }
+  .g em { display: block; margin-top: 8px; font: 900 18px var(--display); font-style: normal; color: var(--chalk-3); }
+  .g.w em { color: var(--turf-dark); background: var(--signal); }
 
-  @media (max-width: 900px) {
-    .wrap { padding: 0 16px; }
-    .hero { grid-template-columns: 1fr; padding-top: 64px; }
-    .lead { padding-right: 0; border-right: 0; }
-    .index { padding-left: 0; margin-top: 56px; }
-    .masthead nav { display: none; }
-    .strip { grid-template-columns: repeat(4, 1fr); }
-    .strip div:nth-child(4n+1) { border-left: 0; }
-    .strip div:nth-child(n+5) { border-top: 1px solid var(--rule); }
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero .main { border-right: 0; border-bottom: 2px solid var(--rule); padding: 32px 16px; }
+    .side p { padding: 24px 16px; }
+    .mast { padding: 14px 16px; }
+    .mast .mono span:nth-child(n+2) { display: none; }
+    .drive { padding: 18px 16px 24px; }
+    .field { height: 110px; }
+    .yd i { font-size: 14px; }
+    .yd:nth-child(odd) i { display: none; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat { padding: 14px 16px; }
+    .stat:nth-child(3) { border-left: 0; }
+    .stat:nth-child(n+3) { border-top: 2px solid var(--rule); }
+    .wk { grid-template-columns: repeat(4, 1fr); }
+    .g:nth-child(4n+1) { border-left: 0; }
+    .g:nth-child(n+5) { border-top: 2px solid rgba(245,247,242,.25); }
   }
-  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 </head>
 <body>
-<header class="masthead">
-  <div class="wrap">
-    <div class="title">The Bonsai Line</div>
-    <nav class="label"><a href="#">Picks</a><a href="#">Record</a><a href="#">Models</a><a href="#">Method</a></nav>
-  </div>
-</header>
-<div class="dateline"><div class="wrap label"><span>Vol. 2026 — Week 7</span><span>Graded against the pool line</span></div></div>
+<div class="frame">
+  <header class="mast">
+    <div class="word">Bonsai ATS</div>
+    <div class="mono"><span>2026 season</span><span>Week 7</span><span>Graded vs pool line</span></div>
+  </header>
 
-<main class="wrap">
   <section class="hero">
-    <div class="lead reveal">
-      <p class="label"><b>01</b> — This week</p>
-      <h1>Fifty-three picks, each made <i>five minutes</i> before the lock.</h1>
-      <p class="deck">An against-the-spread engine for the CBS Bonsai Pool. It reads the Pinnacle line, picks one side of every game, and is graded on the pool's own number. Nothing is filtered, and no skill is claimed before 256 games.</p>
-      <div class="cta">
-        <a class="btn" href="#">Read week 7 picks</a>
-        <a class="textlink" href="#">The full record →</a>
-      </div>
+    <div class="main">
+      <p class="kick mono">▸ Season record against the pool line</p>
+      <h1>29–24.<br>Moving the <em>chains.</em></h1>
     </div>
-
-    <aside class="index reveal d2" aria-label="Season record">
-      <h2 class="label">02 — The record</h2>
-      <div class="row big"><span class="n">a.</span><span class="k">Season, against the pool line<small>1 game pending</small></span><span class="v">29–24</span></div>
-      <div class="row"><span class="n">b.</span><span class="k">Win rate<small>± .068 standard error</small></span><span class="v">.547</span></div>
-      <div class="row"><span class="n">c.</span><span class="k">Graded toward the pre-registered 256</span><span class="v">53</span></div>
-      <div class="row"><span class="n">d.</span><span class="k">Hybrid model<small>tracked, not used to pick</small></span><span class="v">32–21</span></div>
-      <div class="row"><span class="n">e.</span><span class="k">Key-number shadow<small>tracked, not used to pick</small></span><span class="v">27–17</span></div>
-      <p class="footnote">Only the official pick counts. The other models are kept for comparison.</p>
-    </aside>
-  </section>
-
-  <section class="boxscore" aria-label="Week 6 results">
-    <header class="label"><span>03 — Week 6 box score · 7–5</span><span>Pick · line · result</span></header>
-    <div class="strip">
-      <div class="l"><b>SEA</b><span>−2.5</span><em>L</em></div>
-      <div class="w"><b>HOU</b><span>+2.5</span><em>W</em></div>
-      <div class="w"><b>CHI</b><span>−3.5</span><em>W</em></div>
-      <div class="l"><b>BAL</b><span>−4.5</span><em>L</em></div>
-      <div class="w"><b>TEN</b><span>+6.5</span><em>W</em></div>
-      <div class="w"><b>NYJ</b><span>+7.5</span><em>W</em></div>
-      <div class="w"><b>NO</b><span>+1.5</span><em>W</em></div>
-      <div class="w"><b>CAR</b><span>+1.5</span><em>W</em></div>
-      <div class="w"><b>PIT</b><span>−2.5</span><em>W</em></div>
-      <div class="l"><b>LAC</b><span>+8.5</span><em>L</em></div>
-      <div class="l"><b>BUF</b><span>−5.5</span><em>L</em></div>
-      <div class="l"><b>DAL</b><span>+1.5</span><em>L</em></div>
-      <div><b>WAS</b><span>+7.5</span><em>—</em></div>
+    <div class="side">
+      <p>One pick per game, five minutes before lock, from the Pinnacle number. Graded on the pool's own line, nothing filtered. The verdict comes at 256 graded games, the far end zone.</p>
+      <div class="exit"><a class="go" href="#">Week 7 picks →</a><a class="mono" href="#">Full record</a></div>
     </div>
   </section>
-</main>
+
+  <section class="drive" aria-label="Progress toward 256 graded games">
+    <div class="drive-head mono"><span>The drive · <b>53 of 256 graded</b> · ball on our own 21</span><span>Next marker: 64 games (the 25)</span></div>
+    <div class="field">
+      <div class="ez"><span>Kickoff</span></div>
+      <div class="yd"><i>G</i></div><div class="yd"><i>10</i></div><div class="yd"><i>20</i></div><div class="yd"><i>30</i></div><div class="yd"><i>40</i></div>
+      <div class="yd"><i>50</i></div><div class="yd"><i>40</i></div><div class="yd"><i>30</i></div><div class="yd"><i>20</i></div><div class="yd"><i>10</i></div>
+      <div class="ez goal"><span>256</span></div>
+      <i class="marker scrim" aria-hidden="true"></i>
+      <i class="marker line-to-gain" aria-hidden="true"></i>
+      <i class="ball" aria-hidden="true"></i>
+    </div>
+    <div class="legend mono"><span><i style="background:#3B82F6"></i>Line of scrimmage: 53 graded</span><span><i style="background:var(--signal)"></i>Line to gain: 64 graded</span></div>
+  </section>
+
+  <section class="stats" aria-label="Season stats">
+    <div class="stat"><div class="mono">Record</div><div class="v">29–24</div></div>
+    <div class="stat"><div class="mono">Win rate</div><div class="v">.547 <small>±.068</small></div></div>
+    <div class="stat"><div class="mono">Week 6</div><div class="v">7–5</div></div>
+    <div class="stat"><div class="mono">Pending</div><div class="v">1</div></div>
+  </section>
+
+  <section class="wk" aria-label="Week 6 picks">
+    <div class="g"><b>SEA</b><span>−2.5</span><em>L</em></div>
+    <div class="g w"><b>HOU</b><span>+2.5</span><em>W</em></div>
+    <div class="g w"><b>CHI</b><span>−3.5</span><em>W</em></div>
+    <div class="g"><b>BAL</b><span>−4.5</span><em>L</em></div>
+    <div class="g w"><b>TEN</b><span>+6.5</span><em>W</em></div>
+    <div class="g w"><b>NYJ</b><span>+7.5</span><em>W</em></div>
+    <div class="g w"><b>NO</b><span>+1.5</span><em>W</em></div>
+    <div class="g w"><b>CAR</b><span>+1.5</span><em>W</em></div>
+    <div class="g w"><b>PIT</b><span>−2.5</span><em>W</em></div>
+    <div class="g"><b>LAC</b><span>+8.5</span><em>L</em></div>
+    <div class="g"><b>BUF</b><span>−5.5</span><em>L</em></div>
+    <div class="g"><b>DAL</b><span>+1.5</span><em>L</em></div>
+    <div class="g"><b>WAS</b><span>+7.5</span><em>–</em></div>
+  </section>
+</div>
 </body>
 </html>
