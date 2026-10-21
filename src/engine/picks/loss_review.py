@@ -46,6 +46,14 @@ def game_paths(pbp: pl.DataFrame) -> dict[str, dict]:
     return out
 
 
+def _num(v) -> float | None:
+    """A recorded number, or None for blanks and 'UNAVAILABLE' (picks made with no market have no cover probability)."""
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return None
+
+
 def _cov(home_margin: float, pick_is_home: bool, home_line: float) -> float:
     s = 1 if pick_is_home else -1
     return s * (home_margin + home_line)
@@ -98,8 +106,8 @@ def build(graded: list[dict], preds: list[dict], sched: pl.DataFrame, paths: dic
         losses.append({
             "id": gid, "week": int(r["week"]), "away": away, "home": home, "pick": r["pick"], "opp": opp,
             "line": pl_line, "fin": fin, "cov5": cov5, "as": int(g["away_score"]), "hs": int(g["home_score"]),
-            "drift": float(p["drift"]) if p.get("drift") not in (None, "", "UNAVAILABLE") else None,
-            "p": float(pk) if pk not in (None, "") else None, "to": tos, "tags": tags,
+            "drift": _num(p.get("drift")),
+            "p": _num(pk), "to": tos, "tags": tags,
             "peak": max((f[1] for f in flow[1:]), default=None) if flow else None,
             "flow": flow, "tos": [[t, "pick" if tm == r["pick"] else "opp"] for t, tm in (path or {}).get("to", [])],
             "others": {k: (r.get(f) or "").strip()[-1:] or None for k, f in

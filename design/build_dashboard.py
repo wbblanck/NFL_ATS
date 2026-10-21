@@ -5,13 +5,14 @@ The live dashboard (built by engine.picks.dashboard) embeds its data as
 scoreboard template, so the design can be reviewed on real data without
 touching the pick pipeline.
 
-    python design/build_dashboard.py
+    python design/build_dashboard.py [path/to/dashboard.html]   (default site/dashboard.html)
 """
 import base64
 import html
 import json
 import pathlib
 import re
+import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "site" / "dashboard.html"
@@ -21,9 +22,10 @@ LOGOS = ROOT / "design" / "logos"
 
 
 def main() -> None:
-    m = re.search(r"const D=(\{.*?\});\n", SRC.read_text(), re.S)
+    src = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else SRC
+    m = re.search(r"const D=(\{.*?\});\n", src.read_text(), re.S)
     if not m:
-        raise SystemExit(f"no data payload found in {SRC}")
+        raise SystemExit(f"no data payload found in {src}")
     data = json.loads(m.group(1))
     logos = {p.stem: "data:image/png;base64," + base64.b64encode(p.read_bytes()).decode() for p in sorted(LOGOS.glob("*.png"))}
     payload = json.dumps(data, separators=(",", ":")).replace("</", "<\\/")

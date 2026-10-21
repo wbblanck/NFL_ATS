@@ -318,6 +318,98 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .flipb.pre .fc.new, .flipb.pre .trail { opacity: 0; }
 .chk.pre { opacity: 0; }
 
+/* Other models' picks on the board */
+.mrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 10px; padding: 7px 9px; background: var(--well); border-radius: 6px; }
+.mrow .k { font-size: 9.5px; margin-right: 2px; }
+.mrow.diff { box-shadow: inset 0 0 0 1px rgba(255,176,32,.35); }
+.mp { display: inline-flex; align-items: center; gap: 5px; font: 500 11px var(--mono); color: var(--ink-2); border: 1px solid var(--line-2); border-radius: 5px; padding: 2px 7px 2px 5px; }
+.mp em { font-style: normal; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.mp .logo, .mp .logo-alt { width: 16px; height: 16px; border-radius: 3px; font-size: 7px; }
+.mp b { font: 700 14px var(--display); letter-spacing: .04em; color: var(--ink); }
+.mp.off { border-color: rgba(255,176,32,.5); } .mp.off b { color: var(--amber); }
+.mp.dif { border-color: rgba(61,165,255,.6); background: rgba(61,165,255,.1); } .mp u { text-decoration: none; color: var(--blue); }
+.mp .ok { color: var(--win); } .mp .no { color: var(--loss); }
+
+/* Card sparkline */
+.spkrow { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; margin-top: 10px; background: var(--well); border-radius: 6px; padding: 7px 9px; }
+.spkrow .k { font-size: 9.5px; white-space: nowrap; } .spk { height: 30px; }
+.mvtag { display: inline-flex; align-items: center; gap: 4px; }
+@media (max-width: 400px) { .spkrow { grid-template-columns: 1fr auto; } .spkrow .spk { grid-column: 1 / -1; grid-row: 2; } }
+.mvleg { font: 10px var(--mono); color: var(--ink-3); margin-top: 4px; }
+
+/* Finals replay */
+.rbar { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; flex-wrap: wrap; }
+.rbtn { font: 600 12px var(--body); letter-spacing: .04em; color: #120C00; background: var(--amber); border: 0; border-radius: 6px; padding: 8px 14px; cursor: pointer; white-space: nowrap; }
+.rbtn:hover { filter: brightness(1.08); }
+.rbar input[type=range] { flex: 1 1 140px; min-width: 0; accent-color: var(--amber); }
+.rread { display: flex; gap: 14px; align-items: baseline; font: 500 12px var(--mono); color: var(--ink-2); white-space: nowrap; }
+.rread b { font: 900 22px var(--display); color: var(--ink); text-transform: uppercase; letter-spacing: .02em; }
+.rread span { font: 900 22px var(--display); color: var(--amber); }
+.fin .mg { font: 900 24px var(--display); font-variant-numeric: tabular-nums; color: var(--ink-3); min-width: 3ch; text-align: right; }
+.fin .mg.up { color: var(--win); } .fin .mg.dn { color: var(--loss); }
+.fin.inplay > i { background: var(--amber); }
+.fin .res .ld { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--amber); animation: pulse 1.4s ease-in-out infinite; }
+.fin .res { min-width: 1.2ch; text-align: right; }
+.fin .top { gap: 8px; } .fin .who { flex: 1; min-width: 0; }
+.fin svg { margin-top: 2px; }
+@media (prefers-reduced-motion: reduce) { .rbtn { display: none; } }
+
+/* Loss review */
+.lr-tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0 0 14px; }
+.lr-tiles button { cursor: pointer; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 8px; text-align: center; color: var(--ink-2); font: inherit; }
+.lr-tiles button:hover { border-color: var(--line-2); }
+.lr-tiles button[aria-pressed="true"] { border-color: var(--amber); background: var(--panel-2); }
+.lr-tiles b { display: block; font: 900 34px/1 var(--display); color: var(--ink); }
+.lr-tiles .late b { color: var(--loss); }
+.lr-tiles span { display: block; margin-top: 4px; font: 11px/1.25 var(--mono); }
+@media (max-width: 640px) { .lr-tiles { grid-template-columns: repeat(3, 1fr); } .lr-tiles b { font-size: 28px; } }
+.lr-swing { margin: 0 0 16px; }
+.lr-swing .top { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font: 12px var(--mono); color: var(--ink-2); margin-bottom: 6px; }
+.lr-swing .top b { color: var(--ink); font-weight: 500; }
+.lr-swing .bar { display: flex; height: 12px; border-radius: 999px; overflow: hidden; gap: 2px; background: var(--panel); }
+.lr-swing .bar i { display: block; height: 100%; } .lr-swing .bar .a { background: var(--loss); } .lr-swing .bar .f { background: var(--win); }
+.lr-swing p { margin: 6px 0 0; font-size: 12.5px; color: var(--ink-3); }
+.lr-key { display: flex; flex-wrap: wrap; gap: 6px 16px; font: 11px var(--mono); color: var(--ink-3); margin: 0 0 12px; align-items: center; }
+.lr-key span { display: inline-flex; align-items: center; gap: 6px; }
+.lr-key svg { width: auto; display: inline-block; flex: none; }
+.lr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 10px; }
+@media (max-width: 400px) { .lr-grid { grid-template-columns: minmax(0, 1fr); } }
+.lr-more { margin-top: 12px; font: 500 12px var(--mono); color: var(--ink); background: var(--panel); border: 1px solid var(--line-2); border-radius: 6px; padding: 8px 14px; cursor: pointer; }
+.lrc { border: 1px solid var(--line); border-radius: 8px; padding: 12px 12px 10px; background: var(--panel); position: relative; min-width: 0; }
+.lrc-h { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.lrc-h .lwk { font: 11px var(--mono); color: var(--ink-3); letter-spacing: .06em; text-transform: uppercase; }
+.lrc-h h4 { margin: 2px 0 0; font: 900 24px/1 var(--display); text-transform: uppercase; color: var(--ink); letter-spacing: .02em; }
+.lrc-h h4 small { font: 13px var(--mono); color: var(--ink-2); text-transform: none; margin: 0 4px; }
+.lrc-h .miss { text-align: right; } .lrc-h .miss b { display: block; font: 900 30px/1 var(--display); color: var(--loss); } .lrc-h .miss span { font: 11px var(--mono); color: var(--ink-3); }
+.lrc .pk { display: inline-block; margin-top: 6px; font: 500 12px var(--mono); border: 1px solid rgba(255,176,32,.5); color: var(--amber); border-radius: 5px; padding: 2px 8px; }
+.lrc .pk em { font-style: normal; opacity: .7; margin-left: 6px; }
+.lrc .flow { position: relative; margin: 8px 0 4px; }
+.lrc .flow svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
+.lrc .flow text { font: 10.5px var(--mono); fill: var(--ink-3); }
+.lrc .f-up { fill: var(--win); opacity: .16; } .lrc .f-dn { fill: var(--loss); opacity: .16; }
+.lrc .f-line { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; }
+.lrc .f-zero { stroke: var(--ink-2); stroke-width: 1.25; stroke-dasharray: 4 3; }
+.lrc .f-late { fill: var(--amber); opacity: .12; transition: opacity .35s; } .lrc svg.late-on .f-late { opacity: .35; }
+.lrc .f-head circle { fill: var(--amber); stroke: var(--ink); stroke-width: 2; }
+.lrc-bar { display: flex; align-items: center; gap: 10px; min-height: 30px; margin: 0 0 4px; }
+.lrc .play { cursor: pointer; font: 500 12px var(--mono); color: var(--ink); border: 1px solid var(--line-2); border-radius: 999px; padding: 5px 12px; flex: none; background: var(--panel-2); }
+.lrc .play:disabled { opacity: .5; cursor: default; }
+.lrc .rclock { font: 11.5px var(--mono); color: var(--ink-2); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .lrc-bar { display: none; } }
+.lrc .f-q { stroke: var(--line-2); stroke-width: 1; } .lrc .f-x { stroke: var(--ink-3); stroke-width: 1; }
+.lrc .f-end { stroke: var(--panel); stroke-width: 2; }
+.lrc .to-p { fill: var(--loss); } .lrc .to-o { fill: var(--win); }
+.lrc .ftip { position: absolute; top: 0; pointer-events: none; background: var(--panel-2); border: 1px solid var(--line-2); color: var(--ink); border-radius: 6px; padding: 5px 8px; font: 11.5px/1.4 var(--mono); white-space: nowrap; z-index: 3; }
+.lrc .ftip[hidden] { display: none; }
+.lrc .note { font-size: 13px; color: var(--ink-2); margin: 2px 0 8px; }
+.lrc .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.lrc .tg { font: 500 10.5px var(--mono); border-radius: 4px; padding: 2px 8px; background: var(--panel-2); color: var(--ink); border: 1px solid var(--line-2); }
+.lrc .tg.late, .lrc .tg.hook { border-color: rgba(255,176,32,.5); color: var(--amber); }
+.lrc .tg.far, .lrc .tg.to_lost { border-color: rgba(240,82,74,.5); color: var(--loss); }
+.lrc .tg.to_won { border-color: rgba(47,203,122,.5); color: var(--win); }
+.lrc .oth { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 9px; padding-top: 8px; border-top: 1px solid var(--line); font: 11.5px var(--mono); color: var(--ink-3); }
+.lrc .oth .ok { color: var(--win); } .lrc .oth .no { color: var(--loss); }
+
 footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40px; font: 11px/1.7 var(--mono); color: var(--ink-3); }
 
 @media (max-width: 900px) {
@@ -339,7 +431,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
 <body>
 <nav><div class="wrap">
   <div class="brand">Bonsai <span>ATS</span></div>
-  <div class="navlinks"><a href="#board">This week</a><a href="#season">Season</a><a href="#models">Models</a><a href="#finals">Last week</a></div>
+  <div class="navlinks"><a href="#board">This week</a><a href="#season">Season</a><a href="#models">Models</a><a href="#finals">Last week</a><a href="#whylost">Why we lost</a></div>
   <a class="livepill" id="livepill" href="#board"><i></i><span id="livetxt"></span></a>
   <div class="updated" id="updated"></div>
 </div></nav>
@@ -378,6 +470,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
       <button class="chip" data-f="all" aria-pressed="true">All games</button>
       <button class="chip" data-f="moved" aria-pressed="false">Market moved</button>
       <button class="chip" data-f="flat" aria-pressed="false">On pool line</button>
+      <button class="chip" data-f="diff" aria-pressed="false">Models disagree</button>
       <input id="q" type="search" placeholder="Find a team" aria-label="Find a team">
       <select id="sort" aria-label="Sort games">
         <option value="ko">Sort: kickoff</option>
@@ -397,6 +490,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
         <div id="curve"></div>
         <div class="mkeys" id="curve-key"></div>
         <p class="sim-note" id="sim-note" hidden></p>
+        <p class="sim-note" id="baseline-note"></p>
         <p class="verdict" id="verdict"></p>
       </div>
       <div class="pane">
@@ -414,7 +508,19 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
 
   <section id="finals" aria-label="Last week's finals">
     <div class="head"><h2 id="finalsh"></h2><span class="k">Line shows the pick's cover margin through the game</span></div>
+    <div class="rbar" id="replay-bar"><button class="rbtn" id="sl-play" type="button">▶ Replay the week</button>
+      <input id="sl-seek" type="range" min="0" max="1000" value="1000" aria-label="Scrub through the week">
+      <div class="rread"><b id="sl-clock"></b><span id="sl-rec"></span></div></div>
     <div class="finals" id="fin"></div>
+  </section>
+
+  <section id="whylost" aria-label="Why we lost" hidden>
+    <div class="head"><h2>Why we lost</h2><span class="k">Every official loss, play by play · descriptive only</span></div>
+    <div class="lr-tiles" id="lr-tiles"></div>
+    <div class="lr-swing" id="lr-swing"></div>
+    <div class="lr-key"><span><svg width="22" height="10"><line x1="0" x2="22" y1="5" y2="5" stroke="#F4F6F8" stroke-width="2"/></svg>Cover margin: above the line = covering</span><span><svg width="12" height="10"><rect width="12" height="10" fill="#FFB020" opacity=".3"/></svg>Last 5:00</span><span><svg width="10" height="10"><path d="M0 0H10L5 9Z" fill="#F0524A"/></svg>our turnover</span><span><svg width="10" height="10"><path d="M0 9H10L5 0Z" fill="#2FCB7A"/></svg>their turnover</span></div>
+    <div class="lr-grid" id="lr-grid"></div>
+    <button class="lr-more" id="lr-more" hidden></button>
   </section>
 
   <footer>
@@ -528,25 +634,52 @@ $("#boardh").textContent = `Week ${D.week} board`;
 let filt = "all";
 const median = a => { const s = a.filter(v => v != null).sort((x, y) => x - y); if (!s.length) return null; const m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
 
-function moveSvg(g, det) {
-  if (!det || !det.t || !det.t.length) return "";
-  const books = Object.values(det.b || {});
-  const pts = det.t.map((t, i) => [Date.parse(t), median(books.map(b => b[i]))]).filter(p => p[1] != null);
-  if (pts.length < 2) return "";
-  const ys = pts.map(p => p[1]).concat([g.line]);
-  const y0 = Math.min(...ys) - .5, y1 = Math.max(...ys) + .5, x0 = pts[0][0], x1 = pts[pts.length - 1][0];
-  const X = x => 4 + (x - x0) / (x1 - x0 || 1) * 292, Y = y => 8 + (y - y0) / (y1 - y0) * 54;
-  const path = pts.map((p, i) => `${i ? "L" : "M"}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join("");
-  const last = pts[pts.length - 1];
-  return `<div><div class="mini-h"><span class="k">Market median, ${esc(g.home)} spread</span><span class="k">${pts.length} captures</span></div>
-  <svg viewBox="0 0 300 74" role="img" aria-label="Market line movement">
-    <line x1="0" x2="300" y1="${Y(g.line)}" y2="${Y(g.line)}" stroke="#FFB020" stroke-dasharray="3 3" stroke-width="1"/>
-    <text x="300" y="${Y(g.line) - 4}" fill="#FFB020" font-size="9" font-family="IBM Plex Mono" text-anchor="end">pool ${sp(g.line)}</text>
-    <path d="${path}" fill="none" stroke="#F4F6F8" stroke-width="1.6"/>
-    <circle cx="${X(last[0])}" cy="${Y(last[1])}" r="3" fill="#F4F6F8"/>
-    <text x="${X(last[0]) - 6}" y="${Y(last[1]) + (Y(last[1]) > 40 ? -7 : 13)}" fill="#9AA4B2" font-size="9" font-family="IBM Plex Mono" text-anchor="end">${sp(last[1])}</text>
-  </svg></div>`;
+function seriesOf(det) {   // median of all books at each capture, as [ms, value]
+  const books = Object.values((det && det.b) || {});
+  return ((det && det.t) || []).map((t, i) => [Date.parse(t), median(books.map(b => b[i]))]).filter(p => p[1] != null);
 }
+function moveSvg(g, det) {
+  const pts = seriesOf(det);
+  if (pts.length < 2) return "";
+  const ET = "America/New_York", names = Object.keys(det.b || {});
+  const all = Object.values(det.b).flat().filter(v => v != null).concat([g.line]);
+  const y0 = Math.floor((Math.min(...all) - .5) * 2) / 2, y1 = Math.ceil((Math.max(...all) + .5) * 2) / 2, x0 = pts[0][0], x1 = pts[pts.length - 1][0];
+  const W = 300, H = 120, m = { l: 30, r: 46, t: 8, b: 18 };
+  const X = x => m.l + (x - x0) / (x1 - x0 || 1) * (W - m.l - m.r), Y = y => m.t + (y1 - y) / (y1 - y0) * (H - m.t - m.b);
+  const line = a => a.map((p, i) => `${i ? "L" : "M"}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join("");
+  const bookLines = names.map(n => { const p = det.t.map((t, i) => [Date.parse(t), det.b[n][i]]).filter(q => q[1] != null); return p.length > 1 ? `<path d="${line(p)}" fill="none" stroke="rgba(154,164,178,.32)" stroke-width="1"><title>${esc(n)}</title></path>` : ""; }).join("");
+  const days = []; let seen = "";
+  pts.forEach(p => { const d = new Date(p[0]).toLocaleDateString("en-US", { weekday: "short", timeZone: ET }); if (d !== seen) { days.push([p[0], d]); seen = d; } });
+  const last = pts[pts.length - 1], first = pts[0];
+  const grid = [y0, Math.round((y0 + y1) / 2 * 2) / 2, y1].map(v => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="rgba(255,255,255,.07)"/><text x="${m.l - 4}" y="${Y(v) + 3}" fill="#7C8696" font-size="8.5" font-family="IBM Plex Mono" text-anchor="end">${sp(v)}</text>`).join("");
+  return `<div><div class="mini-h"><span class="k">Line movement, ${esc(g.home)} spread</span><span class="k">${pts.length} captures · ${names.length} books</span></div>
+  <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Line movement across the week">${grid}${bookLines}
+    <line x1="${m.l}" x2="${W - m.r}" y1="${Y(g.line)}" y2="${Y(g.line)}" stroke="#FFB020" stroke-dasharray="3 3" stroke-width="1"/>
+    <text x="${W - m.r + 3}" y="${Y(g.line) + 3}" fill="#FFB020" font-size="8.5" font-family="IBM Plex Mono">pool ${sp(g.line)}</text>
+    <path d="${line(pts)}" fill="none" stroke="#F4F6F8" stroke-width="2.2" stroke-linejoin="round"/>
+    <circle cx="${X(first[0])}" cy="${Y(first[1])}" r="2.8" fill="#9AA4B2"/><circle cx="${X(last[0])}" cy="${Y(last[1])}" r="3.4" fill="#F4F6F8"/>
+    <text x="${W - m.r + 3}" y="${Y(last[1]) + (Math.abs(Y(last[1]) - Y(g.line)) < 11 ? 12 : 3)}" fill="#F4F6F8" font-size="8.5" font-family="IBM Plex Mono">${sp(last[1])}</text>
+    ${days.map(([t, d]) => `<text x="${X(t)}" y="${H - 4}" fill="#7C8696" font-size="8.5" font-family="IBM Plex Mono" text-anchor="${X(t) < m.l + 12 ? "start" : "middle"}">${d}</text>`).join("")}
+  </svg><div class="mvleg">Bold = median of all books · thin = each book · dashed = pool line</div></div>`;
+}
+function sparkHtml(g, det) {
+  const pts = seriesOf(det); if (pts.length < 2) return "";
+  const vals = pts.map(p => p[1]), lo = Math.min(...vals, g.line) - .5, hi = Math.max(...vals, g.line) + .5, w = 150, h = 34;
+  const x = i => 3 + (w - 6) * i / (pts.length - 1), y = v => 3 + (h - 6) * (v - lo) / (hi - lo);
+  const last = pts[pts.length - 1], prev = [...pts].reverse().find(p => last[0] - p[0] >= 20 * 36e5) || pts[0], mv = last[1] - prev[1];
+  const tag = mv === 0 ? "flat since yesterday" : `${sp(mv)} since yesterday`;
+  return `<div class="spkrow"><span class="k">Line this week</span><svg class="spk" viewBox="0 0 ${w} ${h}" aria-hidden="true"><line x1="0" x2="${w}" y1="${y(g.line)}" y2="${y(g.line)}" stroke="#FFB020" stroke-dasharray="2 3"/>
+    <polyline points="${pts.map((p, i) => `${x(i).toFixed(1)},${y(p[1]).toFixed(1)}`).join(" ")}" fill="none" stroke="#F4F6F8" stroke-width="1.6"/><circle cx="${x(pts.length - 1)}" cy="${y(last[1])}" r="2.6" fill="#F4F6F8"/></svg>
+    <span class="k">${sp(pts[0][1])} → ${sp(last[1])} · ${tag}</span></div>`;
+}
+function modelsHtml(g) {
+  const items = [["Official", g.pick, null]];
+  if (g.hy) items.push(["Hybrid", g.hy, g.hres]);
+  if (g.ppick) items.push([g.pver === "proj-players-v3" ? "Player" : "Team-only", g.ppick, g.pres]);
+  const diff = items.slice(1).some(i => i[1] !== g.pick);
+  return `<div class="mrow${diff ? " diff" : ""}"><span class="k">Model picks</span>${items.map(([l, t, r], i) => `<span class="mp${i === 0 ? " off" : t !== g.pick ? " dif" : ""}"><em>${l}</em>${logo(t)}<b>${esc(t)}</b>${i && t !== g.pick ? "<u>≠</u>" : ""}${r === "W" ? ' <span class="ok">✓</span>' : r === "L" ? ' <span class="no">✕</span>' : ""}</span>`).join("")}</div>`;
+}
+const disagrees = g => (g.hy && g.hy !== g.pick) || (g.ppick && g.ppick !== g.pick);
 function booksHtml(g, det) {
   const bk = det && det.lock && det.lock.books;
   if (!bk || !bk.length) return "";
@@ -616,6 +749,8 @@ function card(g) {
       <div><div class="k">Market</div><div class="v">${esc(g.home)} ${sp(g.market)}</div></div>
       <div><div class="k">Books</div><div class="v">${g.books ?? "—"}</div></div>
     </div>
+    ${sparkHtml(g, det)}
+    ${modelsHtml(g)}
     <div class="cover">
       <div class="row"><span class="k">${esc(g.pick)} cover chance</span><span class="pct">${pct(p)}</span></div>
       <div class="gauge"><i style="width:${fillW}%"></i><u style="left:${evenX}%"></u></div>
@@ -633,7 +768,7 @@ function card(g) {
 }
 function renderGames() {
   const q = $("#q").value.trim().toUpperCase(), s = $("#sort").value;
-  let gs = D.games.filter(g => filt === "all" || (filt === "moved" ? Math.abs(g.drift || 0) > 0 : !g.drift));
+  let gs = D.games.filter(g => filt === "all" || (filt === "diff" ? disagrees(g) : filt === "moved" ? Math.abs(g.drift || 0) > 0 : !g.drift));
   if (q) gs = gs.filter(g => g.home.includes(q) || g.away.includes(q));
   gs = gs.slice().sort(s === "p" ? (a, b) => b.pick_p - a.pick_p : s === "gap" ? (a, b) => Math.abs(b.drift || 0) - Math.abs(a.drift || 0) || a.ko_iso.localeCompare(b.ko_iso) : (a, b) => a.ko_iso.localeCompare(b.ko_iso));
   $("#games").innerHTML = gs.map(card).join("") || `<p class="k">No games match.</p>`;
@@ -663,12 +798,13 @@ setLive(liveData);
 (function () {
   const c = D.curve; if (!c || !c.games || !c.games.length) return;
   const n = c.games.length, band = c.band;
+  if (c.cum.favorite && !c.cum.underdog) c.cum.underdog = c.cum.favorite.map(v => -v || 0);   // the mirror of always-the-favorite on the same games
   const S = [["official", "Official pick", "#FFB020", null, 2.6], ["hybrid", "Hybrid", "#3DA5FF", null, 2], ["v1", "Team-only (v1)", "#34D3C0", null, 1.8],
-    ["v3", "Player (v3)", "#B794F6", null, 1.8], ["keynum", "Key-number", "#9AA4B2", "6 3", 1.5], ["favorite", "Always the favorite", "#7C8696", "2 4", 1.4],
+    ["v3", "Player (v3)", "#B794F6", null, 1.8], ["keynum", "Key-number", "#9AA4B2", "6 3", 1.5], ["underdog", "Always the underdog", "#F472B6", "3 3", 1.8], ["favorite", "Always the favorite", "#7C8696", "2 4", 1.4],
     ["home", "Always the home team", "#7C8696", "1 3", 1.4]].filter(s => c.cum[s[0]]);
-  let on = null; try { on = JSON.parse(localStorage.getItem("nfl_curve_on")); } catch (e) {}
+  let on = null; try { on = JSON.parse(localStorage.getItem("nfl_curve_on_v2")); } catch (e) {}
   on = Array.isArray(on) ? on.filter(k => S.some(s => s[0] === k)) : null;
-  if (!on || !on.length) on = ["official", "hybrid", "v1", "v3", "keynum"].filter(k => S.some(s => s[0] === k));
+  if (!on || !on.length) on = ["official", "hybrid", "v1", "v3", "keynum", "underdog"].filter(k => S.some(s => s[0] === k));
   let ghosts = false, armed = !REDUCED;   // armed: lines wait, unrevealed, for the cascade to reach them
   const fin = k => c.cum[k][n - 1], sg = v => v > 0 ? "+" + v : v < 0 ? "−" + (-v) : "0";
   const sw = (col, d, w) => `<svg viewBox="0 0 22 6" aria-hidden="true"><line x1="0" x2="22" y1="3" y2="3" stroke="${col}" stroke-width="${Math.max(2, w)}"${d ? ` stroke-dasharray="${d}"` : ""}/></svg>`;
@@ -693,7 +829,7 @@ setLive(liveData);
       on = b.dataset.all === "1" ? S.map(s => s[0]) : ["official"]; persist(); startReveal(on.slice(), 0, 900); keys();
     });
   }
-  const persist = () => { try { localStorage.setItem("nfl_curve_on", JSON.stringify(on)); } catch (e) {} };
+  const persist = () => { try { localStorage.setItem("nfl_curve_on_v2", JSON.stringify(on)); } catch (e) {} };
   function gnote() {
     const end = ghostPaths().map(q => q[n - 1]), share = k => `${end.filter(v => v >= fin(k)).length} of ${GN}`;
     $("#sim-note").innerHTML = `<b>Simulated, not data:</b> ${GN} coin-flip pickers over the same ${n} games, drawn behind our lines. Finished at or above Official (${sg(fin("official"))}): <b>${share("official")}</b>.`;
@@ -747,6 +883,8 @@ setLive(liveData);
   keys(); draw();
   CASCADE.line = delay => { armed = false; startReveal(on.slice(), delay, 1300); };
   $("#verdict").textContent = c.verdict;
+  if (c.cum.underdog) { const u = fin("underdog"), inb = Math.abs(u) <= band[n - 1];
+    $("#baseline-note").textContent = `Always the underdog is ${sg(u)} to the official ${sg(fin("official"))} over the same ${n} games, ${inb ? "inside" : "outside"} the coin-flip band. It is a no-skill rule, so a lead like this over a few dozen games is luck-sized, not a better strategy.`; }
 })();
 
 /* Weeks: one dot per graded game, in game order. New results since your last visit start gray and pop in. */
@@ -790,23 +928,129 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
   whenVisible($("#standings"), () => { go.forEach(([i, j, f]) => f(200 + i * 110 + j * 50)); saveSeen(); });
 })();
 
-/* Last week's finals with cover-margin flow */
-$("#finalsh").textContent = `Week ${D.slate.week} finals · ${lw[0]}–${lw[1]}`;
-$("#fin").innerHTML = lastFinals.map(g => {
-  const fl = g.flow || [];
-  let svg = "";
-  if (fl.length > 1) {
-    const ys = fl.map(p => p[1]), lim = Math.max(7, ...ys.map(Math.abs)), xm = Math.max(60, fl[fl.length - 1][0]);
-    const X = x => x / xm * 236 + 2, Y = y => 22 - y / lim * 18;
-    const col = g.res === "W" ? "#2FCB7A" : g.res === "L" ? "#F0524A" : "#9AA4B2";
-    svg = `<svg viewBox="0 0 240 44" aria-hidden="true"><line x1="0" x2="240" y1="22" y2="22" stroke="rgba(255,255,255,.18)" stroke-dasharray="3 3"/>
-      <path d="${fl.map((p, i) => `${i ? "L" : "M"}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join("")}" fill="none" stroke="${col}" stroke-width="1.6"/></svg>`;
+/* Last week's finals, with a replay of the whole week on one clock */
+(function () {
+  const SL = D.slate || {}, Gs = (SL.games || []).filter(x => x.ko);
+  $("#finalsh").textContent = `Week ${SL.week || D.week - 1} finals · ${lw[0]}–${lw[1]}`;
+  if (!Gs.length) { $("#replay-bar").hidden = true; $("#fin").innerHTML = '<p class="k">No finished games to show.</p>'; return; }
+  const ET = "America/New_York", H3 = 3 * 36e5, sg = v => (v > 0 ? "+" : v < 0 ? "−" : "") + (Math.abs(v) % 1 ? Math.abs(v).toFixed(1) : String(Math.abs(v)));
+  const gm = Gs.map(x => { const fl = x.flow && x.flow.length ? x.flow : null; return { ...x, ko: Date.parse(x.ko), fl, Tg: Math.max(60, fl ? fl[fl.length - 1][0] : 60), lim: Math.max(7, ...(fl || []).map(p => Math.abs(p[1])), Math.abs(x.fin)) }; });
+  const iv = []; gm.map(x => [x.ko - 15 * 6e4, x.ko + H3]).sort((a, b) => a[0] - b[0]).forEach(([a, b]) => { const l = iv[iv.length - 1]; if (l && a <= l[1]) l[1] = Math.max(l[1], b); else iv.push([a, b]); });
+  const A = iv.reduce((t, [a, b]) => t + b - a, 0);
+  const tAt = p => { let a = p * A; for (const [s, e] of iv) { if (a <= e - s) return s + a; a -= e - s; } return iv[iv.length - 1][1]; };   // idle stretches between kickoff windows are skipped
+  const covAt = (x, min) => { let c = x.fl[0][1]; for (const q of x.fl) { if (q[0] <= min) c = q[1]; else break; } return c; };
+  $("#fin").innerHTML = gm.map((x, i) => `<div class="fin" id="slc${i}"><i></i><div class="body"><div class="top"><span class="who">${logo(x.pick)}<b>${esc(x.pick)} ${sp(x.line)}</b></span><span class="mg" id="slm${i}"></span><span class="res" id="slb${i}"></span></div>
+    <div class="sub2">${esc(x.away)} @ ${esc(x.home)} · vs line ${sp(x.fin)}</div><svg viewBox="0 0 240 44" aria-hidden="true"><line x1="0" x2="240" y1="22" y2="22" stroke="rgba(255,255,255,.18)" stroke-dasharray="3 3"/><path id="slp${i}" fill="none" stroke-width="1.6"/></svg></div></div>`).join("");
+  const clk = ms => new Date(ms).toLocaleString("en-US", { timeZone: ET, weekday: "short", hour: "numeric", minute: "2-digit" });
+  const render = p => {
+    const t = tAt(p); let w = 0, l = 0, live = 0;
+    gm.forEach((x, i) => {
+      const el = $("#slc" + i), m = $("#slm" + i), b = $("#slb" + i), e = t - x.ko, started = e >= 0, done = e >= H3;
+      const min = Math.min(x.Tg, Math.max(0, e / H3 * x.Tg)), c = started ? (done || !x.fl ? x.fin : covAt(x, min)) : null;
+      el.className = "fin" + (done ? " " + x.res : started ? " inplay" : "");
+      if (done) { x.res === "W" ? w++ : l++; } else if (started) live++;
+      const path = $("#slp" + i);
+      if (c == null) { m.className = "mg"; m.textContent = ""; b.innerHTML = `<span class="sub2">${new Date(x.ko).toLocaleString("en-US", { timeZone: ET, hour: "numeric", minute: "2-digit" })}</span>`; path.setAttribute("d", ""); return; }
+      m.className = "mg " + (c > 0 ? "up" : c < 0 ? "dn" : ""); m.textContent = sg(c);
+      b.innerHTML = done ? `<span class="res ${x.res === "W" ? "w" : "l"}">${esc(x.res || "–")}</span>` : '<span class="ld"></span>';
+      const col = done ? (x.res === "W" ? "#2FCB7A" : x.res === "L" ? "#F0524A" : "#9AA4B2") : "#F4F6F8"; path.setAttribute("stroke", col);
+      let d = "", last = null; const Xp = v => v / x.Tg * 236 + 2, Yp = v => 22 - Math.max(-x.lim, Math.min(x.lim, v)) / x.lim * 18;
+      (x.fl || []).forEach(pt => { if (pt[0] > min) return; const px = Xp(pt[0]), py = Yp(pt[1]); d += d ? `L${px.toFixed(1)} ${last.toFixed(1)}L${px.toFixed(1)} ${py.toFixed(1)}` : `M${px.toFixed(1)} ${py.toFixed(1)}`; last = py; });
+      d += last == null ? "" : `L${Xp(min).toFixed(1)} ${last.toFixed(1)}`; path.setAttribute("d", d);
+    });
+    $("#sl-clock").textContent = clk(t) + (live ? ` · ${live} live` : "");
+    $("#sl-rec").textContent = `${w}–${l}`;
+  };
+  let raf = 0, pos = 1; const seek = $("#sl-seek"), btn = $("#sl-play");
+  const set = p => { pos = p; seek.value = Math.round(p * 1000); render(p); };
+  const play = () => { cancelAnimationFrame(raf); if (pos >= .999) set(0); btn.textContent = "❚❚ Pause"; const t0 = performance.now(), p0 = pos, dur = 20000 * (1 - p0);
+    const step = now => { const k = Math.min(1, (now - t0) / dur); set(p0 + (1 - p0) * k); if (k < 1) raf = requestAnimationFrame(step); else btn.textContent = "↻ Replay the week"; }; raf = requestAnimationFrame(step); };
+  btn.onclick = () => { if (btn.textContent.startsWith("❚❚")) { cancelAnimationFrame(raf); btn.textContent = "▶ Resume"; } else play(); };
+  seek.oninput = () => { cancelAnimationFrame(raf); btn.textContent = seek.value >= 1000 ? "↻ Replay the week" : "▶ Resume"; set(seek.value / 1000); };
+  set(1);   // opens on the finished week; Replay rewinds and runs it
+})();
+
+/* Why we lost: every official loss with the cover margin through the game */
+(function () {
+  const R = D.loss_review || {}, Ls = R.losses || [], Sm = R.summary || {}; if (!Ls.length) return;
+  $("#whylost").hidden = false;
+  const TAG = { late: "Lost in last 5:00", hook: "By the hook", close: "Within a FG", far: "Not close", never: "Never covered", to_lost: "Lost turnovers", to_won: "Won turnovers", ot: "Overtime" };
+  const OTH = [["hybrid", "Hybrid"], ["v1", "v1"], ["v3", "v3"], ["keynum", "Key"]];
+  const s1 = v => { const a = Math.abs(v), t = a % 1 ? a.toFixed(1) : String(a); return (v > 0 ? "+" : v < 0 ? "−" : "") + t; };
+  const clock = t => { const ot = t > 60, q = Math.min(4, Math.floor(t / 15) + 1), r = Math.max(0, Math.round(((ot ? 70 : q * 15) - t) * 60)); return `${ot ? "OT" : "Q" + q} ${Math.floor(r / 60)}:${String(r % 60).padStart(2, "0")}`; };
+  const F = [["all", "Losses", Sm.n, () => true, ""], ["late", "Lost in last 5:00", Sm.late, x => x.tags.includes("late"), "late"],
+    ["fg", "Within a FG", Sm.fg, x => x.tags.includes("hook") || x.tags.includes("close"), ""], ["far", "Not close (7+)", Sm.far, x => x.tags.includes("far"), ""],
+    ["to", "Turnover swing (2+)", Ls.filter(x => x.tags.includes("to_lost") || x.tags.includes("to_won")).length, x => x.tags.includes("to_lost") || x.tags.includes("to_won"), ""]];
+  let cur = "all", all = false; const latest = Math.max(...Ls.map(x => x.week));
+  const tiles = () => { $("#lr-tiles").innerHTML = F.map(([k, l, n, , c]) => `<button class="${c}" data-f="${k}" aria-pressed="${cur === k}"><b>${n}</b><span>${esc(l)}</span></button>`).join("");
+    $("#lr-tiles").querySelectorAll("button").forEach(b => b.onclick = () => { cur = cur === b.dataset.f && cur !== "all" ? "all" : b.dataset.f; all = true; tiles(); grid(); }); };
+  const a = Sm.late || 0, f = Sm.won_late || 0;
+  if (a + f) $("#lr-swing").innerHTML = `<div class="top"><span>Late swings against us: <b>${a}</b></span><span>Late swings for us: <b>${f}</b></span></div><div class="bar" role="img" aria-label="${a} losses flipped in the last 5 minutes, ${f} wins flipped our way"><i class="a" style="flex:${a}"></i><i class="f" style="flex:${f}"></i></div><p>Games where the last 5:00 flipped the cover, in both directions. Our turnovers in losses: gave ${Sm.to_gave}, took ${Sm.to_took}.</p>`;
+  const vals = Ls.flatMap(x => (x.flow || []).map(p => Math.abs(p[1])).concat([Math.abs(x.fin)])), YM = Math.min(28, Math.max(14, Math.ceil(Math.max(...vals) / 7) * 7));
+  function flow(x, W) {
+    const H = Math.round(W * .5) + 30, m = { l: 30, r: 40, t: 12, b: 20 }, pw = W - m.l - m.r, ph = H - m.t - m.b, T = x.flow ? Math.max(60, x.flow[x.flow.length - 1][0]) : 60;
+    const X = t => m.l + t / T * pw, cl = v => Math.max(-YM, Math.min(YM, v)), Y = v => m.t + (1 - (cl(v) + YM) / (2 * YM)) * ph;
+    let o = `<rect class="f-late" x="${X(55)}" y="${m.t}" width="${X(60) - X(55)}" height="${ph}"/>`;
+    for (const q of [15, 30, 45, 60]) o += `<line class="f-q" x1="${X(q)}" x2="${X(q)}" y1="${m.t}" y2="${m.t + ph}"/>`;
+    ["Q1", "Q2", "Q3", "Q4"].forEach((q, i) => o += `<text x="${X(i * 15 + 7.5)}" y="${H - 5}" text-anchor="middle">${q}</text>`);
+    if (T > 60) o += `<text x="${X((60 + T) / 2)}" y="${H - 5}" text-anchor="middle">OT</text>`;
+    o += `<text x="${X(57.5)}" y="${m.t - 2}" text-anchor="middle" style="font-size:9.5px">5:00</text>`;
+    for (const v of [-YM, -YM / 2, YM / 2, YM]) o += `<text x="${m.l - 5}" y="${Y(v) + 3.5}" text-anchor="end">${s1(v)}</text>`;
+    if (!x.flow) { o += `<line class="f-zero" x1="${m.l}" x2="${m.l + pw}" y1="${Y(0)}" y2="${Y(0)}"/><text x="${m.l + pw / 2}" y="${Y(0) - 8}" text-anchor="middle">Play-by-play not available yet</text>`; return { svg: o, H }; }
+    const P = x.flow, pts = []; P.forEach((p, i) => { if (i) pts.push([X(p[0]), Y(P[i - 1][1])]); pts.push([X(p[0]), Y(p[1])]); });
+    const d = pts.map((q, i) => (i ? "L" : "M") + q[0].toFixed(1) + " " + q[1].toFixed(1)).join(" "), id = "c" + x.id.replace(/\W/g, ""), z = Y(0), x0 = X(0), x1 = X(P[P.length - 1][0]);
+    o += `<defs><clipPath id="${id}u"><rect x="0" y="0" width="${W}" height="${z}"/></clipPath><clipPath id="${id}d"><rect x="0" y="${z}" width="${W}" height="${H}"/></clipPath><clipPath id="${id}r"><rect class="f-reveal" x="0" y="0" width="${W}" height="${H}"/></clipPath></defs>`;
+    const area = `${d} L${x1} ${z} L${x0} ${z} Z`;
+    o += `<line class="f-zero" x1="${m.l}" x2="${m.l + pw}" y1="${z}" y2="${z}"/><g clip-path="url(#${id}r)"><path class="f-up" clip-path="url(#${id}u)" d="${area}"/><path class="f-dn" clip-path="url(#${id}d)" d="${area}"/><path class="f-line" d="${d}"/>`;
+    for (const [t, who] of x.tos || []) { const tx = X(t), ty = m.t + ph; o += who === "pick" ? `<path class="to-p" d="M${tx - 5} ${ty - 9} L${tx + 5} ${ty - 9} L${tx} ${ty - 1} Z"><title>${esc(x.pick)} turnover ${clock(t)}</title></path>` : `<path class="to-o" d="M${tx - 5} ${ty - 1} L${tx + 5} ${ty - 1} L${tx} ${ty - 9} Z"><title>${esc(x.opp)} turnover ${clock(t)}</title></path>`; }
+    if (x.cov5 != null) o += `<circle cx="${X(55)}" cy="${Y(x.cov5)}" r="4.5" fill="#0E1628" stroke="#F4F6F8" stroke-width="2"/>`;
+    const ey = Y(x.fin); o += `<circle class="f-end" cx="${x1}" cy="${ey}" r="6" fill="#F0524A"/><text x="${x1 + 8}" y="${ey + 4}" style="fill:#F0524A;font-weight:500">${s1(x.fin)}</text>`;
+    if (Math.abs(x.fin) > YM) o += `<text x="${x1 - 4}" y="${ey - 9}" text-anchor="end">off scale</text>`;
+    o += `</g><g class="f-head" hidden><circle r="6" cx="0" cy="0"/></g><line class="f-x" x1="0" x2="0" y1="${m.t}" y2="${m.t + ph}" hidden/>`;
+    return { svg: o, H, X, Y, T, m, pw };
   }
-  const pl = g.line; // slate lines are already from the pick's side
-  return `<div class="fin ${esc(g.res || "")}"><i></i><div class="body">
-    <div class="top"><span class="who">${logo(g.pick)}<b>${esc(g.pick)} ${sp(pl)}</b></span><span class="res ${g.res === "W" ? "w" : g.res === "L" ? "l" : ""}">${esc(g.res || "–")}</span></div>
-    <div class="sub2">${esc(g.away)} @ ${esc(g.home)} · vs line ${sp(g.fin)}</div>${svg}</div></div>`;
-}).join("");
+  const note = x => { if (x.cov5 != null && x.cov5 > 0) return `Covering by ${s1(x.cov5).replace("+", "")} with 5:00 left, then lost it late.`;
+    if (x.peak != null && x.peak > 0) return `Covered by as much as ${s1(x.peak).replace("+", "")} during the game; ${x.cov5 != null ? `short by ${Math.abs(x.cov5)} with 5:00 left` : "did not hold"}.`; return "Never ahead of the number after the first score."; };
+  function card(x) {
+    const ot = OTH.map(([k, l]) => { const r = (x.others || {})[k]; return `<span>${l} ${r === "W" ? '<span class="ok">✓</span>' : r === "L" ? '<span class="no">✕</span>' : "—"}</span>`; }).join("");
+    const tg = x.tags.map(t => `<span class="tg ${t}">${esc(TAG[t] || t)}${t === "to_lost" || t === "to_won" ? ` ${x.to[0]}–${x.to[1]}` : ""}</span>`).join("");
+    const mv = x.drift == null ? "" : x.drift === 0 ? "no line move" : `market moved ${Math.abs(x.drift)} pt`;
+    return `<article class="lrc" data-id="${esc(x.id)}"><div class="lrc-h"><div><div class="lwk">Week ${x.week}${mv ? " · " + mv : ""}</div><h4>${esc(x.away)} ${x.as} <small>@</small> ${esc(x.home)} ${x.hs}</h4><span class="pk">${esc(x.pick)} ${s1(x.line)}${x.p != null ? `<em>${(x.p * 100).toFixed(1)}%</em>` : ""}</span></div>
+      <div class="miss"><b>${s1(x.fin)}</b><span>vs the number</span></div></div><div class="flow" data-id="${esc(x.id)}"></div>${x.flow ? '<div class="lrc-bar"><button class="play" type="button" aria-label="Replay the game">▶ Replay</button><span class="rclock"></span></div>' : ""}
+      <p class="note">${note(x)} Turnovers ${esc(x.pick)} ${x.to[0]}, ${esc(x.opp)} ${x.to[1]}.</p>${tg ? `<div class="tags">${tg}</div>` : ""}<div class="oth"><span>Other models:</span>${ot}</div></article>`;
+  }
+  const played = new Set();
+  const io = window.IntersectionObserver && !REDUCED ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { io.unobserve(e.target); played.add(e.target.dataset.id); e.target._run && e.target._run(); } }), { threshold: .6 }) : null;
+  function paint() {
+    document.querySelectorAll("#lr-grid .flow").forEach(box => {
+      cancelAnimationFrame(box._raf); if (io) io.unobserve(box);
+      const x = Ls.find(z => z.id === box.dataset.id), W = Math.max(260, Math.floor(box.clientWidth || 300)), c = flow(x, W);
+      box.innerHTML = `<svg viewBox="0 0 ${W} ${c.H}" width="${W}" height="${c.H}" role="img" tabindex="0" aria-label="${esc(`${x.pick} cover margin through the game: ${x.cov5 != null ? `${s1(x.cov5)} with 5:00 left, ` : ""}final ${s1(x.fin)}`)}">${c.svg}</svg><div class="ftip" hidden></div>`;
+      if (!x.flow) return;
+      const svg = box.querySelector("svg"), tip = box.querySelector(".ftip"), xl = svg.querySelector(".f-x"), at = t => { let p = x.flow[0]; for (const q of x.flow) { if (q[0] <= t) p = q; else break; } return p; };
+      const show = px => { const t = Math.max(0, Math.min(c.T, (px - c.m.l) / c.pw * c.T)), p = at(t), xx = c.X(t); xl.removeAttribute("hidden"); xl.setAttribute("x1", xx); xl.setAttribute("x2", xx);
+        tip.innerHTML = `<b>${clock(t)}</b> · ${esc(x.away)} ${p[2]}–${p[3]} ${esc(x.home)}<br>${esc(x.pick)} ${p[1] > 0 ? "covering by " + s1(p[1]).replace("+", "") : p[1] < 0 ? "short by " + Math.abs(p[1]) : "on the number"}`; tip.hidden = false; const tw = tip.offsetWidth; tip.style.left = Math.max(0, Math.min(W - tw, xx - tw / 2)) + "px"; };
+      const hide = () => { tip.hidden = true; xl.setAttribute("hidden", ""); };
+      svg.addEventListener("pointermove", e => { const r = svg.getBoundingClientRect(); show((e.clientX - r.left) * (W / r.width)); }); svg.addEventListener("pointerleave", hide); svg.addEventListener("blur", hide);
+      const cardEl = box.closest(".lrc"), play = cardEl.querySelector(".play"), rd = cardEl.querySelector(".rclock"), rev = svg.querySelector(".f-reveal"), head = svg.querySelector(".f-head"), hc = head.firstChild;
+      const full = () => { rev.setAttribute("width", W); head.setAttribute("hidden", ""); svg.classList.remove("late-on"); };
+      const frame = t => { const px = c.X(t), p = at(t); rev.setAttribute("width", px); hc.setAttribute("cx", px); hc.setAttribute("cy", c.Y(p[1])); head.removeAttribute("hidden"); svg.classList.toggle("late-on", t >= 55); rd.textContent = `${clock(t)} · ${x.away} ${p[2]}–${p[3]} ${x.home} · ${s1(p[1])}`; };
+      const run = () => { if (REDUCED) { full(); return; } cancelAnimationFrame(box._raf); play.disabled = true; const T = c.T, dur = 4400, t0 = performance.now();
+        const step = now => { const k = Math.min(1, (now - t0) / dur); frame(k * T); if (k < 1) box._raf = requestAnimationFrame(step); else { full(); rd.textContent = `Final · ${x.away} ${x.as}–${x.hs} ${x.home} · ${s1(x.fin)}`; play.disabled = false; play.textContent = "↻ Replay"; } }; box._raf = requestAnimationFrame(step); };
+      box._run = run; play.onclick = run;
+      if (io && !played.has(x.id)) { rev.setAttribute("width", 0); io.observe(box); }
+      let kt = c.T; svg.onkeydown = e => { if (e.key === "ArrowLeft" || e.key === "ArrowRight") { kt = Math.max(0, Math.min(c.T, kt + (e.key === "ArrowLeft" ? -1 : 1))); show(c.X(kt)); e.preventDefault(); } else if (e.key === "Escape") hide(); };
+    });
+  }
+  function grid() {
+    const pr = F.find(z => z[0] === cur)[3], sel = Ls.filter(pr), shown = all || cur !== "all" ? sel : sel.filter(x => x.week === latest);
+    $("#lr-grid").innerHTML = shown.length ? shown.map(card).join("") : '<p class="k">No losses match.</p>';
+    const more = $("#lr-more"), rest = sel.length - shown.length; more.hidden = !rest; more.textContent = `Show all ${sel.length} losses this season`; more.onclick = () => { all = true; grid(); };
+    paint();
+  }
+  tiles(); grid();
+  if (window.ResizeObserver) { let w0 = 0; new ResizeObserver(es => { const w = Math.round(es[0].contentRect.width); if (w && w !== w0) { w0 = w; paint(); } }).observe($("#lr-grid")); }
+})();
 
 $("#foot").textContent = `Week ${D.week}, ${D.season}. Data as of ${D.updated}.`;
 </script>

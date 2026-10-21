@@ -31,6 +31,14 @@ Team colors come from nflverse `teams_colors_logos.csv`.
 - **Live pulse and settled check:** the page can't fetch scores itself (its viewer blocks outside requests). `streamlit_app/live.py` `page_data` / `inject_data` put ESPN scores for games in progress or just finished into `<script id="live-data">` when the page is opened; the card then breathes while the game is on and draws a check when it ends. Display only, never graded. Scores are as of the last page load.
 - Everything respects `prefers-reduced-motion`. Animations wait until the section is on screen.
 
+## Restored from the old dashboard (2026-10-21)
+
+- **Always the underdog** is on the season path (on by default) with a note that it is a no-skill rule.
+- **Finals** have a Replay button: the whole week on one clock, skipping idle hours, with a scrubber.
+- **Why we lost** (every official loss, play by play, with turnovers, the last 5:00, tags, other models) needs `D.loss_review`. It was blank on main since week 4 because picks made with no market have `UNAVAILABLE` cover chances; fixed in `loss_review._num`.
+- **Model picks** (official, hybrid, projection) on every card, a "Models disagree" filter, a line sparkline on the card and every book's line in the details.
+- Build from a fresh dashboard: `python -m engine dashboard --season 2026 --out /tmp/d.html && python design/build_dashboard.py /tmp/d.html`.
+
 ## Sections
 
 Scoreboard (live record, win rate ± SE, graded / 256, last week, live
