@@ -19,7 +19,7 @@
   --blue: #3DA5FF;
   --ink: #F4F6F8;
   --ink-2: #9AA4B2;
-  --ink-3: #7C8696;
+  --ink-3: #8993A3;
   --line: rgba(140,170,255,0.12);
   --line-2: rgba(140,170,255,0.24);
   --amber: #FFB020;
@@ -117,7 +117,7 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .gtop { display: flex; justify-content: space-between; gap: 6px 8px; align-items: center; flex-wrap: wrap; }
 .gtop > .k { white-space: nowrap; }
 .gtags { display: flex; gap: 6px; }
-.tag { font: 500 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 3px 7px; border-radius: 4px; border: 1px solid var(--line-2); color: var(--ink-2); white-space: nowrap; }
+.tag { font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; border: 1px solid var(--line-2); color: var(--ink-2); white-space: nowrap; }
 .tag.move { color: var(--ink); border-color: rgba(255,255,255,.4); }
 .tag.final-w { color: var(--win); border-color: rgba(47,203,122,.45); }
 .tag.final-l { color: var(--loss); border-color: rgba(240,82,74,.45); }
@@ -145,7 +145,7 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .gauge { position: relative; height: 8px; background: var(--well); border-radius: 4px; margin-top: 6px; }
 .gauge i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--tp, var(--ink-2)); border-radius: 4px; }
 .gauge u { position: absolute; top: -3px; bottom: -3px; width: 1px; background: var(--ink-3); }
-.gauge-scale { display: flex; justify-content: space-between; font: 10px var(--mono); color: var(--ink-3); margin-top: 3px; }
+.gauge-scale { display: flex; justify-content: space-between; font: 10.5px var(--mono); color: var(--ink-3); margin-top: 3px; }
 .more { display: flex; justify-content: space-between; margin-top: 12px; font: 11px var(--mono); color: var(--ink-3); }
 .more .arrow { transition: transform 200ms; display: inline-block; }
 details[open] .more .arrow { transform: rotate(180deg); }
@@ -239,18 +239,18 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
   .tally .tr > :nth-child(4), .tally .th > :nth-child(4) { display: none; }
   .tally .tv { font-size: 21px; } .tally .tn { font-size: 17px; }
 }
-@media (max-width: 520px) { .mchip { padding: 5px 8px; font-size: 11.5px; gap: 5px; } .mchip svg { width: 16px; } }
+@media (max-width: 520px) { .mchip { padding: 5px 9px; font-size: 12px; gap: 5px; } .mchip svg { width: 16px; } }
 
 /* Season path: model toggles */
 .mkeys { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; align-items: center; }
-.mchip { display: inline-flex; align-items: center; gap: 7px; font: 600 12px var(--body); color: var(--ink-3); background: transparent; border: 1px solid var(--line-2); border-radius: 6px; padding: 6px 10px; cursor: pointer; transition: color 150ms, background 150ms, border-color 150ms; }
+.mchip { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; font: 600 12px var(--body); color: var(--ink-3); background: transparent; border: 1px solid var(--line-2); border-radius: 6px; padding: 6px 10px; cursor: pointer; transition: color 150ms, background 150ms, border-color 150ms; }
 .mchip:hover { color: var(--ink); background: var(--panel-2); }
 .mchip[aria-pressed="true"] { color: var(--ink); background: var(--panel-2); border-color: var(--line-2); }
 .mchip svg { width: 22px; height: 6px; flex: none; overflow: visible; }
 .mchip[aria-pressed="false"] svg { opacity: .35; }
 .mchip b { font: 500 11px var(--mono); color: var(--ink-2); }
 .mchip.sim { border-style: dashed; }
-.mlink { font: 500 11px var(--mono); color: var(--ink-3); background: none; border: 0; padding: 6px 4px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.mlink { font: 500 12px var(--mono); color: var(--ink-3); background: none; border: 0; padding: 9px 6px; min-height: 34px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .mlink:hover { color: var(--ink); }
 .bandk { font: 11px var(--mono); color: var(--ink-3); display: inline-flex; align-items: center; gap: 6px; margin-right: 6px; }
 .bandk i { width: 12px; height: 8px; border-radius: 2px; background: rgba(61,165,255,.3); }
@@ -320,10 +320,10 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 
 /* Other models' picks on the board */
 .mrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 10px; padding: 7px 9px; background: var(--well); border-radius: 6px; }
-.mrow .k { font-size: 9.5px; margin-right: 2px; }
+.mrow .k { font-size: 10.5px; margin-right: 2px; }
 .mrow.diff { box-shadow: inset 0 0 0 1px rgba(255,176,32,.35); }
 .mp { display: inline-flex; align-items: center; gap: 5px; font: 500 11px var(--mono); color: var(--ink-2); border: 1px solid var(--line-2); border-radius: 5px; padding: 2px 7px 2px 5px; }
-.mp em { font-style: normal; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.mp em { font-style: normal; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
 .mp .logo, .mp .logo-alt { width: 16px; height: 16px; border-radius: 3px; font-size: 7px; }
 .mp b { font: 700 14px var(--display); letter-spacing: .04em; color: var(--ink); }
 .mp.off { border-color: rgba(255,176,32,.5); } .mp.off b { color: var(--amber); }
@@ -332,16 +332,16 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 
 /* Card sparkline */
 .spkrow { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; margin-top: 10px; background: var(--well); border-radius: 6px; padding: 7px 9px; }
-.spkrow .k { font-size: 9.5px; white-space: nowrap; } .spk { height: 30px; }
+.spkrow .k { font-size: 10.5px; } .spkrow .k:first-child { white-space: nowrap; } .spk { height: 30px; }
 .mvtag { display: inline-flex; align-items: center; gap: 4px; }
-@media (max-width: 400px) { .spkrow { grid-template-columns: 1fr auto; } .spkrow .spk { grid-column: 1 / -1; grid-row: 2; } }
-.mvleg { font: 10px var(--mono); color: var(--ink-3); margin-top: 4px; }
+@media (max-width: 480px) { .spkrow { grid-template-columns: auto 1fr; } .spkrow .k:last-child { grid-column: 1 / -1; } }
+.mvleg { font: 10.5px var(--mono); color: var(--ink-3); margin-top: 4px; }
 
 /* Finals replay */
 .rbar { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; flex-wrap: wrap; }
 .rbtn { font: 600 12px var(--body); letter-spacing: .04em; color: #120C00; background: var(--amber); border: 0; border-radius: 6px; padding: 8px 14px; cursor: pointer; white-space: nowrap; }
 .rbtn:hover { filter: brightness(1.08); }
-.rbar input[type=range] { flex: 1 1 140px; min-width: 0; accent-color: var(--amber); }
+.rbar input[type=range] { height: 28px; flex: 1 1 140px; min-width: 0; accent-color: var(--amber); }
 .rread { display: flex; gap: 14px; align-items: baseline; font: 500 12px var(--mono); color: var(--ink-2); white-space: nowrap; }
 .rread b { font: 900 22px var(--display); color: var(--ink); text-transform: uppercase; letter-spacing: .02em; }
 .rread span { font: 900 22px var(--display); color: var(--amber); }
@@ -392,7 +392,7 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .lrc .f-late { fill: var(--amber); opacity: .12; transition: opacity .35s; } .lrc svg.late-on .f-late { opacity: .35; }
 .lrc .f-head circle { fill: var(--amber); stroke: var(--ink); stroke-width: 2; }
 .lrc-bar { display: flex; align-items: center; gap: 10px; min-height: 30px; margin: 0 0 4px; }
-.lrc .play { cursor: pointer; font: 500 12px var(--mono); color: var(--ink); border: 1px solid var(--line-2); border-radius: 999px; padding: 5px 12px; flex: none; background: var(--panel-2); }
+.lrc .play { min-height: 32px; cursor: pointer; font: 500 12px var(--mono); color: var(--ink); border: 1px solid var(--line-2); border-radius: 999px; padding: 5px 12px; flex: none; background: var(--panel-2); }
 .lrc .play:disabled { opacity: .5; cursor: default; }
 .lrc .rclock { font: 11.5px var(--mono); color: var(--ink-2); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) { .lrc-bar { display: none; } }
@@ -440,8 +440,8 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
   <section class="hero" aria-label="Season scoreboard">
     <div>
       <p class="kicker" id="kicker"></p>
-      <h1>Beating the pool line, one pick at a time.</h1>
-      <p class="sub">Every game is picked five minutes before lock from the Pinnacle number, then graded on the pool's own line. Nothing is filtered, and no skill is claimed before <span id="claim"></span> graded games.</p>
+      <h1>Picking against the pool line, one game at a time.</h1>
+      <p class="sub">Every game is picked five minutes before lock from the market line (Pinnacle when the odds feed has it, otherwise the median of all books), then graded on the pool's own line. Nothing is filtered, and no skill is claimed before <span id="claim"></span> graded games.</p>
     </div>
     <div class="board">
       <div class="board-top"><span class="k">Live record vs pool line</span><span class="k" id="lastwk"></span></div>
@@ -468,14 +468,14 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
     <div class="head"><h2 id="boardh"></h2><span class="k">Tap a game for books, line movement and projections</span></div>
     <div class="controls">
       <button class="chip" data-f="all" aria-pressed="true">All games</button>
-      <button class="chip" data-f="moved" aria-pressed="false">Market moved</button>
-      <button class="chip" data-f="flat" aria-pressed="false">On pool line</button>
+      <button class="chip" data-f="moved" aria-pressed="false">Market off pool line</button>
+      <button class="chip" data-f="flat" aria-pressed="false">Market on pool line</button>
       <button class="chip" data-f="diff" aria-pressed="false">Models disagree</button>
       <input id="q" type="search" placeholder="Find a team" aria-label="Find a team">
       <select id="sort" aria-label="Sort games">
         <option value="ko">Sort: kickoff</option>
         <option value="p">Sort: cover chance</option>
-        <option value="gap">Sort: line gap</option>
+        <option value="gap">Sort: market vs pool line</option>
       </select>
       <span class="count" id="count"></span>
     </div>
@@ -483,10 +483,10 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
   </section>
 
   <section id="season" aria-label="Season">
-    <div class="head"><h2>Season drive</h2><span class="k">Net wins (covers − misses) vs a coin flip</span></div>
+    <div class="head"><h2>Season drive</h2><span class="k">Net wins (covers − misses), live games and two backtest weeks</span></div>
     <div class="split">
       <div class="pane">
-        <div class="mini-h"><span class="k">Cumulative net wins, every graded game</span><span class="k" id="curvelast"></span></div>
+        <div class="mini-h"><span class="k">Cumulative net wins by game</span><span class="k" id="curvelast"></span></div>
         <div id="curve"></div>
         <div class="mkeys" id="curve-key"></div>
         <p class="sim-note" id="sim-note" hidden></p>
@@ -507,10 +507,11 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
   </section>
 
   <section id="finals" aria-label="Last week's finals">
-    <div class="head"><h2 id="finalsh"></h2><span class="k">Line shows the pick's cover margin through the game</span></div>
+    <div class="head"><h2 id="finalsh"></h2><span class="k">Big number = pick's margin vs the pool line · line = margin through the game</span></div>
     <div class="rbar" id="replay-bar"><button class="rbtn" id="sl-play" type="button">▶ Replay the week</button>
       <input id="sl-seek" type="range" min="0" max="1000" value="1000" aria-label="Scrub through the week">
       <div class="rread"><b id="sl-clock"></b><span id="sl-rec"></span></div></div>
+    <p class="sim-note" style="margin:-4px 0 10px">The replay skips idle hours between kickoff windows and draws each game over about three hours from kickoff (an approximation: play-by-play has game time, not stoppages).</p>
     <div class="finals" id="fin"></div>
   </section>
 
@@ -519,13 +520,14 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
     <div class="lr-tiles" id="lr-tiles"></div>
     <div class="lr-swing" id="lr-swing"></div>
     <div class="lr-key"><span><svg width="22" height="10"><line x1="0" x2="22" y1="5" y2="5" stroke="#F4F6F8" stroke-width="2"/></svg>Cover margin: above the line = covering</span><span><svg width="12" height="10"><rect width="12" height="10" fill="#FFB020" opacity=".3"/></svg>Last 5:00</span><span><svg width="10" height="10"><path d="M0 0H10L5 9Z" fill="#F0524A"/></svg>our turnover</span><span><svg width="10" height="10"><path d="M0 9H10L5 0Z" fill="#2FCB7A"/></svg>their turnover</span></div>
+    <p class="k" id="lr-showing" style="margin:0 0 10px"></p>
     <div class="lr-grid" id="lr-grid"></div>
     <button class="lr-more" id="lr-more" hidden></button>
   </section>
 
   <footer>
     <div id="foot"></div>
-    <div>Spread sign: negative = home favored. Record graded against the CBS pool line. Projection models are tracked for comparison only.</div>
+    <div>A minus sign next to a team means that team is favored. Record graded against the CBS pool line. Projection models are tracked for comparison only.</div>
   </footer>
 </main>
 
@@ -644,30 +646,30 @@ function moveSvg(g, det) {
   const ET = "America/New_York", names = Object.keys(det.b || {});
   const all = Object.values(det.b).flat().filter(v => v != null).concat([g.line]);
   const y0 = Math.floor((Math.min(...all) - .5) * 2) / 2, y1 = Math.ceil((Math.max(...all) + .5) * 2) / 2, x0 = pts[0][0], x1 = pts[pts.length - 1][0];
-  const W = 300, H = 120, m = { l: 30, r: 46, t: 8, b: 18 };
+  const W = 300, H = 124, m = { l: 32, r: 30, t: 8, b: 20 };
   const X = x => m.l + (x - x0) / (x1 - x0 || 1) * (W - m.l - m.r), Y = y => m.t + (y1 - y) / (y1 - y0) * (H - m.t - m.b);
   const line = a => a.map((p, i) => `${i ? "L" : "M"}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join("");
   const bookLines = names.map(n => { const p = det.t.map((t, i) => [Date.parse(t), det.b[n][i]]).filter(q => q[1] != null); return p.length > 1 ? `<path d="${line(p)}" fill="none" stroke="rgba(154,164,178,.32)" stroke-width="1"><title>${esc(n)}</title></path>` : ""; }).join("");
   const days = []; let seen = "";
   pts.forEach(p => { const d = new Date(p[0]).toLocaleDateString("en-US", { weekday: "short", timeZone: ET }); if (d !== seen) { days.push([p[0], d]); seen = d; } });
   const last = pts[pts.length - 1], first = pts[0];
-  const grid = [y0, Math.round((y0 + y1) / 2 * 2) / 2, y1].map(v => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="rgba(255,255,255,.07)"/><text x="${m.l - 4}" y="${Y(v) + 3}" fill="#7C8696" font-size="8.5" font-family="IBM Plex Mono" text-anchor="end">${sp(v)}</text>`).join("");
+  const grid = [y0, Math.round((y0 + y1) / 2 * 2) / 2, y1].map(v => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="rgba(255,255,255,.07)"/><text x="${m.l - 4}" y="${Y(v) + 3}" fill="#8993A3" font-size="10.5" font-family="IBM Plex Mono" text-anchor="end">${sp(v)}</text>`).join("");
   return `<div><div class="mini-h"><span class="k">Line movement, ${esc(g.home)} spread</span><span class="k">${pts.length} captures · ${names.length} books</span></div>
   <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Line movement across the week">${grid}${bookLines}
     <line x1="${m.l}" x2="${W - m.r}" y1="${Y(g.line)}" y2="${Y(g.line)}" stroke="#FFB020" stroke-dasharray="3 3" stroke-width="1"/>
-    <text x="${W - m.r + 3}" y="${Y(g.line) + 3}" fill="#FFB020" font-size="8.5" font-family="IBM Plex Mono">pool ${sp(g.line)}</text>
+    <text x="${m.l + 4}" y="${Y(g.line) - 4}" fill="#FFB020" font-size="10.5" font-family="IBM Plex Mono">pool ${sp(g.line)}</text>
     <path d="${line(pts)}" fill="none" stroke="#F4F6F8" stroke-width="2.2" stroke-linejoin="round"/>
     <circle cx="${X(first[0])}" cy="${Y(first[1])}" r="2.8" fill="#9AA4B2"/><circle cx="${X(last[0])}" cy="${Y(last[1])}" r="3.4" fill="#F4F6F8"/>
-    <text x="${W - m.r + 3}" y="${Y(last[1]) + (Math.abs(Y(last[1]) - Y(g.line)) < 11 ? 12 : 3)}" fill="#F4F6F8" font-size="8.5" font-family="IBM Plex Mono">${sp(last[1])}</text>
-    ${days.map(([t, d]) => `<text x="${X(t)}" y="${H - 4}" fill="#7C8696" font-size="8.5" font-family="IBM Plex Mono" text-anchor="${X(t) < m.l + 12 ? "start" : "middle"}">${d}</text>`).join("")}
+    <text x="${W - m.r + 3}" y="${Y(last[1]) + (3)}" fill="#F4F6F8" font-size="10.5" font-family="IBM Plex Mono">${sp(last[1])}</text>
+    ${days.map(([t, d]) => `<text x="${X(t)}" y="${H - 4}" fill="#8993A3" font-size="10.5" font-family="IBM Plex Mono" text-anchor="${X(t) < m.l + 12 ? "start" : "middle"}">${d}</text>`).join("")}
   </svg><div class="mvleg">Bold = median of all books · thin = each book · dashed = pool line</div></div>`;
 }
 function sparkHtml(g, det) {
   const pts = seriesOf(det); if (pts.length < 2) return "";
   const vals = pts.map(p => p[1]), lo = Math.min(...vals, g.line) - .5, hi = Math.max(...vals, g.line) + .5, w = 150, h = 34;
   const x = i => 3 + (w - 6) * i / (pts.length - 1), y = v => 3 + (h - 6) * (v - lo) / (hi - lo);
-  const last = pts[pts.length - 1], prev = [...pts].reverse().find(p => last[0] - p[0] >= 20 * 36e5) || pts[0], mv = last[1] - prev[1];
-  const tag = mv === 0 ? "flat since yesterday" : `${sp(mv)} since yesterday`;
+  const last = pts[pts.length - 1], day = [...pts].reverse().find(p => last[0] - p[0] >= 20 * 36e5), prev = day || pts[0], mv = last[1] - prev[1], since = day ? "since yesterday" : "since first capture";
+  const tag = mv === 0 ? `flat ${since}` : `${sp(mv)} ${since}`;
   return `<div class="spkrow"><span class="k">Line this week</span><svg class="spk" viewBox="0 0 ${w} ${h}" aria-hidden="true"><line x1="0" x2="${w}" y1="${y(g.line)}" y2="${y(g.line)}" stroke="#FFB020" stroke-dasharray="2 3"/>
     <polyline points="${pts.map((p, i) => `${x(i).toFixed(1)},${y(p[1]).toFixed(1)}`).join(" ")}" fill="none" stroke="#F4F6F8" stroke-width="1.6"/><circle cx="${x(pts.length - 1)}" cy="${y(last[1])}" r="2.6" fill="#F4F6F8"/></svg>
     <span class="k">${sp(pts[0][1])} → ${sp(last[1])} · ${tag}</span></div>`;
@@ -675,9 +677,9 @@ function sparkHtml(g, det) {
 function modelsHtml(g) {
   const items = [["Official", g.pick, null]];
   if (g.hy) items.push(["Hybrid", g.hy, g.hres]);
-  if (g.ppick) items.push([g.pver === "proj-players-v3" ? "Player" : "Team-only", g.ppick, g.pres]);
+  if (g.ppick) items.push([g.pver === "proj-players-v3" ? "Player" : "Team-only", g.ppick, g.pres, (g.pflags || "").includes("INJ_STATUS_MISSING")]);
   const diff = items.slice(1).some(i => i[1] !== g.pick);
-  return `<div class="mrow${diff ? " diff" : ""}"><span class="k">Model picks</span>${items.map(([l, t, r], i) => `<span class="mp${i === 0 ? " off" : t !== g.pick ? " dif" : ""}"><em>${l}</em>${logo(t)}<b>${esc(t)}</b>${i && t !== g.pick ? "<u>≠</u>" : ""}${r === "W" ? ' <span class="ok">✓</span>' : r === "L" ? ' <span class="no">✕</span>' : ""}</span>`).join("")}</div>`;
+  return `<div class="mrow${diff ? " diff" : ""}"><span class="k">Model picks</span>${items.map(([l, t, r, pend], i) => `<span class="mp${i === 0 ? " off" : t !== g.pick ? " dif" : ""}"${pend ? ' title="Injury statuses were not published at pick time, so this pick is not counted in the record"' : ""}><em>${l}${pend ? "*" : ""}</em>${logo(t)}<b>${esc(t)}</b>${i && t !== g.pick ? "<u>≠</u>" : ""}${r === "W" ? ' <span class="ok">✓</span>' : r === "L" ? ' <span class="no">✕</span>' : ""}</span>`).join("")}${items.some(i => i[3]) ? '<span class="k" style="flex:1 1 100%">* injury statuses not yet published; not counted in the record</span>' : ""}</div>`;
 }
 const disagrees = g => (g.hy && g.hy !== g.pick) || (g.ppick && g.ppick !== g.pick);
 function booksHtml(g, det) {
@@ -686,7 +688,7 @@ function booksHtml(g, det) {
   const vals = bk.map(b => b.spread).concat([g.line]);
   const lo = Math.min(...vals) - .5, hi = Math.max(...vals) + .5, X = v => (v - lo) / (hi - lo) * 100;
   const ref = det.ref_book;
-  return `<div><div class="mini-h"><span class="k">Books at pick time vs pool line (${esc(g.home)})</span><span class="k">median ${sp(det.lock.median)}</span></div>
+  return `<div><div class="mini-h"><span class="k">Books ${g.status === "official" ? "at pick time" : "in the latest capture"} vs pool line (${esc(g.home)})</span><span class="k">median ${sp(det.lock.median)}</span></div>
   <div class="books">${bk.map(b => `<div class="b${b.book === ref ? " ref" : ""}"><span>${esc(b.book)}</span>
     <span class="track"><u style="left:${X(g.line)}%"></u><i style="left:${X(b.spread)}%"></i></span><span class="s">${sp(b.spread)}</span></div>`).join("")}</div></div>`;
 }
@@ -703,7 +705,7 @@ function xpHtml(g) {
   };
   return `<div><div class="mini-h"><span class="k">Player projection (tracked, not used to pick)</span><span class="k">base ${g.xp.home.baseline.toFixed(1)} pts</span></div>
     <div class="xp">${side(g.away, g.xp.away)}${side(g.home, g.xp.home)}</div>
-    ${g.pflags ? `<div class="flag">flags: ${esc(g.pflags)}</div>` : ""}</div>`;
+    ${g.pflags ? `<div class="flag">${g.pflags.includes("INJ_STATUS_MISSING") ? "Injury statuses were not published at pick time, so the player projection leaves injuries out and is not counted in the record." : esc(g.pflags)}</div>` : ""}</div>`;
 }
 /* Live layer. The page cannot fetch scores itself (its viewer blocks outside requests), so the server that
    opens it fills <script id="live-data"> with ESPN scores at that moment. Display only: nothing is graded here. */
@@ -735,13 +737,13 @@ function card(g) {
   const fillW = Math.max(0, Math.min(1, (p - scaleLo) / (scaleHi - scaleLo))) * 100;
   const evenX = (.5 - scaleLo) / (scaleHi - scaleLo) * 100;
   const status = g.res ? `<span class="tag final-${g.res === "W" ? "w" : "l"}">Final · ${esc(g.res)}</span>`
-    : `<span class="tag">${g.status === "official" ? "Locked" : "Provisional"}</span>`;
+    : `<span class="tag" title="${g.status === "official" ? "The official pick is recorded and final" : "Based on the latest market snapshot; it can still change until the pick is locked"}">${g.status === "official" ? "Locked" : "Provisional"}</span>`;
   const team = t => `<div class="team${g.pick === t ? " pick" : ""}" style="--tc:${tc(t)[0]};--tp:${tc(t)[1]}">${logo(t)}<b>${esc(t)}</b><span>${sp(teamLine(g, t, g.line))}</span></div>`;
   const lv = LIVE[g.id], lcls = lv ? (lv.state === "in" ? " is-live" : " is-final") : "";
   return `<details class="game${lcls}" data-id="${esc(g.id)}" style="--tp:${tc(g.pick)[1]}">
   <div class="stripe" aria-hidden="true"><i style="background:${tc(g.away)[1]}"></i><i style="background:${tc(g.home)[1]}"></i></div>
   <summary>
-    <div class="gtop"><span class="k">${esc(g.ko)} ET</span><span class="gtags">${moved ? `<span class="tag move">${esc(g.sig_label)}</span>` : `<span class="tag">On pool line</span>`}${status}</span></div>
+    <div class="gtop"><span class="k">${esc(g.ko)} ET</span><span class="gtags">${moved ? `<span class="tag move" title="The betting market at pick time versus the pool line, in points">Market ${esc(g.sig_label)}</span>` : `<span class="tag" title="The betting market matches the pool line">Market on pool line</span>`}${status}</span></div>
     ${flipHtml(g)}${liveHtml(g)}
     <div class="match">${team(g.away)}<span class="at">at</span>${team(g.home)}</div>
     <div class="lines">
@@ -800,22 +802,26 @@ setLive(liveData);
   const n = c.games.length, band = c.band;
   if (c.cum.favorite && !c.cum.underdog) c.cum.underdog = c.cum.favorite.map(v => -v || 0);   // the mirror of always-the-favorite on the same games
   const S = [["official", "Official pick", "#FFB020", null, 2.6], ["hybrid", "Hybrid", "#3DA5FF", null, 2], ["v1", "Team-only (v1)", "#34D3C0", null, 1.8],
-    ["v3", "Player (v3)", "#B794F6", null, 1.8], ["keynum", "Key-number", "#9AA4B2", "6 3", 1.5], ["underdog", "Always the underdog", "#F472B6", "3 3", 1.8], ["favorite", "Always the favorite", "#7C8696", "2 4", 1.4],
-    ["home", "Always the home team", "#7C8696", "1 3", 1.4]].filter(s => c.cum[s[0]]);
+    ["v3", "Player (v3)", "#B794F6", null, 1.8], ["keynum", "Key-number", "#9AA4B2", "6 3", 1.5], ["underdog", "Always the underdog", "#F472B6", "3 3", 1.8], ["favorite", "Always the favorite", "#8993A3", "2 4", 1.4],
+    ["home", "Always the home team", "#8993A3", "1 3", 1.4]].filter(s => c.cum[s[0]]);
   let on = null; try { on = JSON.parse(localStorage.getItem("nfl_curve_on_v2")); } catch (e) {}
   on = Array.isArray(on) ? on.filter(k => S.some(s => s[0] === k)) : null;
   if (!on || !on.length) on = ["official", "hybrid", "v1", "v3", "keynum", "underdog"].filter(k => S.some(s => s[0] === k));
   let ghosts = false, armed = !REDUCED;   // armed: lines wait, unrevealed, for the cascade to reach them
   const fin = k => c.cum[k][n - 1], sg = v => v > 0 ? "+" + v : v < 0 ? "−" + (-v) : "0";
+  // The path starts with the two backtest weeks (replays, not picked live); chips and notes quote live games only so they match the tally.
+  const liveIdx = c.games.map((g, i) => g.kind === "backtest" ? -1 : i).filter(i => i >= 0), nLive = liveIdx.length, nBt = n - nLive;
+  const liveNetOf = k => c.games.reduce((a, g) => a + (g.kind === "backtest" ? 0 : ((g.d || {})[k] || 0)), 0);
+  const lnet = k => k === "underdog" ? -liveNetOf("favorite") : liveNetOf(k);
   const sw = (col, d, w) => `<svg viewBox="0 0 22 6" aria-hidden="true"><line x1="0" x2="22" y1="3" y2="3" stroke="${col}" stroke-width="${Math.max(2, w)}"${d ? ` stroke-dasharray="${d}"` : ""}/></svg>`;
   const GN = 200, rng = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
   let GH = null; const ghostPaths = () => { if (GH) return GH; const r = rng(2026); GH = Array.from({ length: GN }, () => { let s = 0; return Array.from({ length: n }, () => (s += r() < .5 ? -1 : 1)); }); return GH; };
   const anim = {};   // series key -> reveal progress 0..1 (absent = fully shown)
-  const Wd = 600, H = 230, m = { l: 34, r: 10, t: 10, b: 24 };
+  let Wd = 600, H = 230; const m = { l: 34, r: 10, t: 10, b: 24 };
   const X = i => m.l + i / (n - 1) * (Wd - m.l - m.r);
   let lim = 10, Y = v => 0;
   function keys() {
-    $("#curve-key").innerHTML = S.map(([k, l, col, d, w]) => `<button class="mchip" data-k="${k}" aria-pressed="${on.includes(k)}">${sw(col, d, w)}${esc(l)} <b>${sg(fin(k))}</b></button>`).join("")
+    $("#curve-key").innerHTML = S.map(([k, l, col, d, w]) => `<button class="mchip" data-k="${k}" aria-pressed="${on.includes(k)}">${sw(col, d, w)}${esc(l)} <b title="Net wins in the ${nLive} live games (weeks 3+)">${sg(lnet(k))}</b></button>`).join("")
       + `<button class="mchip sim" id="ghost-tog" aria-pressed="${ghosts}">200 coin-flip ghosts</button>`
       + `<button class="mlink" data-all="1">All</button><button class="mlink" data-all="0">Just official</button>`;
     $("#curve-key").querySelectorAll(".mchip[data-k]").forEach(b => b.onclick = () => {
@@ -832,9 +838,10 @@ setLive(liveData);
   const persist = () => { try { localStorage.setItem("nfl_curve_on_v2", JSON.stringify(on)); } catch (e) {} };
   function gnote() {
     const end = ghostPaths().map(q => q[n - 1]), share = k => `${end.filter(v => v >= fin(k)).length} of ${GN}`;
-    $("#sim-note").innerHTML = `<b>Simulated, not data:</b> ${GN} coin-flip pickers over the same ${n} games, drawn behind our lines. Finished at or above Official (${sg(fin("official"))}): <b>${share("official")}</b>.`;
+    $("#sim-note").innerHTML = `<b>Simulated, not data:</b> ${GN} coin-flip pickers over the same ${n} games, drawn behind our lines. Finished at or above Official (${sg(fin("official"))} over all ${n} games incl. backtest): <b>${share("official")}</b>.`;
   }
   function draw() {
+    Wd = Math.max(300, Math.floor($("#curve").clientWidth || 600)); H = Wd < 520 ? 240 : 230;
     const vis = S.filter(s => on.includes(s[0]));
     lim = Math.ceil(Math.max(...band, ...vis.flatMap(s => c.cum[s[0]].map(Math.abs))) / 5) * 5;
     Y = v => m.t + (lim - v) / (2 * lim) * (H - m.t - m.b);
@@ -842,17 +849,17 @@ setLive(liveData);
     const w0 = k => armed && anim[k] == null ? 0 : (anim[k] ?? 1) * (Wd + 4);
     let o = `<defs>${[...vis.map(s => s[0]), "ghosts"].map(k => `<clipPath id="rv-${k}"><rect id="rr-${k}" x="0" y="0" width="${w0(k)}" height="${H}"/></clipPath>`).join("")}</defs>`;
     const btEnd = c.games.findIndex(g => g.kind !== "backtest");
-    if (btEnd > 0) o += `<rect x="${X(0)}" y="${m.t}" width="${X(btEnd) - X(0)}" height="${H - m.t - m.b}" fill="rgba(255,255,255,.025)"/><text x="${X(0) + 3}" y="${m.t + 12}" fill="#7C8696" font-size="10" font-family="IBM Plex Mono">backtest</text>`;
+    if (btEnd > 0) o += `<rect x="${X(0)}" y="${m.t}" width="${X(btEnd) - X(0)}" height="${H - m.t - m.b}" fill="rgba(255,255,255,.025)"/><text x="${X(0) + 3}" y="${m.t + 12}" fill="#8993A3" font-size="10.5" font-family="IBM Plex Mono">backtest</text>`;
     o += `<polygon points="${pts(band)} ${band.map((b, i) => `${X(n - 1 - i).toFixed(1)},${Y(-band[n - 1 - i]).toFixed(1)}`).join(" ")}" fill="rgba(61,165,255,.13)"/>`;
-    let prev = null; c.games.forEach((g, i) => { if (g.week !== prev) { o += `<line x1="${X(i)}" x2="${X(i)}" y1="${m.t}" y2="${H - m.b}" stroke="rgba(255,255,255,.06)"/><text x="${X(i) + 3}" y="${H - 8}" fill="#7C8696" font-size="10" font-family="IBM Plex Mono">W${g.week}</text>`; prev = g.week; } });
-    o += [-lim, 0, lim].map(v => `<text x="${m.l - 6}" y="${Y(v) + 3}" fill="#7C8696" font-size="10" font-family="IBM Plex Mono" text-anchor="end">${v > 0 ? "+" : ""}${v}</text>`).join("");
+    let prev = null; c.games.forEach((g, i) => { if (g.week !== prev) { o += `<line x1="${X(i)}" x2="${X(i)}" y1="${m.t}" y2="${H - m.b}" stroke="rgba(255,255,255,.06)"/><text x="${X(i) + 3}" y="${H - 8}" fill="#8993A3" font-size="10.5" font-family="IBM Plex Mono">W${g.week}</text>`; prev = g.week; } });
+    o += [-lim, 0, lim].map(v => `<text x="${m.l - 6}" y="${Y(v) + 3}" fill="#8993A3" font-size="10.5" font-family="IBM Plex Mono" text-anchor="end">${v > 0 ? "+" : ""}${v}</text>`).join("");
     o += `<line x1="${m.l}" x2="${Wd - m.r}" y1="${Y(0)}" y2="${Y(0)}" stroke="rgba(255,255,255,.25)" stroke-dasharray="4 4"/>`;
     if (ghosts) o += `<g clip-path="url(#rv-ghosts)">${ghostPaths().map(q => `<polyline points="${pts(q)}" fill="none" stroke="rgba(180,200,255,.07)" stroke-width="1"/>`).join("")}</g>`;
     for (const [k, l, col, d, w] of vis.slice().reverse()) o += `<g clip-path="url(#rv-${k})"><polyline points="${pts(c.cum[k])}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linejoin="round"${d ? ` stroke-dasharray="${d}"` : ""}/></g>`;
     if (on.includes("official")) o += `<g clip-path="url(#rv-official)"><circle cx="${X(n - 1)}" cy="${Y(fin("official"))}" r="4" fill="#FFB020"/>${CASCADE.newCount ? `<circle class="endpulse" cx="${X(n - 1)}" cy="${Y(fin("official"))}" r="4" fill="none" stroke="#FFB020" stroke-width="2"/>` : ""}</g>`;
     o += `<line id="cx" x1="0" x2="0" y1="${m.t}" y2="${H - m.b}" stroke="rgba(255,255,255,.35)" hidden/>`;
     $("#curve").innerHTML = `<svg viewBox="0 0 ${Wd} ${H}" role="img" tabindex="0" aria-label="Cumulative net wins by game for the selected models, against a coin-flip luck band">${o}</svg><div class="tip" id="ctip" hidden></div>`;
-    $("#curvelast").textContent = `official ${sg(fin("official"))} · band ±${band[n - 1].toFixed(0)}`;
+    $("#curvelast").textContent = `official ${sg(lnet("official"))} live · ${sg(fin("official"))} with backtest`;
     wireTip(vis);
   }
   function wireTip(vis) {
@@ -870,6 +877,7 @@ setLive(liveData);
   }
   // Reveal the named series left to right (clip-path), the rest stay as they are.
   function startReveal(ks, delay, dur) {
+    if (armed) { armed = false; ks = [...new Set([...ks, ...on])]; }   // a toggle before the cascade ran must not leave the other lines hidden
     ks.forEach(k => { anim[k] = 0; }); draw();
     if (REDUCED) { ks.forEach(k => delete anim[k]); return draw(); }
     const t0 = performance.now() + delay;
@@ -881,10 +889,12 @@ setLive(liveData);
     requestAnimationFrame(step);
   }
   keys(); draw();
+  if (window.ResizeObserver) { let w0 = Wd; new ResizeObserver(es => { const w = Math.floor(es[0].contentRect.width); if (w >= 300 && Math.abs(w - w0) > 8) { w0 = w; draw(); } }).observe($("#curve")); }
   CASCADE.line = delay => { armed = false; startReveal(on.slice(), delay, 1300); };
-  $("#verdict").textContent = c.verdict;
-  if (c.cum.underdog) { const u = fin("underdog"), inb = Math.abs(u) <= band[n - 1];
-    $("#baseline-note").textContent = `Always the underdog is ${sg(u)} to the official ${sg(fin("official"))} over the same ${n} games, ${inb ? "inside" : "outside"} the coin-flip band. It is a no-skill rule, so a lead like this over a few dozen games is luck-sized, not a better strategy.`; }
+  const bandOf = m => Math.round(1.96 * Math.sqrt(m));
+  $("#verdict").textContent = `Live games only (${nLive}): official ${sg(lnet("official"))} net wins; a coin-flipper would land within ±${bandOf(nLive)} about 95% of the time, so it is too early to tell skill from luck. The chart also includes ${nBt} backtest games (weeks 1–2, replays): ${sg(fin("official"))} over all ${n}.`;
+  if (c.cum.underdog) { const u = lnet("underdog"), inb = Math.abs(u) <= bandOf(nLive);
+    $("#baseline-note").textContent = `Chip numbers are live net wins. Always the underdog is ${sg(u)} to the official ${sg(lnet("official"))} over the same ${nLive} live games, ${inb ? "inside" : "outside"} the ±${bandOf(nLive)} coin-flip band. It is a no-skill rule, so a lead like this over a few dozen games is luck-sized, not a better strategy.`; }
 })();
 
 /* Weeks: one dot per graded game, in game order. New results since your last visit start gray and pop in. */
@@ -917,7 +927,7 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
 /* Model tally: an airport board that flips only the digits that changed */
 (function () {
   const ms = D.models.map(m => ({ ...m, pct: m.W / (m.W + m.L), net: m.W - m.L }));
-  $("#standings").innerHTML = `<div class="tr th" role="row"><div role="columnheader">Model</div><div role="columnheader">W–L</div><div role="columnheader">Pct</div><div role="columnheader">Net</div></div>` +
+  $("#standings").innerHTML = `<div class="tr th" role="row"><div role="columnheader">Model</div><div role="columnheader">W–L</div><div role="columnheader">Win %</div><div role="columnheader">Net</div></div>` +
     ms.map((m, i) => `<div class="tr${i === 0 ? " me" : ""}" role="row"><div class="tn" role="cell">${esc(m.label)}${m.note ? `<small>${esc(m.note)}</small>` : ""}</div>
       <div class="tv" role="cell" data-k="wl${i}"></div><div class="tv" role="cell" data-k="pct${i}"></div><div class="tv net ${m.net > 0 ? "up" : m.net < 0 ? "dn" : ""}" role="cell" data-k="net${i}"></div></div>`).join("");
   const go = [];
@@ -940,7 +950,7 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
   const tAt = p => { let a = p * A; for (const [s, e] of iv) { if (a <= e - s) return s + a; a -= e - s; } return iv[iv.length - 1][1]; };   // idle stretches between kickoff windows are skipped
   const covAt = (x, min) => { let c = x.fl[0][1]; for (const q of x.fl) { if (q[0] <= min) c = q[1]; else break; } return c; };
   $("#fin").innerHTML = gm.map((x, i) => `<div class="fin" id="slc${i}"><i></i><div class="body"><div class="top"><span class="who">${logo(x.pick)}<b>${esc(x.pick)} ${sp(x.line)}</b></span><span class="mg" id="slm${i}"></span><span class="res" id="slb${i}"></span></div>
-    <div class="sub2">${esc(x.away)} @ ${esc(x.home)} · vs line ${sp(x.fin)}</div><svg viewBox="0 0 240 44" aria-hidden="true"><line x1="0" x2="240" y1="22" y2="22" stroke="rgba(255,255,255,.18)" stroke-dasharray="3 3"/><path id="slp${i}" fill="none" stroke-width="1.6"/></svg></div></div>`).join("");
+    <div class="sub2">${esc(x.away)} @ ${esc(x.home)}</div><svg viewBox="0 0 240 44" aria-hidden="true"><line x1="0" x2="240" y1="22" y2="22" stroke="rgba(255,255,255,.18)" stroke-dasharray="3 3"/><path id="slp${i}" fill="none" stroke-width="1.6"/></svg></div></div>`).join("");
   const clk = ms => new Date(ms).toLocaleString("en-US", { timeZone: ET, weekday: "short", hour: "numeric", minute: "2-digit" });
   const render = p => {
     const t = tAt(p); let w = 0, l = 0, live = 0;
@@ -979,8 +989,8 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
   const s1 = v => { const a = Math.abs(v), t = a % 1 ? a.toFixed(1) : String(a); return (v > 0 ? "+" : v < 0 ? "−" : "") + t; };
   const clock = t => { const ot = t > 60, q = Math.min(4, Math.floor(t / 15) + 1), r = Math.max(0, Math.round(((ot ? 70 : q * 15) - t) * 60)); return `${ot ? "OT" : "Q" + q} ${Math.floor(r / 60)}:${String(r % 60).padStart(2, "0")}`; };
   const F = [["all", "Losses", Sm.n, () => true, ""], ["late", "Lost in last 5:00", Sm.late, x => x.tags.includes("late"), "late"],
-    ["fg", "Within a FG", Sm.fg, x => x.tags.includes("hook") || x.tags.includes("close"), ""], ["far", "Not close (7+)", Sm.far, x => x.tags.includes("far"), ""],
-    ["to", "Turnover swing (2+)", Ls.filter(x => x.tags.includes("to_lost") || x.tags.includes("to_won")).length, x => x.tags.includes("to_lost") || x.tags.includes("to_won"), ""]];
+    ["fg", "Lost by 3 or less", Sm.fg, x => x.tags.includes("hook") || x.tags.includes("close"), ""], ["far", "Lost by 7 or more", Sm.far, x => x.tags.includes("far"), ""],
+    ["to", "Turnovers 2+ apart", Ls.filter(x => x.tags.includes("to_lost") || x.tags.includes("to_won")).length, x => x.tags.includes("to_lost") || x.tags.includes("to_won"), ""]];
   let cur = "all", all = false; const latest = Math.max(...Ls.map(x => x.week));
   const tiles = () => { $("#lr-tiles").innerHTML = F.map(([k, l, n, , c]) => `<button class="${c}" data-f="${k}" aria-pressed="${cur === k}"><b>${n}</b><span>${esc(l)}</span></button>`).join("");
     $("#lr-tiles").querySelectorAll("button").forEach(b => b.onclick = () => { cur = cur === b.dataset.f && cur !== "all" ? "all" : b.dataset.f; all = true; tiles(); grid(); }); };
@@ -994,7 +1004,7 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
     for (const q of [15, 30, 45, 60]) o += `<line class="f-q" x1="${X(q)}" x2="${X(q)}" y1="${m.t}" y2="${m.t + ph}"/>`;
     ["Q1", "Q2", "Q3", "Q4"].forEach((q, i) => o += `<text x="${X(i * 15 + 7.5)}" y="${H - 5}" text-anchor="middle">${q}</text>`);
     if (T > 60) o += `<text x="${X((60 + T) / 2)}" y="${H - 5}" text-anchor="middle">OT</text>`;
-    o += `<text x="${X(57.5)}" y="${m.t - 2}" text-anchor="middle" style="font-size:9.5px">5:00</text>`;
+    o += `<text x="${X(57.5)}" y="${m.t - 2}" text-anchor="middle" style="font-size:10.5px">5:00</text>`;
     for (const v of [-YM, -YM / 2, YM / 2, YM]) o += `<text x="${m.l - 5}" y="${Y(v) + 3.5}" text-anchor="end">${s1(v)}</text>`;
     if (!x.flow) { o += `<line class="f-zero" x1="${m.l}" x2="${m.l + pw}" y1="${Y(0)}" y2="${Y(0)}"/><text x="${m.l + pw / 2}" y="${Y(0) - 8}" text-anchor="middle">Play-by-play not available yet</text>`; return { svg: o, H }; }
     const P = x.flow, pts = []; P.forEach((p, i) => { if (i) pts.push([X(p[0]), Y(P[i - 1][1])]); pts.push([X(p[0]), Y(p[1])]); });
@@ -1015,9 +1025,9 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
     const ot = OTH.map(([k, l]) => { const r = (x.others || {})[k]; return `<span>${l} ${r === "W" ? '<span class="ok">✓</span>' : r === "L" ? '<span class="no">✕</span>' : "—"}</span>`; }).join("");
     const tg = x.tags.map(t => `<span class="tg ${t}">${esc(TAG[t] || t)}${t === "to_lost" || t === "to_won" ? ` ${x.to[0]}–${x.to[1]}` : ""}</span>`).join("");
     const mv = x.drift == null ? "" : x.drift === 0 ? "no line move" : `market moved ${Math.abs(x.drift)} pt`;
-    return `<article class="lrc" data-id="${esc(x.id)}"><div class="lrc-h"><div><div class="lwk">Week ${x.week}${mv ? " · " + mv : ""}</div><h4>${esc(x.away)} ${x.as} <small>@</small> ${esc(x.home)} ${x.hs}</h4><span class="pk">${esc(x.pick)} ${s1(x.line)}${x.p != null ? `<em>${(x.p * 100).toFixed(1)}%</em>` : ""}</span></div>
+    return `<article class="lrc" data-id="${esc(x.id)}"><div class="lrc-h"><div><div class="lwk">Week ${x.week}${mv ? " · " + mv : ""}</div><h4>${esc(x.away)} ${x.as} <small>@</small> ${esc(x.home)} ${x.hs}</h4><span class="pk">${esc(x.pick)} ${s1(x.line)}${x.p != null ? `<em title="Model cover chance at pick time">${(x.p * 100).toFixed(1)}% to cover</em>` : ""}</span></div>
       <div class="miss"><b>${s1(x.fin)}</b><span>vs the number</span></div></div><div class="flow" data-id="${esc(x.id)}"></div>${x.flow ? '<div class="lrc-bar"><button class="play" type="button" aria-label="Replay the game">▶ Replay</button><span class="rclock"></span></div>' : ""}
-      <p class="note">${note(x)} Turnovers ${esc(x.pick)} ${x.to[0]}, ${esc(x.opp)} ${x.to[1]}.</p>${tg ? `<div class="tags">${tg}</div>` : ""}<div class="oth"><span>Other models:</span>${ot}</div></article>`;
+      <p class="note">${note(x)} Turnovers committed: ${esc(x.pick)} ${x.to[0]}, ${esc(x.opp)} ${x.to[1]}.</p>${tg ? `<div class="tags">${tg}</div>` : ""}<div class="oth"><span>Other models:</span>${ot}<span title="No result recorded for that model in this game">— = no pick recorded</span></div></article>`;
   }
   const played = new Set();
   const io = window.IntersectionObserver && !REDUCED ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { io.unobserve(e.target); played.add(e.target.dataset.id); e.target._run && e.target._run(); } }), { threshold: .6 }) : null;
@@ -1045,7 +1055,7 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
   function grid() {
     const pr = F.find(z => z[0] === cur)[3], sel = Ls.filter(pr), shown = all || cur !== "all" ? sel : sel.filter(x => x.week === latest);
     $("#lr-grid").innerHTML = shown.length ? shown.map(card).join("") : '<p class="k">No losses match.</p>';
-    const more = $("#lr-more"), rest = sel.length - shown.length; more.hidden = !rest; more.textContent = `Show all ${sel.length} losses this season`; more.onclick = () => { all = true; grid(); };
+    const more = $("#lr-more"), rest = sel.length - shown.length; more.hidden = !rest; more.textContent = `Show all ${sel.length} losses this season`; $("#lr-showing").textContent = all || cur !== "all" ? `Showing ${shown.length} of ${Ls.length} losses` : `Showing week ${latest}: ${shown.length} of ${Ls.length} losses`; more.onclick = () => { all = true; grid(); };
     paint();
   }
   tiles(); grid();
