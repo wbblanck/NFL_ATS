@@ -1,5 +1,5 @@
 name: Publish dashboard
-# Rebuilds the picks dashboard and commits it as site/dashboard.html, which the private Streamlit app shows
+# Rebuilds the picks dashboard (scoreboard design) and commits it as site/dashboard.html, which the private Streamlit app shows
 # (streamlit_app/app.py, docs/scheduling.md).
 # Triggers: the lock run dispatches it after each group of picks; the crons pick up final scores
 # (nflverse posts them some time after games end); manual dispatch any time.
@@ -31,7 +31,15 @@ jobs:
           cache: pip
       - run: pip install -e .
       - name: Build
-        run: python -m engine dashboard --season 2026 --out site/dashboard.html --log-provisional
+        # The engine writes the data page, then design/build_dashboard.py renders the same data into the
+        # scoreboard design. If the redesign step fails, the data page is kept so the app never goes stale.
+        run: |
+          python -m engine dashboard --season 2026 --out site/dashboard.html --log-provisional
+          if python design/build_dashboard.py site/dashboard.html; then
+            cp design/dashboard.html site/dashboard.html
+          else
+            echo "::warning::scoreboard design build failed; publishing the data page"
+          fi
       - name: Commit
         run: |
           git config user.name "nfl-ats-engine"

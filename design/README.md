@@ -68,3 +68,7 @@ game.
 | Text contrast | Fixed: muted label color raised from 4.06:1 to 5.14:1 on panels |
 | Reduced motion, keyboard | Pass: the pulse and transitions are off under reduced motion; native buttons, select and details/summary with focus rings |
 | No horizontal scroll at 390px | Pass (checked in headless Chromium) |
+
+## Publishing (2026-10-21)
+
+`publish-dashboard.yml` builds the engine's data page, renders it through `design/build_dashboard.py`, and commits the result as `site/dashboard.html`. If the design step fails, the data page is published unchanged and the run shows a warning.
