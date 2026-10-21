@@ -7,6 +7,7 @@ touching the pick pipeline.
 
     python design/build_dashboard.py
 """
+import base64
 import html
 import json
 import pathlib
@@ -16,6 +17,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "site" / "dashboard.html"
 TEMPLATE = ROOT / "design" / "dashboard.template.html"
 OUT = ROOT / "design" / "dashboard.html"
+LOGOS = ROOT / "design" / "logos"
 
 
 def main() -> None:
@@ -23,8 +25,9 @@ def main() -> None:
     if not m:
         raise SystemExit(f"no data payload found in {SRC}")
     data = json.loads(m.group(1))
+    logos = {p.stem: "data:image/png;base64," + base64.b64encode(p.read_bytes()).decode() for p in sorted(LOGOS.glob("*.png"))}
     payload = json.dumps(data, separators=(",", ":")).replace("</", "<\\/")
-    page = TEMPLATE.read_text().replace("__DATA__", payload).replace(
+    page = TEMPLATE.read_text().replace("__DATA__", payload).replace("__LOGOS__", json.dumps(logos, separators=(",", ":"))).replace(
         "__TITLE__", html.escape(f"Week {data['week']} · Bonsai ATS"))
     OUT.write_text(page)
     print(f"wrote {OUT.relative_to(ROOT)} (week {data['week']}, record {data['record']})")

@@ -15,8 +15,11 @@ the other style packs were removed.
 Rebuild after a new `site/dashboard.html`: `python design/build_dashboard.py`.
 Nothing here is wired into the pick pipeline or `publish-dashboard.yml`.
 
-Team logos are the full transparent logos nflverse lists (ESPN CDN), loaded when the page is
-viewed (not stored in this repo); fallback is nflverse's squared logo, then the abbreviation.
+Team logos are nflverse's squared logos (128px copies in `design/logos`, embedded into
+the built page so they show even with no network). They are cropped to a square
+by their source; a full uncropped set needs a host the build environment can't
+reach. Team logos are trademarks of their teams; this repo is private and for
+personal use.
 Team colors come from nflverse `teams_colors_logos.csv`.
 
 ## Sections
