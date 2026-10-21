@@ -15,6 +15,10 @@ the other style packs were removed.
 Rebuild after a new `site/dashboard.html`: `python design/build_dashboard.py`.
 Nothing here is wired into the pick pipeline or `publish-dashboard.yml`.
 
+Team logos are nflverse's squared logos, loaded from GitHub when the page is
+viewed (not stored in this repo); if one fails to load, the abbreviation shows.
+Team colors come from nflverse `teams_colors_logos.csv`.
+
 ## Sections
 
 Scoreboard (live record, win rate ± SE, graded / 256, last week, live
@@ -35,7 +39,7 @@ game.
 | Emoji as UI | Pass: none |
 | Three identical cards from habit | Pass: game cards are a data grid, one per game |
 | Single neutral sans | Pass: Big Shoulders Display + IBM Plex Mono + Public Sans |
-| More than ~2 colors carry meaning | Known exception: amber accent plus green/red used only for cover/miss status |
+| More than ~2 colors carry meaning | Known exception (owner asked for more color, 2026-10-21): navy ground, team colors and logos on game tiles, blue for the hybrid line and luck band; amber stays the one accent for the pick and next lock; green/red only for cover/miss |
 | Body text column too wide | Pass: hero copy capped at 44ch |
 | Accent more than ~4 times per viewport | Fixed: amber removed from pool line, cover gauge, move tag and bullets; on the board it marks only the picked team (one per card) |
 | Light surfaces / gradients | Pass: none |

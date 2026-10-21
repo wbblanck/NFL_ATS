@@ -12,15 +12,16 @@
    One accent: scoreboard amber, for the official pick, the pool line and the
    next lock. Green and red are status only (cover / miss), as on a real board. */
 :root {
-  --ground: #07090C;
-  --panel: #0D1117;
-  --panel-2: #131922;
-  --well: #05070A;
+  --ground: #070C18;
+  --panel: #0E1628;
+  --panel-2: #16213A;
+  --well: #091022;
+  --blue: #3DA5FF;
   --ink: #F4F6F8;
   --ink-2: #9AA4B2;
   --ink-3: #7C8696;
-  --line: rgba(255,255,255,0.08);
-  --line-2: rgba(255,255,255,0.16);
+  --line: rgba(140,170,255,0.12);
+  --line-2: rgba(140,170,255,0.24);
   --amber: #FFB020;
   --amber-dim: rgba(255,176,32,0.14);
   --win: #2FCB7A;
@@ -41,7 +42,7 @@ a { color: inherit; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
 /* Nav */
-nav { border-bottom: 1px solid var(--line); position: sticky; top: 0; background: rgba(7,9,12,.94); z-index: 5; }
+nav { border-bottom: 1px solid var(--line); position: sticky; top: 0; background: rgba(7,12,24,.94); z-index: 5; }
 nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 54px; gap: 16px; }
 .brand { font: 900 22px var(--display); color: var(--ink); text-transform: uppercase; letter-spacing: .02em; white-space: nowrap; }
 .brand span { color: var(--amber); }
@@ -62,7 +63,7 @@ h2 { font: 900 26px/1 var(--display); text-transform: uppercase; letter-spacing:
 .kicker { font: 500 12px var(--mono); color: var(--amber); letter-spacing: .1em; text-transform: uppercase; margin: 0 0 14px; }
 h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: uppercase; color: var(--ink); margin: 0; }
 .sub { max-width: 44ch; margin: 18px 0 0; }
-.board { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+.board { background: var(--panel); border: 1px solid rgba(255,176,32,.28); border-radius: 10px; padding: 16px; box-shadow: 0 0 0 1px rgba(255,176,32,.08), 0 0 48px rgba(255,176,32,.08); }
 .board-top { display: flex; justify-content: space-between; gap: 10px; padding: 0 4px 12px; }
 .score { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; background: var(--well); border-radius: 6px; padding: 14px 8px 18px; }
 .side { text-align: center; }
@@ -89,6 +90,10 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .slot .day { font: 700 18px var(--display); text-transform: uppercase; color: var(--ink); letter-spacing: .03em; }
 .slot .t { font: 12px var(--mono); color: var(--ink-2); }
 .slot .n { font: 11px var(--mono); color: var(--ink-3); margin-top: 6px; }
+.slot .lg { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 8px; }
+.slot .lg .logo, .slot .lg .logo-alt { width: 22px; height: 22px; border-radius: 4px; font-size: 9px; }
+.nextlock .lg { display: inline-flex; gap: 4px; vertical-align: middle; margin-right: 8px; }
+.nextlock .logo, .nextlock .logo-alt { width: 30px; height: 30px; border-radius: 5px; font-size: 11px; }
 .slot.next { box-shadow: inset 0 3px 0 var(--amber); }
 .slot.next .day { color: var(--amber); }
 
@@ -117,11 +122,17 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .tag.final-w { color: var(--win); border-color: rgba(47,203,122,.45); }
 .tag.final-l { color: var(--loss); border-color: rgba(240,82,74,.45); }
 .match { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin: 10px 0 12px; }
-.team { text-align: center; padding: 8px 4px; border-radius: 6px; border: 1px solid transparent; position: relative; }
-.team b { display: block; font: 900 38px/1 var(--display); color: var(--ink-2); letter-spacing: .02em; }
-.team span { font: 11px var(--mono); color: var(--ink-3); }
-.team.pick { border-color: rgba(255,176,32,.5); background: var(--amber-dim); }
+.team { text-align: center; padding: 12px 4px 10px; border-radius: 8px; border: 1px solid var(--line); position: relative;
+        background: color-mix(in srgb, var(--tc) 34%, var(--panel)); }
+.team .logo, .team .logo-alt { width: 64px; height: 64px; margin: 0 auto 6px; }
+.team b { display: block; font: 900 20px/1 var(--display); color: var(--ink); letter-spacing: .04em; }
+.team span { font: 11px var(--mono); color: var(--ink-2); }
+.team.pick { border: 2px solid var(--amber); box-shadow: 0 0 22px color-mix(in srgb, var(--tp) 45%, transparent); }
 .team.pick b { color: var(--amber); }
+.logo { display: block; border-radius: 8px; object-fit: cover; background: var(--well); }
+.logo-alt { display: grid; place-items: center; border-radius: 8px; background: var(--well); font: 900 18px var(--display); color: var(--ink); }
+.stripe { display: flex; height: 4px; }
+.stripe i { flex: 1; }
 .team.pick::after { content: "PICK"; position: absolute; top: -8px; right: 8px; font: 500 9px var(--mono); letter-spacing: .1em; background: var(--amber); color: #120C00; padding: 1px 5px; border-radius: 3px; }
 .at { font: 11px var(--mono); color: var(--ink-3); padding: 0 8px; }
 .lines { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
@@ -132,7 +143,7 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .cover .row { display: flex; justify-content: space-between; align-items: baseline; }
 .cover .pct { font: 700 22px var(--display); color: var(--ink); font-variant-numeric: tabular-nums; }
 .gauge { position: relative; height: 8px; background: var(--well); border-radius: 4px; margin-top: 6px; }
-.gauge i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--ink-2); border-radius: 4px; }
+.gauge i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--tp, var(--ink-2)); border-radius: 4px; }
 .gauge u { position: absolute; top: -3px; bottom: -3px; width: 1px; background: var(--ink-3); }
 .gauge-scale { display: flex; justify-content: space-between; font: 10px var(--mono); color: var(--ink-3); margin-top: 3px; }
 .more { display: flex; justify-content: space-between; margin-top: 12px; font: 11px var(--mono); color: var(--ink-3); }
@@ -180,7 +191,7 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .weeks { display: grid; gap: 6px; }
 .wk { display: grid; grid-template-columns: 34px 1fr 50px; gap: 10px; align-items: center; font: 12px var(--mono); }
 .wk .sq { display: flex; gap: 3px; flex-wrap: wrap; }
-.wk .sq i { width: 12px; height: 16px; border-radius: 2px; background: var(--win); }
+.wk .sq i { width: 12px; height: 16px; border-radius: 2px; background: var(--win); box-shadow: 0 0 6px rgba(47,203,122,.35); }
 .wk .sq i.x { background: var(--loss); opacity: .85; }
 .wk.bt .sq i { opacity: .4; }
 .wk .lbl { color: var(--ink-2); }
@@ -192,7 +203,9 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .fin > i { background: var(--ink-3); }
 .fin.W > i { background: var(--win); } .fin.L > i { background: var(--loss); }
 .fin .body { padding: 9px 12px 8px; }
-.fin .top { display: flex; justify-content: space-between; align-items: baseline; }
+.fin .top { display: flex; justify-content: space-between; align-items: center; }
+.fin .who { display: flex; align-items: center; gap: 8px; }
+.fin .logo, .fin .logo-alt { width: 28px; height: 28px; border-radius: 5px; font-size: 10px; }
 .fin b { font: 700 22px var(--display); color: var(--ink); text-transform: uppercase; }
 .fin .res { font: 900 20px var(--display); }
 .fin .sub2 { font: 11px var(--mono); color: var(--ink-3); }
@@ -210,6 +223,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
   .xp { grid-template-columns: 1fr; }
   .cells .cell .v { font-size: 24px; }
   .updated { display: none; }
+  .nextlock .ng { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
@@ -272,7 +286,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
       <div class="pane">
         <div class="mini-h"><span class="k">Cumulative net wins, every graded game</span><span class="k" id="curvelast"></span></div>
         <div id="curve"></div>
-        <div class="legend"><span><i style="background:var(--amber)"></i>Official pick</span><span><i style="background:var(--ink-3)"></i>Hybrid (tracked)</span><span><i style="background:rgba(255,255,255,.14);height:8px"></i>Coin-flip luck band (95%)</span></div>
+        <div class="legend"><span><i style="background:var(--amber)"></i>Official pick</span><span><i style="background:var(--blue)"></i>Hybrid (tracked)</span><span><i style="background:rgba(61,165,255,.3);height:8px"></i>Coin-flip luck band (95%)</span></div>
         <p class="verdict" id="verdict"></p>
       </div>
       <div class="pane">
@@ -302,6 +316,14 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
 <script>
 const D=__DATA__;
 const $ = s => document.querySelector(s);
+const TEAMS = {"ARI":["#97233F","#97233F"],"ATL":["#A71930","#A71930"],"BAL":["#241773","#9E7C0C"],"BUF":["#00338D","#C60C30"],"CAR":["#0085CA","#0085CA"],"CHI":["#0B162A","#E64100"],"CIN":["#FB4F14","#FB4F14"],"CLE":["#FF3C00","#FF3C00"],"DAL":["#002244","#B0B7BC"],"DEN":["#002244","#FB4F14"],"DET":["#0076B6","#0076B6"],"GB":["#203731","#FFB612"],"HOU":["#03202F","#A71930"],"IND":["#002C5F","#A5ACAF"],"JAX":["#006778","#006778"],"KC":["#E31837","#E31837"],"LA":["#003594","#FFD100"],"LAC":["#007BC7","#007BC7"],"LV":["#000000","#A5ACAF"],"MIA":["#008E97","#008E97"],"MIN":["#4F2683","#FFC62F"],"NE":["#002244","#C60C30"],"NO":["#D3BC8D","#D3BC8D"],"NYG":["#0B2265","#A71930"],"NYJ":["#003F2D","#4D796C"],"PHI":["#004C54","#A5ACAF"],"PIT":["#000000","#FFB612"],"SEA":["#002244","#69BE28"],"SF":["#AA0000","#AA0000"],"TB":["#A71930","#A71930"],"TEN":["#4495D2","#4495D2"],"WAS":["#5A1414","#FFB612"]};
+// Logos: nflverse squared team logos, loaded from GitHub at view time (not stored in the repo).
+const logo = t => `<img class="logo" src="https://raw.githubusercontent.com/nflverse/nflverse-pbp/master/squared_logos/${encodeURIComponent(t)}.png" alt="${esc(t)}" data-t="${esc(t)}">`;
+document.addEventListener("error", e => {
+  const el = e.target;
+  if (el.classList && el.classList.contains("logo")) { const a = document.createElement("span"); a.className = "logo-alt"; a.textContent = el.dataset.t; el.replaceWith(a); }
+}, true);
+const tc = t => (TEAMS[t] || ["#334155", "#94A3B8"]);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const sp = v => v == null ? "—" : (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(1).replace(/\.0$/, "");
 const pct = p => (p * 100).toFixed(1) + "%";
@@ -333,7 +355,8 @@ function renderLock() {
   const ms = Date.parse(n.iso) - Date.now();
   const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60;
   const day = new Date(n.iso).toLocaleDateString("en-US", { weekday: "short", timeZone: "America/New_York" });
-  el.innerHTML = `<div><div class="k"><span class="live"></span>Next pick · ${esc(n.game)}</div><div class="when">${day} ${esc(n.at)} ET</div></div>
+  const [na, nh] = n.game.split(" @ ");
+  el.innerHTML = `<div style="display:flex;align-items:center"><span class="lg">${logo(na)}${logo(nh)}</span><div><div class="k"><span class="live"></span>Next pick<span class="ng"> · ${esc(n.game)}</span></div><div class="when">${day} ${esc(n.at)} ET</div></div></div>
     <div class="cd" aria-label="time until next pick">${d ? d + "d " : ""}${h}h ${String(m).padStart(2, "0")}m</div>`;
 }
 renderLock(); setInterval(renderLock, 30000);
@@ -344,7 +367,8 @@ $("#rail").innerHTML = D.slots.map((s, i) => {
   const gs = D.games.filter(g => g.slot === i);
   const isNext = nd && gs.some(g => `${g.away} @ ${g.home}` === nd.game);
   return `<div class="slot${isNext ? " next" : ""}"><div class="day">${esc(s.day.slice(0, 3))}</div><div class="t">${esc(s.times)} ET</div>
-    <div class="n">${gs.length} game${gs.length === 1 ? "" : "s"} · pick ${esc(gs[0] ? gs[0].pick_at : "")}</div></div>`;
+    <div class="n">${gs.length} game${gs.length === 1 ? "" : "s"} · pick ${esc(gs[0] ? gs[0].pick_at : "")}</div>
+    <div class="lg">${gs.map(g => logo(g.pick)).join("")}</div></div>`;
 }).join("");
 
 /* Game board */
@@ -404,8 +428,9 @@ function card(g) {
   const evenX = (.5 - scaleLo) / (scaleHi - scaleLo) * 100;
   const status = g.res ? `<span class="tag final-${g.res === "W" ? "w" : "l"}">Final · ${esc(g.res)}</span>`
     : `<span class="tag">${g.status === "official" ? "Locked" : "Provisional"}</span>`;
-  const team = t => `<div class="team${g.pick === t ? " pick" : ""}"><b>${esc(t)}</b><span>${sp(teamLine(g, t, g.line))}</span></div>`;
-  return `<details class="game" data-id="${esc(g.id)}">
+  const team = t => `<div class="team${g.pick === t ? " pick" : ""}" style="--tc:${tc(t)[0]};--tp:${tc(t)[1]}">${logo(t)}<b>${esc(t)}</b><span>${sp(teamLine(g, t, g.line))}</span></div>`;
+  return `<details class="game" data-id="${esc(g.id)}" style="--tp:${tc(g.pick)[1]}">
+  <div class="stripe" aria-hidden="true"><i style="background:${tc(g.away)[1]}"></i><i style="background:${tc(g.home)[1]}"></i></div>
   <summary>
     <div class="gtop"><span class="k">${esc(g.ko)} ET</span><span class="gtags">${moved ? `<span class="tag move">${esc(g.sig_label)}</span>` : `<span class="tag">On pool line</span>`}${status}</span></div>
     <div class="match">${team(g.away)}<span class="at">at</span>${team(g.home)}</div>
@@ -457,9 +482,9 @@ renderGames();
   const bt = btEnd > 0 ? `<rect x="${X(0)}" y="10" width="${X(btEnd) - X(0)}" height="${H - 30}" fill="rgba(255,255,255,.025)"/><text x="${X(0) + 3}" y="22" fill="#7C8696" font-size="10" font-family="IBM Plex Mono">backtest</text>` : "";
   const ticks = [-lim, 0, lim].map(v => `<text x="24" y="${Y(v) + 3}" fill="#7C8696" font-size="10" font-family="IBM Plex Mono" text-anchor="end">${v > 0 ? "+" : ""}${v}</text>`).join("");
   $("#curve").innerHTML = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Cumulative net wins against a coin-flip luck band">
-    ${bt}<path d="${bandPath}" fill="rgba(255,255,255,.08)"/>${weeks}
+    ${bt}<path d="${bandPath}" fill="rgba(61,165,255,.13)"/>${weeks}
     <line x1="30" x2="${Wd - 10}" y1="${Y(0)}" y2="${Y(0)}" stroke="rgba(255,255,255,.25)" stroke-dasharray="4 4"/>${ticks}
-    ${hy.length ? `<path d="${line(hy)}" fill="none" stroke="#7C8696" stroke-width="1.4"/>` : ""}
+    ${hy.length ? `<path d="${line(hy)}" fill="none" stroke="#3DA5FF" stroke-width="1.4" opacity=".8"/>` : ""}
     <path d="${line(off)}" fill="none" stroke="#FFB020" stroke-width="2.4"/>
     <circle cx="${X(n - 1)}" cy="${Y(off[n - 1])}" r="4" fill="#FFB020"/>
   </svg>`;
@@ -495,9 +520,9 @@ $("#fin").innerHTML = lastFinals.map(g => {
     svg = `<svg viewBox="0 0 240 44" aria-hidden="true"><line x1="0" x2="240" y1="22" y2="22" stroke="rgba(255,255,255,.18)" stroke-dasharray="3 3"/>
       <path d="${fl.map((p, i) => `${i ? "L" : "M"}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join("")}" fill="none" stroke="${col}" stroke-width="1.6"/></svg>`;
   }
-  const pl = teamLine(g, g.pick, g.line);
+  const pl = g.line; // slate lines are already from the pick's side
   return `<div class="fin ${esc(g.res || "")}"><i></i><div class="body">
-    <div class="top"><b>${esc(g.pick)} ${sp(pl)}</b><span class="res ${g.res === "W" ? "w" : g.res === "L" ? "l" : ""}">${esc(g.res || "–")}</span></div>
+    <div class="top"><span class="who">${logo(g.pick)}<b>${esc(g.pick)} ${sp(pl)}</b></span><span class="res ${g.res === "W" ? "w" : g.res === "L" ? "l" : ""}">${esc(g.res || "–")}</span></div>
     <div class="sub2">${esc(g.away)} @ ${esc(g.home)} · vs line ${sp(g.fin)}</div>${svg}</div></div>`;
 }).join("");
 
