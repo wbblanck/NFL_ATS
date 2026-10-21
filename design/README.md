@@ -15,8 +15,8 @@ the other style packs were removed.
 Rebuild after a new `site/dashboard.html`: `python design/build_dashboard.py`.
 Nothing here is wired into the pick pipeline or `publish-dashboard.yml`.
 
-Team logos are nflverse's squared logos, loaded from GitHub when the page is
-viewed (not stored in this repo); if one fails to load, the abbreviation shows.
+Team logos are the full transparent logos nflverse lists (ESPN CDN), loaded when the page is
+viewed (not stored in this repo); fallback is nflverse's squared logo, then the abbreviation.
 Team colors come from nflverse `teams_colors_logos.csv`.
 
 ## Sections

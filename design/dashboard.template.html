@@ -129,7 +129,8 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .team span { font: 11px var(--mono); color: var(--ink-2); }
 .team.pick { border: 2px solid var(--amber); box-shadow: 0 0 22px color-mix(in srgb, var(--tp) 45%, transparent); }
 .team.pick b { color: var(--amber); }
-.logo { display: block; border-radius: 8px; object-fit: cover; background: var(--well); }
+.logo { display: block; object-fit: contain; filter: drop-shadow(0 1px 2px rgba(0,0,0,.55)); }
+.logo.sq { border-radius: 8px; object-fit: cover; filter: none; }
 .logo-alt { display: grid; place-items: center; border-radius: 8px; background: var(--well); font: 900 18px var(--display); color: var(--ink); }
 .stripe { display: flex; height: 4px; }
 .stripe i { flex: 1; }
@@ -317,11 +318,16 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
 const D=__DATA__;
 const $ = s => document.querySelector(s);
 const TEAMS = {"ARI":["#97233F","#97233F"],"ATL":["#A71930","#A71930"],"BAL":["#241773","#9E7C0C"],"BUF":["#00338D","#C60C30"],"CAR":["#0085CA","#0085CA"],"CHI":["#0B162A","#E64100"],"CIN":["#FB4F14","#FB4F14"],"CLE":["#FF3C00","#FF3C00"],"DAL":["#002244","#B0B7BC"],"DEN":["#002244","#FB4F14"],"DET":["#0076B6","#0076B6"],"GB":["#203731","#FFB612"],"HOU":["#03202F","#A71930"],"IND":["#002C5F","#A5ACAF"],"JAX":["#006778","#006778"],"KC":["#E31837","#E31837"],"LA":["#003594","#FFD100"],"LAC":["#007BC7","#007BC7"],"LV":["#000000","#A5ACAF"],"MIA":["#008E97","#008E97"],"MIN":["#4F2683","#FFC62F"],"NE":["#002244","#C60C30"],"NO":["#D3BC8D","#D3BC8D"],"NYG":["#0B2265","#A71930"],"NYJ":["#003F2D","#4D796C"],"PHI":["#004C54","#A5ACAF"],"PIT":["#000000","#FFB612"],"SEA":["#002244","#69BE28"],"SF":["#AA0000","#AA0000"],"TB":["#A71930","#A71930"],"TEN":["#4495D2","#4495D2"],"WAS":["#5A1414","#FFB612"]};
-// Logos: nflverse squared team logos, loaded from GitHub at view time (not stored in the repo).
-const logo = t => `<img class="logo" src="https://raw.githubusercontent.com/nflverse/nflverse-pbp/master/squared_logos/${encodeURIComponent(t)}.png" alt="${esc(t)}" data-t="${esc(t)}">`;
+// Logos: full transparent team logos (ESPN, as listed in nflverse teams_colors_logos), loaded at view
+// time and not stored in the repo. Fallbacks: nflverse squared logo, then the abbreviation.
+const ESPN = { LA: "lar", WAS: "wsh" };
+const SQ = t => `https://raw.githubusercontent.com/nflverse/nflverse-pbp/master/squared_logos/${encodeURIComponent(t)}.png`;
+const logo = t => `<img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/${encodeURIComponent(ESPN[t] || t.toLowerCase())}.png" alt="${esc(t)}" data-t="${esc(t)}">`;
 document.addEventListener("error", e => {
   const el = e.target;
-  if (el.classList && el.classList.contains("logo")) { const a = document.createElement("span"); a.className = "logo-alt"; a.textContent = el.dataset.t; el.replaceWith(a); }
+  if (!(el.classList && el.classList.contains("logo"))) return;
+  if (!el.classList.contains("sq")) { el.classList.add("sq"); el.src = SQ(el.dataset.t); return; }
+  const a = document.createElement("span"); a.className = "logo-alt"; a.textContent = el.dataset.t; el.replaceWith(a);
 }, true);
 const tc = t => (TEAMS[t] || ["#334155", "#94A3B8"]);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
