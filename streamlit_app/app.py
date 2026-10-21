@@ -14,7 +14,11 @@ st.markdown("<style>.block-container{padding:0.25rem 0.25rem 0;max-width:100%}"
 
 import sys  # noqa: E402
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import importlib  # noqa: E402
 import live  # noqa: E402  (streamlit_app/live.py: live scores on each page load)
+# A redeploy restarts app.py but can leave the previous live.py in sys.modules, which broke the page with an
+# AttributeError on new functions; reloading it on every run keeps the two files in step.
+live = importlib.reload(live)
 
 
 @st.cache_data(ttl=20, show_spinner=False)
