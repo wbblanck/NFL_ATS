@@ -22,6 +22,15 @@ reach. Team logos are trademarks of their teams; this repo is private and for
 personal use.
 Team colors come from nflverse `teams_colors_logos.csv`.
 
+## Motion and live scores (2026-10-21)
+
+- **Season path:** a chip per tracked model turns its line on or off (choice kept in this browser), plus the 200 coin-flip ghosts (simulated, labeled). Lines draw in left to right.
+- **Airport boards:** the hero record and the model tally flip only the digits that changed since your last visit (all roll in from 0 on a first look). What you have seen is stored in this browser only.
+- **Result cascade:** after the hero flips, new results fill their dots in game order (gray, then green or red), then the lines draw.
+- **Flip banner:** when `D.flips` has a game, the old pick slides out and the new one in, once per flip.
+- **Live pulse and settled check:** the page can't fetch scores itself (its viewer blocks outside requests). `streamlit_app/live.py` `page_data` / `inject_data` put ESPN scores for games in progress or just finished into `<script id="live-data">` when the page is opened; the card then breathes while the game is on and draws a check when it ends. Display only, never graded. Scores are as of the last page load.
+- Everything respects `prefers-reduced-motion`. Animations wait until the section is on screen.
+
 ## Sections
 
 Scoreboard (live record, win rate ± SE, graded / 256, last week, live

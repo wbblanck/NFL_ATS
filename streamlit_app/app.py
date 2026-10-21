@@ -25,11 +25,19 @@ def _live_strip() -> str:
         return ""
 
 
+@st.cache_data(ttl=20, show_spinner=False)
+def _live_data() -> dict:
+    try:
+        return live.page_data(live.fetch_scoreboard())
+    except Exception:
+        return {"asof": None, "games": []}
+
+
 page = Path(__file__).resolve().parent.parent / "site" / "dashboard.html"
 if page.exists():
     doc = ("<!doctype html><html><head><meta charset='utf-8'>"
            "<meta name='viewport' content='width=device-width,initial-scale=1'></head><body>"
-           + live.inject(page.read_text(encoding="utf-8"), _live_strip()) + "</body></html>")
+           + live.inject(live.inject_data(page.read_text(encoding="utf-8"), _live_data()), _live_strip()) + "</body></html>")
     components.html(doc, height=2600, scrolling=True)
 else:
     st.error("The dashboard has not been built yet: run the 'Publish dashboard' workflow on GitHub.")
