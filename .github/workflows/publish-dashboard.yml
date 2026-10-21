@@ -40,6 +40,7 @@ jobs:
           else
             echo "::warning::scoreboard design build failed; publishing the data page"
           fi
+          git checkout -- design/dashboard.html   # the preview copy is tracked; leave the tree clean for the rebase below
       - name: Commit
         run: |
           git config user.name "nfl-ats-engine"
