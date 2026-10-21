@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NFL_ATS · Hero 2 · Editorial minimal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Style pack: editorial-minimal. Design read: the weekly picks as a sports
+     broadsheet; the record is typeset like a box score, one vermillion accent. */
+  :root {
+    --paper: #F5F1EA;
+    --paper-2: #EFEAE1;
+    --ink: #1A1A18;
+    --ink-2: #6B675E;
+    --rule: rgba(26,26,24,0.14);
+    --accent: #C73E1D;
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); }
+  body { font: 17px/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+  .label { font: 500 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+
+  .masthead { border-bottom: 1px solid var(--ink); }
+  .masthead .wrap { display: flex; justify-content: space-between; align-items: baseline; padding-top: 22px; padding-bottom: 14px; }
+  .title { font: 500 22px var(--serif); letter-spacing: -.01em; }
+  .masthead nav { display: flex; gap: 28px; }
+  .masthead nav a { color: var(--ink); text-decoration: none; background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0 1px no-repeat; transition: background-size 400ms cubic-bezier(.22,1,.36,1); }
+  .masthead nav a:hover { background-size: 100% 1px; }
+  .dateline { border-bottom: 1px solid var(--rule); }
+  .dateline .wrap { display: flex; justify-content: space-between; padding-top: 8px; padding-bottom: 8px; }
+
+  .hero { display: grid; grid-template-columns: 7fr 5fr; padding: 15vh 0 96px; }
+  .lead { padding-right: 56px; border-right: 1px solid var(--rule); }
+  .lead .label { margin: 0 0 28px; }
+  .lead .label b { color: var(--accent); font-weight: 500; }
+  h1 { font: 400 clamp(2.8rem, 6.4vw, 6rem)/1.0 var(--serif); letter-spacing: -.015em; margin: 0; max-width: 12em; font-variation-settings: "opsz" 144; }
+  h1 i { font-style: italic; }
+  .deck { max-width: 34em; margin: 32px 0 40px; }
+  .cta { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+  .btn { background: var(--accent); color: var(--paper); text-decoration: none; padding: 14px 22px; font: 500 15px var(--sans); }
+  .btn:hover { background: var(--ink); }
+  .textlink { font: 500 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
+  .textlink:hover { color: var(--accent); border-color: var(--accent); }
+
+  .index { padding-left: 40px; }
+  .index h2 { margin: 0 0 18px; }
+  .row { display: grid; grid-template-columns: 2.5em 1fr auto; gap: 12px; padding: 14px 0; border-top: 1px solid var(--rule); align-items: baseline; }
+  .row:last-of-type { border-bottom: 1px solid var(--rule); }
+  .row .n { font: 12px var(--mono); color: var(--ink-2); }
+  .row .k { font-size: 15px; }
+  .row .k small { display: block; color: var(--ink-2); font-size: 13px; line-height: 1.4; }
+  .row .v { font: 500 22px var(--mono); font-variant-numeric: tabular-nums; }
+  .row.big .v { font: 400 44px/1 var(--serif); }
+  .footnote { font-size: 13px; color: var(--ink-2); margin-top: 18px; max-width: 30em; }
+
+  .boxscore { border-top: 1px solid var(--ink); padding: 18px 0 120px; }
+  .boxscore header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+  .strip { display: grid; grid-template-columns: repeat(13, 1fr); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .strip div { padding: 12px 8px; border-left: 1px solid var(--rule); font: 13px var(--mono); }
+  .strip div:first-child { border-left: 0; }
+  .strip b { display: block; font-weight: 500; }
+  .strip span { color: var(--ink-2); }
+  .strip em { font-style: normal; display: block; margin-top: 6px; }
+  .strip .w em { color: var(--ink); }
+  .strip .l em { color: var(--ink-2); }
+
+  .reveal { animation: rise 400ms cubic-bezier(.22,1,.36,1) both; }
+  .reveal.d2 { animation-delay: 120ms; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+
+  @media (max-width: 900px) {
+    .wrap { padding: 0 16px; }
+    .hero { grid-template-columns: 1fr; padding-top: 64px; }
+    .lead { padding-right: 0; border-right: 0; }
+    .index { padding-left: 0; margin-top: 56px; }
+    .masthead nav { display: none; }
+    .strip { grid-template-columns: repeat(4, 1fr); }
+    .strip div:nth-child(4n+1) { border-left: 0; }
+    .strip div:nth-child(n+5) { border-top: 1px solid var(--rule); }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <div class="title">The Bonsai Line</div>
+    <nav class="label"><a href="#">Picks</a><a href="#">Record</a><a href="#">Models</a><a href="#">Method</a></nav>
+  </div>
+</header>
+<div class="dateline"><div class="wrap label"><span>Vol. 2026 — Week 7</span><span>Graded against the pool line</span></div></div>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="lead reveal">
+      <p class="label"><b>01</b> — This week</p>
+      <h1>Fifty-three picks, each made <i>five minutes</i> before the lock.</h1>
+      <p class="deck">An against-the-spread engine for the CBS Bonsai Pool. It reads the Pinnacle line, picks one side of every game, and is graded on the pool's own number. Nothing is filtered, and no skill is claimed before 256 games.</p>
+      <div class="cta">
+        <a class="btn" href="#">Read week 7 picks</a>
+        <a class="textlink" href="#">The full record →</a>
+      </div>
+    </div>
+
+    <aside class="index reveal d2" aria-label="Season record">
+      <h2 class="label">02 — The record</h2>
+      <div class="row big"><span class="n">a.</span><span class="k">Season, against the pool line<small>1 game pending</small></span><span class="v">29–24</span></div>
+      <div class="row"><span class="n">b.</span><span class="k">Win rate<small>± .068 standard error</small></span><span class="v">.547</span></div>
+      <div class="row"><span class="n">c.</span><span class="k">Graded toward the pre-registered 256</span><span class="v">53</span></div>
+      <div class="row"><span class="n">d.</span><span class="k">Hybrid model<small>tracked, not used to pick</small></span><span class="v">32–21</span></div>
+      <div class="row"><span class="n">e.</span><span class="k">Key-number shadow<small>tracked, not used to pick</small></span><span class="v">27–17</span></div>
+      <p class="footnote">Only the official pick counts. The other models are kept for comparison.</p>
+    </aside>
+  </section>
+
+  <section class="boxscore" aria-label="Week 6 results">
+    <header class="label"><span>03 — Week 6 box score · 7–5</span><span>Pick · line · result</span></header>
+    <div class="strip">
+      <div class="l"><b>SEA</b><span>−2.5</span><em>L</em></div>
+      <div class="w"><b>HOU</b><span>+2.5</span><em>W</em></div>
+      <div class="w"><b>CHI</b><span>−3.5</span><em>W</em></div>
+      <div class="l"><b>BAL</b><span>−4.5</span><em>L</em></div>
+      <div class="w"><b>TEN</b><span>+6.5</span><em>W</em></div>
+      <div class="w"><b>NYJ</b><span>+7.5</span><em>W</em></div>
+      <div class="w"><b>NO</b><span>+1.5</span><em>W</em></div>
+      <div class="w"><b>CAR</b><span>+1.5</span><em>W</em></div>
+      <div class="w"><b>PIT</b><span>−2.5</span><em>W</em></div>
+      <div class="l"><b>LAC</b><span>+8.5</span><em>L</em></div>
+      <div class="l"><b>BUF</b><span>−5.5</span><em>L</em></div>
+      <div class="l"><b>DAL</b><span>+1.5</span><em>L</em></div>
+      <div><b>WAS</b><span>+7.5</span><em>—</em></div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

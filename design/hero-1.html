@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NFL_ATS · Hero 1 · Dark tech</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Style pack: dark-tech. Design read: private pick-engine console for one
+     owner, data is the hero, one emerald accent that means "covered". */
+  :root {
+    --ground: #08090A;
+    --panel: #0E0F11;
+    --panel-2: #131417;
+    --hover: #181A1D;
+    --ink: #F7F7F8;
+    --ink-2: #9CA3AD;
+    --ink-3: #5C6370;
+    --line: rgba(255,255,255,0.08);
+    --line-strong: rgba(255,255,255,0.16);
+    --accent: #34D399;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--ground); color: var(--ink-2); }
+  body { font: 15px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+
+  nav { border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .mark { font: 500 13px var(--mono); color: var(--ink); letter-spacing: .02em; }
+  .mark span { color: var(--ink-3); }
+  .navlinks { display: flex; gap: 24px; font: 13px var(--sans); }
+  .navlinks a { color: var(--ink-2); text-decoration: none; transition: color 150ms; }
+  .navlinks a:hover { color: var(--ink); }
+
+  .hero { padding: 88px 0 72px; display: grid; grid-template-columns: 7fr 5fr; gap: 48px; align-items: end; }
+  .kicker { font: 12px var(--mono); color: var(--ink-3); margin: 0 0 20px; display: flex; gap: 10px; align-items: center; }
+  .live { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 3s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .35; } }
+  h1 { font: 600 clamp(2.2rem, 5vw, 4rem)/1.05 var(--sans); letter-spacing: -.03em; color: var(--ink); margin: 0; max-width: 13ch; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .sub { margin: 22px 0 32px; max-width: 46ch; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { font: 500 14px var(--sans); padding: 10px 16px; border-radius: 6px; text-decoration: none; transition: box-shadow 150ms, border-color 150ms, background 150ms; }
+  .btn.primary { background: var(--accent); color: #05140D; box-shadow: 0 0 0 1px rgba(52,211,153,.35), 0 0 24px rgba(52,211,153,.18); }
+  .btn.primary:hover { box-shadow: 0 0 0 1px rgba(52,211,153,.55), 0 0 28px rgba(52,211,153,.3); }
+  .btn.ghost { color: var(--ink); border: 1px solid var(--line-strong); }
+  .btn.ghost:hover { background: var(--hover); border-color: rgba(255,255,255,.24); }
+
+  .spec { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); font: 13px var(--mono); }
+  .spec div { display: flex; justify-content: space-between; padding: 11px 16px; border-top: 1px solid var(--line); }
+  .spec div:first-child { border-top: 0; }
+  .spec dt { color: var(--ink-3); }
+  .spec dd { margin: 0; color: var(--ink); }
+
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .metric { padding: 20px; background: var(--panel); border-left: 1px solid var(--line); transition: background 150ms; }
+  .metric:first-child { border-left: 0; }
+  .metric:hover { background: var(--panel-2); }
+  .metric .label { font: 11px var(--mono); color: var(--ink-3); text-transform: lowercase; }
+  .metric .value { font: 500 28px/1.2 var(--mono); color: var(--ink); margin-top: 8px; font-variant-numeric: tabular-nums; }
+  .metric .note { font: 12px var(--mono); color: var(--ink-3); margin-top: 4px; }
+  .bar { height: 4px; background: var(--panel-2); border-radius: 2px; margin-top: 14px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: calc(53 / 256 * 100%); background: var(--accent); }
+
+  .week { margin: 24px 0 96px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+  .week header { display: flex; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--line); font: 12px var(--mono); color: var(--ink-3); }
+  .week header b { color: var(--ink); font-weight: 500; }
+  .cells { display: grid; grid-template-columns: repeat(13, 1fr); }
+  .cell { padding: 14px 10px; border-left: 1px solid var(--line); font: 12px var(--mono); }
+  .cell:first-child { border-left: 0; }
+  .cell .t { color: var(--ink); font-weight: 500; }
+  .cell .l { color: var(--ink-3); }
+  .cell .r { margin-top: 10px; display: inline-block; width: 18px; text-align: center; border-radius: 4px; font-size: 11px; line-height: 18px; color: var(--ink-3); border: 1px solid var(--line-strong); }
+  .cell .r.w { color: var(--accent); border-color: rgba(52,211,153,.45); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 56px; }
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .metric:nth-child(3) { border-left: 0; }
+    .metric:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .cells { grid-template-columns: repeat(4, 1fr); }
+    .cell:nth-child(4n+1) { border-left: 0; }
+    .cell:nth-child(n+5) { border-top: 1px solid var(--line); }
+    .navlinks { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <div class="mark">nfl_ats <span>/ bonsai-pool-2026</span></div>
+    <div class="navlinks"><a href="#">Picks</a><a href="#">Record</a><a href="#">Models</a><a href="#">Lines</a></div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <p class="kicker"><span class="live" aria-hidden="true"></span>week 7 · 14 pool lines loaded</p>
+      <h1>29–24 against the <em>pool line</em>.</h1>
+      <p class="sub">One pick per game, made five minutes before lock from the Pinnacle number. Every pick is graded, nothing is filtered, and no skill is claimed before 256 games.</p>
+      <div class="cta">
+        <a class="btn primary" href="#">Open week 7 picks</a>
+        <a class="btn ghost" href="#">Full record</a>
+      </div>
+    </div>
+    <dl class="spec">
+      <div><dt>model</dt><dd>total-shifted-empirical-argmax</dd></div>
+      <div><dt>market input</dt><dd>pinnacle → oddspapi → median</dd></div>
+      <div><dt>lock</dt><dd>kickoff − 15 min</dd></div>
+      <div><dt>pick time</dt><dd>lock − 5 min</dd></div>
+    </dl>
+  </section>
+
+  <section class="metrics" aria-label="Season record">
+    <div class="metric"><div class="label">record</div><div class="value">29–24</div><div class="note">1 pending</div></div>
+    <div class="metric"><div class="label">win rate</div><div class="value">.547</div><div class="note">± .068 se</div></div>
+    <div class="metric"><div class="label">graded</div><div class="value">53<span style="color:var(--ink-3)">/256</span></div><div class="bar"><i></i></div></div>
+    <div class="metric"><div class="label">hybrid (tracked)</div><div class="value">32–21</div><div class="note">not used to pick</div></div>
+  </section>
+
+  <section class="week" aria-label="Week 6 results">
+    <header><span>week 6 · <b>7–5</b> · graded vs pool line</span><span>pick / line / result</span></header>
+    <div class="cells">
+      <div class="cell"><div class="t">SEA</div><div class="l">−2.5</div><span class="r">L</span></div>
+      <div class="cell"><div class="t">HOU</div><div class="l">+2.5</div><span class="r w">W</span></div>
+      <div class="cell"><div class="t">CHI</div><div class="l">−3.5</div><span class="r w">W</span></div>
+      <div class="cell"><div class="t">BAL</div><div class="l">−4.5</div><span class="r">L</span></div>
+      <div class="cell"><div class="t">TEN</div><div class="l">+6.5</div><span class="r w">W</span></div>
+      <div class="cell"><div class="t">NYJ</div><div class="l">+7.5</div><span class="r w">W</span></div>
+      <div class="cell"><div class="t">NO</div><div class="l">+1.5</div><span class="r w">W</span></div>
+      <div class="cell"><div class="t">CAR</div><div class="l">+1.5</div><span class="r w">W</span></div>
+      <div class="cell"><div class="t">PIT</div><div class="l">−2.5</div><span class="r w">W</span></div>
+      <div class="cell"><div class="t">LAC</div><div class="l">+8.5</div><span class="r">L</span></div>
+      <div class="cell"><div class="t">BUF</div><div class="l">−5.5</div><span class="r">L</span></div>
+      <div class="cell"><div class="t">DAL</div><div class="l">+1.5</div><span class="r">L</span></div>
+      <div class="cell"><div class="t">WAS</div><div class="l">+7.5</div><span class="r">·</span></div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
