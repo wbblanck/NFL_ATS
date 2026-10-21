@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import itertools
 import math
-from collections import defaultdict, deque
+from collections import defaultdict
 
 import numpy as np
 import polars as pl

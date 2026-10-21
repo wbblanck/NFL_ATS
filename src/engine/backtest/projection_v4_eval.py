@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import itertools
 import json
-import math
 from pathlib import Path
 
 import numpy as np
@@ -17,7 +16,6 @@ from engine.backtest import calibration as C
 from engine.backtest import players_v3_eval as E
 from engine.backtest.holdout2025 import cbs_opens_2025
 from engine.backtest.players_eval import v1_rates
-from engine.data import nflverse
 from engine.features import players_v3 as V
 from engine.models import projection as P
 from engine.models import projection_v4 as V4

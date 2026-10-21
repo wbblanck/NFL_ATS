@@ -7,7 +7,6 @@ import glob
 import math
 import re
 
-import numpy as np
 import polars as pl
 
 from engine import config

@@ -13,6 +13,7 @@ import numpy as np
 import polars as pl
 
 from engine.backtest import calibration as C
+from engine.backtest.common import ats as _ats
 from engine.backtest.holdout2025 import cbs_opens_2025
 from engine.backtest.players_eval import fit_offset_poisson, v1_rates
 from engine.data import nflverse
@@ -134,11 +135,6 @@ def margin_ll(pmfs: dict, res: dict) -> np.ndarray:
 
 def _mean_se(x: np.ndarray) -> dict:
     return {"mean": float(np.mean(x)), "se": float(np.std(x, ddof=1) / math.sqrt(len(x))), "n": int(len(x))}
-
-
-def _ats(p: np.ndarray, y: np.ndarray) -> dict:
-    w = int(((p > 0.5) == (y == 1)).sum()); n = len(y); r = w / n
-    return {"W": w, "L": n - w, "N": n, "win_rate": r, "se": math.sqrt(r * (1 - r) / n)}
 
 
 def _paired(pa: np.ndarray, pb: np.ndarray, y: np.ndarray) -> dict:

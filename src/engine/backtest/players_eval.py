@@ -7,6 +7,7 @@ import numpy as np
 import polars as pl
 
 from engine.backtest import calibration as C
+from engine.backtest.common import ats as _ats
 from engine.backtest.holdout2025 import cbs_opens_2025
 from engine.data import nflverse
 from engine.features import availability as A
@@ -15,11 +16,6 @@ from engine.models.margin_dist import MarginDist
 
 H, LAM = 8, 5.0
 FEATS = ["qb_backup", "off_out", "opp_def_out"]
-
-
-def _ats(p, y):
-    w = int(((p > 0.5) == (y == 1)).sum()); n = len(y); r = w / n
-    return {"W": w, "L": n - w, "N": n, "win_rate": r, "se": math.sqrt(r * (1 - r) / n)}
 
 
 def v1_rates(games: pl.DataFrame, target: pl.DataFrame) -> pl.DataFrame:

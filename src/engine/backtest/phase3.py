@@ -8,6 +8,7 @@ import math
 import polars as pl
 
 from engine import config
+from engine.backtest.common import md_table as _tbl
 from engine.data import nflverse, sbro
 from engine.models import drift as D
 
@@ -112,17 +113,9 @@ def run(out_md=None) -> dict:
     return res
 
 
-def _tbl(df: pl.DataFrame) -> str:
-    cols = df.columns
-    out = ["| " + " | ".join(cols) + " |", "|" + "---|" * len(cols)]
-    for r in df.to_dicts():
-        out.append("| " + " | ".join(f"{v:.4f}" if isinstance(v, float) else str(v) for v in r.values()) + " |")
-    return "\n".join(out)
-
-
 def _markdown(r: dict) -> str:
     d0, full = r["d0"], r["d0_full"]
-    L = [f"# Phase 3 — Drift results\n",
+    L = ["# Phase 3 — Drift results\n",
          f"Generated {dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')} by "
          "`python -m engine drift`. Pre-registration: `docs/phase3_preregistration.md`. "
          "Frozen line = SBRO open (proxy); market at lock = SBRO close (proxy). Regular season 2007–2021.\n",

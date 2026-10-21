@@ -69,7 +69,7 @@ def run(out_md: Path | None = None) -> dict[str, pl.DataFrame]:
     srcs = games_with_lines(sched_all)
     bt = config.path("backtests")
     results = {}
-    md = [f"# Phase 2 — Null model and baselines\n",
+    md = ["# Phase 2 — Null model and baselines\n",
           f"Generated {dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')} by "
           f"`python -m engine baselines` (nflverse schedule snapshot {sid}). Regular season only. "
           "Scores from nflverse. W/L exclude pushes; P = game landed exactly on a whole-number line "

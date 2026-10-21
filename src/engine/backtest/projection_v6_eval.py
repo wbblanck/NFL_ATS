@@ -7,7 +7,6 @@ v3 and v1 on the same games.
 from __future__ import annotations
 
 import itertools
-import json
 import math
 from pathlib import Path
 
@@ -16,8 +15,10 @@ import polars as pl
 
 from engine.backtest import calibration as C
 from engine.backtest import players_v3_eval as E3
+from engine.backtest.common import ats as _ats
 from engine.backtest.holdout2025 import cbs_opens_2025
 from engine.backtest.players_eval import fit_offset_poisson, v1_rates
+from engine.backtest.players_v3_eval import margin_ll
 from engine.data import nflverse
 from engine.features import efficiency_v6 as F
 from engine.features import players_v3 as V3
@@ -127,10 +128,6 @@ def game_pmfs(d: pl.DataFrame, sched: pl.DataFrame, beta: dict | None, feats=F.F
     return out
 
 
-def margin_ll(pmfs: dict, res: dict) -> np.ndarray:
-    return np.array([math.log(max(float(pmfs[g][int(res[g]) + P.MAXP]), 1e-12)) for g in pmfs if g in res])
-
-
 # ---------------------------------------------------------------- stage 1: tuning (training seasons only)
 
 def tune(ctx: dict, log=print) -> dict:
@@ -229,11 +226,6 @@ def validate(ctx: dict, h: float, s: float, n_pit: int = 2) -> dict:
 
 def _mean_se(x):
     return {"mean": float(np.mean(x)), "se": float(np.std(x, ddof=1) / math.sqrt(len(x))), "n": int(len(x))}
-
-
-def _ats(p, y):
-    w = int(((p > 0.5) == (y == 1)).sum()); n = len(y); r = w / n
-    return {"W": w, "L": n - w, "N": n, "win_rate": r, "se": math.sqrt(r * (1 - r) / n)}
 
 
 def _paired(pa, pb, y):

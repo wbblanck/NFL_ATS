@@ -68,7 +68,6 @@ def test_shadow_keynum_recorded_and_graded(tmp_root, week3_schedule):
 
 
 def test_projection_recorded_and_graded(tmp_root, week3_schedule):
-    from engine.models import projection as P
     _league(tmp_root, "2026_03_ATL_GB,2026,3,GB,ATL,-6.5,GB,test,x\n")
     sched = _with_history(week3_schedule)
     rng = np.random.default_rng(5)

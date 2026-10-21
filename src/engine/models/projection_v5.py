@@ -13,8 +13,7 @@ from dataclasses import dataclass
 import numpy as np
 import polars as pl
 
-from engine.models.projection import MAXP
-from engine.picks.grading import validate_league_line
+from engine.models.projection import MAXP, PmfProjection
 
 VERSION = "proj-sim-v5"
 OUTCOMES = ("TD", "FG", "OPP_TD")                     # baseline: nothing
@@ -262,7 +261,7 @@ def margin_pmf(res: SimResult) -> np.ndarray:
 
 
 @dataclass
-class SimProjection:
+class SimProjection(PmfProjection):
     res: SimResult
 
     @property
@@ -271,15 +270,6 @@ class SimProjection:
 
     def mean_scores(self):
         return float(self.res.home_pts.mean()), float(self.res.away_pts.mean())
-
-    def model_line(self):
-        h, a = self.mean_scores()
-        return -(h - a)
-
-    def p_home_cover(self, league_line: float) -> float:
-        s = validate_league_line(league_line)
-        mg = np.arange(-MAXP, MAXP + 1)
-        return float(self.margin_pmf[mg > -s].sum())
 
     def median_margin(self):
         return float(np.median(self.res.margin))

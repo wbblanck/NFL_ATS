@@ -126,8 +126,7 @@ def main(argv=None) -> int:
         return 0
     if a.cmd == "efficiency-residual":
         import json
-        import polars as pl
-        from pathlib import Path
+
         from engine import config
         from engine.backtest import efficiency_residual as ER
         from engine.backtest import projection_v6_eval as E6
@@ -138,6 +137,7 @@ def main(argv=None) -> int:
         return 0
     if a.cmd == "projection-v6":
         import json
+
         from engine import config
         from engine.backtest import projection_v6_eval as E6
         out = E6.run(a.cache)
@@ -146,6 +146,7 @@ def main(argv=None) -> int:
         return 0
     if a.cmd == "players-v3":
         import json
+
         from engine import config
         from engine.backtest import players_v3_eval as E
         ctx = E.prepare(a.cache)
@@ -185,6 +186,7 @@ def main(argv=None) -> int:
     if a.cmd == "alert":
         import datetime as _dt
         import time as _time
+
         from engine.picks import alerts
         now = _dt.datetime.now(_dt.timezone.utc)
         since = a.since or (now - _dt.timedelta(minutes=30)).isoformat()
@@ -239,6 +241,7 @@ def main(argv=None) -> int:
         _all = None
         try:
             import nflreadpy as _nfl
+
             from engine.models import projection as _P
             _all, _ = nflverse.pull("schedules", save=False)
             proj_games = _P.team_games(_nfl.load_team_stats(seasons=list(range(1999, 2027))), _all)
@@ -276,10 +279,12 @@ def main(argv=None) -> int:
         return 0
     if a.cmd == "dashboard":
         import datetime as _dt
+
         from engine import config
         from engine.picks import dashboard, live, preview
         try:
             import nflreadpy as _nfl
+
             from engine.models import projection as _P
             _all, _ = nflverse.pull("schedules", save=False)
             _pg = _P.team_games(_nfl.load_team_stats(seasons=list(range(1999, 2027))), _all)
@@ -307,6 +312,7 @@ def main(argv=None) -> int:
             lv, results, season_tab, graded = {"N": 0, "W": 0, "L": 0}, {}, [], []
         try:
             import polars as _pl
+
             from engine.picks import game_detail
             details = game_detail.build_from_files(
                 rows, sched.filter((_pl.col("season") == a.season) & (_pl.col("week") == a.week)), _nm)
@@ -333,7 +339,8 @@ def main(argv=None) -> int:
             print("game paths unavailable:", repr(e), file=sys.stderr)
         try:
             from engine.data import store as _store
-            from engine.picks import final as _final, loss_review as _lr
+            from engine.picks import final as _final
+            from engine.picks import loss_review as _lr
             lr_data = _lr.build(graded, _store.read_rows(_final.predictions_path()), sched, _paths)
         except Exception as e:
             print("loss review unavailable:", repr(e), file=sys.stderr)

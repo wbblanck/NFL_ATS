@@ -8,6 +8,7 @@ import polars as pl
 
 from engine.backtest import efficiency_residual as ER
 from engine.backtest import total as T
+from engine.backtest.common import record as _ats
 from engine.backtest.holdout2025 import cbs_opens_2025
 from engine.data import nflverse
 from engine.models.margin_dist import TotalDist
@@ -19,11 +20,6 @@ def fit_error_model(tr: pl.DataFrame) -> np.ndarray:
     X = tr.select(ER.DIFFS).to_numpy().astype(float)
     y = (tr["margin"] + tr["close"]).to_numpy().astype(float)
     return np.linalg.lstsq(X, y, rcond=None)[0]
-
-
-def _ats(w, n):
-    r = w / n if n else float("nan")
-    return {"W": int(w), "L": int(n - w), "N": int(n), "win_rate": r, "se": math.sqrt(r * (1 - r) / n) if n else None}
 
 
 def compare(g: pl.DataFrame) -> dict:

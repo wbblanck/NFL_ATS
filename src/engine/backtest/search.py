@@ -7,8 +7,6 @@ import math
 import numpy as np
 import polars as pl
 
-from engine.backtest import patterns as PT
-from engine.backtest import total as T
 from engine.models import projection as P
 from engine.models.margin_dist import MarginDist, TotalDist
 
@@ -23,6 +21,7 @@ S1, S2, S3, T25 = (2008, 2015), (2016, 2019), (2020, 2024), 2025
 def v1_cover_all(d: pl.DataFrame, sched: pl.DataFrame, H: float, lam: float) -> np.ndarray:
     """P(home covers the stale line) from proj-poisson-v1 (refit before each week), any line."""
     import nflreadpy as nfl
+
     from engine.backtest import projection_eval as PE
     games = P.team_games(nfl.load_team_stats(seasons=list(range(1999, 2026))), sched)
     tgt = d.join(sched.select("game_id", "home_team", "away_team"), on="game_id").select(

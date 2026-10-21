@@ -3,13 +3,12 @@ the AusSportsBetting nfl.xlsx (kept out of git). Also the pre-grading checks, in
 from __future__ import annotations
 
 import datetime as dt
-import math
 
-import numpy as np
 import polars as pl
 
 from engine import config
 from engine.backtest import total as T
+from engine.backtest.common import record as _rec
 from engine.picks.grading import is_half_point
 from engine.teams import to_canonical
 
@@ -63,11 +62,6 @@ def match(x: pl.DataFrame, sched: pl.DataFrame) -> pl.DataFrame:
                     "hml": r["aml_close"] if sw else r["hml_close"], "aml": r["hml_close"] if sw else r["aml_close"],
                     "swapped": sw})
     return pl.DataFrame(out, infer_schema_length=None)
-
-
-def _rec(w, n):
-    r = w / n if n else float("nan")
-    return {"W": int(w), "L": int(n - w), "N": int(n), "win_rate": r, "se": math.sqrt(r * (1 - r) / n) if n else None}
 
 
 def _grade(tr, te, col):

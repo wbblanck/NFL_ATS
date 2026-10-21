@@ -8,17 +8,13 @@ import polars as pl
 
 from engine import config
 from engine.backtest import calibration as C
+from engine.backtest.common import ats as _ats
 from engine.backtest.holdout2025 import cbs_opens_2025
 from engine.data import nflverse, sbro
 from engine.models import projection as P
 from engine.models.margin_dist import MarginDist
 
 GRID_H, GRID_L = (8, 16, 32), (1, 5, 20)
-
-
-def _ats(p, y):
-    w = int(((p > 0.5) == (y == 1)).sum()); n = len(y); r = w / n
-    return {"W": w, "L": n - w, "N": n, "win_rate": r, "se": math.sqrt(r * (1 - r) / n)}
 
 
 def data():

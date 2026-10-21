@@ -29,7 +29,6 @@ def load() -> list[dict]:
 
 def check_against_schedule(rows: list[dict], sched) -> list[str]:
     """Problems with recorded lines: unknown game_id, home/away mismatch, duplicates."""
-    import polars as pl
     probs, seen = [], set()
     ids = {r["game_id"]: r for r in sched.select("game_id", "home_team", "away_team").to_dicts()}
     for r in rows:

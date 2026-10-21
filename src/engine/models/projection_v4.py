@@ -15,8 +15,7 @@ from dataclasses import dataclass
 import numpy as np
 import polars as pl
 
-from engine.models.projection import FRANCHISE, MAXP
-from engine.picks.grading import validate_league_line
+from engine.models.projection import FRANCHISE, MAXP, PmfProjection
 
 VERSION = "proj-drives-v4"
 
@@ -102,7 +101,7 @@ def _powers(pmf: np.ndarray, nmax: int) -> list[np.ndarray]:
 
 
 @dataclass
-class DriveProjection:
+class DriveProjection(PmfProjection):
     home_pts: np.ndarray
     away_pts: np.ndarray
     margin: np.ndarray       # index i -> margin i - MAXP
@@ -110,23 +109,6 @@ class DriveProjection:
     @property
     def margin_pmf(self):
         return self.margin
-
-    def mean_scores(self):
-        x = np.arange(MAXP + 1)
-        return float(self.home_pts @ x), float(self.away_pts @ x)
-
-    def model_line(self):
-        h, a = self.mean_scores()
-        return -(h - a)
-
-    def p_home_cover(self, league_line: float) -> float:
-        s = validate_league_line(league_line)
-        mg = np.arange(-MAXP, MAXP + 1)
-        return float(self.margin[mg > -s].sum())
-
-    def median_margin(self):
-        mg = np.arange(-MAXP, MAXP + 1)
-        return float(mg[np.searchsorted(np.cumsum(self.margin), 0.5)])
 
 
 def project(mu_h: dict, mu_a: dict, p_xp: float, p_2: float, dd: DriveDist) -> DriveProjection:

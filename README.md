@@ -73,7 +73,7 @@ The full runbook is in `CLAUDE.md`. In short:
 | `capture-market.yml` | daily all-games snapshot, Tuesday every 2 h | book spreads for line-movement history |
 | `fetch-*`, `probe-*`, `audit-*`, `*-probe`, `ntfy-test`, `render-page` | manual | one-off evidence and connectivity checks |
 
-`backfill-market.yml` must not be dispatched: the provider's history endpoint is unusable.
+The market backfill workflow was removed (2026-10-21): the provider's history endpoint is unusable.
 
 ## Commands
 
@@ -129,7 +129,7 @@ always x.5, so there are no pushes; whole numbers are rejected and flagged for r
 
 ## Methodology and results
 
-Each phase was pre-registered in `docs/` before its results were computed, and failures are reported with standard
+Each phase was pre-registered in `docs/` (index: `docs/README.md`) before its results were computed, and failures are reported with standard
 errors. The historical numbers use proxy lines (SBRO open as the pool line, nflverse close as the market) and the same
 seasons informed the design, so they are **not independent evidence**. Live 2026 play is the independent test.
 
