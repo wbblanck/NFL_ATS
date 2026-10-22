@@ -79,3 +79,4 @@ Easing for the cascade, flip banner, model chips and live marker is a closed-for
 (`--sp-crit`, `--sp-lead`, `--sp-trail` in `:root`). Browsers without `linear()` fall back to a plain ease-out.
 - **Model chips:** the fill grows from the left edge on a spring instead of swapping in place.
 - **Live strip:** a marker shows how far the pick is from covering (about ±14 points fills the track). It springs from where you last saw it, kept in this browser as `lm:<game id>`. Scores only arrive when the page opens, so nothing moves while you watch.
+- **Next-pick countdown:** airport-board tiles ticking by the second (days and hours appear only while not zero), with a row of 60 ticks that fills each minute. Tiles turn amber inside 5 minutes, the clock thumps once a second in the last 10 seconds, and the label reads "Picking now" for 90 seconds after the pick time. Screen readers hear the time once a minute.

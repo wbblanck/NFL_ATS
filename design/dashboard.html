@@ -79,9 +79,26 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .cell .v small { font-size: 15px; color: var(--ink-3); }
 .meter { height: 4px; background: var(--panel-2); border-radius: 2px; margin-top: 6px; overflow: hidden; }
 .meter i { display: block; height: 100%; background: var(--amber); }
-.nextlock { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; background: var(--amber-dim); border: 1px solid rgba(255,176,32,.35); border-radius: 6px; padding: 10px 12px; }
+.nextlock { display: grid; gap: 12px; margin-top: 8px; transition: border-color .5s, background .5s; background: var(--amber-dim); border: 1px solid rgba(255,176,32,.35); border-radius: 6px; padding: 10px 12px; }
 .nextlock .when { font: 700 22px var(--display); color: var(--amber); text-transform: uppercase; letter-spacing: .02em; }
-.nextlock .cd { font: 500 18px var(--mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+.nextlock .nlh { display: flex; align-items: center; min-width: 0; }
+/* Countdown: airport-board tiles ticking by the second, with a row of 60 ticks that fills each minute. */
+.nextlock .clock { display: flex; align-items: flex-start; gap: 6px; flex-wrap: wrap; transform-origin: 0 50%; }
+.nextlock .clock .sep { font: 900 34px/1 var(--display); color: var(--ink-3); padding-top: 4px; }
+.nextlock .grp { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; }
+.nextlock .fl { font: 900 38px/1.05 var(--display); min-width: .9em; text-align: center; color: var(--ink); padding: .02em .1em 0; border-radius: 8px; margin: 0 2px; }
+.nextlock .ticks { display: grid; grid-template-columns: repeat(60, 1fr); gap: 2px; height: 14px; align-items: end; }
+.nextlock .ticks i { display: block; height: 100%; background: var(--line-2); border-radius: 1px; transform: scaleY(.35); transform-origin: 50% 100%; transition: transform .85s var(--sp-crit), background .3s; }
+.nextlock .ticks i:nth-child(5n+1) { transform: scaleY(.55); }
+.nextlock .ticks i.on { background: var(--amber); transform: scaleY(1); }
+.nextlock[data-s="soon"] { border-color: rgba(255,176,32,.6); }
+.nextlock[data-s="window"], .nextlock[data-s="now"] { border-color: var(--amber); background: rgba(255,176,32,.2); }
+.nextlock[data-s="window"] .fl, .nextlock[data-s="now"] .fl { color: var(--amber); border-color: rgba(255,176,32,.5); }
+.nextlock[data-s="soon"] .live, .nextlock[data-s="window"] .live { animation-duration: 1.4s; }
+.nextlock[data-s="now"] .live { animation-duration: .6s; }
+.nextlock .clock.beat { animation: lkBeat .7s var(--sp-crit); }
+@keyframes lkBeat { from { transform: scale(1.06); } to { transform: none; } }
+@media (max-width: 520px) { .nextlock .fl { font-size: 30px; } .nextlock .clock .sep { font-size: 26px; } }
 .live { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--amber); margin-right: 8px; vertical-align: 1px; animation: pulse 3s ease-in-out infinite; }
 @keyframes pulse { 50% { opacity: .3; } }
 
@@ -698,19 +715,48 @@ $("#lastwk").textContent = `Week ${D.slate.week || D.week - 1} final`;
 
 function nextDue() {
   const now = Date.now();
-  return (D.due || []).find(d => Date.parse(d.iso) > now);
+  return (D.due || []).find(d => Date.parse(d.iso) + 9e4 > now);   // a pick stays "next" for 90 s after its time, so "Picking now" shows
 }
+let lockKey = "", lockGroups = "", lockPrev = {}, lockMin = -1;
+const pad2 = n => String(n).padStart(2, "0");
 function renderLock() {
   const n = nextDue(), el = $("#nextlock");
-  if (!n) { el.innerHTML = `<span class="k">Next pick</span><span class="when">All week ${D.week} picks made</span>`; return; }
-  const ms = Date.parse(n.iso) - Date.now();
-  const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60;
-  const day = new Date(n.iso).toLocaleDateString("en-US", { weekday: "short", timeZone: "America/New_York" });
-  const [na, nh] = n.game.split(" @ ");
-  el.innerHTML = `<div style="display:flex;align-items:center"><span class="lg">${logo(na)}${logo(nh)}</span><div><div class="k"><span class="live"></span>Next pick<span class="ng"> · ${esc(n.game)}</span></div><div class="when">${day} ${esc(n.at)} ET</div></div></div>
-    <div class="cd" aria-label="time until next pick">${d ? d + "d " : ""}${h}h ${String(m).padStart(2, "0")}m</div>`;
+  if (!n) { el.innerHTML = `<span class="k">Next pick</span><span class="when">All week ${D.week} picks made</span>`; el.removeAttribute("data-s"); lockKey = ""; return; }
+  if (lockKey !== n.iso) {   // a new next pick: build the board once, then only change the tiles
+    lockKey = n.iso; lockGroups = ""; lockPrev = {}; lockMin = -1;
+    const day = new Date(n.iso).toLocaleDateString("en-US", { weekday: "short", timeZone: "America/New_York" });
+    const [na, nh] = n.game.split(" @ ");
+    el.innerHTML = `<div class="nlh"><span class="lg">${logo(na)}${logo(nh)}</span><div><div class="k"><span class="live"></span><span class="kt">Next pick</span><span class="ng"> · ${esc(n.game)}</span></div><div class="when">${day} ${esc(n.at)} ET</div></div></div>
+      <div class="clock" id="lkclock" role="timer"></div><div class="ticks" id="lkticks" aria-hidden="true">${"<i></i>".repeat(60)}</div>`;
+  }
+  const ms = Date.parse(n.iso) - Date.now(), s = Math.max(0, Math.ceil(ms / 1000));
+  const d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), sec = s % 60;
+  el.querySelector(".kt").textContent = s <= 0 ? "Picking now" : "Next pick";
+  el.dataset.s = s <= 0 ? "now" : s <= 300 ? "window" : s <= 3600 ? "soon" : "calm";
+  const show = [d > 0, d > 0 || h > 0, true, true], clock = $("#lkclock"), key = show.join();
+  if (key !== lockGroups) {   // days and hours appear only while they are not zero
+    lockGroups = key; lockPrev = {};
+    clock.innerHTML = ["Days", "Hrs", "Min", "Sec"].map((l, i) => !show[i] ? "" : `${i && show.slice(0, i).some(Boolean) ? '<span class="sep" aria-hidden="true">:</span>' : ""}<span class="grp" data-g="${i}" aria-hidden="true"><span><span class="fl"><i>0</i></span><span class="fl"><i>0</i></span></span><span class="k">${l}</span></span>`).join("");
+  }
+  [d, h, m, sec].forEach((v, i) => {
+    const g = clock.querySelector(`[data-g="${i}"]`); if (!g) return;
+    const tiles = g.querySelectorAll(".fl");
+    [...pad2(v)].forEach((c, j) => {
+      const was = lockPrev[i + "" + j]; lockPrev[i + "" + j] = c;
+      if (was === c) return;
+      tiles[j].firstChild.textContent = c;
+      if (was != null && !REDUCED) { tiles[j].classList.remove("flap"); void tiles[j].offsetWidth; tiles[j].classList.add("flap"); }
+    });
+  });
+  const ticks = $("#lkticks").children;
+  for (let k = 0; k < 60; k++) ticks[k].classList.toggle("on", s <= 0 || k < 60 - sec);
+  if (!REDUCED && s > 0 && s <= 10) { clock.classList.remove("beat"); void clock.offsetWidth; clock.classList.add("beat"); }
+  if (Math.floor(s / 60) !== lockMin) {   // spoken once a minute, not every second
+    lockMin = Math.floor(s / 60);
+    clock.setAttribute("aria-label", s <= 0 ? "Picking now" : `Next pick in ${d ? d + " days " : ""}${h ? h + " hours " : ""}${m} minutes`);
+  }
 }
-renderLock(); setInterval(renderLock, 30000);
+renderLock(); setInterval(renderLock, 1000);
 
 /* Lock rail */
 const nd = nextDue();
