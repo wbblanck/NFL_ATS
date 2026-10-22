@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import csv
 import datetime as dt
+import os
 import sys
 from pathlib import Path
 
@@ -30,6 +31,10 @@ from engine.picks import final
 from engine.picks.grading import Result, grade_league
 from engine.teams import UnknownTeam, to_canonical
 
+# HYPOTHETICAL_WEEKS="1-2" reruns the reconstruction for other weeks into its own file (the default is the 2026-10-20 run).
+_wk = os.environ.get("HYPOTHETICAL_WEEKS", "")
+WEEK_RANGE = tuple(int(x) for x in _wk.split("-")) if _wk else (3, 99)
+OUT_NAME = f"missed_picks_weeks_{_wk}.csv" if _wk else "missed_picks_2026-10-20.csv"
 PICK_LEAD = dt.timedelta(minutes=20)
 # A game's result was only available to a pick once the game had ended: games that kicked off in the hours before the
 # pick were still being played. Checked on every 2026 pick with a market: 41 of 44 reproduce the recorded cover chance.
@@ -39,10 +44,10 @@ FIELDS = ["group", "game_id", "kickoff_utc", "as_of_utc", "status", "pinnacle_ho
           "recorded_market", "recorded_pick", "same_line", "same_pick"]
 
 
-def groups(sched_rows: list[dict], preds: dict[str, dict], first_week: int = 3) -> dict[str, list[dict]]:
+def groups(sched_rows: list[dict], preds: dict[str, dict], first_week: int = 3, last_week: int = 99) -> dict[str, list[dict]]:
     out = {"no_row": [], "no_market": [], "check": []}
     for g in sched_rows:
-        if g["season"] != 2026 or g["week"] < first_week or g.get("result") is None:
+        if g["season"] != 2026 or g["week"] < first_week or g["week"] > last_week or g.get("result") is None:
             continue
         p = preds.get(g["game_id"])
         if p is None:
@@ -122,7 +127,7 @@ def run(call_fn=None, sched=None, out_dir: Path | None = None) -> list[dict]:
     preds = {r["game_id"]: r for r in csv.DictReader(open(final.predictions_path())) if not r.get("supersedes")}
     ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
     smap = oddspapi.load_spread_markets(config.path("lines") / oddspapi.SPREAD_MARKETS_FILE)
-    gr = groups(rows_s, preds)
+    gr = groups(rows_s, preds, *WEEK_RANGE)
     allg = [(k, g) for k, gs in gr.items() for g in gs]
     print({k: len(v) for k, v in gr.items()}, file=sys.stderr)
     fids = _fixture_ids([g for _, g in allg], call_fn)
@@ -144,7 +149,7 @@ def run(call_fn=None, sched=None, out_dir: Path | None = None) -> list[dict]:
         print(k, g["game_id"][5:], row["status"], row["pick_team"], row["result"], file=sys.stderr)
     out_dir = out_dir or Path(config.path("lines")).parent / "hypothetical"
     out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / "missed_picks_2026-10-20.csv"
+    path = out_dir / OUT_NAME
     with open(path, "w", newline="") as fh:
         w = csv.DictWriter(fh, FIELDS)
         w.writeheader()
@@ -181,7 +186,7 @@ def main() -> int:
     rows = run()
     after = oddspapi.request_count()
     Path(config.path("lines")).parent.joinpath("hypothetical").mkdir(exist_ok=True)
-    doc = Path(__file__).resolve().parents[3] / "docs" / "missed_picks_report.md"
+    doc = Path(__file__).resolve().parents[3] / "docs" / ("missed_picks_report.md" if not _wk else f"missed_picks_report_weeks_{_wk}.md")
     doc.write_text(report(rows) + f"\nOddsPapi requests: {key[0]} -> {after[0]} of {after[1]}.\n")
     print(f"requests {key[0]} -> {after[0]}", file=sys.stderr)
     return 0
