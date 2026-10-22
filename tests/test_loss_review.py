@@ -54,3 +54,12 @@ def test_missing_play_by_play_still_lists_the_loss():
                    [{"game_id": "g1", "pick": "home", "drift": ""}], sched, {})
     [x] = out["losses"]
     assert x["flow"] is None and x["cov5"] is None and x["tags"] == ["far"]
+
+
+def test_pick_made_with_no_market_still_lists_the_loss():
+    # no-market picks record p_*_cover and drift as 'UNAVAILABLE'; one of them used to blank the whole review
+    sched = pl.DataFrame({"game_id": ["g1"], "home_team": ["AAA"], "away_team": ["BBB"], "home_score": [10], "away_score": [7]})
+    preds = [{"game_id": "g1", "pick": "home", "drift": "UNAVAILABLE", "p_home_cover": "UNAVAILABLE", "p_away_cover": "UNAVAILABLE"}]
+    graded = [{"game_id": "g1", "week": 4, "pick": "AAA", "league_line": -3.5, "result": "L", "hybrid": "BBB W", "shadow_result": "L"}]
+    (x,) = LR.build(graded, preds, sched, {})["losses"]
+    assert x["p"] is None and x["drift"] is None and x["fin"] == -0.5

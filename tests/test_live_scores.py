@@ -67,3 +67,16 @@ def test_hybrid_matches_the_tracked_rule_on_real_rows():
     picks = live.load_picks()
     p = picks[("JAX", "HOU")]                                 # 2026-10-18: live HOU, hybrid took v1's JAX
     assert p["pick_team"] == "HOU" and p["hybrid_team"] == "JAX" and p["hybrid_source"] == "v1"
+
+
+def test_page_data_carries_live_and_final_games_and_fills_the_placeholder():
+    b = _in_progress(BOARD, "GB", "ATL", 10, 14)
+    d = live.page_data(b)
+    by = {(g["away"], g["home"]): g for g in d["games"]}
+    assert by[("ATL", "GB")] | {"detail": None} == {"home": "GB", "away": "ATL", "hs": 10, "as": 14, "state": "in",
+                                                    "detail": None, "halftime": False}
+    assert {g["state"] for g in d["games"]} == {"in", "post"}      # the rest of the saved board is final
+    page = '<script id="live-data" type="application/json">{}</script>'
+    out = live.inject_data(page, d)
+    assert '"state":"in"' in out and out.startswith('<script id="live-data"')
+    assert live.inject_data("<p>no placeholder</p>", d) == "<p>no placeholder</p>"

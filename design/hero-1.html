@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NFL_ATS · Hero 1 · Stadium scoreboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* Style pack: dark-tech, pushed toward a stadium scoreboard and broadcast
+     score bugs. One accent: scoreboard amber. Wins/losses are the only status
+     colors, as on a real board. */
+  :root {
+    --ground: #07090C;
+    --board: #0D1117;
+    --board-2: #141A22;
+    --ink: #F4F6F8;
+    --ink-2: #9AA4B2;
+    --ink-3: #5A6472;
+    --line: rgba(255,255,255,0.09);
+    --amber: #FFB020;
+    --win: #2FCB7A;
+    --loss: #F0524A;
+    --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    --body: "Public Sans", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--ground); color: var(--ink-2); }
+  body { font: 15px/1.55 var(--body); }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+  nav { border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; justify-content: space-between; align-items: center; height: 56px; }
+  .brand { font: 900 22px var(--display); color: var(--ink); text-transform: uppercase; letter-spacing: .02em; }
+  .brand span { color: var(--amber); }
+  .navlinks { display: flex; gap: 22px; font: 600 13px var(--body); text-transform: uppercase; letter-spacing: .06em; }
+  .navlinks a { color: var(--ink-2); text-decoration: none; }
+  .navlinks a:hover { color: var(--ink); }
+
+  .hero { padding: 56px 0 40px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: center; }
+  .kicker { font: 500 12px var(--mono); color: var(--amber); letter-spacing: .1em; text-transform: uppercase; margin: 0 0 14px; }
+  h1 { font: 900 clamp(2.8rem, 6vw, 5rem)/.92 var(--display); text-transform: uppercase; color: var(--ink); margin: 0; letter-spacing: .005em; }
+  .sub { max-width: 42ch; margin: 20px 0 28px; }
+  .btn { display: inline-block; font: 900 18px var(--display); text-transform: uppercase; letter-spacing: .04em; padding: 12px 22px; background: var(--amber); color: #120C00; text-decoration: none; border-radius: 4px; }
+  .btn:hover { background: #FFC24D; }
+  .link { margin-left: 18px; color: var(--ink); font: 600 13px var(--body); text-transform: uppercase; letter-spacing: .06em; text-decoration: none; border-bottom: 1px solid var(--line); }
+
+  /* The scoreboard */
+  .board { background: var(--board); border: 1px solid var(--line); border-radius: 10px; padding: 18px; box-shadow: inset 0 0 0 6px #0A0D12; }
+  .board-top { display: flex; justify-content: space-between; font: 500 11px var(--mono); color: var(--ink-3); letter-spacing: .1em; text-transform: uppercase; padding: 0 6px 12px; }
+  .board-top .live::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--amber); margin-right: 8px; animation: pulse 3s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .3; } }
+  .score { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; background: #05070A; border-radius: 6px; padding: 18px 10px; }
+  .side { text-align: center; }
+  .side .lbl { font: 700 18px var(--display); color: var(--ink-2); text-transform: uppercase; letter-spacing: .08em; }
+  .digits { font: 900 clamp(4.5rem, 10vw, 7.5rem)/1 var(--display); color: var(--amber); text-shadow: 0 0 18px rgba(255,176,32,.35); font-variant-numeric: tabular-nums; }
+  .digits.l { color: var(--ink-2); text-shadow: none; }
+  .vs { font: 500 12px var(--mono); color: var(--ink-3); padding: 0 8px; }
+  .board-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+  .cell { background: #05070A; border-radius: 6px; padding: 10px 12px; }
+  .cell .k { font: 500 10px var(--mono); color: var(--ink-3); letter-spacing: .1em; text-transform: uppercase; }
+  .cell .v { font: 700 28px/1.1 var(--display); color: var(--ink); font-variant-numeric: tabular-nums; }
+  .cell .v small { font-size: 16px; color: var(--ink-3); }
+
+  /* Broadcast score bugs for week 6 */
+  .ticker { margin: 24px 0 88px; }
+  .ticker h2 { font: 700 20px var(--display); text-transform: uppercase; letter-spacing: .04em; color: var(--ink); margin: 0 0 12px; display: flex; justify-content: space-between; }
+  .ticker h2 span { font: 500 12px var(--mono); color: var(--ink-3); letter-spacing: .08em; align-self: center; }
+  .bugs { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 8px; }
+  .bug { display: grid; grid-template-columns: 6px 1fr auto; background: var(--board); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .bug .bar { background: var(--ink-3); }
+  .bug.w .bar { background: var(--win); }
+  .bug.l .bar { background: var(--loss); }
+  .bug .t { padding: 8px 10px; }
+  .bug .t b { display: block; font: 700 22px/1 var(--display); color: var(--ink); text-transform: uppercase; }
+  .bug .t small { font: 11px var(--mono); color: var(--ink-3); }
+  .bug .r { padding: 8px 12px; display: grid; place-items: center; font: 900 22px var(--display); background: var(--board-2); color: var(--ink-3); }
+  .bug.w .r { color: var(--win); }
+  .bug.l .r { color: var(--loss); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 36px; }
+    .navlinks { display: none; }
+    .wrap { padding: 0 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<nav><div class="wrap"><div class="brand">Bonsai <span>ATS</span></div><div class="navlinks"><a href="#">Picks</a><a href="#">Record</a><a href="#">Models</a><a href="#">Lines</a></div></div></nav>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <p class="kicker">2026 season · week 7 up next</p>
+      <h1>Beating the pool line, one pick at a time.</h1>
+      <p class="sub">Every game picked five minutes before lock from the Pinnacle number, then graded on the pool's own line. No skill claim before 256 games.</p>
+      <a class="btn" href="#">Week 7 picks</a><a class="link" href="#">Full record</a>
+    </div>
+
+    <div class="board" aria-label="Season scoreboard">
+      <div class="board-top"><span class="live">Season vs pool line</span><span>Wk 6 final · 1 pending</span></div>
+      <div class="score">
+        <div class="side"><div class="lbl">Wins</div><div class="digits">29</div></div>
+        <div class="vs">—</div>
+        <div class="side"><div class="lbl">Losses</div><div class="digits l">24</div></div>
+      </div>
+      <div class="board-row">
+        <div class="cell"><div class="k">Win rate</div><div class="v">.547 <small>±.068</small></div></div>
+        <div class="cell"><div class="k">Graded</div><div class="v">53<small>/256</small></div></div>
+        <div class="cell"><div class="k">Last week</div><div class="v">7–5</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ticker" aria-label="Week 6 results">
+    <h2>Week 6 finals <span>pick · line · result</span></h2>
+    <div class="bugs">
+      <div class="bug l"><i class="bar"></i><div class="t"><b>SEA −2.5</b><small>@ DEN · 14–17</small></div><div class="r">L</div></div>
+      <div class="bug w"><i class="bar"></i><div class="t"><b>HOU +2.5</b><small>@ JAX · 34–31</small></div><div class="r">W</div></div>
+      <div class="bug w"><i class="bar"></i><div class="t"><b>CHI −3.5</b><small>@ ATL · 31–23</small></div><div class="r">W</div></div>
+      <div class="bug l"><i class="bar"></i><div class="t"><b>BAL −4.5</b><small>@ CLE · 10–13</small></div><div class="r">L</div></div>
+      <div class="bug w"><i class="bar"></i><div class="t"><b>TEN +6.5</b><small>@ IND · 26–20</small></div><div class="r">W</div></div>
+      <div class="bug w"><i class="bar"></i><div class="t"><b>NYJ +7.5</b><small>@ NE · 19–26</small></div><div class="r">W</div></div>
+      <div class="bug w"><i class="bar"></i><div class="t"><b>NO +1.5</b><small>@ NYG · 34–27</small></div><div class="r">W</div></div>
+      <div class="bug w"><i class="bar"></i><div class="t"><b>CAR +1.5</b><small>@ PHI · 25–14</small></div><div class="r">W</div></div>
+      <div class="bug w"><i class="bar"></i><div class="t"><b>PIT −2.5</b><small>@ TB · 26–19</small></div><div class="r">W</div></div>
+      <div class="bug l"><i class="bar"></i><div class="t"><b>LAC +8.5</b><small>@ KC · 6–22</small></div><div class="r">L</div></div>
+      <div class="bug l"><i class="bar"></i><div class="t"><b>BUF −5.5</b><small>@ LV · 33–30</small></div><div class="r">L</div></div>
+      <div class="bug l"><i class="bar"></i><div class="t"><b>DAL +1.5</b><small>@ GB · 13–23</small></div><div class="r">L</div></div>
+      <div class="bug"><i class="bar"></i><div class="t"><b>WAS +7.5</b><small>@ SF · pending</small></div><div class="r">–</div></div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
