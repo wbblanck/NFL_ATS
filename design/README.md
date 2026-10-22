@@ -8,7 +8,8 @@ the other style packs were removed.
 | File | What it is |
 |---|---|
 | `dashboard.template.html` | The page. Reads the same `const D=__DATA__` payload that `engine.picks.dashboard` already builds. |
-| `build_dashboard.py` | Copies the payload out of `site/dashboard.html` into the template, writing `dashboard.html`. |
+| `build_dashboard.py` | Copies the payload out of `site/dashboard.html` into the template, writing `dashboard.html`. It also embeds `intro.html`. |
+| `intro.html` | The 5 s intro (self-contained, fonts embedded). Open on its own with `#play` to preview. |
 | `dashboard.html` | Built page on the 2026-10-20 data (week 7). Open in a browser. |
 | `hero-1.html` | The chosen hero. `hero-2/3.html` are the rejected options, kept for reference. |
 
@@ -72,6 +73,16 @@ game.
 ## Publishing (2026-10-21)
 
 `publish-dashboard.yml` builds the engine's data page, renders it through `design/build_dashboard.py`, and commits the result as `site/dashboard.html`. If the design step fails, the data page is published unchanged and the run shows a warning.
+
+## Intro (2026-10-22)
+
+A 5 s motion piece plays over the page on every load, then lifts away: the -3.5 line turns into a ring, a stadium, a season chart, X's and O's on the line of scrimmage, and a ball that drops onto the ground line as NFL ATS appears.
+
+- `intro.html` is a single file, every frame a pure function of time (`window.seek(t)`). The dashboard embeds it in a frame and drives the clock; tap, the Skip button or Esc ends it early. Reduced-motion users never see it, and if the frame is not ready in 4 s the page carries on without it. Add `#nointro` to the page URL to turn it off.
+- The page's own entrance animations (hero flip, cascade, banners) wait until the intro lifts.
+- The football is a software-rendered 3D ball. In the page a worker pre-renders its tumble while the first four seconds play; if workers are blocked it falls back to the main thread.
+- The intro is 16:9 and sits at the top of the page, so on a phone it is a strip across the top with the dark overlay below it.
+- The MP4 version (no sound) is in the project files, not in this repo.
 
 ## Spring motion (2026-10-22)
 
