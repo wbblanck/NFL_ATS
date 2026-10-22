@@ -246,7 +246,7 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 /* Season path: model toggles */
 .mkeys { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; align-items: center; }
 .mchip { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; font: 600 12px var(--body); color: var(--ink-3); background: transparent; border: 1px solid var(--line-2); border-radius: 6px; padding: 6px 10px; cursor: pointer; transition: color 150ms, border-color 150ms; position: relative; overflow: hidden; z-index: 0; }
-.mchip::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--panel-2); transform: scaleX(0); transform-origin: 0 50%; transition: transform 600ms var(--sp-crit); }
+.mchip::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--panel-2); transform: scaleX(0); transform-origin: 0 50%; transition: transform 850ms var(--sp-crit); }
 .mchip:hover { color: var(--ink); }
 .mchip[aria-pressed="true"] { color: var(--ink); border-color: var(--line-2); }
 .mchip[aria-pressed="true"]::before { transform: scaleX(1); }
@@ -277,7 +277,7 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .wk .sq i.nw { transform: scaleY(.12); transform-origin: 50% 100%; background: var(--ink-3); box-shadow: none; opacity: .5; }
 .wk .sq i.nw.pop { transform: none; opacity: 1; background: var(--win); box-shadow: 0 0 6px rgba(47,203,122,.35); }
 .wk .sq i.x.nw.pop { background: var(--loss); opacity: .85; box-shadow: none; }
-.wk .sq i { transition: transform 600ms var(--sp-crit), background 260ms, opacity 260ms; }
+.wk .sq i { transition: transform 850ms var(--sp-crit), background 360ms, opacity 360ms; }
 .wk.bt .sq i.nw.pop { opacity: .4; }
 
 /* Live pulse and settled check */
@@ -297,7 +297,7 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .lvs .lm::before { content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px; background: var(--line-2); }
 .lvs .lm i { position: absolute; top: -2px; bottom: -2px; width: 4px; margin-left: -2px; border-radius: 2px; background: var(--ink-3); left: var(--t); }
 .lvs.cov .lm i { background: var(--win); } .lvs.miss .lm i { background: var(--loss); }
-.lvs .lm i.pre { left: var(--f); } .lvs .lm i.go { animation: lmGo .9s var(--sp-lead) both; }
+.lvs .lm i.pre { left: var(--f); } .lvs .lm i.go { animation: lmGo 1.3s var(--sp-lead) both; }
 @keyframes lmGo { from { left: var(--f); } to { left: var(--t); } }
 .lvs .nt { grid-row: 4; grid-column: 1 / -1; font: 10.5px var(--mono); color: var(--ink-3); }
 .chk { width: 16px; height: 16px; flex: none; }
@@ -323,13 +323,13 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 /* Pick flipped: a highlight sits on the old pick, a line strikes it, then the highlight stretches over to the new pick
    (its leading edge on a quicker spring than the trailing edge) and fades. JS sets --oL/--oR/--nL/--nR (px from the stage edges). */
 .flipb.go .pill { display: block; position: absolute; z-index: 0; top: 0; bottom: 0; left: var(--nL); right: var(--nR); border-radius: 6px; background: rgba(255,176,32,.28); border: 1px solid rgba(255,176,32,.6); pointer-events: none;
-  animation: pillL .7s .55s var(--sp-trail) both, pillR .7s .55s var(--sp-lead) both, pillA 1.9s .05s ease-out both; }
-.flipb.go .fc.old { text-decoration: none; animation: fbDim .4s .5s ease-out both; }
-.flipb.go .strike { display: block; position: absolute; left: 6px; right: 6px; top: 50%; height: 2px; margin-top: -1px; background: var(--ink); transform-origin: 0 50%; animation: fbStrike .6s .2s var(--sp-crit) both; }
-.flipb.go .fc.new { animation: fbIn .6s .75s var(--sp-crit) both; }
-.flipb.go .trail span { animation: fbTrail .9s .5s ease-out both; }
-.flipb.go .trail span:nth-child(2) { animation-delay: .57s; } .flipb.go .trail span:nth-child(3) { animation-delay: .64s; }
-.flipb.go { animation: fbFlash 1.4s .1s ease-out both; }
+  animation: pillL 1s .8s var(--sp-trail) both, pillR 1s .8s var(--sp-lead) both, pillA 2.7s .07s ease-out both; }
+.flipb.go .fc.old { text-decoration: none; animation: fbDim .55s .7s ease-out both; }
+.flipb.go .strike { display: block; position: absolute; left: 6px; right: 6px; top: 50%; height: 2px; margin-top: -1px; background: var(--ink); transform-origin: 0 50%; animation: fbStrike .85s .28s var(--sp-crit) both; }
+.flipb.go .fc.new { animation: fbIn .85s 1.05s var(--sp-crit) both; }
+.flipb.go .trail span { animation: fbTrail 1.25s .7s ease-out both; }
+.flipb.go .trail span:nth-child(2) { animation-delay: .8s; } .flipb.go .trail span:nth-child(3) { animation-delay: .9s; }
+.flipb.go { animation: fbFlash 2s .14s ease-out both; }
 @keyframes pillL { from { left: var(--oL); } to { left: var(--nL); } }
 @keyframes pillR { from { right: var(--oR); } to { right: var(--nR); } }
 @keyframes pillA { 0% { opacity: 0; } 8% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; } }
@@ -1023,14 +1023,14 @@ setLive(liveData);
   const fresh = [...document.querySelectorAll("#weeks i.nw")];
   CASCADE.newCount = ok && PREV.ids ? fresh.length : 0;   // a first look rolls everything in but does not pulse the end of the line
   CASCADE.dots = () => {
-    const step = Math.max(18, Math.min(70, 1400 / (fresh.length || 1)));
+    const step = Math.max(25, Math.min(100, 2000 / (fresh.length || 1)));
     fresh.forEach((el, k) => setTimeout(() => {
       el.classList.add("pop");
       const rec = el.closest(".wk").querySelector(".rec"); el.classList.contains("x") ? rec.dataset.l++ : rec.dataset.w++;
       rec.textContent = rec.dataset.w + "–" + rec.dataset.l;
     }, k * step));
     SEEN.ids = new Set(((c && c.games) || []).filter(g => g.kind !== "backtest").map(g => g.id));
-    return fresh.length ? fresh.length * step + 380 : 0;
+    return fresh.length ? fresh.length * step + 540 : 0;
   };
   if (!fresh.length) SEEN.ids = new Set(((c && c.games) || []).filter(g => g.kind !== "backtest").map(g => g.id));
 })();
