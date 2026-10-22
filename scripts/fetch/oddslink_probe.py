@@ -15,7 +15,6 @@ import sys
 from pathlib import Path
 
 import requests
-sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 BASE = "https://oddslink.app/v1"
 ROOT = Path(__file__).resolve().parents[2]
@@ -49,9 +48,6 @@ def save(name, obj):
 
 
 def main():
-    if os.environ.get("ODDSLINK_PROBE", "history") == "history":      # this branch: history discovery only
-        import oddslink_history_probe
-        return oddslink_history_probe.main()
     key = os.environ.get("ODDSLINK_API_KEY", "")
     if not key:
         print("ODDSLINK_API_KEY is not set: the workflow passes it from the repository secret ODDS_LINK.")
