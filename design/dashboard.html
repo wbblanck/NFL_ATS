@@ -92,8 +92,10 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .nextlock .ticks i:nth-child(5n+1) { transform: scaleY(.55); }
 .nextlock .ticks i.on { background: var(--amber); transform: scaleY(1); }
 .nextlock[data-s="soon"] { border-color: rgba(255,176,32,.6); }
-.nextlock[data-s="window"], .nextlock[data-s="now"] { border-color: var(--amber); background: rgba(255,176,32,.2); }
-.nextlock[data-s="window"] .fl, .nextlock[data-s="now"] .fl { color: var(--amber); border-color: rgba(255,176,32,.5); }
+.nextlock[data-s="window"], .nextlock[data-s="now"] { border-color: rgba(240,82,74,.7); background: rgba(240,82,74,.14); }
+.nextlock[data-s="window"] .fl, .nextlock[data-s="now"] .fl { color: #FF7A72; border-color: rgba(240,82,74,.6); }
+.nextlock[data-s="window"] .ticks i.on, .nextlock[data-s="now"] .ticks i.on { background: var(--loss); }
+.nextlock[data-s="window"] .live, .nextlock[data-s="now"] .live { background: var(--loss); }
 .nextlock[data-s="soon"] .live, .nextlock[data-s="window"] .live { animation-duration: 1.4s; }
 .nextlock[data-s="now"] .live { animation-duration: .6s; }
 .nextlock .clock.beat { animation: lkBeat .7s var(--sp-crit); }
