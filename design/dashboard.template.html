@@ -44,7 +44,7 @@ a { color: inherit; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
 /* Nav */
-nav { border-bottom: 1px solid var(--line); position: sticky; top: 0; background: rgba(7,12,24,.94); z-index: 5; }
+nav { border-bottom: 1px solid var(--line); position: sticky; top: 0; background: #070C18; z-index: 5; }
 nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 54px; gap: 16px; }
 .brand { font: 900 22px var(--display); color: var(--ink); text-transform: uppercase; letter-spacing: .02em; white-space: nowrap; }
 .brand span { color: var(--amber); }
@@ -174,7 +174,7 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .game > summary::-webkit-details-marker { display: none; }
 .gtop { display: flex; justify-content: space-between; gap: 6px 8px; align-items: center; flex-wrap: wrap; }
 .gtop > .k { white-space: nowrap; }
-.gtags { display: flex; gap: 6px; }
+.gtags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tag { font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; border: 1px solid var(--line-2); color: var(--ink-2); white-space: nowrap; }
 .tag.move { color: var(--ink); border-color: rgba(255,255,255,.4); }
 .tag.final-w { color: var(--win); border-color: rgba(47,203,122,.45); }
@@ -212,7 +212,8 @@ details[open] .more .arrow { transform: rotate(180deg); }
 .why { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 13.5px; }
 .why li { padding-left: 14px; position: relative; }
 .why li::before { content: ""; position: absolute; left: 0; top: .6em; width: 6px; height: 1px; background: var(--ink-3); }
-.mini-h { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.mini-h { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 12px; margin-bottom: 6px; }
+.mini-h > .k:last-child { margin-left: auto; white-space: nowrap; }
 svg { display: block; width: 100%; height: auto; overflow: visible; }
 .books { display: grid; gap: 3px; font: 11px var(--mono); }
 .books .b { display: grid; grid-template-columns: 82px 1fr 44px; gap: 8px; align-items: center; color: var(--ink-2); }
@@ -226,7 +227,7 @@ svg { display: block; width: 100%; height: auto; overflow: visible; }
 .xp h4 { margin: 0 0 6px; font: 700 16px var(--display); text-transform: uppercase; color: var(--ink); letter-spacing: .03em; display: flex; justify-content: space-between; }
 .xp h4 span { font: 500 15px var(--mono); }
 .xi { display: grid; grid-template-columns: 1fr 44px; gap: 2px 8px; font-size: 12px; margin-bottom: 6px; }
-.xi .lab { color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.xi .lab { color: var(--ink-2); min-width: 0; overflow-wrap: anywhere; }
 .xi .pts { font: 11px var(--mono); text-align: right; color: var(--ink); }
 .xi .bar { grid-column: 1 / -1; height: 4px; background: var(--panel); position: relative; border-radius: 2px; }
 .xi .bar i { position: absolute; top: 0; bottom: 0; border-radius: 2px; }
@@ -295,8 +296,9 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
   .tally { padding: 4px 10px 8px; }
   .tally .tr { grid-template-columns: minmax(0, 1fr) auto auto; gap: 4px 8px; }
   .tally .tr > :nth-child(4), .tally .th > :nth-child(4) { display: none; }
-  .tally .tv { font-size: 21px; } .tally .tn { font-size: 17px; }
+  .tally .tv { font-size: 21px; } .tally .tn { font-size: 17px; min-width: 0; overflow-wrap: anywhere; }
 }
+@media (max-width: 380px) { .tally .tv { font-size: 16px; } .tally .tv.net { font-size: 15px; } .tally .tn { font-size: 15px; letter-spacing: .02em; } .tally .tr { gap: 4px 6px; } }
 @media (max-width: 520px) { .mchip { padding: 5px 9px; font-size: 12px; gap: 5px; } .mchip svg { width: 16px; } }
 
 /* Season path: model toggles */
@@ -872,8 +874,8 @@ function moveSvg(g, det) {
   const X = x => m.l + (x - x0) / (x1 - x0 || 1) * (W - m.l - m.r), Y = y => m.t + (y1 - y) / (y1 - y0) * (H - m.t - m.b);
   const line = a => a.map((p, i) => `${i ? "L" : "M"}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join("");
   const bookLines = names.map(n => { const p = det.t.map((t, i) => [Date.parse(t), det.b[n][i]]).filter(q => q[1] != null); return p.length > 1 ? `<path d="${line(p)}" fill="none" stroke="rgba(154,164,178,.32)" stroke-width="1"><title>${esc(n)}</title></path>` : ""; }).join("");
-  const days = []; let seen = "";
-  pts.forEach(p => { const d = new Date(p[0]).toLocaleDateString("en-US", { weekday: "short", timeZone: ET }); if (d !== seen) { days.push([p[0], d]); seen = d; } });
+  const days = []; let seen = "", edge = -99;   // skip a day label that would land on the previous one
+  pts.forEach(p => { const d = new Date(p[0]).toLocaleDateString("en-US", { weekday: "short", timeZone: ET }); if (d !== seen) { seen = d; if (X(p[0]) - edge >= 30) { days.push([p[0], d]); edge = X(p[0]); } } });
   const last = pts[pts.length - 1], first = pts[0];
   const grid = [y0, Math.round((y0 + y1) / 2 * 2) / 2, y1].map(v => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" stroke="rgba(255,255,255,.07)"/><text x="${m.l - 4}" y="${Y(v) + 3}" fill="#8993A3" font-size="10.5" font-family="IBM Plex Mono" text-anchor="end">${sp(v)}</text>`).join("");
   return `<div><div class="mini-h"><span class="k">Line movement, ${esc(g.home)} spread</span><span class="k">${pts.length} captures · ${names.length} books</span></div>
