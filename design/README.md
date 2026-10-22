@@ -30,6 +30,8 @@ Team colors come from nflverse `teams_colors_logos.csv`.
 - **Result cascade:** after the hero flips, new results grow up from their base in game order (gray, then green or red) on a spring with no overshoot, the week's record counting up as each lands, then the lines draw.
 - **Flip banner:** when `D.flips` has a game, a highlight sits on the old pick, a line strikes it, then the highlight stretches over to the new pick (leading edge on a quicker spring) and fades, once per flip.
 - **Live pulse and settled check:** the page can't fetch scores itself (its viewer blocks outside requests). `streamlit_app/live.py` `page_data` / `inject_data` put ESPN scores for games in progress or just finished into `<script id="live-data">` when the page is opened; the card then breathes while the game is on and draws a check when it ends. Display only, never graded. Scores are as of the last page load.
+- **Filter highlight:** the week-board filter chips share one amber highlight that stretches to the chosen chip, leading edge first (2026-10-22). The season-path model chips are multi-select, so they keep their own on/off look.
+- **Ticker strip:** a thin scrolling strip under the nav (week and game count, record, graded of 256, next pick, live count). Built from `D`, no fetch. Shown only on a game day (any kickoff today, ET) or while a game is live. Pauses on hover or touch.
 - Everything respects `prefers-reduced-motion`. Animations wait until the section is on screen.
 
 ## Restored from the old dashboard (2026-10-21)

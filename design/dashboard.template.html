@@ -136,6 +136,30 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .chip { font: 600 12px var(--body); letter-spacing: .04em; color: var(--ink-2); background: transparent; border: 1px solid var(--line-2); border-radius: 6px; padding: 7px 12px; cursor: pointer; transition: background 150ms, color 150ms, border-color 150ms; }
 .chip:hover { color: var(--ink); background: var(--panel-2); }
 .chip[aria-pressed="true"] { color: #120C00; background: var(--amber); border-color: var(--amber); }
+/* Week-board filter chips share one amber highlight that stretches to the chosen chip, leading edge first */
+.chipset { position: relative; display: inline-flex; gap: 2px; padding: 3px; max-width: 100%; overflow-x: auto; scrollbar-width: none; background: var(--well); border: 1px solid var(--line-2); border-radius: 8px; }
+.chipset::-webkit-scrollbar { display: none; }
+.chipset .chip { position: relative; z-index: 1; flex: none; white-space: nowrap; border-color: transparent; background: transparent; padding: 8px 12px; transition: color 200ms; }
+.chipset .chip:hover { background: transparent; color: var(--ink); }
+.chipset .chip[aria-pressed="true"] { background: transparent; border-color: transparent; color: #120C00; }
+.chipset .ind { position: absolute; z-index: 0; top: 3px; bottom: 3px; left: 0; width: 0; border-radius: 6px; background: var(--amber); transition: left 240ms cubic-bezier(.3,.9,.3,1), width 240ms cubic-bezier(.3,.9,.3,1); }
+.chipset.fwd .ind { transition: left 300ms cubic-bezier(.3,.9,.3,1) 70ms, width 240ms cubic-bezier(.3,.9,.3,1); }
+.chipset.back .ind { transition: left 240ms cubic-bezier(.3,.9,.3,1), width 300ms cubic-bezier(.3,.9,.3,1) 70ms; }
+/* Ticker strip under the nav, shown on game days */
+.tkr { position: relative; overflow: hidden; height: 32px; display: none; align-items: center; background: var(--well); border-bottom: 1px solid var(--line); }
+.tkr.on { display: flex; }
+.tkr .lane { display: flex; white-space: nowrap; will-change: transform; animation: tkr 46s linear infinite; }
+.tkr:hover .lane, .tkr.paused .lane { animation-play-state: paused; }
+.tkr .it { display: inline-flex; align-items: center; gap: 8px; padding: 0 22px; font: 500 11.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.tkr .it b { color: var(--ink); font-weight: 600; }
+.tkr .it .a { color: var(--amber); }
+.tkr .it::after { content: ""; width: 5px; height: 5px; background: var(--line-2); transform: rotate(45deg); margin-left: 22px; }
+.tkr .it .lvd { flex: none; }
+.tkr::before, .tkr::after { content: ""; position: absolute; top: 0; bottom: 0; width: 28px; z-index: 2; pointer-events: none; }
+.tkr::before { left: 0; background: linear-gradient(90deg, var(--well), transparent); }
+.tkr::after { right: 0; background: linear-gradient(270deg, var(--well), transparent); }
+@keyframes tkr { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .tkr .lane { animation: none; } .tkr { overflow-x: auto; } .chipset .ind { transition: none !important; } }
 .controls input, .controls select { font: 13px var(--body); color: var(--ink); background: var(--panel); border: 1px solid var(--line-2); border-radius: 6px; padding: 7px 10px; }
 .controls input { flex: 1 1 160px; min-width: 0; }
 .controls input::placeholder { color: var(--ink-3); }
@@ -545,6 +569,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
   <a class="livepill" id="livepill" href="#board"><i></i><span id="livetxt"></span></a>
   <div class="updated" id="updated"></div>
 </div></nav>
+<div class="tkr" id="tkr" role="marquee" aria-label="This week at a glance"><div class="lane" id="tklane"></div></div>
 
 <main class="wrap">
   <section class="hero" aria-label="Season scoreboard">
@@ -580,10 +605,12 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
   <section id="board" aria-label="This week's games">
     <div class="head"><h2 id="boardh"></h2><span class="k">Tap a game for books, line movement and projections</span></div>
     <div class="controls">
-      <button class="chip" data-f="all" aria-pressed="true">All games</button>
-      <button class="chip" data-f="moved" aria-pressed="false">Market off pool line</button>
-      <button class="chip" data-f="flat" aria-pressed="false">Market on pool line</button>
-      <button class="chip" data-f="diff" aria-pressed="false">Models disagree</button>
+      <div class="chipset" id="chipset" role="group" aria-label="Filter games"><span class="ind" id="chind"></span>
+        <button class="chip" data-f="all" aria-pressed="true">All games</button>
+        <button class="chip" data-f="moved" aria-pressed="false">Market off pool line</button>
+        <button class="chip" data-f="flat" aria-pressed="false">Market on pool line</button>
+        <button class="chip" data-f="diff" aria-pressed="false">Models disagree</button>
+      </div>
       <input id="q" type="search" placeholder="Find a team" aria-label="Find a team">
       <select id="sort" aria-label="Sort games">
         <option value="ko">Sort: kickoff</option>
@@ -1367,6 +1394,45 @@ $("#foot").textContent = `Week ${D.week}, ${D.season}. Data as of ${D.updated}.`
   el.addEventListener("click", finish);
   addEventListener("keydown", e => { if (e.key === "Escape" || e.key === "Enter") finish(); });
   const p = v.play(); if (p && p.catch) p.catch(finish);
+})();
+/* Filter highlight and game-day ticker strip */
+(function () {
+  var reduce = false; try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  /* 1: sliding highlight for the filter chips */
+  var set = document.getElementById("chipset"), ind = document.getElementById("chind"), chips = [].slice.call(set.querySelectorAll(".chip")), cur = 0;
+  function place(anim) {
+    var b = chips[cur]; if (!anim) ind.style.transition = "none";
+    ind.style.left = b.offsetLeft + "px"; ind.style.width = b.offsetWidth + "px";
+    if (!anim) { void ind.offsetWidth; ind.style.transition = ""; }
+  }
+  chips.forEach(function (b, i) {
+    b.addEventListener("click", function () {
+      set.classList.remove("fwd", "back"); if (!reduce) set.classList.add(i > cur ? "fwd" : "back");
+      cur = i; place(true);
+      b.scrollIntoView && b.scrollIntoView({ block: "nearest", inline: "nearest", behavior: reduce ? "auto" : "smooth" });
+    });
+  });
+  place(false); addEventListener("resize", function () { place(false); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { place(false); });
+
+  /* 2: ticker built from the page's own data, shown on game days and while a game is live */
+  var tk = document.getElementById("tkr"), lane = document.getElementById("tklane");
+  function etDay(d) { return new Date(d).toLocaleDateString("en-US", { timeZone: "America/New_York" }); }
+  function build() {
+    var today = etDay(Date.now()), gameDay = D.games.some(function (g) { return g.ko_iso && etDay(g.ko_iso) === today; });
+    var nLive = parseInt((document.getElementById("livetxt") || {}).textContent, 10) || 0;
+    tk.classList.toggle("on", gameDay || nLive > 0);
+    var items = ["<b>Week " + D.week + "</b> · " + D.games.length + " games", "Record <b>" + D.record + "</b>", "Graded <b>" + D.graded + "</b> of " + D.claim_at];
+    var n = typeof nextDue === "function" ? nextDue() : null;
+    if (n) { var day = new Date(n.iso).toLocaleDateString("en-US", { weekday: "short", timeZone: "America/New_York" }); items.push("Next pick <b class=\"a\">" + day + " " + n.at + " ET</b> " + n.game); }
+    else items.push("All week " + D.week + " picks <b class=\"a\">made</b>");
+    if (nLive) items.push("<i class=\"lvd\"></i> <b>" + nLive + "</b> live now");
+    var h = items.map(function (t) { return "<span class=\"it\">" + t + "</span>"; }).join("");
+    if (lane._h !== h) { lane._h = h; lane.innerHTML = h + h + h + h + h + h; }   /* two halves of three copies, so a wide screen never shows a gap */
+  }
+  build(); setInterval(build, 15000);
+  tk.addEventListener("touchstart", function () { tk.classList.add("paused"); }, { passive: true });
+  tk.addEventListener("touchend", function () { setTimeout(function () { tk.classList.remove("paused"); }, 2500); }, { passive: true });
 })();
 </script>
 </body>
