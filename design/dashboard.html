@@ -67,12 +67,25 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .sub { max-width: 44ch; margin: 18px 0 0; }
 .board { background: var(--panel); border: 1px solid rgba(255,176,32,.28); border-radius: 10px; padding: 16px; box-shadow: 0 0 0 1px rgba(255,176,32,.08), 0 0 48px rgba(255,176,32,.08); }
 .board-top { display: flex; justify-content: space-between; gap: 10px; padding: 0 4px 12px; }
-.score { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; background: var(--well); border-radius: 6px; padding: 14px 8px 18px; }
-.side { text-align: center; }
-.side .lbl { font: 700 17px var(--display); color: var(--ink-2); text-transform: uppercase; letter-spacing: .1em; }
-.digits { font: 900 clamp(4.4rem, 11vw, 7.4rem)/1 var(--display); color: var(--amber); font-variant-numeric: tabular-nums; }
-.digits.dim { color: var(--ink-2); }
-.dash { font: 500 12px var(--mono); color: var(--ink-3); }
+/* Seven-segment scoreboard: glowing bars on a black bezel; a lamp lights when a result has come in since your last visit */
+.score { position: relative; display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 10px; background: #04070D; border: 2px solid #1d2a44; border-radius: 8px; padding: 18px 14px 46px; box-shadow: inset 0 0 0 2px #0a1020, inset 0 0 40px rgba(0,0,0,.8); }
+.score .scr { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #4a587a, #1a2236); }
+.score .scr:nth-of-type(1) { left: 8px; top: 8px; } .score .scr:nth-of-type(2) { right: 8px; top: 8px; } .score .scr:nth-of-type(3) { left: 8px; bottom: 8px; } .score .scr:nth-of-type(4) { right: 8px; bottom: 8px; }
+.side { text-align: center; min-width: 0; }
+.side .lbl { display: inline-block; font: 700 15px var(--display); color: #0a0f1c; background: var(--amber); border-radius: 3px; padding: 2px 10px 1px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .2em; }
+.side.m .lbl { background: #7a5a1c; color: #1b1306; }
+.digits svg { display: block; margin: 0 auto; width: 100%; max-width: 200px; height: auto; }
+.sg path { fill: rgba(255,176,32,.08); transition: fill .09s; }
+.sg path.on { fill: var(--amber); filter: drop-shadow(0 0 3px rgba(255,176,32,.9)); }
+.digits.dim .sg path.on { fill: #D9921A; }
+.sg path.ign { animation: segFlare .5s ease-out; }
+@keyframes segFlare { 0% { fill: #fff; } 100% { } }
+.dash { font: 900 40px/1 var(--display); color: var(--ink-3); padding-bottom: 30px; }
+.sfoot { position: absolute; left: 22px; right: 22px; bottom: 14px; display: flex; justify-content: flex-end; align-items: center; font: 500 10.5px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: #6b7897; }
+.lamp { display: inline-flex; align-items: center; gap: 7px; }
+.lamp i { width: 10px; height: 10px; border-radius: 50%; background: #2a2310; box-shadow: inset 0 0 0 1px #3a3216; transition: background .2s, box-shadow .2s; }
+.lamp i.on { background: var(--amber); box-shadow: 0 0 12px 3px rgba(255,176,32,.7); }
+.lamp i.hot { background: var(--loss); box-shadow: 0 0 12px 3px rgba(240,82,74,.7); }
 .cells { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
 .cell { background: var(--well); border-radius: 6px; padding: 10px 12px; min-width: 0; }
 .cell .v { font: 700 28px/1.15 var(--display); color: var(--ink); font-variant-numeric: tabular-nums; }
@@ -536,9 +549,11 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
     <div class="board">
       <div class="board-top"><span class="k">Live record vs pool line</span><span class="k" id="lastwk"></span></div>
       <div class="score">
+        <i class="scr"></i><i class="scr"></i><i class="scr"></i><i class="scr"></i>
         <div class="side"><div class="lbl">Covers</div><div class="digits" id="wins"></div></div>
-        <div class="dash">—</div>
-        <div class="side"><div class="lbl">Misses</div><div class="digits dim" id="losses"></div></div>
+        <div class="dash" aria-hidden="true">—</div>
+        <div class="side m"><div class="lbl">Misses</div><div class="digits dim" id="losses"></div></div>
+        <div class="sfoot"><span class="lamp"><i id="reslamp"></i><span id="restxt">Result in</span></span></div>
       </div>
       <div class="cells">
         <div class="cell"><div class="k">Win rate</div><div class="v" id="rate"></div></div>
@@ -701,8 +716,41 @@ const CASCADE = {};   // set by the season section: dots(): ms until the last do
 
 /* Hero */
 const [W, L] = D.record.split("-").map(Number);
-const heroGo = [flapper($("#wins"), "hero:W", String(W)), flapper($("#losses"), "hero:L", String(L))];
-whenVisible($(".board"), () => { heroGo.forEach((f, i) => f(150 + i * 120)); saveSeen(); });
+/* Seven-segment digits: shows the old value (all dark on a first look) and returns go(delayMs), which lights the changed
+   digits up to the new value with a white-hot flare and returns when it will be done. Two digits wide at least; a leading zero stays dark. */
+const SEG_ON = ["abcdef", "bc", "abdeg", "abcdg", "bcfg", "acdfg", "acdefg", "abc", "abcdefg", "abcdfg"];
+const SEG_D = { a: "M7 3 L33 3 L29 9 L11 9 Z", d: "M7 67 L33 67 L29 61 L11 61 Z", g: "M7 35 L11 31 L29 31 L33 35 L29 39 L11 39 Z", f: "M3 6 L9 12 L9 30 L3 34 Z", b: "M37 6 L31 12 L31 30 L37 34 Z", e: "M3 36 L9 40 L9 58 L3 64 Z", c: "M37 36 L31 40 L31 58 L37 64 Z" };
+function segBoard(el, key, txt) {
+  const old = PREV.cells[key], roll = old == null || old.length !== txt.length, nd = Math.max(2, txt.length);
+  el.setAttribute("role", "img"); el.setAttribute("aria-label", txt);
+  el.innerHTML = `<svg class="sg" viewBox="0 0 ${nd * 52 - 12} 70" aria-hidden="true">` + Array.from({ length: nd }, (_, d) =>
+    `<g transform="translate(${d * 52} 0)">` + Object.entries(SEG_D).map(([k, p]) => `<path data-d="${d}" data-s="${k}" d="${p}"/>`).join("") + "</g>").join("") + "</svg>";
+  SEEN.cells[key] = txt;
+  const ch = t => t.padStart(nd, " ");
+  const paint = (d, c, flare) => el.querySelectorAll(`path[data-d="${d}"]`).forEach(pa => {
+    const on = c !== " " && SEG_ON[+c].includes(pa.dataset.s), was = pa.classList.contains("on");
+    if (on && !was && flare) { pa.classList.remove("ign"); void pa.getBoundingClientRect(); pa.classList.add("ign"); }
+    pa.classList.toggle("on", on);
+  });
+  const from = roll ? " ".repeat(nd) : ch(old), to = ch(txt);
+  [...from].forEach((c, d) => paint(d, c, false));
+  return delay => {
+    if (REDUCED) { [...to].forEach((c, d) => paint(d, c, false)); return delay; }
+    let end = delay, k = 0;
+    [...to].forEach((c, d) => { if (c === from[d]) return; const t0 = delay + k++ * 90; end = Math.max(end, t0 + 600); setTimeout(() => paint(d, c, true), t0); });
+    return end;
+  };
+}
+const heroGo = [segBoard($("#wins"), "hero:W", String(W)), segBoard($("#losses"), "hero:L", String(L))];
+const heroOldW = PREV.cells["hero:W"], heroOldL = PREV.cells["hero:L"];
+whenVisible($(".board"), () => {
+  heroGo.forEach((f, i) => f(150 + i * 120)); saveSeen();
+  const up = heroOldW != null && W > +heroOldW, dn = heroOldL != null && L > +heroOldL;   // a result came in since your last visit
+  if (!REDUCED && (up || dn)) {
+    const lamp = $("#reslamp"); $("#restxt").textContent = up && dn ? "Results in" : "Result in";
+    setTimeout(() => { lamp.className = up ? "on" : "hot"; setTimeout(() => { lamp.className = ""; }, 4000); }, 500);
+  }
+});
 $("#rate").innerHTML = (W / (W + L)).toFixed(3).replace(/^0/, "") + ` <small>±${(Math.sqrt((W/(W+L))*(L/(W+L))/(W+L))).toFixed(3).replace(/^0/,"")}</small>`;
 $("#graded").innerHTML = `${D.graded}<small>/${D.claim_at}</small>`;
 $("#gradedbar").style.width = Math.min(100, D.graded / D.claim_at * 100) + "%";
