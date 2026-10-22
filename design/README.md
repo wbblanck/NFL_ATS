@@ -26,8 +26,8 @@ Team colors come from nflverse `teams_colors_logos.csv`.
 
 - **Season path:** a chip per tracked model turns its line on or off (choice kept in this browser), plus the 200 coin-flip ghosts (simulated, labeled). Lines draw in left to right.
 - **Airport boards:** the hero record and the model tally flip only the digits that changed since your last visit (all roll in from 0 on a first look). What you have seen is stored in this browser only.
-- **Result cascade:** after the hero flips, new results fill their dots in game order (gray, then green or red), then the lines draw.
-- **Flip banner:** when `D.flips` has a game, the old pick slides out and the new one in, once per flip.
+- **Result cascade:** after the hero flips, new results grow up from their base in game order (gray, then green or red) on a spring with no overshoot, the week's record counting up as each lands, then the lines draw.
+- **Flip banner:** when `D.flips` has a game, a highlight sits on the old pick, a line strikes it, then the highlight stretches over to the new pick (leading edge on a quicker spring) and fades, once per flip.
 - **Live pulse and settled check:** the page can't fetch scores itself (its viewer blocks outside requests). `streamlit_app/live.py` `page_data` / `inject_data` put ESPN scores for games in progress or just finished into `<script id="live-data">` when the page is opened; the card then breathes while the game is on and draws a check when it ends. Display only, never graded. Scores are as of the last page load.
 - Everything respects `prefers-reduced-motion`. Animations wait until the section is on screen.
 
@@ -72,3 +72,10 @@ game.
 ## Publishing (2026-10-21)
 
 `publish-dashboard.yml` builds the engine's data page, renders it through `design/build_dashboard.py`, and commits the result as `site/dashboard.html`. If the design step fails, the data page is published unchanged and the run shows a warning.
+
+## Spring motion (2026-10-22)
+
+Easing for the cascade, flip banner, model chips and live marker is a closed-form spring sampled into CSS `linear()`
+(`--sp-crit`, `--sp-lead`, `--sp-trail` in `:root`). Browsers without `linear()` fall back to a plain ease-out.
+- **Model chips:** the fill grows from the left edge on a spring instead of swapping in place.
+- **Live strip:** a marker shows how far the pick is from covering (about ±14 points fills the track). It springs from where you last saw it, kept in this browser as `lm:<game id>`. Scores only arrive when the page opens, so nothing moves while you watch.
