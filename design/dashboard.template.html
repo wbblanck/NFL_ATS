@@ -532,13 +532,13 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
 /* Intro: the 5 s motion piece (design/intro.html) plays over the page on load, then lifts away. */
 #intro { position: fixed; inset: 0; z-index: 9999; background: #070C18; transition: opacity .4s ease-out; }
 #intro.out { opacity: 0; pointer-events: none; }
-#intro iframe { position: absolute; left: 0; top: 0; width: 100%; aspect-ratio: 16 / 9; border: 0; background: #070C18; pointer-events: none; }
+#intro video { position: absolute; left: 0; top: 0; width: 100%; aspect-ratio: 16 / 9; background: #070C18; pointer-events: none; }
 #intro .skip { position: absolute; top: 12px; right: 12px; font: 600 12px/1 Inter, system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #9AA4B2; background: rgba(7,12,24,.7); border: 1px solid #16213A; border-radius: 999px; padding: 9px 14px; cursor: pointer; }
 </style>
 <script>window.__introDone = new Promise(r => { window.__introEnd = r; });</script>
 </head>
 <body>
-<div id="intro" aria-hidden="true"><iframe id="intro-f" title="Intro"></iframe><button class="skip" id="intro-skip" type="button" aria-hidden="false">Skip</button></div>
+<div id="intro" aria-hidden="true"><video id="intro-v" muted playsinline preload="auto" aria-hidden="true"></video><button class="skip" id="intro-skip" type="button" aria-hidden="false">Skip</button></div>
 <nav><div class="wrap">
   <div class="brand">Bonsai <span>ATS</span></div>
   <div class="navlinks"><a href="#board">This week</a><a href="#season">Season</a><a href="#tiebreak">Tiebreaker</a><a href="#models">Models</a><a href="#finals">Last week</a><a href="#whylost">Why we lost</a></div>
@@ -1341,32 +1341,32 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
 $("#foot").textContent = `Week ${D.week}, ${D.season}. Data as of ${D.updated}.`;
 </script>
 <script>
-/* Intro: runs design/intro.html in a frame and drives its clock from here (it renders every frame as a pure
-   function of time). Plays once per page load; tap, Skip or Esc ends it. Skipped for reduced motion, or if the
-   frame is not ready within 4 s, so the page is never held back. */
+/* Intro: design/intro.mp4 (5 s, no sound, 720p), embedded as base64 and played over the page on load. It is a
+   video rather than live drawing because the live version (3D layers, blur filters) ran phones out of memory.
+   Plays once per page load; tap, Skip or Esc ends it. Skipped for reduced motion, and if the video does not
+   start within 4 s, so the page is never held back. */
 (function () {
-  const INTRO_HTML = __INTRO__;
-  const el = $("#intro"), fr = $("#intro-f");
-  let done = false, raf = 0, t0 = 0;
+  const INTRO_MP4 = __INTRO__;
+  const el = $("#intro"), v = $("#intro-v");
+  let done = false;
   const finish = () => {
-    if (done) return; done = true; cancelAnimationFrame(raf);
+    if (done) return; done = true;
+    try { v.pause(); } catch (e) {}
     el.classList.add("out"); setTimeout(() => el.remove(), 500); window.__introEnd();
   };
-  if (REDUCED || /nointro/.test(location.hash) || !INTRO_HTML) { done = true; el.remove(); window.__introEnd(); return; }
-  const tick = now => {
-    const t = (now - t0) / 1000;
-    if (t >= 5) { fr.contentWindow.postMessage({ seek: 0 }, "*"); finish(); return; }   // t = 5 is the same frame as t = 0: the end title
-    fr.contentWindow.postMessage({ seek: t }, "*");
-    raf = requestAnimationFrame(tick);
-  };
-  addEventListener("message", e => {
-    if (e.source !== fr.contentWindow || !e.data || !e.data.introReady || t0) return;
-    clearTimeout(guard); t0 = performance.now(); raf = requestAnimationFrame(tick);
-  });
+  if (REDUCED || /nointro/.test(location.hash) || !INTRO_MP4) { done = true; el.remove(); window.__introEnd(); return; }
+  try {
+    const bin = atob(INTRO_MP4), bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    v.src = URL.createObjectURL(new Blob([bytes], { type: "video/mp4" }));
+  } catch (e) { finish(); return; }
   const guard = setTimeout(finish, 4000);
+  v.addEventListener("playing", () => clearTimeout(guard), { once: true });
+  v.addEventListener("ended", finish);
+  v.addEventListener("error", finish);
   el.addEventListener("click", finish);
   addEventListener("keydown", e => { if (e.key === "Escape" || e.key === "Enter") finish(); });
-  fr.srcdoc = INTRO_HTML;
+  const p = v.play(); if (p && p.catch) p.catch(finish);
 })();
 </script>
 </body>
