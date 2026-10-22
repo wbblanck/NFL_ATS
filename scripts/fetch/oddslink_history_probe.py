@@ -66,13 +66,18 @@ def main():
             break
     key = os.environ.get("ODDSLINK_API_KEY", "")
     if key:
-        r = requests.get(f"{HOST}/v1/sports/nfl/events", params={"dateFormat": "iso"},
-                         headers={"X-API-Key": key, "Accept": "application/json", **UA}, timeout=60)
-        hdr = {k: v for k, v in r.headers.items() if any(w in k.lower() for w in ("remaining", "used", "plan"))}
-        log(f"GET /v1/sports/nfl/events -> HTTP {r.status_code}, {len(r.content)} bytes; headers {hdr}")
-        (OUT / "oddslink_history_events.json").write_text(r.text[:500_000])
+        hd = {"X-API-Key": key, "Accept": "application/json", **UA}
+        for name, path, params in (
+                ("usage", "/v1/account/usage", {}),
+                ("hist_events", "/v1/historical/sports/nfl/events",
+                 {"commenceTimeFrom": "2026-10-18T00:00:00.000Z", "commenceTimeTo": "2026-10-19T12:00:00.000Z", "limit": 25})):
+            r = requests.get(f"{HOST}{path}", params=params, headers=hd, timeout=60)
+            hdr = {k: v for k, v in r.headers.items() if any(w in k.lower() for w in ("remaining", "used", "plan"))}
+            log(f"GET {path} -> HTTP {r.status_code}, {len(r.content)} bytes; headers {hdr}")
+            log(f"  body: {r.text[:600]}")
+            (OUT / f"oddslink_history_{name}.json").write_text(r.text[:500_000])
     else:
-        log("ODDSLINK_API_KEY not set: skipped the authenticated call")
+        log("ODDSLINK_API_KEY not set: skipped the authenticated calls")
     (OUT / "oddslink_history_summary.md").write_text("\n".join(LOG) + "\n")
     return 0
 
