@@ -29,8 +29,7 @@ def main() -> None:
     data = json.loads(m.group(1))
     logos = {p.stem: "data:image/png;base64," + base64.b64encode(p.read_bytes()).decode() for p in sorted(LOGOS.glob("*.png"))}
     payload = json.dumps(data, separators=(",", ":")).replace("</", "<\\/")
-    # the intro is a script string inside the page: keep markup-looking text from ending or confusing the script element
-    intro = json.dumps((ROOT / "design" / "intro.html").read_text()).replace("</", "<\\/").replace("<!--", "<\\!--").replace("<script", "<\\script")
+    intro = json.dumps(base64.b64encode((ROOT / "design" / "intro.mp4").read_bytes()).decode())
     page = TEMPLATE.read_text().replace("__INTRO__", intro).replace("__DATA__", payload).replace("__LOGOS__", json.dumps(logos, separators=(",", ":"))).replace(
         "__TITLE__", html.escape(f"Week {data['week']} · Bonsai ATS"))
     OUT.write_text(page)
