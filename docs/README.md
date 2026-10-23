@@ -51,3 +51,4 @@ Raw probe and network captures behind the data audit live in [evidence/](evidenc
 | EPA/Efficiency Tie-Breaker in No-Move Games (failed) | [link](tiebreak_preregistration.md) | [link](tiebreak_report.md) |  |
 | Game-Total Fix | [link](total_preregistration.md) | [link](total_report.md) |  |
 | Turnover and Late-Score Luck | [link](turnover_luck_preregistration.md) | [link](turnover_luck_report.md) |  |
+| Pick-Model Variants on the 2026 Season (failed) | [link](variants2026_preregistration.md) | [link](variants2026_report.md) | [link](../data/backtests/variants2026.json) |
