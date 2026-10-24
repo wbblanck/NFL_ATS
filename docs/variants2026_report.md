@@ -93,7 +93,7 @@ The SBRO numbers for C6c and C9 look strong, but they are not independent eviden
 - **The clean seasons are weak.** In 2025 (CBS open) both are only +2. In 2026, C9 changed one pick and C6c went
   8-6.
 
-A fair next step, if wanted, is a new pre-registration that combines the two ideas (key-number pick in no-move
+Follow-up done: `docs/keynum_combo_report.md` (failed on AusSportsBetting 2022-2024, 38-40). The original next step was a new pre-registration that combines the two ideas (key-number pick in no-move
 and straddle games, official elsewhere). It would be tested on a line source the key-number study never used:
 the AusSportsBetting 2014-2024 opens, which need the `nfl.xlsx` file back on this machine. From then on it would
 be tracked live like the hybrid, never as the pick.

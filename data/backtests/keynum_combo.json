@@ -1,0 +1,257 @@
+{
+ "asb": {
+  "asb_2022_2024": {
+   "games": 453,
+   "official": [
+    258,
+    453
+   ],
+   "kn": [
+    256,
+    453
+   ],
+   "differ": 78,
+   "kn_wins": 38,
+   "official_wins": 40,
+   "p": 0.6328289834850767,
+   "cover_margin_diff": -0.7770419426048565,
+   "no_move_only": {
+    "games": 453,
+    "official": [
+     258,
+     453
+    ],
+    "kn": [
+     258,
+     453
+    ],
+    "differ": 72,
+    "kn_wins": 36,
+    "official_wins": 36,
+    "p": 0.5468528376484595
+   },
+   "straddle_only": {
+    "games": 453,
+    "official": [
+     258,
+     453
+    ],
+    "kn": [
+     256,
+     453
+    ],
+    "differ": 6,
+    "kn_wins": 2,
+    "official_wins": 4,
+    "p": 0.890625
+   },
+   "keynum_everywhere": {
+    "games": 453,
+    "official": [
+     258,
+     453
+    ],
+    "kn": [
+     253,
+     453
+    ],
+    "differ": 93,
+    "kn_wins": 44,
+    "official_wins": 49,
+    "p": 0.7329700691326967
+   },
+   "cover_margin_ci95": [
+    -2.0130284052237015,
+    0.32798165137614677
+   ]
+  },
+  "asb_2014_2021": {
+   "games": 971,
+   "official": [
+    518,
+    971
+   ],
+   "kn": [
+    524,
+    971
+   ],
+   "differ": 202,
+   "kn_wins": 104,
+   "official_wins": 98,
+   "p": 0.36254266939502555,
+   "cover_margin_diff": -0.10916580844490216,
+   "no_move_only": {
+    "games": 971,
+    "official": [
+     518,
+     971
+    ],
+    "kn": [
+     525,
+     971
+    ],
+    "differ": 187,
+    "kn_wins": 97,
+    "official_wins": 90,
+    "p": 0.33047423175759616
+   },
+   "straddle_only": {
+    "games": 971,
+    "official": [
+     518,
+     971
+    ],
+    "kn": [
+     517,
+     971
+    ],
+    "differ": 15,
+    "kn_wins": 7,
+    "official_wins": 8,
+    "p": 0.696380615234375
+   },
+   "keynum_everywhere": {
+    "games": 971,
+    "official": [
+     518,
+     971
+    ],
+    "kn": [
+     512,
+     971
+    ],
+    "differ": 246,
+    "kn_wins": 120,
+    "official_wins": 126,
+    "p": 0.6722670111942611
+   },
+   "cover_margin_ci95": [
+    -0.8242311327271358,
+    0.6328023080650041
+   ]
+  }
+ },
+ "cbs2025": {
+  "games": 210,
+  "official": [
+   108,
+   210
+  ],
+  "kn": [
+   109,
+   210
+  ],
+  "differ": 41,
+  "kn_wins": 21,
+  "official_wins": 20,
+  "p": 0.5,
+  "cover_margin_diff": -0.3,
+  "no_move_only": {
+   "games": 210,
+   "official": [
+    108,
+    210
+   ],
+   "kn": [
+    110,
+    210
+   ],
+   "differ": 36,
+   "kn_wins": 19,
+   "official_wins": 17,
+   "p": 0.4339697002142202
+  },
+  "straddle_only": {
+   "games": 210,
+   "official": [
+    108,
+    210
+   ],
+   "kn": [
+    107,
+    210
+   ],
+   "differ": 5,
+   "kn_wins": 2,
+   "official_wins": 3,
+   "p": 0.8125
+  },
+  "keynum_everywhere": {
+   "games": 210,
+   "official": [
+    108,
+    210
+   ],
+   "kn": [
+    121,
+    210
+   ],
+   "differ": 55,
+   "kn_wins": 34,
+   "official_wins": 21,
+   "p": 0.05239474121330168
+  }
+ },
+ "2026": {
+  "games": 94,
+  "official": [
+   54,
+   94
+  ],
+  "kn": [
+   56,
+   94
+  ],
+  "differ": 14,
+  "kn_wins": 8,
+  "official_wins": 6,
+  "p": 0.395263671875,
+  "cover_margin_diff": 0.3191489361702128,
+  "no_move_only": {
+   "games": 94,
+   "official": [
+    54,
+    94
+   ],
+   "kn": [
+    56,
+    94
+   ],
+   "differ": 14,
+   "kn_wins": 8,
+   "official_wins": 6,
+   "p": 0.395263671875
+  },
+  "straddle_only": {
+   "games": 94,
+   "official": [
+    54,
+    94
+   ],
+   "kn": [
+    54,
+    94
+   ],
+   "differ": 0,
+   "kn_wins": 0,
+   "official_wins": 0,
+   "p": 1.0
+  },
+  "keynum_everywhere": {
+   "games": 94,
+   "official": [
+    54,
+    94
+   ],
+   "kn": [
+    57,
+    94
+   ],
+   "differ": 19,
+   "kn_wins": 11,
+   "official_wins": 8,
+   "p": 0.3238029479980469
+  }
+ },
+ "primary_pass": false
+}
