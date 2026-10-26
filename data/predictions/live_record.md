@@ -1,16 +1,16 @@
 # Live record vs the league line
 
-Updated 2026-10-25T19:45:14+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+Updated 2026-10-26T00:00:29+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
 
-**30-25** (55 graded), win rate 0.545 ± 0.067 (SE). Pending: 8. Ungradable (no league line recorded): 0. Late picks included: 0.
+**36-27** (63 graded), win rate 0.571 ± 0.062 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
 
 No skill claim is made: fewer than 256 graded games (pre-registered).
 
-Shadow key-number estimator (recorded, not used to pick): 28-18; it disagreed with the live pick 10 times and won 7 of those.
+Shadow key-number estimator (recorded, not used to pick): 35-19; it disagreed with the live pick 13 times and won 9 of those.
 
-Score-projection models (tracked comparisons, not used to pick): proj-players-v3 25-21 (2 excluded: injury statuses not yet published); proj-poisson-v1 28-20.
+Score-projection models (tracked comparisons, not used to pick): proj-players-v3 30-23 (3 excluded: injury statuses not yet published); proj-poisson-v1 35-21.
 
-Hybrid (tracked, docs/hybrid_tracking.md): 32-23; it picked differently from the live pick 12 times: hybrid right 7, live right 5.
+Hybrid (tracked, docs/hybrid_tracking.md): 40-23; it picked differently from the live pick 14 times: hybrid right 9, live right 5.
 
 | Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |
 |---|---|---|---|---|---|---|---|
@@ -69,3 +69,11 @@ Hybrid (tracked, docs/hybrid_tracking.md): 32-23; it picked differently from the
 | 2026 | 6 | 2026_06_DAL_GB | DAL | -1.5 | 13-23 | L | DAL L |
 | 2026 | 6 | 2026_06_WAS_SF | WAS | -7.5 | 17-23 | W | WAS W |
 | 2026 | 7 | 2026_07_NE_CHI | NE | -3.5 | 24-30 | L | NE L |
+| 2026 | 7 | 2026_07_SF_ATL | ATL | +3.5 | 20-29 | W | ATL W |
+| 2026 | 7 | 2026_07_CIN_BAL | CIN | -2.5 | 35-13 | W | CIN W |
+| 2026 | 7 | 2026_07_TB_CAR | TB | -3.5 | 43-13 | W | TB W |
+| 2026 | 7 | 2026_07_NYG_HOU | HOU | -9.5 | 27-21 | L | NYG W |
+| 2026 | 7 | 2026_07_IND_MIN | MIN | -6.5 | 10-16 | L | IND W |
+| 2026 | 7 | 2026_07_MIA_NYJ | MIA | -4.5 | 28-25 | W | MIA W |
+| 2026 | 7 | 2026_07_CLE_TEN | CLE | +1.5 | 27-24 | W | CLE W |
+| 2026 | 7 | 2026_07_DEN_ARI | DEN | +4.5 | 30-16 | W | ARI L |
