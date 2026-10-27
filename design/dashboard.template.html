@@ -74,7 +74,7 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .score .scr:nth-of-type(1) { left: 8px; top: 8px; } .score .scr:nth-of-type(2) { right: 8px; top: 8px; } .score .scr:nth-of-type(3) { left: 8px; bottom: 8px; } .score .scr:nth-of-type(4) { right: 8px; bottom: 8px; }
 .side { text-align: center; min-width: 0; }
 .side .lbl { display: inline-block; font: 700 15px var(--display); color: #0a0f1c; background: var(--amber); border-radius: 3px; padding: 2px 10px 1px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .2em; }
-.side.m .lbl { background: #7a5a1c; color: #1b1306; }
+.side.m .lbl { background: #7a5a1c; color: #FFE3A8; }
 .digits svg { display: block; margin: 0 auto; width: 100%; max-width: 200px; height: auto; }
 .sg path { fill: rgba(255,176,32,.08); transition: fill .09s; }
 .sg path.on { fill: var(--amber); filter: drop-shadow(0 0 3px rgba(255,176,32,.9)); }
@@ -93,6 +93,7 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .cell .v small { font-size: 15px; color: var(--ink-3); }
 .meter { height: 4px; background: var(--panel-2); border-radius: 2px; margin-top: 6px; overflow: hidden; }
 .meter i { display: block; height: 100%; background: var(--amber); }
+.nextlock .kt, .nextlock .ng, .nextlock [data-g] .k { color: #B4BCC9; }
 .nextlock { display: grid; gap: 12px; margin-top: 8px; transition: border-color .5s, background .5s; background: var(--amber-dim); border: 1px solid rgba(255,176,32,.35); border-radius: 6px; padding: 10px 12px; }
 .nextlock .when { font: 700 22px var(--display); color: var(--amber); text-transform: uppercase; letter-spacing: .02em; }
 .nextlock .nlh { display: flex; align-items: center; min-width: 0; }
@@ -166,6 +167,9 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .controls input { flex: 1 1 160px; min-width: 0; }
 .controls input::placeholder { color: var(--ink-3); }
 .controls .count { font: 11px var(--mono); color: var(--ink-3); margin-left: auto; }
+section[id] { scroll-margin-top: 70px; }
+.skip { position: absolute; left: 8px; top: -60px; z-index: 10000; background: var(--amber); color: #120C00; font: 600 13px var(--body); padding: 10px 14px; border-radius: 6px; text-decoration: none; }
+.skip:focus { top: max(8px, env(safe-area-inset-top, 0px)); }
 :focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; }
 button, a, select, summary, [role="button"], input[type="range"] { touch-action: manipulation; }
@@ -191,7 +195,7 @@ button, [role="button"], .chip, .mchip { -webkit-user-select: none; user-select:
         background: color-mix(in srgb, var(--tc) 34%, var(--panel)); }
 .team .logo, .team .logo-alt { width: 64px; height: 64px; margin: 0 auto 6px; }
 .team b { display: block; font: 900 20px/1 var(--display); color: var(--ink); letter-spacing: .04em; }
-.team span { font: 11px var(--mono); color: var(--ink-2); }
+.team span { font: 11px var(--mono); color: #D3D9E3; }
 .team.pick { border: 2px solid var(--amber); box-shadow: 0 0 22px color-mix(in srgb, var(--tp) 45%, transparent); }
 .team.pick b { color: var(--amber); }
 .logo { display: block; object-fit: contain; }
@@ -468,8 +472,8 @@ td .note { display: block; font: 11px var(--mono); color: var(--ink-3); }
 .lrc { border: 1px solid var(--line); border-radius: 8px; padding: 12px 12px 10px; background: var(--panel); position: relative; min-width: 0; }
 .lrc-h { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .lrc-h .lwk { font: 11px var(--mono); color: var(--ink-3); letter-spacing: .06em; text-transform: uppercase; }
-.lrc-h h4 { margin: 2px 0 0; font: 900 24px/1 var(--display); text-transform: uppercase; color: var(--ink); letter-spacing: .02em; }
-.lrc-h h4 small { font: 13px var(--mono); color: var(--ink-2); text-transform: none; margin: 0 4px; }
+.lrc-h h3 { margin: 2px 0 0; font: 900 24px/1 var(--display); text-transform: uppercase; color: var(--ink); letter-spacing: .02em; }
+.lrc-h h3 small { font: 13px var(--mono); color: var(--ink-2); text-transform: none; margin: 0 4px; }
 .lrc-h .miss { text-align: right; } .lrc-h .miss b { display: block; font: 900 30px/1 var(--display); color: var(--loss); } .lrc-h .miss span { font: 11px var(--mono); color: var(--ink-3); }
 .lrc .pk { display: inline-block; margin-top: 6px; font: 500 12px var(--mono); border: 1px solid rgba(255,176,32,.5); color: var(--amber); border-radius: 5px; padding: 2px 8px; }
 .lrc .pk em { font-style: normal; opacity: .7; margin-left: 6px; }
@@ -527,7 +531,7 @@ td .note { display: block; font: 11px var(--mono); color: var(--ink-3); }
 .calr b { color: var(--ink); font-weight: 500; text-align: right; }
 .misses { display: flex; gap: 8px; align-items: flex-end; height: 130px; position: relative; margin-top: 20px; }
 .misses .avg { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--ink-3); pointer-events: none; }
-.misses .avg span { position: absolute; left: 0; top: -16px; font: 11px var(--mono); color: var(--ink-3); }
+.mleg { display: flex; align-items: center; gap: 8px; margin-top: 8px; font: 11px var(--mono); color: var(--ink-3); } .mleg i { width: 18px; border-top: 1px dashed var(--ink-3); }
 .mb { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; gap: 3px; }
 .mb i { width: 100%; max-width: 34px; background: var(--ink-2); border-radius: 3px 3px 0 0; display: block; } .mb i.l { background: var(--loss); }
 .mb span { font: 11px var(--mono); color: var(--ink-3); } .mb b { font: 500 11px var(--mono); color: var(--ink); order: -1; }
@@ -571,6 +575,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
 <script>window.__introDone = new Promise(r => { window.__introEnd = r; });</script>
 </head>
 <body>
+<a class="skip" href="#board">Skip to this week's games</a>
 <div id="intro" aria-hidden="true"><video id="intro-v" muted playsinline preload="auto" aria-hidden="true"></video><button class="skip" id="intro-skip" type="button" aria-hidden="false">Skip</button></div>
 <nav><div class="wrap">
   <div class="brand">Bonsai <span>ATS</span></div>
@@ -578,7 +583,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
   <a class="livepill" id="livepill" href="#board"><i></i><span id="livetxt"></span></a>
   <div class="updated" id="updated"></div>
 </div></nav>
-<div class="tkr" id="tkr" role="marquee" aria-label="This week at a glance"><div class="lane" id="tklane"></div></div>
+<div class="tkr" id="tkr" role="region" aria-label="This week at a glance"><div class="lane" id="tklane"></div></div>
 
 <main class="wrap">
   <section class="hero" aria-label="Season scoreboard">
@@ -608,7 +613,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
 
   <section aria-label="Lock schedule">
     <div class="head"><h2>Lock schedule</h2><span class="k">Pick goes in 5 min before lock · lock is kickoff − 15 min</span></div>
-    <div class="rail" id="rail"></div>
+    <div class="rail" id="rail" tabindex="0" role="region" aria-label="Week schedule, scrolls sideways"></div>
   </section>
 
   <section id="board" aria-label="This week's games">
@@ -795,7 +800,7 @@ whenVisible($(".board"), () => {
     setTimeout(() => { lamp.className = up ? "on" : "hot"; setTimeout(() => { lamp.className = ""; }, 4000); }, 500);
   }
 });
-$("#rate").innerHTML = (W / (W + L)).toFixed(3).replace(/^0/, "") + ` <small>±${(Math.sqrt((W/(W+L))*(L/(W+L))/(W+L))).toFixed(3).replace(/^0/,"")}</small>`;
+$("#rate").innerHTML = W + L === 0 ? "–" : (W / (W + L)).toFixed(3).replace(/^0/, "") + ` <small>±${(Math.sqrt((W/(W+L))*(L/(W+L))/(W+L))).toFixed(3).replace(/^0/,"")}</small>`;
 $("#graded").innerHTML = `${D.graded}<small>/${D.claim_at}</small>`;
 $("#gradedbar").style.width = Math.min(100, D.graded / D.claim_at * 100) + "%";
 $("#claim").textContent = D.claim_at;
@@ -1279,7 +1284,7 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
     const ot = OTH.map(([k, l]) => { const r = (x.others || {})[k]; return `<span>${l} ${r === "W" ? '<span class="ok">✓</span>' : r === "L" ? '<span class="no">✕</span>' : "—"}</span>`; }).join("");
     const tg = x.tags.map(t => `<span class="tg ${t}">${esc(TAG[t] || t)}${t === "to_lost" || t === "to_won" ? ` ${x.to[0]}–${x.to[1]}` : ""}</span>`).join("");
     const mv = x.drift == null ? "" : x.drift === 0 ? "no line move" : `market moved ${Math.abs(x.drift)} pt`;
-    return `<article class="lrc" data-id="${esc(x.id)}"><div class="lrc-h"><div><div class="lwk">Week ${x.week}${mv ? " · " + mv : ""}</div><h4>${esc(x.away)} ${x.as} <small>@</small> ${esc(x.home)} ${x.hs}</h4><span class="pk">${esc(x.pick)} ${s1(x.line)}${x.p != null ? `<em title="Model cover chance at pick time">${(x.p * 100).toFixed(1)}% to cover</em>` : ""}</span></div>
+    return `<article class="lrc" data-id="${esc(x.id)}"><div class="lrc-h"><div><div class="lwk">Week ${x.week}${mv ? " · " + mv : ""}</div><h3>${esc(x.away)} ${x.as} <small>@</small> ${esc(x.home)} ${x.hs}</h3><span class="pk">${esc(x.pick)} ${s1(x.line)}${x.p != null ? `<em title="Model cover chance at pick time">${(x.p * 100).toFixed(1)}% to cover</em>` : ""}</span></div>
       <div class="miss"><b>${s1(x.fin)}</b><span>vs the number</span></div></div><div class="flow" data-id="${esc(x.id)}"></div>${x.flow ? '<div class="lrc-bar"><button class="play" type="button" aria-label="Replay the game">▶ Replay</button><span class="rclock"></span></div>' : ""}
       <p class="note">${note(x)} Turnovers committed: ${esc(x.pick)} ${x.to[0]}, ${esc(x.opp)} ${x.to[1]}.</p>${tg ? `<div class="tags">${tg}</div>` : ""}<div class="oth"><span>Other models:</span>${ot}<span title="No result recorded for that model in this game">— = no pick recorded</span></div></article>`;
   }
@@ -1331,17 +1336,17 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
   const HIST = [[-40,1],[-38,2],[-36,4],[-34,5],[-32,14],[-30,10],[-28,18],[-26,37],[-24,46],[-22,62],[-20,83],[-18,102],[-16,133],[-14,177],[-12,176],[-10,214],[-8,238],[-6,232],[-4,265],[-2,266],[0,242],[2,268],[4,223],[6,219],[8,176],[10,161],[12,161],[14,121],[16,96],[18,88],[20,79],[22,55],[24,41],[26,40],[28,36],[30,18],[32,15],[34,10],[36,16],[38,9],[40,2],[42,8],[44,2],[46,1],[48,3]], HN = 4175, LN = 141, L50 = 71, L80 = 116, TYP = 9.9;
   const cur = T.find(r => r.week === D.week && r.actual == null) || T.find(r => r.actual == null), past = T.filter(r => r.actual != null);
   if (cur) {
-    const mt = cur.market_total, g = cur.guess, W = 720, H = 190, lo = mt - 32, hi = mt + 40, xx = v => 20 + (W - 40) * (v - lo) / (hi - lo), mx = Math.max(...HIST.map(h => h[1]));
+    const mt = cur.market_total, g = cur.guess, W = 720, cw = $("#tb-now").clientWidth || 720, k = Math.max(1, W / cw), fs = +(11 * k).toFixed(1), top = Math.ceil(fs * 2.2) + 6, base = top + 112, bar = base + 14, H = Math.ceil(bar + 8 + fs + 4), lo = mt - 32, hi = mt + 40, xx = v => 20 + (W - 40) * (v - lo) / (hi - lo), mx = Math.max(...HIST.map(h => h[1]));
     const bars = HIST.map(([k, v]) => { const a = mt + k; if (a < lo || a + 2 > hi) return ""; const mid = a + 1, o = mid >= cur.r50[0] && mid <= cur.r50[1] ? .9 : mid >= cur.r80[0] && mid <= cur.r80[1] ? .5 : .22;
-      return `<rect x="${(xx(a) + .5).toFixed(1)}" y="${(150 - 112 * v / mx).toFixed(1)}" width="${(xx(a + 2) - xx(a) - 1).toFixed(1)}" height="${(112 * v / mx).toFixed(1)}" fill="#3DA5FF" opacity="${o}" rx="1"/>`; }).join("");
-    const lab = (v, y = 188) => `<text x="${xx(v)}" y="${y}" text-anchor="middle" fill="#8993A3" font-size="10.5" font-family="IBM Plex Mono">${v}</text>`;
+      return `<rect x="${(xx(a) + .5).toFixed(1)}" y="${(base - 112 * v / mx).toFixed(1)}" width="${(xx(a + 2) - xx(a) - 1).toFixed(1)}" height="${(112 * v / mx).toFixed(1)}" fill="#3DA5FF" opacity="${o}" rx="1"/>`; }).join("");
+    const lab = (v, y = H - 4) => `<text x="${xx(v)}" y="${y}" text-anchor="middle" fill="#8993A3" font-size="${fs}" font-family="IBM Plex Mono">${v}</text>`;
     const ko = new Date(cur.kickoff_utc).toLocaleString("en-US", { weekday: "short", hour: "numeric", minute: "2-digit", timeZone: ET });
     $("#tb-now").innerHTML = `<div class="tbhero"><div class="lg">${logo(cur.away)}${logo(cur.home)}</div><div><div class="k">Week ${cur.week} · ${esc(cur.away)} @ ${esc(cur.home)} · ${esc(ko)} ET</div>
       <div class="tbm">Market total <b>${mt}</b> · half of games land in <b>${cur.r50[0]}–${cur.r50[1]}</b> · 8 in 10 in <b>${cur.r80[0]}–${cur.r80[1]}</b></div></div><div class="tbg" aria-label="Guess ${g}">${g}</div></div>
       <div style="margin-top:12px"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Distribution of final total points for this game: guess ${g}, half of games between ${cur.r50[0]} and ${cur.r50[1]}, 8 in 10 between ${cur.r80[0]} and ${cur.r80[1]}">
-      <rect x="${xx(cur.r80[0])}" y="164" width="${xx(cur.r80[1]) - xx(cur.r80[0])}" height="6" rx="3" fill="rgba(61,165,255,.3)"/><rect x="${xx(cur.r50[0])}" y="164" width="${xx(cur.r50[1]) - xx(cur.r50[0])}" height="6" rx="3" fill="#3DA5FF"/>
-      ${bars}<line x1="20" x2="${W - 20}" y1="150.5" y2="150.5" stroke="rgba(140,170,255,.24)"/><line x1="${xx(g)}" x2="${xx(g)}" y1="4" y2="172" stroke="#FFB020" stroke-width="2"/>
-      <text x="${xx(g) + 6}" y="12" fill="#FFB020" font-size="12" font-family="IBM Plex Mono" font-weight="500">GUESS ${g}</text><text x="${xx(g) + 6}" y="26" fill="#8993A3" font-size="10.5" font-family="IBM Plex Mono">market ${mt}</text>
+      <rect x="${xx(cur.r80[0])}" y="${bar}" width="${xx(cur.r80[1]) - xx(cur.r80[0])}" height="6" rx="3" fill="rgba(61,165,255,.3)"/><rect x="${xx(cur.r50[0])}" y="${bar}" width="${xx(cur.r50[1]) - xx(cur.r50[0])}" height="6" rx="3" fill="#3DA5FF"/>
+      ${bars}<line x1="20" x2="${W - 20}" y1="${base + .5}" y2="${base + .5}" stroke="rgba(140,170,255,.24)"/><line x1="${xx(g)}" x2="${xx(g)}" y1="4" y2="${bar + 8}" stroke="#FFB020" stroke-width="2"/>
+      <text x="${xx(g) + 6}" y="${4 + fs}" fill="#FFB020" font-size="${fs}" font-family="IBM Plex Mono" font-weight="500">GUESS ${g}</text><text x="${xx(g) + 6}" y="${6 + fs * 2}" fill="#8993A3" font-size="${fs}" font-family="IBM Plex Mono">market ${mt}</text>
       ${lab(cur.r50[0])}${lab(cur.r50[1])}${lab(cur.r80[0])}${lab(cur.r80[1])}</svg></div>
       <div class="legend"><span><i style="background:#3DA5FF"></i>central 50%</span><span><i style="background:rgba(61,165,255,.5)"></i>central 80%</span><span><i style="background:rgba(61,165,255,.22)"></i>tails</span></div>
       <p class="note2">The shape is final total minus market total for ${HN.toLocaleString("en-US")} regular-season games from 2010–2025, shifted onto this week's ${mt}. The guess is the market total rounded down at .5. Nothing we tried beat the market total out of sample, so there is no separate model marker.</p>`;
@@ -1357,7 +1362,7 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
     <div class="calr"><span>2018–25</span><div class="calt"><u style="left:${nom}%"></u><i class="h" style="width:${c / d * 100}%"></i></div><b>${Math.round(c / d * 100)}%</b></div></div>`;
   $("#tb-cal").innerHTML = cal("50%", 50, in50, past.length, L50, LN) + cal("80%", 80, in80, past.length, L80, LN) + `<p class="note2">${past.length} weeks is too few to judge. The 2018–25 row is the ${LN} last games of those seasons.</p>`;
   const avg = past.length ? past.reduce((a, t) => a + t.miss, 0) / past.length : 0, top = Math.max(25, ...past.map(t => t.miss));
-  $("#tb-miss").innerHTML = past.length ? `<div class="misses"><div class="avg" style="bottom:${TYP / top * 100}%"><span>${TYP} typical</span></div>${past.map(t => `<div class="mb"><i class="${t.miss > TYP ? "l" : ""}" style="height:${t.miss / top * 100}%"></i><span>W${t.week}</span><b>${t.miss}</b></div>`).join("")}</div>
+  $("#tb-miss").innerHTML = past.length ? `<div class="misses"><div class="avg" style="bottom:${TYP / top * 100}%"></div>${past.map(t => `<div class="mb"><i class="${t.miss > TYP ? "l" : ""}" style="height:${t.miss / top * 100}%"></i><span>W${t.week}</span><b>${t.miss}</b></div>`).join("")}</div><div class="mleg"><i></i>${TYP} typical miss</div>
     <p class="note2">Points the final total missed our guess by. 2026 average: <b>${avg.toFixed(1)}</b>. About ${TYP} is typical, so the tiebreaker is mostly luck. Enter the guess as late as the pool allows, using the market total at that time.</p>` : "";
   $("#tb-tab").innerHTML = '<thead><tr><th>Week</th><th>Game</th><th class="r">Total</th><th class="r">Guess</th><th class="r">Final</th><th class="r">Miss</th></tr></thead><tbody>' +
     (D.tiebreak || []).map(r => `<tr><td>${r.week}</td><td>${esc(r.away)} @ ${esc(r.home)}</td><td class="r">${r.market_total ?? "—"}</td><td class="r">${r.guess ?? "—"}</td><td class="r">${r.actual ?? "—"}</td><td class="r">${r.miss ?? "—"}</td></tr>`).join("") + "</tbody>";
