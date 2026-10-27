@@ -2,7 +2,7 @@
 
 Rules: `docs/cbs_lines_preregistration.md`. Regenerate: `python -m engine cbs-lines`.
 
-Games with a recorded pool line: **107**. A source counts as identified only with ≥ 45 games and a match rate ≥ 90%.
+Games with a recorded pool line: **121**. A source counts as identified only with ≥ 45 games and a match rate ≥ 90%.
 
 ## Q1: which source and time the pool line copies
 
@@ -70,6 +70,19 @@ No market or CBS-page snapshot inside the Tuesday window for this week (captures
 | book:fliff | 2026-10-20T13:30 | 14 | 14 | 14 | 0 | 0 | 100% |
 | book:fanduel | 2026-10-20T18:25 | 14 | 14 | 11 | 3 | 0 | 100% |
 
+### 2026-w08: 14 pool lines; Tuesday window 2026-10-27T12:00 to 2026-10-27T21:00 UTC
+
+| Source | Snapshot (UTC) | Games | Matched | Exact | Hook to fav | Hook to dog | Rate |
+|---|---|---|---|---|---|---|---|
+| book:pinnacle | 2026-10-27T14:19 | 10 | 10 | 4 | 3 | 3 | 100% |
+| book:bovada | 2026-10-27T14:19 | 10 | 10 | 4 | 3 | 3 | 100% |
+| cbs_page:MGM/SRADAR | 2026-10-27T15:20 | 5 | 5 | 2 | 1 | 2 | 100% |
+| cbs_page:DraftKings/SRADAR | 2026-10-27T17:55 | 4 | 4 | 2 | 2 | 0 | 100% |
+| cbs_page:FanDuel/SRADAR | 2026-10-27T15:20 | 1 | 1 | 1 | 0 | 0 | 100% |
+| cbs_page:FanDuel/SRADAR | 2026-10-27T17:55 | 1 | 1 | 1 | 0 | 0 | 100% |
+| book:betmgm | 2026-10-27T14:19 | 14 | 13 | 4 | 6 | 3 | 93% |
+| book:fanatics | 2026-10-27T14:19 | 14 | 13 | 7 | 2 | 4 | 93% |
+
 ## Data limits
 
 - The market provider's historical endpoint cannot fill in snapshots before the first Tuesday capture. Tested 2026-09-29: it returned only games that had already kicked off, with book updates days older than the requested time and in-game or alternate lines, and no upcoming games. Those rows were removed.
@@ -93,4 +106,4 @@ If the market's whole number is fair, each side covers half of the non-push game
 
 ## Q4: market movement from the pool line to lock
 
-45 games: mean move +0.03, mean absolute move 0.68, moves of 1+ point 44%.
+56 games: mean move +0.11, mean absolute move 0.75, moves of 1+ point 41%.
