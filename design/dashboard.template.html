@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#070C18">
 <title>__TITLE__</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,7 +51,7 @@ nav .wrap { display: flex; align-items: center; justify-content: space-between; 
 .brand span { color: var(--amber); }
 .navlinks { display: flex; gap: 22px; font: 600 12px var(--body); text-transform: uppercase; letter-spacing: .08em; }
 .navlinks a { color: var(--ink-2); text-decoration: none; transition: color 150ms; }
-.navlinks a:hover { color: var(--ink); }
+@media (hover: hover) and (pointer: fine) { .navlinks a:hover { color: var(--ink); } }
 .updated { font: 11px var(--mono); color: var(--ink-3); white-space: nowrap; }
 
 /* Section heads */
@@ -73,7 +74,7 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .score .scr:nth-of-type(1) { left: 8px; top: 8px; } .score .scr:nth-of-type(2) { right: 8px; top: 8px; } .score .scr:nth-of-type(3) { left: 8px; bottom: 8px; } .score .scr:nth-of-type(4) { right: 8px; bottom: 8px; }
 .side { text-align: center; min-width: 0; }
 .side .lbl { display: inline-block; font: 700 15px var(--display); color: #0a0f1c; background: var(--amber); border-radius: 3px; padding: 2px 10px 1px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .2em; }
-.side.m .lbl { background: #7a5a1c; color: #1b1306; }
+.side.m .lbl { background: #7a5a1c; color: #FFE3A8; }
 .digits svg { display: block; margin: 0 auto; width: 100%; max-width: 200px; height: auto; }
 .sg path { fill: rgba(255,176,32,.08); transition: fill .09s; }
 .sg path.on { fill: var(--amber); filter: drop-shadow(0 0 3px rgba(255,176,32,.9)); }
@@ -81,7 +82,7 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .sg path.ign { animation: segFlare .5s ease-out; }
 @keyframes segFlare { 0% { fill: #fff; } 100% { } }
 .dash { font: 900 40px/1 var(--display); color: var(--ink-3); padding-bottom: 30px; }
-.sfoot { position: absolute; left: 22px; right: 22px; bottom: 14px; display: flex; justify-content: flex-end; align-items: center; font: 500 10.5px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: #6b7897; }
+.sfoot { position: absolute; left: 22px; right: 22px; bottom: 14px; display: flex; justify-content: flex-end; align-items: center; font: 500 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: #6b7897; }
 .lamp { display: inline-flex; align-items: center; gap: 7px; }
 .lamp i { width: 10px; height: 10px; border-radius: 50%; background: #2a2310; box-shadow: inset 0 0 0 1px #3a3216; transition: background .2s, box-shadow .2s; }
 .lamp i.on { background: var(--amber); box-shadow: 0 0 12px 3px rgba(255,176,32,.7); }
@@ -92,6 +93,7 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .cell .v small { font-size: 15px; color: var(--ink-3); }
 .meter { height: 4px; background: var(--panel-2); border-radius: 2px; margin-top: 6px; overflow: hidden; }
 .meter i { display: block; height: 100%; background: var(--amber); }
+.nextlock .kt, .nextlock .ng, .nextlock [data-g] .k { color: #B4BCC9; }
 .nextlock { display: grid; gap: 12px; margin-top: 8px; transition: border-color .5s, background .5s; background: var(--amber-dim); border: 1px solid rgba(255,176,32,.35); border-radius: 6px; padding: 10px 12px; }
 .nextlock .when { font: 700 22px var(--display); color: var(--amber); text-transform: uppercase; letter-spacing: .02em; }
 .nextlock .nlh { display: flex; align-items: center; min-width: 0; }
@@ -134,13 +136,13 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 /* Controls */
 .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
 .chip { font: 600 12px var(--body); letter-spacing: .04em; color: var(--ink-2); background: transparent; border: 1px solid var(--line-2); border-radius: 6px; padding: 7px 12px; cursor: pointer; transition: background 150ms, color 150ms, border-color 150ms; }
-.chip:hover { color: var(--ink); background: var(--panel-2); }
+@media (hover: hover) and (pointer: fine) { .chip:hover { color: var(--ink); background: var(--panel-2); } }
 .chip[aria-pressed="true"] { color: #120C00; background: var(--amber); border-color: var(--amber); }
 /* Week-board filter chips share one amber highlight that stretches to the chosen chip, leading edge first */
 .chipset { position: relative; display: inline-flex; gap: 2px; padding: 3px; max-width: 100%; overflow-x: auto; scrollbar-width: none; background: var(--well); border: 1px solid var(--line-2); border-radius: 8px; }
 .chipset::-webkit-scrollbar { display: none; }
 .chipset .chip { position: relative; z-index: 1; flex: none; white-space: nowrap; border-color: transparent; background: transparent; padding: 8px 12px; transition: color 200ms; }
-.chipset .chip:hover { background: transparent; color: var(--ink); }
+@media (hover: hover) and (pointer: fine) { .chipset .chip:hover { background: transparent; color: var(--ink); } }
 .chipset .chip[aria-pressed="true"] { background: transparent; border-color: transparent; color: #120C00; }
 .chipset .ind { position: absolute; z-index: 0; top: 3px; bottom: 3px; left: 0; width: 0; border-radius: 6px; background: var(--amber); transition: left 240ms cubic-bezier(.3,.9,.3,1), width 240ms cubic-bezier(.3,.9,.3,1); }
 .chipset.fwd .ind { transition: left 300ms cubic-bezier(.3,.9,.3,1) 70ms, width 240ms cubic-bezier(.3,.9,.3,1); }
@@ -149,7 +151,8 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .tkr { position: relative; overflow: hidden; height: 32px; display: none; align-items: center; background: var(--well); border-bottom: 1px solid var(--line); }
 .tkr.on { display: flex; }
 .tkr .lane { display: flex; white-space: nowrap; will-change: transform; animation: tkr 46s linear infinite; }
-.tkr:hover .lane, .tkr.paused .lane { animation-play-state: paused; }
+.tkr.paused .lane { animation-play-state: paused; }
+@media (hover: hover) and (pointer: fine) { .tkr:hover .lane { animation-play-state: paused; } }
 .tkr .it { display: inline-flex; align-items: center; gap: 8px; padding: 0 22px; font: 500 11.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
 .tkr .it b { color: var(--ink); font-weight: 600; }
 .tkr .it .a { color: var(--amber); }
@@ -164,18 +167,26 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .controls input { flex: 1 1 160px; min-width: 0; }
 .controls input::placeholder { color: var(--ink-3); }
 .controls .count { font: 11px var(--mono); color: var(--ink-3); margin-left: auto; }
+section[id] { scroll-margin-top: 70px; }
+.skip { position: absolute; left: 8px; top: -60px; z-index: 10000; background: var(--amber); color: #120C00; font: 600 13px var(--body); padding: 10px 14px; border-radius: 6px; text-decoration: none; }
+.skip:focus { top: max(8px, env(safe-area-inset-top, 0px)); }
 :focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; }
+button, a, select, summary, [role="button"], input[type="range"] { touch-action: manipulation; }
+button, [role="button"], .chip, .mchip { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.chip:active, .mchip:active, .rbtn:active, .lr-tiles button:active { opacity: .8; }
+@media (pointer: coarse) { .controls input, .controls select { font-size: 16px; min-height: 40px; } #sl-seek { min-height: 40px; } .rbtn { min-height: 40px; } }
 
 /* Game cards */
 .games { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 10px; }
 .game { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; transition: border-color 150ms; }
-.game:hover { border-color: var(--line-2); }
+@media (hover: hover) and (pointer: fine) { .game:hover { border-color: var(--line-2); } }
 .game > summary { list-style: none; cursor: pointer; padding: 12px 14px 14px; }
 .game > summary::-webkit-details-marker { display: none; }
 .gtop { display: flex; justify-content: space-between; gap: 6px 8px; align-items: center; flex-wrap: wrap; }
 .gtop > .k { white-space: nowrap; }
 .gtags { display: flex; flex-wrap: wrap; gap: 6px; }
-.tag { font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; border: 1px solid var(--line-2); color: var(--ink-2); white-space: nowrap; }
+.tag { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; border: 1px solid var(--line-2); color: var(--ink-2); white-space: nowrap; }
 .tag.move { color: var(--ink); border-color: rgba(255,255,255,.4); }
 .tag.final-w { color: var(--win); border-color: rgba(47,203,122,.45); }
 .tag.final-l { color: var(--loss); border-color: rgba(240,82,74,.45); }
@@ -184,7 +195,7 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
         background: color-mix(in srgb, var(--tc) 34%, var(--panel)); }
 .team .logo, .team .logo-alt { width: 64px; height: 64px; margin: 0 auto 6px; }
 .team b { display: block; font: 900 20px/1 var(--display); color: var(--ink); letter-spacing: .04em; }
-.team span { font: 11px var(--mono); color: var(--ink-2); }
+.team span { font: 11px var(--mono); color: #D3D9E3; }
 .team.pick { border: 2px solid var(--amber); box-shadow: 0 0 22px color-mix(in srgb, var(--tp) 45%, transparent); }
 .team.pick b { color: var(--amber); }
 .logo { display: block; object-fit: contain; }
@@ -203,7 +214,7 @@ h1 { font: 900 clamp(2.6rem, 5.2vw, 4rem)/.94 var(--display); text-transform: up
 .gauge { position: relative; height: 8px; background: var(--well); border-radius: 4px; margin-top: 6px; }
 .gauge i { position: absolute; top: 0; bottom: 0; left: 0; background: var(--tp, var(--ink-2)); border-radius: 4px; }
 .gauge u { position: absolute; top: -3px; bottom: -3px; width: 1px; background: var(--ink-3); }
-.gauge-scale { display: flex; justify-content: space-between; font: 10.5px var(--mono); color: var(--ink-3); margin-top: 3px; }
+.gauge-scale { display: flex; justify-content: space-between; font: 11px var(--mono); color: var(--ink-3); margin-top: 3px; }
 .more { display: flex; justify-content: space-between; margin-top: 12px; font: 11px var(--mono); color: var(--ink-3); }
 .more .arrow { transition: transform 200ms; display: inline-block; }
 details[open] .more .arrow { transform: rotate(180deg); }
@@ -232,8 +243,8 @@ svg { display: block; width: 100%; height: auto; overflow: visible; }
 .xi .bar { grid-column: 1 / -1; height: 4px; background: var(--panel); position: relative; border-radius: 2px; }
 .xi .bar i { position: absolute; top: 0; bottom: 0; border-radius: 2px; }
 .xi .bar u { position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px; background: var(--ink-3); }
-.xi .note { grid-column: 1 / -1; font: 10.5px var(--mono); color: var(--ink-3); }
-.flag { font: 10.5px var(--mono); color: var(--ink-3); }
+.xi .note { grid-column: 1 / -1; font: 11px var(--mono); color: var(--ink-3); }
+.flag { font: 11px var(--mono); color: var(--ink-3); }
 
 /* Season */
 .split { display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px; }
@@ -242,11 +253,11 @@ svg { display: block; width: 100%; height: auto; overflow: visible; }
 .legend { display: flex; gap: 14px; flex-wrap: wrap; font: 11px var(--mono); color: var(--ink-3); margin-top: 8px; }
 .legend i { display: inline-block; width: 12px; height: 3px; margin-right: 6px; vertical-align: middle; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th { font: 500 10.5px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line-2); }
+th { font: 500 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line-2); }
 td { padding: 9px 6px; border-bottom: 1px solid var(--line); color: var(--ink); }
 th.r, td.r { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
 tr.me td:first-child { color: var(--amber); }
-td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
+td .note { display: block; font: 11px var(--mono); color: var(--ink-3); }
 .weeks { display: grid; gap: 6px; }
 .wk { display: grid; grid-template-columns: 34px 1fr 50px; gap: 10px; align-items: center; font: 12px var(--mono); }
 .wk .sq { display: flex; gap: 3px; flex-wrap: wrap; }
@@ -283,10 +294,10 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .tally .tr { display: grid; grid-template-columns: minmax(0, 1fr) auto 108px 52px; gap: 6px 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .tally .tr:last-child { border-bottom: 0; }
 .tally .th { padding: 8px 0 6px; border-bottom: 1px solid var(--line-2); }
-.tally .th > div { font: 500 10.5px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.tally .th > div { font: 500 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
 .tally .th > div:nth-child(n+2), .tally .tr > .tv { text-align: right; }
 .tally .tn { font: 700 20px/1.1 var(--display); text-transform: uppercase; letter-spacing: .05em; color: var(--ink); }
-.tally .tn small { display: block; font: 10.5px var(--mono); letter-spacing: 0; text-transform: none; color: var(--ink-3); margin-top: 3px; }
+.tally .tn small { display: block; font: 11px var(--mono); letter-spacing: 0; text-transform: none; color: var(--ink-3); margin-top: 3px; }
 .tally .tr.me .tn { color: var(--amber); }
 .tally .tv { font: 700 26px/1 var(--display); color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .tally .tr.me .tv { color: var(--amber); }
@@ -305,7 +316,7 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .mkeys { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; align-items: center; }
 .mchip { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; font: 600 12px var(--body); color: var(--ink-3); background: transparent; border: 1px solid var(--line-2); border-radius: 6px; padding: 6px 10px; cursor: pointer; transition: color 150ms, border-color 150ms; position: relative; overflow: hidden; z-index: 0; }
 .mchip::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--panel-2); transform: scaleX(0); transform-origin: 0 50%; transition: transform 850ms var(--sp-crit); }
-.mchip:hover { color: var(--ink); }
+@media (hover: hover) and (pointer: fine) { .mchip:hover { color: var(--ink); } }
 .mchip[aria-pressed="true"] { color: var(--ink); border-color: var(--line-2); }
 .mchip[aria-pressed="true"]::before { transform: scaleX(1); }
 .mchip svg { width: 22px; height: 6px; flex: none; overflow: visible; }
@@ -313,7 +324,7 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .mchip b { font: 500 11px var(--mono); color: var(--ink-2); }
 .mchip.sim { border-style: dashed; }
 .mlink { font: 500 12px var(--mono); color: var(--ink-3); background: none; border: 0; padding: 9px 6px; min-height: 34px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-.mlink:hover { color: var(--ink); }
+@media (hover: hover) and (pointer: fine) { .mlink:hover { color: var(--ink); } }
 .bandk { font: 11px var(--mono); color: var(--ink-3); display: inline-flex; align-items: center; gap: 6px; margin-right: 6px; }
 .bandk i { width: 12px; height: 8px; border-radius: 2px; background: rgba(61,165,255,.3); }
 #curve { position: relative; touch-action: pan-y; }
@@ -347,7 +358,7 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 @keyframes breathe { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 50% { box-shadow: 0 0 22px color-mix(in srgb, var(--tp) 38%, transparent); } }
 .lvs { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; margin: 0 0 10px; background: var(--well); border: 1px solid var(--line); border-left: 3px solid var(--ink-3); border-radius: 6px; padding: 8px 10px; }
 .lvs.cov { border-left-color: var(--win); } .lvs.miss { border-left-color: var(--loss); }
-.lvs .st { display: inline-flex; align-items: center; gap: 7px; font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); white-space: nowrap; }
+.lvs .st { display: inline-flex; align-items: center; gap: 7px; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); white-space: nowrap; }
 .lvs .sc { grid-column: 1 / -1; grid-row: 2; font: 900 26px/1 var(--display); color: var(--ink); letter-spacing: .03em; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .lvs .cv { font: 500 11px var(--mono); white-space: nowrap; }
 .lvs.cov .cv { color: var(--win); } .lvs.miss .cv { color: var(--loss); }
@@ -357,7 +368,7 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .lvs.cov .lm i { background: var(--win); } .lvs.miss .lm i { background: var(--loss); }
 .lvs .lm i.pre { left: var(--f); } .lvs .lm i.go { animation: lmGo 1.3s var(--sp-lead) both; }
 @keyframes lmGo { from { left: var(--f); } to { left: var(--t); } }
-.lvs .nt { grid-row: 4; grid-column: 1 / -1; font: 10.5px var(--mono); color: var(--ink-3); }
+.lvs .nt { grid-row: 4; grid-column: 1 / -1; font: 11px var(--mono); color: var(--ink-3); }
 .chk { width: 16px; height: 16px; flex: none; }
 .chk circle { fill: none; stroke: var(--ink-3); stroke-width: 2; }
 .chk path { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 20; stroke-dashoffset: 0; }
@@ -369,14 +380,14 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 
 /* Flip banner */
 .flipb { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; margin: 10px 0 0; background: var(--amber-dim); border: 1px solid rgba(255,176,32,.35); border-radius: 6px; padding: 7px 10px; overflow: hidden; }
-.flipb .fk { font: 500 10.5px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--amber); white-space: nowrap; }
+.flipb .fk { font: 500 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--amber); white-space: nowrap; }
 .flipb .stage { position: relative; display: inline-flex; align-items: center; gap: 6px; }
 .flipb .fc { position: relative; z-index: 1; font: 900 18px/1 var(--display); letter-spacing: .05em; color: var(--ink); display: inline-flex; align-items: center; gap: 6px; padding: 3px 6px; }
 .flipb .fc .logo, .flipb .fc .logo-alt { width: 20px; height: 20px; border-radius: 4px; font-size: 8px; }
 .flipb .fc.old { opacity: .5; text-decoration: line-through; text-decoration-thickness: 2px; }
 .flipb .fc.new { color: var(--amber); }
 .flipb .trail { position: relative; z-index: 1; display: inline-flex; color: var(--amber); font: 700 14px var(--mono); }
-.flipb .why { font: 10.5px var(--mono); color: var(--ink-2); flex: 1 1 100%; }
+.flipb .why { font: 11px var(--mono); color: var(--ink-2); flex: 1 1 100%; }
 .flipb .pill, .flipb .strike { display: none; }
 /* Pick flipped: a highlight sits on the old pick, a line strikes it, then the highlight stretches over to the new pick
    (its leading edge on a quicker spring than the trailing edge) and fades. JS sets --oL/--oR/--nL/--nR (px from the stage edges). */
@@ -403,10 +414,10 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 
 /* Other models' picks on the board */
 .mrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 10px; padding: 7px 9px; background: var(--well); border-radius: 6px; }
-.mrow .k { font-size: 10.5px; margin-right: 2px; }
+.mrow .k { font-size: 11px; margin-right: 2px; }
 .mrow.diff { box-shadow: inset 0 0 0 1px rgba(255,176,32,.35); }
 .mp { display: inline-flex; align-items: center; gap: 5px; font: 500 11px var(--mono); color: var(--ink-2); border: 1px solid var(--line-2); border-radius: 5px; padding: 2px 7px 2px 5px; }
-.mp em { font-style: normal; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.mp em { font-style: normal; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
 .mp .logo, .mp .logo-alt { width: 16px; height: 16px; border-radius: 3px; font-size: 7px; }
 .mp b { font: 700 14px var(--display); letter-spacing: .04em; color: var(--ink); }
 .mp.off { border-color: rgba(255,176,32,.5); } .mp.off b { color: var(--amber); }
@@ -415,15 +426,15 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 
 /* Card sparkline */
 .spkrow { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; margin-top: 10px; background: var(--well); border-radius: 6px; padding: 7px 9px; }
-.spkrow .k { font-size: 10.5px; } .spkrow .k:first-child { white-space: nowrap; } .spk { height: 30px; }
+.spkrow .k { font-size: 11px; } .spkrow .k:first-child { white-space: nowrap; } .spk { height: 30px; }
 .mvtag { display: inline-flex; align-items: center; gap: 4px; }
 @media (max-width: 480px) { .spkrow { grid-template-columns: auto 1fr; } .spkrow .k:last-child { grid-column: 1 / -1; } }
-.mvleg { font: 10.5px var(--mono); color: var(--ink-3); margin-top: 4px; }
+.mvleg { font: 11px var(--mono); color: var(--ink-3); margin-top: 4px; }
 
 /* Finals replay */
 .rbar { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; flex-wrap: wrap; }
 .rbtn { font: 600 12px var(--body); letter-spacing: .04em; color: #120C00; background: var(--amber); border: 0; border-radius: 6px; padding: 8px 14px; cursor: pointer; white-space: nowrap; }
-.rbtn:hover { filter: brightness(1.08); }
+@media (hover: hover) and (pointer: fine) { .rbtn:hover { filter: brightness(1.08); } }
 .rbar input[type=range] { height: 28px; flex: 1 1 140px; min-width: 0; accent-color: var(--amber); }
 .rread { display: flex; gap: 14px; align-items: baseline; font: 500 12px var(--mono); color: var(--ink-2); white-space: nowrap; }
 .rread b { font: 900 22px var(--display); color: var(--ink); text-transform: uppercase; letter-spacing: .02em; }
@@ -440,7 +451,7 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 /* Loss review */
 .lr-tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0 0 14px; }
 .lr-tiles button { cursor: pointer; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 8px; text-align: center; color: var(--ink-2); font: inherit; }
-.lr-tiles button:hover { border-color: var(--line-2); }
+@media (hover: hover) and (pointer: fine) { .lr-tiles button:hover { border-color: var(--line-2); } }
 .lr-tiles button[aria-pressed="true"] { border-color: var(--amber); background: var(--panel-2); }
 .lr-tiles b { display: block; font: 900 34px/1 var(--display); color: var(--ink); }
 .lr-tiles .late b { color: var(--loss); }
@@ -461,14 +472,14 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .lrc { border: 1px solid var(--line); border-radius: 8px; padding: 12px 12px 10px; background: var(--panel); position: relative; min-width: 0; }
 .lrc-h { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .lrc-h .lwk { font: 11px var(--mono); color: var(--ink-3); letter-spacing: .06em; text-transform: uppercase; }
-.lrc-h h4 { margin: 2px 0 0; font: 900 24px/1 var(--display); text-transform: uppercase; color: var(--ink); letter-spacing: .02em; }
-.lrc-h h4 small { font: 13px var(--mono); color: var(--ink-2); text-transform: none; margin: 0 4px; }
+.lrc-h h3 { margin: 2px 0 0; font: 900 24px/1 var(--display); text-transform: uppercase; color: var(--ink); letter-spacing: .02em; }
+.lrc-h h3 small { font: 13px var(--mono); color: var(--ink-2); text-transform: none; margin: 0 4px; }
 .lrc-h .miss { text-align: right; } .lrc-h .miss b { display: block; font: 900 30px/1 var(--display); color: var(--loss); } .lrc-h .miss span { font: 11px var(--mono); color: var(--ink-3); }
 .lrc .pk { display: inline-block; margin-top: 6px; font: 500 12px var(--mono); border: 1px solid rgba(255,176,32,.5); color: var(--amber); border-radius: 5px; padding: 2px 8px; }
 .lrc .pk em { font-style: normal; opacity: .7; margin-left: 6px; }
 .lrc .flow { position: relative; margin: 8px 0 4px; }
 .lrc .flow svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
-.lrc .flow text { font: 10.5px var(--mono); fill: var(--ink-3); }
+.lrc .flow text { font: 11px var(--mono); fill: var(--ink-3); }
 .lrc .f-up { fill: var(--win); opacity: .16; } .lrc .f-dn { fill: var(--loss); opacity: .16; }
 .lrc .f-line { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; }
 .lrc .f-zero { stroke: var(--ink-2); stroke-width: 1.25; stroke-dasharray: 4 3; }
@@ -486,7 +497,7 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .lrc .ftip[hidden] { display: none; }
 .lrc .note { font-size: 13px; color: var(--ink-2); margin: 2px 0 8px; }
 .lrc .tags { display: flex; flex-wrap: wrap; gap: 5px; }
-.lrc .tg { font: 500 10.5px var(--mono); border-radius: 4px; padding: 2px 8px; background: var(--panel-2); color: var(--ink); border: 1px solid var(--line-2); }
+.lrc .tg { font: 500 11px var(--mono); border-radius: 4px; padding: 2px 8px; background: var(--panel-2); color: var(--ink); border: 1px solid var(--line-2); }
 .lrc .tg.late, .lrc .tg.hook { border-color: rgba(255,176,32,.5); color: var(--amber); }
 .lrc .tg.far, .lrc .tg.to_lost { border-color: rgba(240,82,74,.5); color: var(--loss); }
 .lrc .tg.to_won { border-color: rgba(47,203,122,.5); color: var(--win); }
@@ -520,17 +531,17 @@ td .note { display: block; font: 10.5px var(--mono); color: var(--ink-3); }
 .calr b { color: var(--ink); font-weight: 500; text-align: right; }
 .misses { display: flex; gap: 8px; align-items: flex-end; height: 130px; position: relative; margin-top: 20px; }
 .misses .avg { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--ink-3); pointer-events: none; }
-.misses .avg span { position: absolute; left: 0; top: -16px; font: 10.5px var(--mono); color: var(--ink-3); }
+.mleg { display: flex; align-items: center; gap: 8px; margin-top: 8px; font: 11px var(--mono); color: var(--ink-3); } .mleg i { width: 18px; border-top: 1px dashed var(--ink-3); }
 .mb { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; gap: 3px; }
 .mb i { width: 100%; max-width: 34px; background: var(--ink-2); border-radius: 3px 3px 0 0; display: block; } .mb i.l { background: var(--loss); }
-.mb span { font: 10.5px var(--mono); color: var(--ink-3); } .mb b { font: 500 11px var(--mono); color: var(--ink); order: -1; }
+.mb span { font: 11px var(--mono); color: var(--ink-3); } .mb b { font: 500 11px var(--mono); color: var(--ink); order: -1; }
 
 /* Tables, picks status, explainer */
 .tbl { overflow-x: auto; }
 table.gridt th, table.gridt td { white-space: nowrap; }
 table.gridt td.r.pos { color: var(--win); } table.gridt td.r.neg { color: var(--loss); }
 table.gridt tr.bt td { opacity: .55; } table.gridt tr.tot td { border-top: 1px solid var(--line-2); font-weight: 600; }
-table.gridt .tag { font-size: 10.5px; }
+table.gridt .tag { font-size: 11px; }
 details.fold > summary { cursor: pointer; font: 600 13px var(--body); color: var(--ink); letter-spacing: .02em; padding: 2px 0; }
 details.fold > summary .k { margin-left: 10px; }
 details.fold[open] > summary { margin-bottom: 12px; }
@@ -564,6 +575,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
 <script>window.__introDone = new Promise(r => { window.__introEnd = r; });</script>
 </head>
 <body>
+<a class="skip" href="#board">Skip to this week's games</a>
 <div id="intro" aria-hidden="true"><video id="intro-v" muted playsinline preload="auto" aria-hidden="true"></video><button class="skip" id="intro-skip" type="button" aria-hidden="false">Skip</button></div>
 <nav><div class="wrap">
   <div class="brand">Bonsai <span>ATS</span></div>
@@ -571,7 +583,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
   <a class="livepill" id="livepill" href="#board"><i></i><span id="livetxt"></span></a>
   <div class="updated" id="updated"></div>
 </div></nav>
-<div class="tkr" id="tkr" role="marquee" aria-label="This week at a glance"><div class="lane" id="tklane"></div></div>
+<div class="tkr" id="tkr" role="region" aria-label="This week at a glance"><div class="lane" id="tklane"></div></div>
 
 <main class="wrap">
   <section class="hero" aria-label="Season scoreboard">
@@ -601,7 +613,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
 
   <section aria-label="Lock schedule">
     <div class="head"><h2>Lock schedule</h2><span class="k">Pick goes in 5 min before lock · lock is kickoff − 15 min</span></div>
-    <div class="rail" id="rail"></div>
+    <div class="rail" id="rail" tabindex="0" role="region" aria-label="Week schedule, scrolls sideways"></div>
   </section>
 
   <section id="board" aria-label="This week's games">
@@ -700,7 +712,7 @@ const TEAMS = {"ARI":["#97233F","#97233F"],"ATL":["#A71930","#A71930"],"BAL":["#
 // Logos are embedded at build time (design/logos, nflverse squared logos) so they show even where
 // the page cannot reach other sites. If one is missing, the abbreviation shows.
 const LOGOS = __LOGOS__;
-const logo = t => LOGOS[t] ? `<img class="logo" src="${LOGOS[t]}" alt="${esc(t)}" data-t="${esc(t)}">` : `<span class="logo-alt">${esc(t)}</span>`;
+const logo = t => LOGOS[t] ? `<img class="logo" width="128" height="128" src="${LOGOS[t]}" alt="${esc(t)}" data-t="${esc(t)}">` : `<span class="logo-alt">${esc(t)}</span>`;
 document.addEventListener("error", e => {
   const el = e.target;
   if (!(el.classList && el.classList.contains("logo"))) return;
@@ -788,7 +800,7 @@ whenVisible($(".board"), () => {
     setTimeout(() => { lamp.className = up ? "on" : "hot"; setTimeout(() => { lamp.className = ""; }, 4000); }, 500);
   }
 });
-$("#rate").innerHTML = (W / (W + L)).toFixed(3).replace(/^0/, "") + ` <small>±${(Math.sqrt((W/(W+L))*(L/(W+L))/(W+L))).toFixed(3).replace(/^0/,"")}</small>`;
+$("#rate").innerHTML = W + L === 0 ? "–" : (W / (W + L)).toFixed(3).replace(/^0/, "") + ` <small>±${(Math.sqrt((W/(W+L))*(L/(W+L))/(W+L))).toFixed(3).replace(/^0/,"")}</small>`;
 $("#graded").innerHTML = `${D.graded}<small>/${D.claim_at}</small>`;
 $("#gradedbar").style.width = Math.min(100, D.graded / D.claim_at * 100) + "%";
 $("#claim").textContent = D.claim_at;
@@ -1251,7 +1263,7 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
     for (const q of [15, 30, 45, 60]) o += `<line class="f-q" x1="${X(q)}" x2="${X(q)}" y1="${m.t}" y2="${m.t + ph}"/>`;
     ["Q1", "Q2", "Q3", "Q4"].forEach((q, i) => o += `<text x="${X(i * 15 + 7.5)}" y="${H - 5}" text-anchor="middle">${q}</text>`);
     if (T > 60) o += `<text x="${X((60 + T) / 2)}" y="${H - 5}" text-anchor="middle">OT</text>`;
-    o += `<text x="${X(57.5)}" y="${m.t - 2}" text-anchor="middle" style="font-size:10.5px">5:00</text>`;
+    o += `<text x="${X(57.5)}" y="${m.t - 2}" text-anchor="middle" style="font-size:11px">5:00</text>`;
     for (const v of [-YM, -YM / 2, YM / 2, YM]) o += `<text x="${m.l - 5}" y="${Y(v) + 3.5}" text-anchor="end">${s1(v)}</text>`;
     if (!x.flow) { o += `<line class="f-zero" x1="${m.l}" x2="${m.l + pw}" y1="${Y(0)}" y2="${Y(0)}"/><text x="${m.l + pw / 2}" y="${Y(0) - 8}" text-anchor="middle">Play-by-play not available yet</text>`; return { svg: o, H }; }
     const P = x.flow, pts = []; P.forEach((p, i) => { if (i) pts.push([X(p[0]), Y(P[i - 1][1])]); pts.push([X(p[0]), Y(p[1])]); });
@@ -1272,7 +1284,7 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
     const ot = OTH.map(([k, l]) => { const r = (x.others || {})[k]; return `<span>${l} ${r === "W" ? '<span class="ok">✓</span>' : r === "L" ? '<span class="no">✕</span>' : "—"}</span>`; }).join("");
     const tg = x.tags.map(t => `<span class="tg ${t}">${esc(TAG[t] || t)}${t === "to_lost" || t === "to_won" ? ` ${x.to[0]}–${x.to[1]}` : ""}</span>`).join("");
     const mv = x.drift == null ? "" : x.drift === 0 ? "no line move" : `market moved ${Math.abs(x.drift)} pt`;
-    return `<article class="lrc" data-id="${esc(x.id)}"><div class="lrc-h"><div><div class="lwk">Week ${x.week}${mv ? " · " + mv : ""}</div><h4>${esc(x.away)} ${x.as} <small>@</small> ${esc(x.home)} ${x.hs}</h4><span class="pk">${esc(x.pick)} ${s1(x.line)}${x.p != null ? `<em title="Model cover chance at pick time">${(x.p * 100).toFixed(1)}% to cover</em>` : ""}</span></div>
+    return `<article class="lrc" data-id="${esc(x.id)}"><div class="lrc-h"><div><div class="lwk">Week ${x.week}${mv ? " · " + mv : ""}</div><h3>${esc(x.away)} ${x.as} <small>@</small> ${esc(x.home)} ${x.hs}</h3><span class="pk">${esc(x.pick)} ${s1(x.line)}${x.p != null ? `<em title="Model cover chance at pick time">${(x.p * 100).toFixed(1)}% to cover</em>` : ""}</span></div>
       <div class="miss"><b>${s1(x.fin)}</b><span>vs the number</span></div></div><div class="flow" data-id="${esc(x.id)}"></div>${x.flow ? '<div class="lrc-bar"><button class="play" type="button" aria-label="Replay the game">▶ Replay</button><span class="rclock"></span></div>' : ""}
       <p class="note">${note(x)} Turnovers committed: ${esc(x.pick)} ${x.to[0]}, ${esc(x.opp)} ${x.to[1]}.</p>${tg ? `<div class="tags">${tg}</div>` : ""}<div class="oth"><span>Other models:</span>${ot}<span title="No result recorded for that model in this game">— = no pick recorded</span></div></article>`;
   }
@@ -1324,17 +1336,17 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
   const HIST = [[-40,1],[-38,2],[-36,4],[-34,5],[-32,14],[-30,10],[-28,18],[-26,37],[-24,46],[-22,62],[-20,83],[-18,102],[-16,133],[-14,177],[-12,176],[-10,214],[-8,238],[-6,232],[-4,265],[-2,266],[0,242],[2,268],[4,223],[6,219],[8,176],[10,161],[12,161],[14,121],[16,96],[18,88],[20,79],[22,55],[24,41],[26,40],[28,36],[30,18],[32,15],[34,10],[36,16],[38,9],[40,2],[42,8],[44,2],[46,1],[48,3]], HN = 4175, LN = 141, L50 = 71, L80 = 116, TYP = 9.9;
   const cur = T.find(r => r.week === D.week && r.actual == null) || T.find(r => r.actual == null), past = T.filter(r => r.actual != null);
   if (cur) {
-    const mt = cur.market_total, g = cur.guess, W = 720, H = 190, lo = mt - 32, hi = mt + 40, xx = v => 20 + (W - 40) * (v - lo) / (hi - lo), mx = Math.max(...HIST.map(h => h[1]));
+    const mt = cur.market_total, g = cur.guess, W = 720, cw = $("#tb-now").clientWidth || 720, k = Math.max(1, W / cw), fs = +(11 * k).toFixed(1), top = Math.ceil(fs * 2.2) + 6, base = top + 112, bar = base + 14, H = Math.ceil(bar + 8 + fs + 4), lo = mt - 32, hi = mt + 40, xx = v => 20 + (W - 40) * (v - lo) / (hi - lo), mx = Math.max(...HIST.map(h => h[1]));
     const bars = HIST.map(([k, v]) => { const a = mt + k; if (a < lo || a + 2 > hi) return ""; const mid = a + 1, o = mid >= cur.r50[0] && mid <= cur.r50[1] ? .9 : mid >= cur.r80[0] && mid <= cur.r80[1] ? .5 : .22;
-      return `<rect x="${(xx(a) + .5).toFixed(1)}" y="${(150 - 112 * v / mx).toFixed(1)}" width="${(xx(a + 2) - xx(a) - 1).toFixed(1)}" height="${(112 * v / mx).toFixed(1)}" fill="#3DA5FF" opacity="${o}" rx="1"/>`; }).join("");
-    const lab = (v, y = 188) => `<text x="${xx(v)}" y="${y}" text-anchor="middle" fill="#8993A3" font-size="10.5" font-family="IBM Plex Mono">${v}</text>`;
+      return `<rect x="${(xx(a) + .5).toFixed(1)}" y="${(base - 112 * v / mx).toFixed(1)}" width="${(xx(a + 2) - xx(a) - 1).toFixed(1)}" height="${(112 * v / mx).toFixed(1)}" fill="#3DA5FF" opacity="${o}" rx="1"/>`; }).join("");
+    const lab = (v, y = H - 4) => `<text x="${xx(v)}" y="${y}" text-anchor="middle" fill="#8993A3" font-size="${fs}" font-family="IBM Plex Mono">${v}</text>`;
     const ko = new Date(cur.kickoff_utc).toLocaleString("en-US", { weekday: "short", hour: "numeric", minute: "2-digit", timeZone: ET });
     $("#tb-now").innerHTML = `<div class="tbhero"><div class="lg">${logo(cur.away)}${logo(cur.home)}</div><div><div class="k">Week ${cur.week} · ${esc(cur.away)} @ ${esc(cur.home)} · ${esc(ko)} ET</div>
       <div class="tbm">Market total <b>${mt}</b> · half of games land in <b>${cur.r50[0]}–${cur.r50[1]}</b> · 8 in 10 in <b>${cur.r80[0]}–${cur.r80[1]}</b></div></div><div class="tbg" aria-label="Guess ${g}">${g}</div></div>
       <div style="margin-top:12px"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Distribution of final total points for this game: guess ${g}, half of games between ${cur.r50[0]} and ${cur.r50[1]}, 8 in 10 between ${cur.r80[0]} and ${cur.r80[1]}">
-      <rect x="${xx(cur.r80[0])}" y="164" width="${xx(cur.r80[1]) - xx(cur.r80[0])}" height="6" rx="3" fill="rgba(61,165,255,.3)"/><rect x="${xx(cur.r50[0])}" y="164" width="${xx(cur.r50[1]) - xx(cur.r50[0])}" height="6" rx="3" fill="#3DA5FF"/>
-      ${bars}<line x1="20" x2="${W - 20}" y1="150.5" y2="150.5" stroke="rgba(140,170,255,.24)"/><line x1="${xx(g)}" x2="${xx(g)}" y1="4" y2="172" stroke="#FFB020" stroke-width="2"/>
-      <text x="${xx(g) + 6}" y="12" fill="#FFB020" font-size="12" font-family="IBM Plex Mono" font-weight="500">GUESS ${g}</text><text x="${xx(g) + 6}" y="26" fill="#8993A3" font-size="10.5" font-family="IBM Plex Mono">market ${mt}</text>
+      <rect x="${xx(cur.r80[0])}" y="${bar}" width="${xx(cur.r80[1]) - xx(cur.r80[0])}" height="6" rx="3" fill="rgba(61,165,255,.3)"/><rect x="${xx(cur.r50[0])}" y="${bar}" width="${xx(cur.r50[1]) - xx(cur.r50[0])}" height="6" rx="3" fill="#3DA5FF"/>
+      ${bars}<line x1="20" x2="${W - 20}" y1="${base + .5}" y2="${base + .5}" stroke="rgba(140,170,255,.24)"/><line x1="${xx(g)}" x2="${xx(g)}" y1="4" y2="${bar + 8}" stroke="#FFB020" stroke-width="2"/>
+      <text x="${xx(g) + 6}" y="${4 + fs}" fill="#FFB020" font-size="${fs}" font-family="IBM Plex Mono" font-weight="500">GUESS ${g}</text><text x="${xx(g) + 6}" y="${6 + fs * 2}" fill="#8993A3" font-size="${fs}" font-family="IBM Plex Mono">market ${mt}</text>
       ${lab(cur.r50[0])}${lab(cur.r50[1])}${lab(cur.r80[0])}${lab(cur.r80[1])}</svg></div>
       <div class="legend"><span><i style="background:#3DA5FF"></i>central 50%</span><span><i style="background:rgba(61,165,255,.5)"></i>central 80%</span><span><i style="background:rgba(61,165,255,.22)"></i>tails</span></div>
       <p class="note2">The shape is final total minus market total for ${HN.toLocaleString("en-US")} regular-season games from 2010–2025, shifted onto this week's ${mt}. The guess is the market total rounded down at .5. Nothing we tried beat the market total out of sample, so there is no separate model marker.</p>`;
@@ -1350,7 +1362,7 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
     <div class="calr"><span>2018–25</span><div class="calt"><u style="left:${nom}%"></u><i class="h" style="width:${c / d * 100}%"></i></div><b>${Math.round(c / d * 100)}%</b></div></div>`;
   $("#tb-cal").innerHTML = cal("50%", 50, in50, past.length, L50, LN) + cal("80%", 80, in80, past.length, L80, LN) + `<p class="note2">${past.length} weeks is too few to judge. The 2018–25 row is the ${LN} last games of those seasons.</p>`;
   const avg = past.length ? past.reduce((a, t) => a + t.miss, 0) / past.length : 0, top = Math.max(25, ...past.map(t => t.miss));
-  $("#tb-miss").innerHTML = past.length ? `<div class="misses"><div class="avg" style="bottom:${TYP / top * 100}%"><span>${TYP} typical</span></div>${past.map(t => `<div class="mb"><i class="${t.miss > TYP ? "l" : ""}" style="height:${t.miss / top * 100}%"></i><span>W${t.week}</span><b>${t.miss}</b></div>`).join("")}</div>
+  $("#tb-miss").innerHTML = past.length ? `<div class="misses"><div class="avg" style="bottom:${TYP / top * 100}%"></div>${past.map(t => `<div class="mb"><i class="${t.miss > TYP ? "l" : ""}" style="height:${t.miss / top * 100}%"></i><span>W${t.week}</span><b>${t.miss}</b></div>`).join("")}</div><div class="mleg"><i></i>${TYP} typical miss</div>
     <p class="note2">Points the final total missed our guess by. 2026 average: <b>${avg.toFixed(1)}</b>. About ${TYP} is typical, so the tiebreaker is mostly luck. Enter the guess as late as the pool allows, using the market total at that time.</p>` : "";
   $("#tb-tab").innerHTML = '<thead><tr><th>Week</th><th>Game</th><th class="r">Total</th><th class="r">Guess</th><th class="r">Final</th><th class="r">Miss</th></tr></thead><tbody>' +
     (D.tiebreak || []).map(r => `<tr><td>${r.week}</td><td>${esc(r.away)} @ ${esc(r.home)}</td><td class="r">${r.market_total ?? "—"}</td><td class="r">${r.guess ?? "—"}</td><td class="r">${r.actual ?? "—"}</td><td class="r">${r.miss ?? "—"}</td></tr>`).join("") + "</tbody>";
