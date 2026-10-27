@@ -919,7 +919,7 @@ function booksHtml(g, det) {
   const vals = bk.map(b => b.spread).concat([g.line]);
   const lo = Math.min(...vals) - .5, hi = Math.max(...vals) + .5, X = v => (v - lo) / (hi - lo) * 100;
   const ref = det.ref_book;
-  return `<div><div class="mini-h"><span class="k">Books ${g.status === "official" ? "at pick time" : "in the latest capture"} vs pool line (${esc(g.home)})</span><span class="k">median ${sp(det.lock.median)}</span></div>
+  return `<div><div class="mini-h"><span class="k">Books ${g.status === "final" ? "at pick time" : "in the latest capture"} vs pool line (${esc(g.home)})</span><span class="k">median ${sp(det.lock.median)}</span></div>
   <div class="books">${bk.map(b => `<div class="b${b.book === ref ? " ref" : ""}"><span>${esc(b.book)}</span>
     <span class="track"><u style="left:${X(g.line)}%"></u><i style="left:${X(b.spread)}%"></i></span><span class="s">${sp(b.spread)}</span></div>`).join("")}</div></div>`;
 }
@@ -973,14 +973,16 @@ function card(g) {
   const p = g.pick_p || .5, scaleLo = .45, scaleHi = .60;
   const fillW = Math.max(0, Math.min(1, (p - scaleLo) / (scaleHi - scaleLo))) * 100;
   const evenX = (.5 - scaleLo) / (scaleHi - scaleLo) * 100;
+  const nopick = g.status === "started_no_final_pick";   // kickoff passed with no pick recorded; picks are never added afterwards
   const status = g.res ? `<span class="tag final-${g.res === "W" ? "w" : "l"}">Final · ${esc(g.res)}</span>`
-    : `<span class="tag" title="${g.status === "official" ? "The official pick is recorded and final" : "Based on the latest market snapshot; it can still change until the pick is locked"}">${g.status === "official" ? "Locked" : "Provisional"}</span>`;
+    : nopick ? `<span class="tag" title="No pick was recorded before kickoff">No pick</span>`
+    : `<span class="tag" title="${g.status === "final" ? "The official pick is recorded and final" : "Based on the latest market snapshot; it can still change until the pick is locked"}">${g.status === "final" ? "Locked" : "Provisional"}</span>`;
   const team = t => `<div class="team${g.pick === t ? " pick" : ""}" style="--tc:${tc(t)[0]};--tp:${tc(t)[1]}">${logo(t)}<b>${esc(t)}</b><span>${sp(teamLine(g, t, g.line))}</span></div>`;
   const lv = LIVE[g.id], lcls = lv ? (lv.state === "in" ? " is-live" : " is-final") : "";
   return `<details class="game${lcls}" data-id="${esc(g.id)}" style="--tp:${tc(g.pick)[1]}">
   <div class="stripe" aria-hidden="true"><i style="background:${tc(g.away)[1]}"></i><i style="background:${tc(g.home)[1]}"></i></div>
   <summary>
-    <div class="gtop"><span class="k">${esc(g.ko)} ET</span><span class="gtags">${moved ? `<span class="tag move" title="The betting market at pick time versus the pool line, in points">Market ${esc(g.sig_label)}</span>` : `<span class="tag" title="The betting market matches the pool line">Market on pool line</span>`}${status}</span></div>
+    <div class="gtop"><span class="k">${esc(g.ko)} ET</span><span class="gtags">${nopick ? "" : moved ? `<span class="tag move" title="The betting market at pick time versus the pool line, in points">Market ${esc(g.sig_label)}</span>` : `<span class="tag" title="The betting market matches the pool line">Market on pool line</span>`}${status}</span></div>
     ${flipHtml(g)}${liveHtml(g)}
     <div class="match">${team(g.away)}<span class="at">at</span>${team(g.home)}</div>
     <div class="lines">
@@ -990,12 +992,12 @@ function card(g) {
     </div>
     ${sparkHtml(g, det)}
     ${modelsHtml(g)}
-    <div class="cover">
+    ${nopick ? `<div class="cover"><div class="row"><span class="k">No pick was recorded before kickoff</span></div></div>` : `<div class="cover">
       <div class="row"><span class="k">${esc(g.pick)} cover chance</span><span class="pct">${pct(p)}</span></div>
       <div class="gauge"><i style="width:${fillW}%"></i><u style="left:${evenX}%"></u></div>
       <div class="gauge-scale"><span>45%</span><span>50% coin flip</span><span>60%</span></div>
-    </div>
-    <div class="more"><span>Pick at ${esc(g.pick_at)} ET</span><span>Details <span class="arrow">▾</span></span></div>
+    </div>`}
+    <div class="more"><span>${nopick ? "Missed lock" : `Pick at ${esc(g.pick_at)} ET`}</span><span>Details <span class="arrow">▾</span></span></div>
   </summary>
   <div class="detail">
     ${det.why ? `<ul class="why">${det.why.map(w => `<li>${esc(w)}</li>`).join("")}</ul>` : ""}
@@ -1316,7 +1318,7 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
 
 /* Picks locked vs provisional */
 (function () {
-  const g = D.games, lock = g.filter(x => x.status === "official").length, prov = g.filter(x => x.status === "provisional").length, other = g.length - lock - prov;
+  const g = D.games, lock = g.filter(x => x.status === "final").length, prov = g.filter(x => x.status === "provisional").length, other = g.length - lock - prov;
   $("#pstat").innerHTML = `Week ${D.week} picks: <b>${lock} of ${g.length} locked</b>${prov ? ` · <b>${prov} provisional</b> (based on the latest market snapshot; can still change)` : ""}${other ? ` · ${other} with no final pick` : ""}`;
 })();
 
