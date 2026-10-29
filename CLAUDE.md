@@ -21,6 +21,7 @@ Against-the-spread pick engine for the CBS "Bonsai Pool 2026". The goal is to wi
 - **Market input:** the Pinnacle line from the pick-time capture. One retry 60 s later if Pinnacle is missing; then Pinnacle from OddsPapi (`MARKET_ODDSPAPI`), then from OddsLink (`MARKET_ODDSLINK`) (owner decisions 2026-10-18/19, no end date: `final.ODDSPAPI_FALLBACK_UNTIL`); then the median of all books, flagged `MARKET_MEDIAN_FALLBACK`. `FEW_BOOKS` marks any pick with fewer than 5 books, Pinnacle or median.
 - **Record:** `data/predictions/live_record.md`, graded against the pool line. No skill claim before 256 graded games (pre-registered).
 - Projection models (team-only v1, player v3, hybrid, key-number) are tracked for comparison only. Only the official pick counts.
+- **Task list:** keep open work in `TASKS.md` (Done / Next / Blocked, max 15 lines, no secrets). Update it before `/clear`; read it first in a new session instead of replaying old chat.
 
 ## Weekly operations
 
