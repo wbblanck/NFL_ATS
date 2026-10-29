@@ -48,6 +48,6 @@ Against-the-spread pick engine for the CBS "Bonsai Pool 2026". The goal is to wi
 
 ## Branches
 
-- `claude/nfl-ats-league-engine-q5vkbf`: research (FTN shadow model, bettable record, skip filters). Unmerged. Holds two one-off probe workflows (`parlay-pinnacle-probe.yml`, `openmarkets-auth-probe.yml`) to remove before any merge.
-- `claude/cbs-lines-w6`: 1 commit not on `main`. Status unreviewed.
-- `claude/nfl-alt-markets`: 229 commits not on `main`. Status unreviewed.
+- `claude/nfl-ats-league-engine-q5vkbf`: research (FTN shadow model, bettable record, skip filters). Unmerged, and conflicts with `main` (its Pinnacle retry is already on `main`). Remaining live-pipeline changes (strength tag in ntfy alerts, bettable/strength dashboard sections) are on hold by owner decision 2026-10-29. Holds two one-off probe workflows (`parlay-pinnacle-probe.yml`, `openmarkets-auth-probe.yml`) to remove before any merge.
+- `claude/nfl-alt-markets`: merged into `main` 2026-10-29 (alt-market research only; no pipeline changes).
+- `claude/cbs-lines-w6`: deleted 2026-10-29 (its week 6 report was superseded on `main`).

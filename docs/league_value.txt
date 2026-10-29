@@ -1,0 +1,18 @@
+272 games, 18 weeks, 43 opponents; season prizes (1300.0, 780.0, 520.0)
+
+Independent coin-flip field
+ p(us)  weekly $  P(1st)  P(2nd)  P(3rd)  season $  total $  net of $100
+ 0.50       41   0.023   0.023   0.022        60     101       +1
+ 0.52       56   0.081   0.061   0.054       181     237     +137
+ 0.54       77   0.217   0.114   0.081       413     490     +390
+ 0.55       88   0.315   0.134   0.090       561     649     +549
+
+Field skill 51% (others also use some information)
+ 0.52       48   0.045   0.038   0.036       108     156      +56
+ 0.54       65   0.139   0.087   0.069       285     350     +250
+
+Herding field (h = 0.7): edge p on 75% of games, none on 25%
+ popular    p=0.50  weekly $  52  P(1st) 0.032  P(top3) 0.083  total $  128
+ popular    p=0.54  weekly $  84  P(1st) 0.169  P(top3) 0.333  total $  414
+ contrarian p=0.50  weekly $  91  P(1st) 0.055  P(top3) 0.115  total $  202
+ contrarian p=0.54  weekly $ 132  P(1st) 0.201  P(top3) 0.356  total $  497
