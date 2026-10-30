@@ -1382,6 +1382,17 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
 })();
 
 $("#foot").textContent = `Week ${D.week}, ${D.season}. Data as of ${D.updated}.`;
+
+/* In-page links: the Streamlit viewer shows this page in a srcdoc iframe, where a plain #hash link loads about:blank#hash
+   and blanks the page. Scroll to the target ourselves and leave the URL alone. */
+document.addEventListener("click", e => {
+  const a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
+  const id = decodeURIComponent(a.getAttribute("href").slice(1)), t = id && document.getElementById(id); if (!t) return;
+  e.preventDefault();
+  t.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+  if (t.tabIndex < 0) t.tabIndex = -1;
+  t.focus({ preventScroll: true });
+});
 </script>
 <script>
 /* Intro: design/intro.mp4 (5 s, no sound, 720p), embedded as base64 and played over the page on load. It is a
