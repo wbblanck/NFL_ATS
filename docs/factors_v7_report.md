@@ -1,6 +1,6 @@
 # Team-stat factors model, 10k simulations (`proj-factors-v7`): Report (failed; not tracked)
 
-- **Rules:** `docs/factors_v7_preregistration.md` (commit `903baf0`), committed before any feature or result.
+- **Rules:** `docs/factors_v7_preregistration.md` (commit `08f8472`), committed before any feature or result.
 - **Code:** `src/engine/backtest/factors_v7.py`.
 - **Numbers:** `data/backtests/factors_v7.json`. Regenerate with
   `python -m engine.backtest.factors_v7 --cache <dir>`. The cache holds `pbp_<season>.parquet` for 2005–2026.
