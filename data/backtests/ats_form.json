@@ -1,0 +1,97 @@
+{
+ "games": 3745,
+ "fit_games": 2237,
+ "holdout_games": 1508,
+ "tests": {
+  "form_side": {
+   "all": {
+    "n": 2162,
+    "won": 1032,
+    "expected": 1086.9,
+    "z": -2.383,
+    "p": 0.0171498185040626
+   },
+   "2008-2016": {
+    "n": 1311,
+    "won": 629,
+    "expected": 654.5,
+    "z": -1.42,
+    "p": 0.15555770470835276
+   },
+   "holdout": {
+    "n": 851,
+    "won": 403,
+    "expected": 432.4,
+    "z": -2.039,
+    "p": 0.04143102708000532
+   },
+   "holm": {
+    "p": 0.0171498185040626,
+    "threshold": 0.016666666666666666,
+    "pass": false
+   }
+  },
+  "form_strong": {
+   "all": {
+    "n": 1096,
+    "won": 519,
+    "expected": 550.2,
+    "z": -1.9,
+    "p": 0.057404840288289634
+   },
+   "2008-2016": {
+    "n": 682,
+    "won": 330,
+    "expected": 341.0,
+    "z": -0.847,
+    "p": 0.3967428596005619
+   },
+   "holdout": {
+    "n": 414,
+    "won": 189,
+    "expected": 209.2,
+    "z": -2.009,
+    "p": 0.04455807097338405
+   },
+   "holm": {
+    "p": 0.057404840288289634,
+    "threshold": 0.025,
+    "pass": false
+   }
+  },
+  "form_variant": {
+   "beta": -0.019,
+   "holdout_differing": 66,
+   "variant_won": 38,
+   "official_won": 28,
+   "z": 1.231,
+   "p": 0.2183546905659018,
+   "logloss_official": 0.68621,
+   "logloss_variant": 0.68459,
+   "official_record_holdout": "808/1508",
+   "variant_record_holdout": "818/1508",
+   "holm": {
+    "p": 0.2183546905659018,
+    "threshold": 0.05,
+    "pass": false
+   }
+  }
+ },
+ "forward_2026": {
+  "graded": 119,
+  "form_side_games": 49,
+  "hot_team_won": 22,
+  "picked": 68,
+  "official_won": 35,
+  "variant_flips": [
+   {
+    "game_id": "2026_04_NE_BUF",
+    "D": 2,
+    "p_home": 0.5055,
+    "official": "home",
+    "official_right": false
+   }
+  ],
+  "variant_won": 36
+ }
+}
