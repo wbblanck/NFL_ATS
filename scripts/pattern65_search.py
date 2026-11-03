@@ -178,6 +178,19 @@ def load_2025() -> pd.DataFrame:
     return d.reset_index(drop=True)
 
 
+def load_gap2022() -> pd.DataFrame:
+    """2022-24 model picks graded vs the bet365 open (AusSportsBetting nfl.xlsx, personal use, gitignored).
+    Needs data/backtests/gap2022_games.csv from `engine.backtest.gap2022.run()`."""
+    d = pd.read_csv(ROOT / "data/backtests/gap2022_games.csv")
+    d["w"] = d.win.astype(int)
+    d["line"] = d.b_open
+    d["mkt"] = d.close
+    d["pick"] = np.where(d.p_home > 0.5, "home", "away")
+    d["home_team"] = d.game_id.str.split("_").str[3]
+    d["away_team"] = d.game_id.str.split("_").str[2]
+    return d.reset_index(drop=True)
+
+
 def load_live(g: pd.DataFrame) -> pd.DataFrame:
     p = pd.read_csv(ROOT / "data/predictions/predictions.csv")
     p = p.merge(g[["game_id", "home_score", "away_score"]], on="game_id")
@@ -229,7 +242,7 @@ def main(games_csv: str, out_json: str) -> None:
                "selected_top": r["hits"][:15]}
         res["test_backtest_other_half"] = {k: v for k, v in apply_frozen(sel, fb[tmask].reset_index(drop=True), y[tmask]).items() if k != "per"}
         # 2025 CBS open + 2026 live (available only for fully-covered feature sets)
-        for nm, loader in (("test_2025_cbs", lambda: load_2025()), ("test_2026_live", lambda: load_live(g))):
+        for nm, loader in (("test_2022_24_bet365", lambda: load_gap2022()), ("test_2025_cbs", lambda: load_2025()), ("test_2026_live", lambda: load_live(g))):
             t = loader()
             ft = add_features(t, g)
             sel_t = [s for s in sel if all(part.split("=", 1)[0] in ft.columns for part in s.split(" & "))]
@@ -241,6 +254,48 @@ def main(games_csv: str, out_json: str) -> None:
             per = apply_frozen(sel, fl, y[tmask])["per"]
             res["per_subset_test"] = [{"subset": a, "test_n": b, "test_w": c} for a, b, c in per if b >= 15][:40]
         out[f"A_disc_{name}"] = res
+
+
+    # ---- A2. named candidates across every window, plus the move-size table
+    cands = {
+        "move>=2 (all)": "move=with2+", "wk10-14 & move>=2": "week=w10-14 & move=with2+",
+        "wk10-14 & model conf 8+": "week=w10-14 & conf=c8+", "half-pt, outdoor, conf 8+": "keyline=half-pt & roof=outdoor & conf=c8+",
+        "half-pt, outdoor, move>=2": "keyline=half-pt & roof=outdoor & move=with2+",
+        "fav on exactly 3, small move": "role=fav & keyline=exactly 3 & move=with<2",
+        "div, outdoor, move>=2": "div=div & roof=outdoor & move=with2+", "spread<=3": "spread=<=3",
+        "spread<=3 & outdoor": "spread=<=3 & roof=outdoor",
+    }
+    gp, c25, lv0 = load_gap2022(), load_2025(), load_live(g)
+    sets = {"2007-14": (fb, y, (bt.season <= 2014).to_numpy()), "2015-21": (fb, y, (bt.season >= 2015).to_numpy()),
+            "2022-24": (add_features(gp, g), gp.w.to_numpy(), None), "2025": (add_features(c25, g), c25.w.to_numpy(), None),
+            "2026": (add_features(lv0, g), lv0.w.to_numpy(), None)}
+    out["candidates"] = {}
+    for name, sub in cands.items():
+        out["candidates"][name] = {}
+        for wn, (ff, yy, mk) in sets.items():
+            m = np.ones(len(ff), bool) if mk is None else mk.copy()
+            for part in sub.split(" & "):
+                c, v = part.split("=", 1)
+                m &= ff[c].astype(str).to_numpy() == v
+            out["candidates"][name][wn] = [int(yy[m].sum()), int(m.sum())]
+    out["move_table"] = {}
+    for wn, d in (("2007-21", bt), ("2022-24", gp), ("2025", c25), ("2026", lv0)):
+        tw = np.where(d.pick.eq("home"), -(d.mkt - d.line), d.mkt - d.line)
+        out["move_table"][wn] = {lab: [int(d.w[(tw >= lo) & (tw < hi)].sum()), int(((tw >= lo) & (tw < hi)).sum())]
+                                 for lab, lo, hi in (("<0.5", -99, 0.5), ("0.5-1.5", 0.5, 1.5), ("1.5-2.5", 1.5, 2.5), ("2.5+", 2.5, 99), ("2+", 2, 99))}
+
+    # ---- A3. subsets that reach 65% in BOTH halves of 2007-21 (>=15 picks each): real vs shuffled labels
+    Mb, _lb = build_subsets(fb, feats, 3, 30)
+    e = (bt.season <= 2014).to_numpy().astype(np.float32)
+    ne, nl = Mb.T @ e, Mb.T @ (1 - e)
+    okb = (ne >= 15) & (nl >= 15)
+
+    def both(yv):
+        yv = yv.astype(np.float32)
+        return int((((Mb.T @ (yv * e)) / ne >= 0.65) & ((Mb.T @ (yv * (1 - e))) / nl >= 0.65) & okb).sum())
+    nb = [both(RNG.permutation(y)) for _ in range(300)]
+    out["both_halves"] = {"real": both(y), "null_mean": float(np.mean(nb)), "null_p95": float(np.percentile(nb, 95)),
+                          "p_null_ge_real": float(np.mean(np.array(nb) >= both(y)))}
 
     # ---- B. live 2026 picks (pool line), sliced
     lv = load_live(g)
