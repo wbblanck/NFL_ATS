@@ -696,6 +696,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
     <p><b>Historical win rates</b> are 2007–2021. The 2025 holdout was weaker, at 52% on 1+ point moves. No claim of skill is made before 256 graded games.</p>
     <p><b>Projections</b> are tracked for comparison and do not make the pick. The player projection adjusts team scoring strength for the starting quarterback, injured starters weighted by snaps, rest, travel and roof. Against the market it was a coin flip in 2022–2025 testing. When injury statuses were not yet published, injuries are not reflected and the pick is not counted in the record.</p>
     <p><b>Hybrid (tracked)</b> keeps the pick when the market moved 1+ point off the pool line and uses the team-only projection when it moved ½ point or not at all. It is followed for comparison only and never makes the pick.</p>
+    <p><b>Key-number (tracked)</b> reads the same market move but weights how often games land on 3, 7 and other common margins. It needs a market line, so it has no pick when there is none. It is followed for comparison only and never makes the pick.</p>
     <p><b>The season path</b> counts covers minus misses. Its first two weeks are backtest replays; the chips quote live games only.</p>
   </details>
 
@@ -914,11 +915,12 @@ function sparkHtml(g, det) {
 function modelsHtml(g) {
   const items = [["Official", g.pick, null]];
   if (g.hy) items.push(["Hybrid", g.hy, g.hres]);
+  if (g.kn) items.push(["Key-number", g.kn, g.kres]);
   if (g.ppick) items.push([g.pver === "proj-players-v3" ? "Player" : "Team-only", g.ppick, g.pres, (g.pflags || "").includes("INJ_STATUS_MISSING")]);
   const diff = items.slice(1).some(i => i[1] !== g.pick);
   return `<div class="mrow${diff ? " diff" : ""}"><span class="k">Model picks</span>${items.map(([l, t, r, pend], i) => `<span class="mp${i === 0 ? " off" : t !== g.pick ? " dif" : ""}"${pend ? ' title="Injury statuses were not published at pick time, so this pick is not counted in the record"' : ""}><em>${l}${pend ? "*" : ""}</em>${logo(t)}<b>${esc(t)}</b>${i && t !== g.pick ? "<u>≠</u>" : ""}${r === "W" ? ' <span class="ok">✓</span>' : r === "L" ? ' <span class="no">✕</span>' : ""}</span>`).join("")}${items.some(i => i[3]) ? '<span class="k" style="flex:1 1 100%">* injury statuses not yet published; not counted in the record</span>' : ""}</div>`;
 }
-const disagrees = g => (g.hy && g.hy !== g.pick) || (g.ppick && g.ppick !== g.pick);
+const disagrees = g => (g.hy && g.hy !== g.pick) || (g.kn && g.kn !== g.pick) || (g.ppick && g.ppick !== g.pick);
 function booksHtml(g, det) {
   const bk = det && det.lock && det.lock.books;
   if (!bk || !bk.length) return "";

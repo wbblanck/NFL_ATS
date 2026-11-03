@@ -115,7 +115,8 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                       "pick_at": _clock(pick_at), "ph": r.get("proj_home"), "pa": r.get("proj_away"),
                       "ppick": r.get("proj_pick"), "pver": r.get("proj_version"), "pflags": r.get("proj_flags"),
                       "hs": r.get("home_score"), "as": r.get("away_score"), "res": g.get("result"), "pres": pres,
-                      "xp": r.get("proj_why"), "hy": hy, "hysrc": hysrc, "hres": _result_char(g.get("hybrid"))})
+                      "xp": r.get("proj_why"), "hy": hy, "hysrc": hysrc, "hres": _result_char(g.get("hybrid")),
+                      "kn": r.get("keynum_pick"), "kres": _result_char(g.get("shadow_result"))})
     # Week 6 games a tracked model has no live pick for are filled from the backtest (engine.picks.curve, 'bt'), so the
     # standings compare every model on the same games, as the Season Drive chips do. The official pick is never filled.
     fill = {}
@@ -1186,6 +1187,12 @@ function hyb(x){
   if(!d)return `<div class="proj hy"><span class="lab">Hybrid (tracked, not the pick)</span><span class="mono">${esc(x.hy)}</span><span>same pick</span>${r}</div>`;
   return `<div class="proj hy hy-d"><span class="lab">Hybrid (tracked, not the pick)</span><span class="mono"><b>${esc(x.hy)}</b></span><span class="diff">differs</span><span>${why}</span>${r}</div>`;
 }
+function keyn(x){
+  if(!x.kn)return '';
+  const d=!!x.pick&&x.kn!==x.pick;
+  const r=x.kres==='W'?'<span class="ok">✓</span>':x.kres==='L'?'<span class="no">✕</span>':'';
+  return `<div class="proj hy${d?' hy-d':''}"><span class="lab">Key-number (tracked, not the pick)</span><span class="mono">${d?'<b>'+esc(x.kn)+'</b>':esc(x.kn)}</span>${d?'<span class="diff">differs</span>':'<span>same pick</span>'}${r}</div>`;
+}
 function stateBadge(x){
   if(x.res==='W')return '<span class="pill won">✓ Won</span>';
   if(x.res==='L')return '<span class="pill lost">✕ Lost</span>';
@@ -1470,7 +1477,7 @@ function epaPanel(x){
 function card(x){
   const pa=x.pick===x.away,ph=x.pick===x.home;
   const body=`<div class="card-h"><span class="ko">${esc(x.ko)}</span>${stateBadge(x)}</div>
-    <div class="teams">${team(x,'a',pa)}${team(x,'h',ph)}</div>${(D.flips||{})[x.id]?`<div class="flipnote"><b>↺ Flipped</b> from ${esc(D.flips[x.id].was)} · ${flipWhy(x,D.flips[x.id])}</div>`:''}${move(x)}${hurdle(x)}${meter(x)}${proj(x)}${hyb(x)}${xDrivers(x)}${xExpand(x)}${foot(x)}<button class="more" data-id="${esc(x.id)}">Book-by-book lines ›</button>`;
+    <div class="teams">${team(x,'a',pa)}${team(x,'h',ph)}</div>${(D.flips||{})[x.id]?`<div class="flipnote"><b>↺ Flipped</b> from ${esc(D.flips[x.id].was)} · ${flipWhy(x,D.flips[x.id])}</div>`:''}${move(x)}${hurdle(x)}${meter(x)}${proj(x)}${hyb(x)}${keyn(x)}${xDrivers(x)}${xExpand(x)}${foot(x)}<button class="more" data-id="${esc(x.id)}">Book-by-book lines ›</button>`;
   return `<article class="card gr${x.res?' r-'+x.res:''}" data-id="${esc(x.id)}"${(D.flips||{})[x.id]?' data-flip="1"':''}><details class="rowd"><summary class="gr-s">${row(x)}</summary><div class="gr-d">${body}</div></details></article>`;
 }
 // One line per game: the pick and its pool line, the opponent, score or kickoff, result, cover chance and one flag.

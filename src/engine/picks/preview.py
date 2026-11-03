@@ -12,6 +12,7 @@ import polars as pl
 
 from engine import config
 from engine.data import league_lines, store
+from engine.models.margin_dist import MarginDist
 from engine.picks import final
 from engine.picks.grading import is_half_point
 
@@ -92,6 +93,7 @@ def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None =
     mk = latest_market(set(wk["game_id"].to_list()))
     dist, _ = final.fit_dist(sched, now)
     tdist = final.fit_total_dist(sched, now)
+    shadow = None if dist is None else MarginDist(kind=final.SHADOW).fit(dist.c, dist.m)
     projs = _projections(proj_games, season, week, wk.to_dicts(), v3, names)
     rec_v1 = {r["game_id"]: r.get("proj_pick") or None for r in store.read_rows(final.projections_path())
               if (r.get("model_version") or final.PROJ_VERSION) == final.PROJ_VERSION}
@@ -116,6 +118,7 @@ def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None =
             f = finals[gid]
             if gid in rec_v1:
                 base["v1_pick"] = rec_v1[gid]          # the v1 pick recorded at lock
+            base["keynum_pick"] = f.get("shadow_pick_keynum") or None   # the key-number pick recorded at lock
             out.append({**base, "status": "final", "market": f["market_at_lock"], "drift": f["drift"],
                         "p_home": f["p_home_cover"], "p_away": f["p_away_cover"], "pick": f["pick_team"],
                         "flags": f["flags"], "market_time": f["created_at"]})
@@ -132,6 +135,10 @@ def build(sched: pl.DataFrame, season: int, week: int, now: dt.datetime | None =
         d = final.decide(ll.get(gid), mk_in, None, prob)
         flags = [x for x in d["flags"].split(";") if x] + ["PROVISIONAL"]
         pick = None if d["pick"] is None else (g["home_team"] if d["pick"] == "home" else g["away_team"])
+        # Key-number (tracked, never the pick): same rule as final.py's shadow column, on the provisional market.
+        line_used = d.get("line_used")
+        if shadow is not None and mk_in is not None and line_used is not None and is_half_point(float(line_used)):
+            base["keynum_pick"] = g["home_team"] if shadow.cover_probs(mk_in, line_used)[0] > 0.5 else g["away_team"]
         if m and m["pinnacle"] is None:
             flags.append("MARKET_MEDIAN_FALLBACK")
         out.append({**base, "status": "provisional", "market": mk_in,
