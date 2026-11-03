@@ -125,6 +125,14 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
         h = live["hybrid"]
         models.append({"label": "Hybrid (tracked)", "W": h["W"], "L": h["L"],
                        "note": f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"})
+    k = live.get("shadow_keynum") or {}
+    if k.get("W", 0) + k.get("L", 0):
+        # Tracked like the others, graded on the games it picked: it makes no pick without a market line.
+        skipped = live.get("N", 0) - k["W"] - k["L"]
+        models.append({"label": "Key-number (tracked)", "W": k["W"], "L": k["L"],
+                       "note": f"no pick on {skipped} games (no market line)" if skipped > 0 else
+                               f"differs {k['disagreements']}: key-number right {k['keynum_wins_in_disagreements']}, "
+                               f"pick right {k['disagreements'] - k['keynum_wins_in_disagreements']}"})
     nxt = min(upcoming) if upcoming else None
     from engine.picks.season import MODELS as _SM
     data = json.dumps({"flips": flips or {}, "slate": slate or {}, "loss_review": loss_review or {}, "tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
