@@ -1,7 +1,9 @@
 """Season path for the dashboard: cumulative (wins - losses) game by game against the pool line for the official
 pick, the four tracked models (hybrid, team-only v1, player v3, key-number variant) and two no-skill baselines (always the pool-line favorite, always the home team), with the 95% band
-a coin-flipper lands in. Live games use the picks recorded at lock; games without a live pick (2026 weeks 1-2 and
-ATL@GB) use the backtest in data/backtests/early2026.json and are marked."""
+a coin-flipper lands in. Live games use the picks recorded at lock; 2026 weeks 1-2 use the backtest in
+data/backtests/early2026.json and are marked. In week 6, where a tracked model has no live pick (ARI@LA had no pick row,
+nine games had no market line at lock), the hypothetical backtest in data/backtests/week6_fill.json fills it in; each
+game lists the filled models under 'bt'. None of this touches the official or live record."""
 from __future__ import annotations
 
 import json
@@ -34,12 +36,24 @@ def _backtest(season: int) -> dict:
     return {g["game_id"]: g for g in json.loads(p.read_text())["games"]}
 
 
+def fill(season: int) -> dict:
+    """Week 6 backtest picks for games where a model has no live pick: {game_id: {model: team, 'covered': team}}."""
+    p = config.ROOT / "data" / "backtests" / "week6_fill.json"
+    if season != 2026 or not p.exists():
+        return {}
+    return {g["game_id"]: g for g in json.loads(p.read_text())["games"]}
+
+
+MODELS = ("official", "hybrid", "v1", "v3", "keynum")
+
+
 def build(sched: pl.DataFrame, season: int, live_rows: list[dict]) -> dict:
     """{'games': [{i, id, label, kind, d: {series: +1/-1}}], 'cum': {series: [..]}, 'band': [..], 'verdict': str}"""
     lines = {r["game_id"]: r for r in league_lines.load()}
     preds = {p["game_id"]: p for p in store.read_rows(final.predictions_path()) if not p.get("supersedes")}
     graded = {r["game_id"]: r for r in live_rows}
     bt = _backtest(season)
+    fl = fill(season)
     done = sched.filter(pl.col("season") == season, pl.col("result").is_not_null()).sort("kickoff_utc", "game_id")
     games, cum = [], {k: [] for k, _ in SERIES}
     tot = {k: 0 for k, _ in SERIES}
@@ -61,7 +75,10 @@ def build(sched: pl.DataFrame, season: int, live_rows: list[dict]) -> dict:
                      **{k: _team(gr.get(f)) for k, f in LIVE_FIELD.items()}}
         else:
             b = bt.get(gid, {})
-            picks = {k: b.get(k) for k in ("official", "hybrid", "v1", "v3", "keynum")}
+            picks = {k: b.get(k) for k in MODELS}
+        filled = [k for k in MODELS if picks.get(k) is None and fl.get(gid, {}).get(k)]
+        for k in filled:
+            picks[k] = fl[gid][k]
         picks["favorite"] = g["home_team"] if line < 0 else g["away_team"]
         picks["home"] = g["home_team"]
         d = {}
@@ -72,7 +89,7 @@ def build(sched: pl.DataFrame, season: int, live_rows: list[dict]) -> dict:
                 d[k] = 1 if w else -1
             cum[k].append(tot[k])
         games.append({"id": gid, "label": f"{g['away_team']} @ {g['home_team']}", "week": int(g["week"]),
-                      "kind": "live" if live else "backtest", "d": d})
+                      "kind": "live" if live else "backtest", "d": d, **({"bt": filled} if filled else {})})
     n = len(games)
     band = [round(1.96 * math.sqrt(i + 1), 2) for i in range(n)]
     out = {"games": games, "cum": cum, "band": band}
