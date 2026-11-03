@@ -94,7 +94,7 @@ is already in the official pick, and in 2025 (57% on 49) and 2026 (4-3) it is to
 
 ## Caveats
 
-- Backtest picks are graded against the SBRO open, not the CBS line, and the the SBRO close stands in for the market at lock.
+- Backtest picks are graded against the SBRO open, not the CBS line, and the SBRO close stands in for the market at lock.
 - Spread, week and slot cuts are not independent, so the 6,752 tests count fewer independent hypotheses than the Holm bar
   assumes; the bar is conservative in that direction, but the choice of features was not blind.
 - 2026 is 78 picks. One more win or loss moves any subset by 3-8 points.
