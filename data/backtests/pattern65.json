@@ -1,0 +1,1642 @@
+{
+ "A_all": {
+  "label": "backtest 2007-21 all (in-sample)",
+  "rows": 3722,
+  "base_rate": 0.5488984416980118,
+  "n_subsets": 6752,
+  "min_n": 30,
+  "target": 0.65,
+  "real_hits": 302,
+  "null_hits_mean": 253.402,
+  "null_hits_p95": 326.04999999999995,
+  "null_hits_ge_real": 0.138,
+  "real_max_rate_n30": 0.8333333134651184,
+  "null_max_rate_n30_median": 0.8090172410011292,
+  "null_max_rate_n30_p95": 0.8666666746139526,
+  "real_max_rate_n50": 0.7627118825912476,
+  "null_max_rate_n50_median": 0.7514045238494873,
+  "null_max_rate_n50_p95": 0.7963119745254517,
+  "real_max_rate_n100": 0.75,
+  "null_max_rate_n100_median": 0.689827561378479,
+  "null_max_rate_n100_p95": 0.7200000286102295,
+  "hits": [
+   {
+    "subset": "week=w10-14 & move=with2+",
+    "n": 287,
+    "w": 193,
+    "rate": 0.6724738478660583,
+    "p_vs_50": 2.5831217072066918e-09,
+    "p_vs_base": 1.3292878175403853e-05
+   },
+   {
+    "subset": "keyline=half-pt & roof=outdoor & move=with2+",
+    "n": 295,
+    "w": 194,
+    "rate": 0.6576271057128906,
+    "p_vs_50": 3.3339561999563684e-08,
+    "p_vs_base": 9.457412325615252e-05
+   },
+   {
+    "subset": "week=w10-14 & roof=outdoor & move=with2+",
+    "n": 203,
+    "w": 139,
+    "rate": 0.6847290396690369,
+    "p_vs_50": 7.522074246908845e-08,
+    "p_vs_base": 5.356532882715253e-05
+   },
+   {
+    "subset": "keyline=half-pt & roof=outdoor & conf=c8+",
+    "n": 193,
+    "w": 133,
+    "rate": 0.6891191601753235,
+    "p_vs_50": 7.870363947260248e-08,
+    "p_vs_base": 4.7964650340669924e-05
+   },
+   {
+    "subset": "week=w10-14 & total=44.5-48 & move=with2+",
+    "n": 108,
+    "w": 81,
+    "rate": 0.75,
+    "p_vs_50": 9.537063854331581e-08,
+    "p_vs_base": 1.2591595277724823e-05
+   },
+   {
+    "subset": "week=w10-14 & rest=rest= & move=with2+",
+    "n": 202,
+    "w": 136,
+    "rate": 0.6732673048973083,
+    "p_vs_50": 4.7420203945072654e-07,
+    "p_vs_base": 0.0002117623736218887
+   },
+   {
+    "subset": "week=w10-14 & conf=c8+",
+    "n": 175,
+    "w": 120,
+    "rate": 0.6857143044471741,
+    "p_vs_50": 4.984673123833005e-07,
+    "p_vs_base": 0.00015163260340404482
+   },
+   {
+    "subset": "week=w10-14 & conf=c8+ & move=with2+",
+    "n": 175,
+    "w": 120,
+    "rate": 0.6857143044471741,
+    "p_vs_50": 4.984673123833005e-07,
+    "p_vs_base": 0.00015163260340404482
+   },
+   {
+    "subset": "side=away & week=w10-14 & move=with2+",
+    "n": 166,
+    "w": 114,
+    "rate": 0.6867470145225525,
+    "p_vs_50": 8.418905316792905e-07,
+    "p_vs_base": 0.00019874303123058618
+   },
+   {
+    "subset": "keyline=half-pt & rest=rest= & conf=c8+",
+    "n": 204,
+    "w": 135,
+    "rate": 0.6617646813392639,
+    "p_vs_50": 2.22718008337897e-06,
+    "p_vs_base": 0.0006801338571191723
+   },
+   {
+    "subset": "side=away & spread=3.5-6 & move=with2+",
+    "n": 143,
+    "w": 98,
+    "rate": 0.6853147149085999,
+    "p_vs_50": 5.508957442102481e-06,
+    "p_vs_base": 0.0006002493145824928
+   },
+   {
+    "subset": "week=w10-14 & div=div & move=with2+",
+    "n": 113,
+    "w": 80,
+    "rate": 0.7079645991325378,
+    "p_vs_50": 5.730799373891884e-06,
+    "p_vs_base": 0.0003871946412738944
+   },
+   {
+    "subset": "side=away & week=w10-14 & conf=c8+",
+    "n": 127,
+    "w": 88,
+    "rate": 0.6929134130477905,
+    "p_vs_50": 8.166902045882255e-06,
+    "p_vs_base": 0.0006407368057112633
+   },
+   {
+    "subset": "keyline=exactly 3 & roof=indoor",
+    "n": 148,
+    "w": 100,
+    "rate": 0.6756756901741028,
+    "p_vs_50": 1.1525452667279358e-05,
+    "p_vs_base": 0.001128857599643202
+   },
+   {
+    "subset": "spread=<=3 & keyline=exactly 3 & roof=indoor",
+    "n": 148,
+    "w": 100,
+    "rate": 0.6756756901741028,
+    "p_vs_50": 1.1525452667279358e-05,
+    "p_vs_base": 0.001128857599643202
+   },
+   {
+    "subset": "week=w10-14 & roof=outdoor & conf=c8+",
+    "n": 128,
+    "w": 88,
+    "rate": 0.6875,
+    "p_vs_50": 1.3314978748715841e-05,
+    "p_vs_base": 0.0009495908961062368
+   },
+   {
+    "subset": "role=dog & week=w10-14 & move=with2+",
+    "n": 159,
+    "w": 106,
+    "rate": 0.6666666865348816,
+    "p_vs_50": 1.592098023522681e-05,
+    "p_vs_base": 0.0016597781571011747
+   },
+   {
+    "subset": "div=div & total=44.5-48 & move=with2+",
+    "n": 132,
+    "w": 90,
+    "rate": 0.6818181872367859,
+    "p_vs_50": 1.786787326815659e-05,
+    "p_vs_base": 0.0012611292582886996
+   },
+   {
+    "subset": "keyline=half-pt & div=div & move=with2+",
+    "n": 163,
+    "w": 108,
+    "rate": 0.6625766754150391,
+    "p_vs_50": 2.006996471546921e-05,
+    "p_vs_base": 0.0020694459237032533
+   },
+   {
+    "subset": "week=w10-14 & rest=rest= & conf=c8+",
+    "n": 124,
+    "w": 85,
+    "rate": 0.6854838728904724,
+    "p_vs_50": 2.2050147276976246e-05,
+    "p_vs_base": 0.0013203203455126138
+   },
+   {
+    "subset": "keyline=whole-other & week=w10-14 & move=with2+",
+    "n": 141,
+    "w": 95,
+    "rate": 0.673758864402771,
+    "p_vs_50": 2.245901673211315e-05,
+    "p_vs_base": 0.0016982973940230166
+   },
+   {
+    "subset": "side=home & keyline=exactly 3 & total=40.5-44",
+    "n": 59,
+    "w": 45,
+    "rate": 0.7627118825912476,
+    "p_vs_50": 3.265315222456639e-05,
+    "p_vs_base": 0.0005624856784790405
+   },
+   {
+    "subset": "spread=<=3 & week=w10-14 & move=with2+",
+    "n": 125,
+    "w": 85,
+    "rate": 0.6800000071525574,
+    "p_vs_50": 3.5144599833210657e-05,
+    "p_vs_base": 0.0019141060181925766
+   },
+   {
+    "subset": "role=dog & week=w1-4 & div=div",
+    "n": 175,
+    "w": 114,
+    "rate": 0.6514285802841187,
+    "p_vs_50": 3.766632285793311e-05,
+    "p_vs_base": 0.003758357106434588
+   },
+   {
+    "subset": "rest=rest= & total=44.5-48 & conf=c8+",
+    "n": 172,
+    "w": 112,
+    "rate": 0.6511628031730652,
+    "p_vs_50": 4.497717059771861e-05,
+    "p_vs_base": 0.00412762707227531
+   },
+   {
+    "subset": "spread=3.5-6 & div=nondiv & move=with2+",
+    "n": 141,
+    "w": 94,
+    "rate": 0.6666666865348816,
+    "p_vs_50": 4.667244871404311e-05,
+    "p_vs_base": 0.002935460387317523
+   },
+   {
+    "subset": "spread=3.5-6 & keyline=half-pt & conf=c8+",
+    "n": 74,
+    "w": 54,
+    "rate": 0.7297297120094299,
+    "p_vs_50": 4.80649329118292e-05,
+    "p_vs_base": 0.0010634776738804954
+   },
+   {
+    "subset": "spread=3.5-6 & total=44.5-48 & move=with2+",
+    "n": 79,
+    "w": 57,
+    "rate": 0.7215189933776855,
+    "p_vs_50": 5.129817589711564e-05,
+    "p_vs_base": 0.001232688871755126
+   },
+   {
+    "subset": "keyline=half-pt & div=div & conf=c8+",
+    "n": 114,
+    "w": 78,
+    "rate": 0.6842105388641357,
+    "p_vs_50": 5.2118352808192286e-05,
+    "p_vs_base": 0.0022113567598299596
+   },
+   {
+    "subset": "role=fav & total=44.5-48 & conf=c5-8",
+    "n": 109,
+    "w": 75,
+    "rate": 0.6880733966827393,
+    "p_vs_50": 5.365029401307253e-05,
+    "p_vs_base": 0.002100537893891386
+   },
+   {
+    "subset": "week=w10-14 & div=div & conf=c8+",
+    "n": 71,
+    "w": 52,
+    "rate": 0.7323943376541138,
+    "p_vs_50": 5.613432344749359e-05,
+    "p_vs_base": 0.0011389746578492307
+   },
+   {
+    "subset": "side=away & spread=3.5-6 & conf=c8+",
+    "n": 116,
+    "w": 79,
+    "rate": 0.681034505367279,
+    "p_vs_50": 6.017211465973925e-05,
+    "p_vs_base": 0.0025411553162922214
+   },
+   {
+    "subset": "keyline=half-pt & week=w10-14 & conf=c8+",
+    "n": 60,
+    "w": 45,
+    "rate": 0.75,
+    "p_vs_50": 6.725704046424998e-05,
+    "p_vs_base": 0.001054728570204663
+   },
+   {
+    "subset": "spread=3.5-6 & conf=c8+",
+    "n": 149,
+    "w": 98,
+    "rate": 0.6577181220054626,
+    "p_vs_50": 7.314197364643268e-05,
+    "p_vs_base": 0.0045079145719304275
+   },
+   {
+    "subset": "spread=3.5-6 & conf=c8+ & move=with2+",
+    "n": 149,
+    "w": 98,
+    "rate": 0.6577181220054626,
+    "p_vs_50": 7.314197364643268e-05,
+    "p_vs_base": 0.0045079145719304275
+   },
+   {
+    "subset": "role=fav & keyline=half-pt & conf=c8+",
+    "n": 103,
+    "w": 71,
+    "rate": 0.6893203854560852,
+    "p_vs_50": 7.661694042108158e-05,
+    "p_vs_base": 0.0025300173058407627
+   },
+   {
+    "subset": "role=fav & week=w10-14 & move=with2+",
+    "n": 98,
+    "w": 68,
+    "rate": 0.6938775777816772,
+    "p_vs_50": 7.807915850316632e-05,
+    "p_vs_base": 0.0023777790730279778
+   },
+   {
+    "subset": "keyline=half-pt & div=div & conf=c5-8",
+    "n": 134,
+    "w": 89,
+    "rate": 0.6641790866851807,
+    "p_vs_50": 9.006880177086204e-05,
+    "p_vs_base": 0.004377770009466851
+   },
+   {
+    "subset": "spread=3.5-6 & keyline=half-pt & move=with2+",
+    "n": 129,
+    "w": 86,
+    "rate": 0.6666666865348816,
+    "p_vs_50": 9.597120678584594e-05,
+    "p_vs_base": 0.0043081071818990005
+   },
+   {
+    "subset": "keyline=exactly 3 & slot=Sun-early & roof=indoor",
+    "n": 72,
+    "w": 52,
+    "rate": 0.7222222089767456,
+    "p_vs_50": 0.00010385801511336964,
+    "p_vs_base": 0.0019187404039310361
+   },
+   {
+    "subset": "week=w10-14 & slot=Sun-early & move=with2+",
+    "n": 150,
+    "w": 98,
+    "rate": 0.653333306312561,
+    "p_vs_50": 0.00010753829720777206,
+    "p_vs_base": 0.0060336955111708135
+   },
+   {
+    "subset": "keyline=half-pt & total=44.5-48 & move=with2+",
+    "n": 121,
+    "w": 81,
+    "rate": 0.6694214940071106,
+    "p_vs_50": 0.0001221085122484809,
+    "p_vs_base": 0.004651345488047307
+   },
+   {
+    "subset": "keyline=exactly 3 & roof=indoor & total=44.5-48",
+    "n": 45,
+    "w": 35,
+    "rate": 0.7777777910232544,
+    "p_vs_50": 0.00012354389230040443,
+    "p_vs_base": 0.0012480474885590387
+   },
+   {
+    "subset": "roof=indoor & team=MIN",
+    "n": 61,
+    "w": 45,
+    "rate": 0.7377049326896667,
+    "p_vs_50": 0.00013213933091364854,
+    "p_vs_base": 0.0018874218284064366
+   },
+   {
+    "subset": "role=fav & week=w10-14 & conf=c8+",
+    "n": 53,
+    "w": 40,
+    "rate": 0.7547169923782349,
+    "p_vs_50": 0.0001342700594095819,
+    "p_vs_base": 0.001614410002496908
+   },
+   {
+    "subset": "week=w10-14 & total=44.5-48 & conf=c8+",
+    "n": 66,
+    "w": 48,
+    "rate": 0.7272727489471436,
+    "p_vs_50": 0.00014355922483082166,
+    "p_vs_base": 0.0022300956641117375
+   },
+   {
+    "subset": "week=w5-9 & team=MIA",
+    "n": 33,
+    "w": 27,
+    "rate": 0.8181818127632141,
+    "p_vs_50": 0.00016203173436224333,
+    "p_vs_base": 0.001144622518708119
+   },
+   {
+    "subset": "keyline=exactly 3 & week=w5-9 & rest=rest+",
+    "n": 30,
+    "w": 25,
+    "rate": 0.8333333134651184,
+    "p_vs_50": 0.00016245711594820142,
+    "p_vs_base": 0.001048207418105375
+   },
+   {
+    "subset": "side=home & keyline=exactly 3 & slot=Sun-early",
+    "n": 88,
+    "w": 61,
+    "rate": 0.6931818127632141,
+    "p_vs_50": 0.00018701100747246753,
+    "p_vs_base": 0.0040296387143588614
+   },
+   {
+    "subset": "spread=3.5-6 & rest=rest= & conf=c8+",
+    "n": 117,
+    "w": 78,
+    "rate": 0.6666666865348816,
+    "p_vs_50": 0.00019808890939615253,
+    "p_vs_base": 0.006344133342022647
+   },
+   {
+    "subset": "spread=<=3 & roof=indoor & total=44.5-48",
+    "n": 107,
+    "w": 72,
+    "rate": 0.672897219657898,
+    "p_vs_50": 0.00022265122403131773,
+    "p_vs_base": 0.0060721562029602445
+   },
+   {
+    "subset": "total=44.5-48 & conf=c5-8 & move=with2+",
+    "n": 135,
+    "w": 88,
+    "rate": 0.6518518328666687,
+    "p_vs_50": 0.00026366730287047613,
+    "p_vs_base": 0.009728864501185255
+   },
+   {
+    "subset": "role=dog & spread=3.5-6 & move=with2+",
+    "n": 111,
+    "w": 74,
+    "rate": 0.6666666865348816,
+    "p_vs_50": 0.0002850590524154549,
+    "p_vs_base": 0.007710037828961106
+   },
+   {
+    "subset": "keyline=exactly 3 & div=nondiv & roof=indoor",
+    "n": 89,
+    "w": 61,
+    "rate": 0.6853932738304138,
+    "p_vs_50": 0.0003051295251403981,
+    "p_vs_base": 0.005991555739569111
+   },
+   {
+    "subset": "div=div & total=44.5-48 & conf=c8+",
+    "n": 91,
+    "w": 62,
+    "rate": 0.6813187003135681,
+    "p_vs_50": 0.00035267072614641104,
+    "p_vs_base": 0.0068999316475163875
+   },
+   {
+    "subset": "side=away & keyline=exactly 3 & roof=indoor",
+    "n": 103,
+    "w": 69,
+    "rate": 0.6699029207229614,
+    "p_vs_50": 0.00036378528933665944,
+    "p_vs_base": 0.008340873079509417
+   },
+   {
+    "subset": "keyline=half-pt & week=w10-14 & move=with2+",
+    "n": 103,
+    "w": 69,
+    "rate": 0.6699029207229614,
+    "p_vs_50": 0.00036378528933665944,
+    "p_vs_base": 0.008340873079509417
+   },
+   {
+    "subset": "role=fav & spread=3.5-6 & conf=c8+",
+    "n": 81,
+    "w": 56,
+    "rate": 0.6913580298423767,
+    "p_vs_50": 0.0003760630323170256,
+    "p_vs_base": 0.006245083066973015
+   },
+   {
+    "subset": "week=w10-14 & slot=Sun-early & conf=c8+",
+    "n": 88,
+    "w": 60,
+    "rate": 0.6818181872367859,
+    "p_vs_50": 0.0004232480428083471,
+    "p_vs_base": 0.007603919266406487
+   },
+   {
+    "subset": "side=home & week=w10-14 & move=with2+",
+    "n": 121,
+    "w": 79,
+    "rate": 0.6528925895690918,
+    "p_vs_50": 0.0004915142485634755,
+    "p_vs_base": 0.013022464245818688
+   }
+  ],
+  "holm_best_p_vs_base": 1.2591595277724823e-05,
+  "holm_bar_first": 7.40521327014218e-06
+ },
+ "A_disc_early": {
+  "discovery": {
+   "label": "discovery early",
+   "rows": 1987,
+   "base_rate": 0.5546049320583795,
+   "n_subsets": 5452,
+   "min_n": 25,
+   "target": 0.65,
+   "real_hits": 378,
+   "null_hits_mean": 360.026,
+   "null_hits_p95": 447.0999999999999,
+   "null_hits_ge_real": 0.35,
+   "real_max_rate_n25": 0.8235294222831726,
+   "null_max_rate_n25_median": 0.8399999737739563,
+   "null_max_rate_n25_p95": 0.8846153616905212,
+   "real_max_rate_n50": 0.7538461685180664,
+   "null_max_rate_n50_median": 0.7540983557701111,
+   "null_max_rate_n50_p95": 0.7924853563308716,
+   "real_max_rate_n100": 0.6717557311058044,
+   "null_max_rate_n100_median": 0.690132737159729,
+   "null_max_rate_n100_p95": 0.7197121381759644,
+   "holm_best_p_vs_base": 0.0007154174034031566,
+   "holm_bar_first": 9.17094644167278e-06
+  },
+  "n_selected": 378,
+  "selected_top": [
+   {
+    "subset": "role=fav & keyline=exactly 3 & move=with<2",
+    "n": 92,
+    "w": 66,
+    "rate": 0.717391312122345,
+    "p_vs_50": 1.8350229618996867e-05,
+    "p_vs_base": 0.0009856814835930226
+   },
+   {
+    "subset": "keyline=half-pt & week=w1-4 & conf=c2.5-5",
+    "n": 65,
+    "w": 49,
+    "rate": 0.7538461685180664,
+    "p_vs_50": 2.542383524395101e-05,
+    "p_vs_base": 0.0007154174034031566
+   },
+   {
+    "subset": "div=div & roof=outdoor & move=with2+",
+    "n": 172,
+    "w": 112,
+    "rate": 0.6511628031730652,
+    "p_vs_50": 4.497717059771861e-05,
+    "p_vs_base": 0.006346856667256443
+   },
+   {
+    "subset": "keyline=half-pt & roof=outdoor & conf=c8+",
+    "n": 79,
+    "w": 57,
+    "rate": 0.7215189933776855,
+    "p_vs_50": 5.129817589711564e-05,
+    "p_vs_base": 0.0017089793548776704
+   },
+   {
+    "subset": "keyline=exactly 3 & move=with<2",
+    "n": 131,
+    "w": 88,
+    "rate": 0.6717557311058044,
+    "p_vs_50": 5.234708643291707e-05,
+    "p_vs_base": 0.004152853406459259
+   },
+   {
+    "subset": "spread=<=3 & keyline=exactly 3 & move=with<2",
+    "n": 131,
+    "w": 88,
+    "rate": 0.6717557311058044,
+    "p_vs_50": 5.234708643291707e-05,
+    "p_vs_base": 0.004152853406459259
+   },
+   {
+    "subset": "keyline=half-pt & roof=outdoor & move=with2+",
+    "n": 130,
+    "w": 87,
+    "rate": 0.6692307591438293,
+    "p_vs_50": 7.10021378996357e-05,
+    "p_vs_base": 0.005101507588745403
+   },
+   {
+    "subset": "spread=3.5-6 & total=44.5-48 & move=with2+",
+    "n": 34,
+    "w": 28,
+    "rate": 0.8235294222831726,
+    "p_vs_50": 9.75627917796383e-05,
+    "p_vs_base": 0.0009408786398928034
+   },
+   {
+    "subset": "week=w10-14 & roof=outdoor & move=with2+",
+    "n": 92,
+    "w": 64,
+    "rate": 0.695652186870575,
+    "p_vs_50": 0.00011125056478789871,
+    "p_vs_base": 0.003961040854086391
+   },
+   {
+    "subset": "keyline=exactly 3 & roof=indoor",
+    "n": 86,
+    "w": 60,
+    "rate": 0.6976743936538696,
+    "p_vs_50": 0.00015849964113882092,
+    "p_vs_base": 0.004677354117134987
+   },
+   {
+    "subset": "spread=<=3 & keyline=exactly 3 & roof=indoor",
+    "n": 86,
+    "w": 60,
+    "rate": 0.6976743936538696,
+    "p_vs_50": 0.00015849964113882092,
+    "p_vs_base": 0.004677354117134987
+   },
+   {
+    "subset": "role=dog & div=div & conf=c5-8",
+    "n": 112,
+    "w": 75,
+    "rate": 0.6696428656578064,
+    "p_vs_50": 0.00021048396425845037,
+    "p_vs_base": 0.00867655266797955
+   },
+   {
+    "subset": "week=w10-14 & div=div & move=with2+",
+    "n": 57,
+    "w": 42,
+    "rate": 0.7368420958518982,
+    "p_vs_50": 0.00023000250432440002,
+    "p_vs_base": 0.0035609467623982215
+   },
+   {
+    "subset": "week=w1-4 & div=div & total=44.5-48",
+    "n": 49,
+    "w": 37,
+    "rate": 0.7551020383834839,
+    "p_vs_50": 0.00023487865900407047,
+    "p_vs_base": 0.003010523811905075
+   },
+   {
+    "subset": "week=w10-14 & total=44.5-48 & move=with2+",
+    "n": 46,
+    "w": 35,
+    "rate": 0.760869562625885,
+    "p_vs_50": 0.00026779253605014095,
+    "p_vs_base": 0.003115389850166982
+   }
+  ],
+  "test_backtest_other_half": {
+   "subsets": 378,
+   "pooled_n": 16289,
+   "pooled_w": 9364,
+   "pooled_rate": 0.5748664743078151,
+   "union_n": 1630,
+   "union_w": 893,
+   "union_rate": 0.5478527607361963
+  },
+  "test_2025_cbs": {
+   "subsets": 378,
+   "pooled_n": 2019,
+   "pooled_w": 1040,
+   "pooled_rate": 0.5151064883605745,
+   "union_n": 245,
+   "union_w": 119,
+   "union_rate": 0.4857142857142857,
+   "rows": 267
+  },
+  "test_2026_live": {
+   "subsets": 378,
+   "pooled_n": 432,
+   "pooled_w": 257,
+   "pooled_rate": 0.5949074074074074,
+   "union_n": 68,
+   "union_w": 36,
+   "union_rate": 0.5294117647058824,
+   "rows": 78
+  },
+  "per_subset_test": [
+   {
+    "subset": "role=fav & keyline=exactly 3 & move=with<2",
+    "test_n": 57,
+    "test_w": 27
+   },
+   {
+    "subset": "keyline=half-pt & week=w1-4 & conf=c2.5-5",
+    "test_n": 44,
+    "test_w": 17
+   },
+   {
+    "subset": "div=div & roof=outdoor & move=with2+",
+    "test_n": 175,
+    "test_w": 102
+   },
+   {
+    "subset": "keyline=half-pt & roof=outdoor & conf=c8+",
+    "test_n": 114,
+    "test_w": 76
+   },
+   {
+    "subset": "keyline=exactly 3 & move=with<2",
+    "test_n": 100,
+    "test_w": 53
+   },
+   {
+    "subset": "spread=<=3 & keyline=exactly 3 & move=with<2",
+    "test_n": 100,
+    "test_w": 53
+   },
+   {
+    "subset": "keyline=half-pt & roof=outdoor & move=with2+",
+    "test_n": 165,
+    "test_w": 107
+   },
+   {
+    "subset": "spread=3.5-6 & total=44.5-48 & move=with2+",
+    "test_n": 45,
+    "test_w": 29
+   },
+   {
+    "subset": "week=w10-14 & roof=outdoor & move=with2+",
+    "test_n": 111,
+    "test_w": 75
+   },
+   {
+    "subset": "keyline=exactly 3 & roof=indoor",
+    "test_n": 62,
+    "test_w": 40
+   },
+   {
+    "subset": "spread=<=3 & keyline=exactly 3 & roof=indoor",
+    "test_n": 62,
+    "test_w": 40
+   },
+   {
+    "subset": "role=dog & div=div & conf=c5-8",
+    "test_n": 81,
+    "test_w": 47
+   },
+   {
+    "subset": "week=w10-14 & div=div & move=with2+",
+    "test_n": 56,
+    "test_w": 38
+   },
+   {
+    "subset": "week=w1-4 & div=div & total=44.5-48",
+    "test_n": 40,
+    "test_w": 22
+   },
+   {
+    "subset": "week=w10-14 & total=44.5-48 & move=with2+",
+    "test_n": 62,
+    "test_w": 46
+   },
+   {
+    "subset": "spread=<=3 & week=w10-14 & div=div",
+    "test_n": 62,
+    "test_w": 34
+   },
+   {
+    "subset": "week=w10-14 & roof=outdoor & conf=c8+",
+    "test_n": 77,
+    "test_w": 50
+   },
+   {
+    "subset": "week=w10-14 & move=with2+",
+    "test_n": 155,
+    "test_w": 107
+   },
+   {
+    "subset": "week=w1-4 & slot=Sun-early & conf=c2.5-5",
+    "test_n": 59,
+    "test_w": 30
+   },
+   {
+    "subset": "spread=<=3 & week=w10-14 & slot=Sun-early",
+    "test_n": 113,
+    "test_w": 64
+   },
+   {
+    "subset": "role=dog & spread=3.5-6 & div=div",
+    "test_n": 114,
+    "test_w": 63
+   },
+   {
+    "subset": "spread=10+ & keyline=whole-other & slot=Sun-early",
+    "test_n": 72,
+    "test_w": 36
+   },
+   {
+    "subset": "keyline=whole-other & div=nondiv & total=<=40",
+    "test_n": 34,
+    "test_w": 18
+   },
+   {
+    "subset": "week=w1-4 & roof=indoor & total=44.5-48",
+    "test_n": 37,
+    "test_w": 22
+   },
+   {
+    "subset": "role=dog & week=w1-4 & conf=c2.5-5",
+    "test_n": 63,
+    "test_w": 33
+   },
+   {
+    "subset": "keyline=exactly 3 & conf=c5-8",
+    "test_n": 34,
+    "test_w": 19
+   },
+   {
+    "subset": "spread=<=3 & keyline=exactly 3 & conf=c5-8",
+    "test_n": 34,
+    "test_w": 19
+   },
+   {
+    "subset": "slot=Sun-early & roof=outdoor & conf=c8+",
+    "test_n": 145,
+    "test_w": 85
+   },
+   {
+    "subset": "role=dog & div=div & total=44.5-48",
+    "test_n": 116,
+    "test_w": 65
+   },
+   {
+    "subset": "side=away & div=div & move=with2+",
+    "test_n": 149,
+    "test_w": 92
+   },
+   {
+    "subset": "spread=3.5-6 & rest=rest= & move=with2+",
+    "test_n": 98,
+    "test_w": 60
+   },
+   {
+    "subset": "side=away & keyline=exactly 3 & week=w10-14",
+    "test_n": 46,
+    "test_w": 26
+   },
+   {
+    "subset": "spread=3.5-6 & keyline=half-pt & div=div",
+    "test_n": 96,
+    "test_w": 55
+   },
+   {
+    "subset": "side=home & keyline=exactly 3",
+    "test_n": 78,
+    "test_w": 44
+   },
+   {
+    "subset": "side=home & spread=<=3 & keyline=exactly 3",
+    "test_n": 78,
+    "test_w": 44
+   },
+   {
+    "subset": "slot=Sun-early & div=div & roof=indoor",
+    "test_n": 80,
+    "test_w": 40
+   },
+   {
+    "subset": "div=div & total=44.5-48 & move=with2+",
+    "test_n": 78,
+    "test_w": 51
+   },
+   {
+    "subset": "keyline=exactly 3 & week=w10-14 & div=div",
+    "test_n": 28,
+    "test_w": 14
+   },
+   {
+    "subset": "keyline=exactly 3 & rest=rest= & move=with<2",
+    "test_n": 78,
+    "test_w": 41
+   },
+   {
+    "subset": "week=w10-14 & rest=rest= & total=<=40",
+    "test_n": 27,
+    "test_w": 16
+   }
+  ]
+ },
+ "A_disc_late": {
+  "discovery": {
+   "label": "discovery late",
+   "rows": 1735,
+   "base_rate": 0.5423631123919308,
+   "n_subsets": 5087,
+   "min_n": 25,
+   "target": 0.65,
+   "real_hits": 313,
+   "null_hits_mean": 253.904,
+   "null_hits_p95": 331.04999999999995,
+   "null_hits_ge_real": 0.096,
+   "real_max_rate_n25": 0.807692289352417,
+   "null_max_rate_n25_median": 0.8214285969734192,
+   "null_max_rate_n25_p95": 0.8846153616905212,
+   "real_max_rate_n50": 0.7454545497894287,
+   "null_max_rate_n50_median": 0.7400000095367432,
+   "null_max_rate_n50_p95": 0.7799999713897705,
+   "real_max_rate_n100": 0.7047619223594666,
+   "null_max_rate_n100_median": 0.6732673048973083,
+   "null_max_rate_n100_p95": 0.7047697305679321,
+   "holm_best_p_vs_base": 0.00012099985648843283,
+   "holm_bar_first": 9.828975820719481e-06
+  },
+  "n_selected": 313,
+  "selected_top": [
+   {
+    "subset": "week=w10-14 & move=with2+",
+    "n": 155,
+    "w": 107,
+    "rate": 0.6903225779533386,
+    "p_vs_50": 1.2183589931838187e-06,
+    "p_vs_base": 0.00012099985648843283
+   },
+   {
+    "subset": "week=w10-14 & rest=rest= & move=with2+",
+    "n": 105,
+    "w": 74,
+    "rate": 0.7047619223594666,
+    "p_vs_50": 1.6377676343721147e-05,
+    "p_vs_base": 0.0004899862484183141
+   },
+   {
+    "subset": "rest=rest= & total=44.5-48 & move=with2+",
+    "n": 149,
+    "w": 100,
+    "rate": 0.6711409687995911,
+    "p_vs_50": 1.7835578309722343e-05,
+    "p_vs_base": 0.0009399977549979322
+   },
+   {
+    "subset": "side=away & total=44.5-48 & move=with2+",
+    "n": 119,
+    "w": 82,
+    "rate": 0.6890756487846375,
+    "p_vs_50": 2.262567361731163e-05,
+    "p_vs_base": 0.0007769309092433977
+   },
+   {
+    "subset": "keyline=half-pt & roof=outdoor & conf=c5-8",
+    "n": 130,
+    "w": 88,
+    "rate": 0.6769230961799622,
+    "p_vs_50": 3.369203496620456e-05,
+    "p_vs_base": 0.0012305227224448695
+   },
+   {
+    "subset": "keyline=half-pt & rest=rest= & conf=c8+",
+    "n": 117,
+    "w": 80,
+    "rate": 0.6837607026100159,
+    "p_vs_50": 4.3587183647133316e-05,
+    "p_vs_base": 0.001279515300922017
+   },
+   {
+    "subset": "keyline=half-pt & slot=Sun-early & conf=c5-8",
+    "n": 102,
+    "w": 71,
+    "rate": 0.6960784196853638,
+    "p_vs_50": 4.653825413623649e-05,
+    "p_vs_base": 0.001099871075222669
+   },
+   {
+    "subset": "keyline=half-pt & rest=rest= & move=with2+",
+    "n": 162,
+    "w": 106,
+    "rate": 0.654321014881134,
+    "p_vs_50": 5.263324577969301e-05,
+    "p_vs_base": 0.002501069924594231
+   },
+   {
+    "subset": "week=w10-14 & div=nondiv & move=with2+",
+    "n": 99,
+    "w": 69,
+    "rate": 0.6969696879386902,
+    "p_vs_50": 5.5470181634063085e-05,
+    "p_vs_base": 0.001215587557740437
+   },
+   {
+    "subset": "week=w10-14 & total=44.5-48 & move=with2+",
+    "n": 62,
+    "w": 46,
+    "rate": 0.7419354915618896,
+    "p_vs_50": 8.816355627571996e-05,
+    "p_vs_base": 0.0009844396753081173
+   },
+   {
+    "subset": "week=w10-14 & conf=c8+",
+    "n": 105,
+    "w": 72,
+    "rate": 0.6857143044471741,
+    "p_vs_50": 8.917861115506824e-05,
+    "p_vs_base": 0.0019377826327630265
+   },
+   {
+    "subset": "week=w10-14 & conf=c8+ & move=with2+",
+    "n": 105,
+    "w": 72,
+    "rate": 0.6857143044471741,
+    "p_vs_50": 8.917861115506824e-05,
+    "p_vs_base": 0.0019377826327630265
+   },
+   {
+    "subset": "role=fav & keyline=half-pt & conf=c5-8",
+    "n": 72,
+    "w": 52,
+    "rate": 0.7222222089767456,
+    "p_vs_50": 0.00010385801511336964,
+    "p_vs_base": 0.0013470061891169636
+   },
+   {
+    "subset": "side=away & week=w10-14 & move=with2+",
+    "n": 92,
+    "w": 64,
+    "rate": 0.695652186870575,
+    "p_vs_50": 0.00011125056478789871,
+    "p_vs_base": 0.001937989147296043
+   },
+   {
+    "subset": "week=w10-14 & roof=outdoor & move=with2+",
+    "n": 111,
+    "w": 75,
+    "rate": 0.6756756901741028,
+    "p_vs_50": 0.00013590887610142243,
+    "p_vs_base": 0.002928272350086027
+   }
+  ],
+  "test_backtest_other_half": {
+   "subsets": 313,
+   "pooled_n": 14566,
+   "pooled_w": 8397,
+   "pooled_rate": 0.5764794727447481,
+   "union_n": 1749,
+   "union_w": 979,
+   "union_rate": 0.559748427672956
+  },
+  "test_2025_cbs": {
+   "subsets": 313,
+   "pooled_n": 1852,
+   "pooled_w": 999,
+   "pooled_rate": 0.5394168466522679,
+   "union_n": 229,
+   "union_w": 113,
+   "union_rate": 0.49344978165938863,
+   "rows": 267
+  },
+  "test_2026_live": {
+   "subsets": 313,
+   "pooled_n": 294,
+   "pooled_w": 156,
+   "pooled_rate": 0.5306122448979592,
+   "union_n": 49,
+   "union_w": 27,
+   "union_rate": 0.5510204081632653,
+   "rows": 78
+  }
+ },
+ "B_live": {
+  "label": "2026 live picks",
+  "rows": 78,
+  "base_rate": 0.5384615384615384,
+  "n_subsets": 179,
+  "min_n": 12,
+  "target": 0.65,
+  "real_hits": 32,
+  "null_hits_mean": 18.132,
+  "null_hits_p95": 32.0,
+  "null_hits_ge_real": 0.056,
+  "real_max_rate_n12": 0.8333333134651184,
+  "null_max_rate_n12_median": 0.7857142686843872,
+  "null_max_rate_n12_p95": 0.9166666865348816,
+  "real_max_rate_n50": 0.6000000238418579,
+  "null_max_rate_n50_median": 0.5849056839942932,
+  "null_max_rate_n50_p95": 0.6363636255264282,
+  "real_max_rate_n100": null,
+  "null_max_rate_n100_median": null,
+  "null_max_rate_n100_p95": null,
+  "hits": [
+   {
+    "subset": "spread=<=3 & roof=outdoor",
+    "n": 26,
+    "w": 20,
+    "rate": 0.7692307829856873,
+    "p_vs_50": 0.00467765331268313,
+    "p_vs_base": 0.013477986460068913
+   },
+   {
+    "subset": "spread=<=3 & slot=Sun-early",
+    "n": 19,
+    "w": 15,
+    "rate": 0.7894737124443054,
+    "p_vs_50": 0.009605407714843769,
+    "p_vs_base": 0.022185411711956874
+   },
+   {
+    "subset": "spread=<=3",
+    "n": 29,
+    "w": 21,
+    "rate": 0.7241379022598267,
+    "p_vs_50": 0.012059772387146865,
+    "p_vs_base": 0.03258998340276711
+   },
+   {
+    "subset": "role=dog & spread=<=3",
+    "n": 12,
+    "w": 10,
+    "rate": 0.8333333134651184,
+    "p_vs_50": 0.019287109374999986,
+    "p_vs_base": 0.03551236077863949
+   },
+   {
+    "subset": "slot=Sun-late & fallback=model-pick",
+    "n": 12,
+    "w": 10,
+    "rate": 0.8333333134651184,
+    "p_vs_50": 0.019287109374999986,
+    "p_vs_base": 0.03551236077863949
+   },
+   {
+    "subset": "spread=<=3 & rest=rest=",
+    "n": 22,
+    "w": 16,
+    "rate": 0.7272727489471436,
+    "p_vs_50": 0.026239395141601445,
+    "p_vs_base": 0.05706879756483415
+   },
+   {
+    "subset": "roof=outdoor & conf=c<2.5",
+    "n": 22,
+    "w": 16,
+    "rate": 0.7272727489471436,
+    "p_vs_50": 0.026239395141601445,
+    "p_vs_base": 0.05706879756483415
+   },
+   {
+    "subset": "side=home & roof=outdoor",
+    "n": 24,
+    "w": 17,
+    "rate": 0.7083333134651184,
+    "p_vs_50": 0.031957328319549505,
+    "p_vs_base": 0.06985676258877567
+   },
+   {
+    "subset": "role=dog & rest=rest=",
+    "n": 31,
+    "w": 21,
+    "rate": 0.6774193644523621,
+    "p_vs_50": 0.035377772990614134,
+    "p_vs_base": 0.08389845011626836
+   },
+   {
+    "subset": "spread=<=3 & fallback=model-pick",
+    "n": 26,
+    "w": 18,
+    "rate": 0.692307710647583,
+    "p_vs_50": 0.03775934875011473,
+    "p_vs_base": 0.08294027960630973
+   },
+   {
+    "subset": "spread=<=3 & flag=pinnacle/other",
+    "n": 26,
+    "w": 18,
+    "rate": 0.692307710647583,
+    "p_vs_50": 0.03775934875011473,
+    "p_vs_base": 0.08294027960630973
+   },
+   {
+    "subset": "side=home & role=dog",
+    "n": 13,
+    "w": 10,
+    "rate": 0.7692307829856873,
+    "p_vs_50": 0.04614257812499994,
+    "p_vs_base": 0.07983169749636797
+   },
+   {
+    "subset": "side=home & spread=<=3",
+    "n": 13,
+    "w": 10,
+    "rate": 0.7692307829856873,
+    "p_vs_50": 0.04614257812499994,
+    "p_vs_base": 0.07983169749636797
+   },
+   {
+    "subset": "div=div & roof=outdoor",
+    "n": 23,
+    "w": 16,
+    "rate": 0.695652186870575,
+    "p_vs_50": 0.04656982421875015,
+    "p_vs_base": 0.09506732220740335
+   },
+   {
+    "subset": "role=dog & div=div",
+    "n": 18,
+    "w": 13,
+    "rate": 0.7222222089767456,
+    "p_vs_50": 0.048126220703125,
+    "p_vs_base": 0.09062670921669373
+   },
+   {
+    "subset": "role=dog & conf=c<2.5",
+    "n": 15,
+    "w": 11,
+    "rate": 0.7333333492279053,
+    "p_vs_50": 0.05923461914062495,
+    "p_vs_base": 0.1033550377542393
+   },
+   {
+    "subset": "spread=<=3 & div=nondiv",
+    "n": 22,
+    "w": 15,
+    "rate": 0.6818181872367859,
+    "p_vs_50": 0.06690025329589823,
+    "p_vs_base": 0.12763748618674717
+   },
+   {
+    "subset": "spread=<=3 & week=w5-9",
+    "n": 17,
+    "w": 12,
+    "rate": 0.7058823704719543,
+    "p_vs_50": 0.07173156738281275,
+    "p_vs_base": 0.1261615149872027
+   },
+   {
+    "subset": "slot=Sun-early & div=div",
+    "n": 17,
+    "w": 12,
+    "rate": 0.7058823704719543,
+    "p_vs_50": 0.07173156738281275,
+    "p_vs_base": 0.1261615149872027
+   },
+   {
+    "subset": "spread=<=3 & week=w1-4",
+    "n": 12,
+    "w": 9,
+    "rate": 0.75,
+    "p_vs_50": 0.07299804687500003,
+    "p_vs_base": 0.11781970039727829
+   },
+   {
+    "subset": "spread=<=3 & conf=c<2.5",
+    "n": 12,
+    "w": 9,
+    "rate": 0.75,
+    "p_vs_50": 0.07299804687500003,
+    "p_vs_base": 0.11781970039727829
+   },
+   {
+    "subset": "spread=<=3 & move=with<2",
+    "n": 19,
+    "w": 13,
+    "rate": 0.6842105388641357,
+    "p_vs_50": 0.0835342407226563,
+    "p_vs_base": 0.14802908776905382
+   },
+   {
+    "subset": "week=w5-9 & div=div",
+    "n": 19,
+    "w": 13,
+    "rate": 0.6842105388641357,
+    "p_vs_50": 0.0835342407226563,
+    "p_vs_base": 0.14802908776905382
+   },
+   {
+    "subset": "slot=Sun-late",
+    "n": 14,
+    "w": 10,
+    "rate": 0.7142857313156128,
+    "p_vs_50": 0.08978271484375026,
+    "p_vs_base": 0.14631070257296133
+   },
+   {
+    "subset": "slot=Sun-late & flag=pinnacle/other",
+    "n": 14,
+    "w": 10,
+    "rate": 0.7142857313156128,
+    "p_vs_50": 0.08978271484375026,
+    "p_vs_base": 0.14631070257296133
+   },
+   {
+    "subset": "role=dog & move=with<2",
+    "n": 21,
+    "w": 14,
+    "rate": 0.6666666865348816,
+    "p_vs_50": 0.094623565673828,
+    "p_vs_base": 0.16887892758916426
+   },
+   {
+    "subset": "div=div & fallback=model-pick",
+    "n": 21,
+    "w": 14,
+    "rate": 0.6666666865348816,
+    "p_vs_50": 0.094623565673828,
+    "p_vs_base": 0.16887892758916426
+   },
+   {
+    "subset": "side=away & spread=<=3",
+    "n": 16,
+    "w": 11,
+    "rate": 0.6875,
+    "p_vs_50": 0.1050567626953124,
+    "p_vs_base": 0.17274495784602018
+   },
+   {
+    "subset": "role=dog & week=w1-4",
+    "n": 16,
+    "w": 11,
+    "rate": 0.6875,
+    "p_vs_50": 0.1050567626953124,
+    "p_vs_base": 0.17274495784602018
+   },
+   {
+    "subset": "rest=rest+",
+    "n": 12,
+    "w": 8,
+    "rate": 0.6666666865348816,
+    "p_vs_50": 0.19384765625000006,
+    "p_vs_base": 0.2765552839475102
+   },
+   {
+    "subset": "week=w5-9 & rest=rest+",
+    "n": 12,
+    "w": 8,
+    "rate": 0.6666666865348816,
+    "p_vs_50": 0.19384765625000006,
+    "p_vs_base": 0.2765552839475102
+   },
+   {
+    "subset": "div=div & move=with<2",
+    "n": 12,
+    "w": 8,
+    "rate": 0.6666666865348816,
+    "p_vs_50": 0.19384765625000006,
+    "p_vs_base": 0.2765552839475102
+   }
+  ],
+  "holm_best_p_vs_base": 0.013477986460068913,
+  "holm_bar_first": 0.0002793296089385475
+ },
+ "B_live_n": {
+  "n": 78,
+  "w": 42
+ },
+ "C_all": {
+  "label": "market sides 1999-2025",
+  "rows": 13556,
+  "base_rate": 0.5,
+  "n_subsets": 3865,
+  "min_n": 100,
+  "target": 0.65,
+  "real_hits": 0,
+  "null_hits_mean": 0.42,
+  "null_hits_p95": 2.0,
+  "null_hits_ge_real": 1.0,
+  "real_max_rate_n100": 0.6394557952880859,
+  "null_max_rate_n100_median": 0.6402658224105835,
+  "null_max_rate_n100_p95": 0.6727272868156433,
+  "real_max_rate_n50": 0.6394557952880859,
+  "null_max_rate_n50_median": 0.6402658224105835,
+  "null_max_rate_n50_p95": 0.6727272868156433,
+  "hits": [],
+  "holm_best_p_vs_base": 0.0004530965134258645,
+  "holm_bar_first": 1.29366106080207e-05
+ },
+ "C_disc": {
+  "discovery": {
+   "label": "market discovery 1999-2012",
+   "rows": 6912,
+   "base_rate": 0.5,
+   "n_subsets": 2664,
+   "min_n": 100,
+   "target": 0.65,
+   "real_hits": 0,
+   "null_hits_mean": 0.332,
+   "null_hits_p95": 2.0,
+   "null_hits_ge_real": 1.0,
+   "real_max_rate_n100": 0.6330274939537048,
+   "null_max_rate_n100_median": 0.6377382278442383,
+   "null_max_rate_n100_p95": 0.6695032119750977,
+   "real_max_rate_n50": 0.6330274939537048,
+   "null_max_rate_n50_median": 0.6377382278442383,
+   "null_max_rate_n50_p95": 0.6695032119750977,
+   "holm_best_p_vs_base": 0.003520375417753719,
+   "holm_bar_first": 1.876876876876877e-05
+  },
+  "n_selected": 0,
+  "selected_top": [],
+  "test_2013_25": {
+   "subsets": 0,
+   "pooled_n": 0,
+   "pooled_w": 0,
+   "pooled_rate": null,
+   "union_n": 0,
+   "union_w": 0,
+   "union_rate": null
+  }
+ },
+ "candidates": [
+  {
+   "name": "move>=2 (all)",
+   "bt": [
+    662,
+    1109
+   ],
+   "bt0714": [
+    317,
+    535
+   ],
+   "bt1521": [
+    345,
+    574
+   ],
+   "c25": [
+    28,
+    49
+   ],
+   "lv": [
+    4,
+    7
+   ]
+  },
+  {
+   "name": "wk10-14 & move>=2",
+   "bt": [
+    193,
+    287
+   ],
+   "bt0714": [
+    86,
+    132
+   ],
+   "bt1521": [
+    107,
+    155
+   ],
+   "c25": [
+    5,
+    9
+   ],
+   "lv": [
+    0,
+    0
+   ]
+  },
+  {
+   "name": "wk10-14 & model conf 8+",
+   "bt": [
+    120,
+    175
+   ],
+   "bt0714": [
+    48,
+    70
+   ],
+   "bt1521": [
+    72,
+    105
+   ],
+   "c25": [
+    3,
+    6
+   ],
+   "lv": [
+    0,
+    0
+   ]
+  },
+  {
+   "name": "half-pt line & outdoor & conf 8+",
+   "bt": [
+    133,
+    193
+   ],
+   "bt0714": [
+    57,
+    79
+   ],
+   "bt1521": [
+    76,
+    114
+   ],
+   "c25": [
+    13,
+    21
+   ],
+   "lv": [
+    2,
+    4
+   ]
+  },
+  {
+   "name": "half-pt & outdoor & move>=2",
+   "bt": [
+    194,
+    295
+   ],
+   "bt0714": [
+    87,
+    130
+   ],
+   "bt1521": [
+    107,
+    165
+   ],
+   "c25": [
+    16,
+    27
+   ],
+   "lv": [
+    4,
+    7
+   ]
+  },
+  {
+   "name": "fav & line exactly 3 & move<2 with",
+   "bt": [
+    93,
+    149
+   ],
+   "bt0714": [
+    66,
+    92
+   ],
+   "bt1521": [
+    27,
+    57
+   ],
+   "c25": [
+    4,
+    8
+   ],
+   "lv": [
+    0,
+    0
+   ]
+  },
+  {
+   "name": "div & outdoor & move>=2",
+   "bt": [
+    214,
+    347
+   ],
+   "bt0714": [
+    112,
+    172
+   ],
+   "bt1521": [
+    102,
+    175
+   ],
+   "c25": [
+    8,
+    13
+   ],
+   "lv": [
+    4,
+    4
+   ]
+  },
+  {
+   "name": "spread<=3",
+   "bt": [
+    773,
+    1384
+   ],
+   "bt0714": [
+    414,
+    724
+   ],
+   "bt1521": [
+    359,
+    660
+   ],
+   "c25": [
+    53,
+    101
+   ],
+   "lv": [
+    21,
+    29
+   ]
+  },
+  {
+   "name": "spread<=3 & outdoor",
+   "bt": [
+    572,
+    1035
+   ],
+   "bt0714": [
+    311,
+    547
+   ],
+   "bt1521": [
+    261,
+    488
+   ],
+   "c25": [
+    32,
+    63
+   ],
+   "lv": [
+    20,
+    26
+   ]
+  },
+  {
+   "name": "spread<=3 & Sun-early",
+   "bt": [
+    417,
+    732
+   ],
+   "bt0714": [
+    231,
+    394
+   ],
+   "bt1521": [
+    186,
+    338
+   ],
+   "c25": [
+    25,
+    48
+   ],
+   "lv": [
+    15,
+    19
+   ]
+  }
+ ],
+ "both_halves": {
+  "both_real": 96,
+  "both_null_mean": 62.57666666666667,
+  "both_null_p95": 90.0,
+  "both_null_max": 140,
+  "subsets": 6752,
+  "ok": 6139
+ }
+}
