@@ -116,23 +116,41 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                       "ppick": r.get("proj_pick"), "pver": r.get("proj_version"), "pflags": r.get("proj_flags"),
                       "hs": r.get("home_score"), "as": r.get("away_score"), "res": g.get("result"), "pres": pres,
                       "xp": r.get("proj_why"), "hy": hy, "hysrc": hysrc, "hres": _result_char(g.get("hybrid"))})
+    # Week 6 games a tracked model has no live pick for are filled from the backtest (engine.picks.curve, 'bt'), so the
+    # standings compare every model on the same games, as the Season Drive chips do. The official pick is never filled.
+    fill = {}
+    for g in (curve or {}).get("games", []):
+        if g.get("kind") == "backtest":
+            continue
+        for key in g.get("bt", []):
+            r = (g.get("d") or {}).get(key)
+            if r:
+                fw, fl = fill.get(key, (0, 0))
+                fill[key] = (fw + (r > 0), fl + (r < 0))
+
+    def row(label: str, key: str, w: int, l_: int, note: str | None = None) -> dict:
+        fw, fl = fill.get(key, (0, 0))
+        out = {"label": label, "W": w + fw, "L": l_ + fl}
+        if fw + fl:
+            note = f"incl. week 6 backtest {fw}-{fl} (live {w}-{l_})" + (f"; {note}" if note else "")
+        if note:
+            out["note"] = note
+        return out
+
     models = [{"label": "Official pick", "W": live.get("W", 0), "L": live.get("L", 0)}]
-    for label, v in (("Team-only projection", V1), ("Player projection", V3)):
+    for label, v, key in (("Team-only projection", V1, "v1"), ("Player projection", V3, "v3")):
         m = (live.get("projection_models") or {}).get(v)
         if m:
-            models.append({"label": label, "W": m["W"], "L": m["L"]})
+            models.append(row(label, key, m["W"], m["L"]))
     if live.get("hybrid"):
         h = live["hybrid"]
-        models.append({"label": "Hybrid (tracked)", "W": h["W"], "L": h["L"],
-                       "note": f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"})
+        models.append(row("Hybrid (tracked)", "hybrid", h["W"], h["L"],
+                          f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"))
     k = live.get("shadow_keynum") or {}
     if k.get("W", 0) + k.get("L", 0):
-        # Tracked like the others, graded on the games it picked: it makes no pick without a market line.
-        skipped = live.get("N", 0) - k["W"] - k["L"]
-        models.append({"label": "Key-number (tracked)", "W": k["W"], "L": k["L"],
-                       "note": f"no pick on {skipped} games (no market line)" if skipped > 0 else
-                               f"differs {k['disagreements']}: key-number right {k['keynum_wins_in_disagreements']}, "
-                               f"pick right {k['disagreements'] - k['keynum_wins_in_disagreements']}"})
+        models.append(row("Key-number (tracked)", "keynum", k["W"], k["L"],
+                          f"differs {k['disagreements']}: key-number right {k['keynum_wins_in_disagreements']}, "
+                          f"pick right {k['disagreements'] - k['keynum_wins_in_disagreements']}"))
     nxt = min(upcoming) if upcoming else None
     from engine.picks.season import MODELS as _SM
     data = json.dumps({"flips": flips or {}, "slate": slate or {}, "loss_review": loss_review or {}, "tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,

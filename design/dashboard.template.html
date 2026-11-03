@@ -666,7 +666,7 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
   </section>
 
   <section id="models" aria-label="Model standings">
-    <div class="head"><h2>Model standings</h2><span class="k">Live games · only the official pick counts</span></div>
+    <div class="head"><h2>Model standings</h2><span class="k">Live games, with the week 6 backtest where a model had no pick · only the official pick counts</span></div>
     <div class="pane"><div class="tally" id="standings" role="table" aria-label="Model records"></div></div>
   </section>
 
@@ -1163,7 +1163,7 @@ setLive(liveData);
 /* Weeks: one dot per graded game, in game order. New results since your last visit start gray and pop in. */
 (function () {
   const c = D.curve, by = new Map(), liveWk = new Set(((c && c.games) || []).filter(g => g.kind !== "backtest").map(g => g.week));
-  const WT = D.season_tab.filter(w => w.kind !== "backtest" || !liveWk.has(w.week));   // a week 6 backtest fill row is not an official week
+  const WT = D.season_tab.filter(w => w.kind === "live" || (w.kind === "backtest" && !liveWk.has(w.week)));   // week 6 backtest and fill rows are not official weeks
   ((c && c.games) || []).forEach(g => { if (g.kind === "backtest" && liveWk.has(g.week)) return; if (!by.has(g.week)) by.set(g.week, { kind: g.kind, items: [] }); by.get(g.week).items.push({ id: g.id, r: (g.d || {}).official }); });
   const ok = WT.length && WT.every(w => {
     const b = by.get(w.week); if (!b) return false;
@@ -1384,12 +1384,12 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
   const SM = D.season_models || [], ST = D.season_tab || []; if (!SM.length || !ST.length) return;
   const cell = rec => { if (!rec) return '<td class="r">—</td>'; const [w, l] = rec, c = w > l ? "pos" : w < l ? "neg" : ""; return `<td class="r ${c}">${w}–${l}</td>`; };
   const sum = rows => SM.map(([k]) => rows.reduce((a, r) => { const x = r.rec[k]; return x ? [a[0] + x[0], a[1] + x[1]] : a; }, [0, 0]));
-  const live = ST.filter(r => r.kind !== "backtest");
+  const live = ST.filter(r => r.kind !== "backtest");   // live weeks plus the week 6 fill (backtest for live games a model had no pick for)
   $("#season-tab").className = "gridt";
   $("#season-tab").innerHTML = `<thead><tr><th>Week</th>${SM.map(([, l]) => `<th class="r">${esc(l)}</th>`).join("")}</tr></thead><tbody>` +
-    ST.map(r => `<tr class="${r.kind === "backtest" ? "bt" : ""}"><td>${r.week}${r.kind === "backtest" ? ' <span class="tag">backtest</span>' : ""}</td>${SM.map(([k]) => cell(r.rec[k])).join("")}</tr>`).join("") +
+    ST.map(r => `<tr class="${r.kind !== "live" ? "bt" : ""}"><td>${r.week}${r.kind === "backtest" ? ' <span class="tag">backtest</span>' : r.kind === "fill" ? ' <span class="tag">backtest fill</span>' : ""}</td>${SM.map(([k]) => cell(r.rec[k])).join("")}</tr>`).join("") +
     `<tr class="tot"><td>Live total</td>${sum(live).map(cell).join("")}</tr><tr class="tot bt"><td>With backtest</td>${sum(ST).map(cell).join("")}</tr></tbody>`;
-  $("#season-note").textContent = "Wins–losses against the pool line, green above .500 and red below. Backtest weeks (faded) were not picked live: each model was re-run as it would have been at lock on the real pool lines, so only live weeks count toward the record. Player (v3) skips games where the injury report was not out at the pick. The week 6 backtest row fills games where a model had no live pick (ARI@LA had no pick at all; nine games had no market line at lock), so every model is compared on the same week 6 games.";
+  $("#season-note").textContent = "Wins–losses against the pool line, green above .500 and red below. Backtest weeks (faded) were not picked live: each model was re-run as it would have been at lock on the real pool lines, so only live weeks count toward the record. Player (v3) skips games where the injury report was not out at the pick. The week 6 “backtest fill” row covers the nine live games where Key-number, v1 or v3 had no pick (no market line at lock); it counts in the live total so every model is compared on the same games, as in the chips. ARI@LA had no pick at all and sits in the week 6 backtest row.";
 })();
 
 $("#foot").textContent = `Week ${D.week}, ${D.season}. Data as of ${D.updated}.`;
