@@ -35,3 +35,20 @@ def test_live_games_use_each_models_graded_pick(monkeypatch):
     assert {k: v[0] for k, v in out["cum"].items()} == {"official": 1, "hybrid": -1, "v1": 1, "v3": 0, "keynum": 1,
                                                         "favorite": 1, "home": 1}
     assert "v3" not in out["games"][0]["d"] and out["games"][0]["kind"] == "live"
+
+
+def test_week6_fill_marks_models_without_a_live_pick(monkeypatch):
+    k = dt.datetime(2026, 10, 18, 17, tzinfo=dt.timezone.utc)
+    sched = pl.DataFrame({"game_id": ["g1"], "season": [2026], "week": [6], "kickoff_utc": [k], "home_team": ["AAA"],
+                          "away_team": ["BBB"], "home_score": [20], "away_score": [10], "result": [10]})
+    monkeypatch.setattr(curve.league_lines, "load", lambda: [{"game_id": "g1", "spread": "-3.5"}])
+    monkeypatch.setattr(curve.store, "read_rows", lambda p: [{"game_id": "g1", "pick_team": "BBB"}])
+    monkeypatch.setattr(curve, "_backtest", lambda s: {})
+    monkeypatch.setattr(curve, "fill", lambda s: {"g1": {"official": "AAA", "hybrid": "AAA", "v1": "AAA", "v3": "BBB",
+                                                         "keynum": "AAA"}})
+    graded = [{"game_id": "g1", "hybrid": "BBB L", "shadow_pick": "", "proj_proj-poisson-v1": ""}]
+    out = curve.build(sched, 2026, graded)                           # home covered; the live picks keep their result
+    g = out["games"][0]
+    assert g["kind"] == "live" and sorted(g["bt"]) == ["keynum", "v1", "v3"]
+    assert g["d"]["official"] == -1 and g["d"]["hybrid"] == -1
+    assert g["d"]["keynum"] == 1 and g["d"]["v1"] == 1 and g["d"]["v3"] == -1

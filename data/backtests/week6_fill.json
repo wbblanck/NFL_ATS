@@ -1,0 +1,125 @@
+{
+ "source": "HYPOTHETICAL week 6 backtest for games a model has no lock-time pick for: ARI@LA (no pick row) and the nine no-market games of 2026-10-18 (official fell back to always-away). Pinnacle line from OddsPapi history 20 min before kickoff (docs/missed_picks_report.md, data/hypothetical/missed_picks_2026-10-20.csv); Key-number fit as of 24 h before kickoff; Player (v3) uses injury data as downloaded later, so it is approximate. Graded against the pool line. Used only to fill the dashboard's model comparisons where a model has no live pick; never part of the official or live record.",
+ "games": [
+  {
+   "game_id": "2026_06_ARI_LA",
+   "week": 6,
+   "group": "no_row",
+   "line": -13.5,
+   "covered": "ARI",
+   "official": "ARI",
+   "hybrid": "ARI",
+   "v1": "ARI",
+   "v3": "LA",
+   "keynum": "ARI"
+  },
+  {
+   "game_id": "2026_06_CHI_ATL",
+   "week": 6,
+   "group": "no_market",
+   "line": 3.5,
+   "covered": "CHI",
+   "official": "ATL",
+   "hybrid": "ATL",
+   "v1": "ATL",
+   "v3": "ATL",
+   "keynum": "ATL"
+  },
+  {
+   "game_id": "2026_06_BAL_CLE",
+   "week": 6,
+   "group": "no_market",
+   "line": 4.5,
+   "covered": "CLE",
+   "official": "CLE",
+   "hybrid": "CLE",
+   "v1": "CLE",
+   "v3": "CLE",
+   "keynum": "CLE"
+  },
+  {
+   "game_id": "2026_06_TEN_IND",
+   "week": 6,
+   "group": "no_market",
+   "line": -6.5,
+   "covered": "TEN",
+   "official": "TEN",
+   "hybrid": "IND",
+   "v1": "IND",
+   "v3": "IND",
+   "keynum": "TEN"
+  },
+  {
+   "game_id": "2026_06_NYJ_NE",
+   "week": 6,
+   "group": "no_market",
+   "line": -7.5,
+   "covered": "NYJ",
+   "official": "NYJ",
+   "hybrid": "NYJ",
+   "v1": "NYJ",
+   "v3": "NYJ",
+   "keynum": "NYJ"
+  },
+  {
+   "game_id": "2026_06_NO_NYG",
+   "week": 6,
+   "group": "no_market",
+   "line": -1.5,
+   "covered": "NO",
+   "official": "NO",
+   "hybrid": "NO",
+   "v1": "NYG",
+   "v3": "NYG",
+   "keynum": "NO"
+  },
+  {
+   "game_id": "2026_06_CAR_PHI",
+   "week": 6,
+   "group": "no_market",
+   "line": -1.5,
+   "covered": "CAR",
+   "official": "CAR",
+   "hybrid": "CAR",
+   "v1": "CAR",
+   "v3": "CAR",
+   "keynum": "CAR"
+  },
+  {
+   "game_id": "2026_06_PIT_TB",
+   "week": 6,
+   "group": "no_market",
+   "line": 2.5,
+   "covered": "PIT",
+   "official": "PIT",
+   "hybrid": "TB",
+   "v1": "TB",
+   "v3": "PIT",
+   "keynum": "PIT"
+  },
+  {
+   "game_id": "2026_06_LAC_KC",
+   "week": 6,
+   "group": "no_market",
+   "line": -8.5,
+   "covered": "KC",
+   "official": "LAC",
+   "hybrid": "LAC",
+   "v1": "LAC",
+   "v3": "LAC",
+   "keynum": "LAC"
+  },
+  {
+   "game_id": "2026_06_BUF_LV",
+   "week": 6,
+   "group": "no_market",
+   "line": 5.5,
+   "covered": "LV",
+   "official": "LV",
+   "hybrid": "LV",
+   "v1": "BUF",
+   "v3": "BUF",
+   "keynum": "LV"
+  }
+ ]
+}

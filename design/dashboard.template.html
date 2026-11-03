@@ -1068,7 +1068,9 @@ setLive(liveData);
   const liveNetOf = k => c.games.reduce((a, g) => a + (g.kind === "backtest" ? 0 : ((g.d || {})[k] || 0)), 0);
   // Live W-L and games graded per series: a model that made no pick on a game (no market line, no injury report) has fewer games.
   const liveCnt = k => { const f = k === "underdog" ? "favorite" : k; let w = 0, l = 0; c.games.forEach(g => { if (g.kind === "backtest") return; const r = (g.d || {})[f]; if (r > 0) w++; else if (r < 0) l++; }); return k === "underdog" ? [l, w] : [w, l]; };
-  const liveWL = k => { const [w, l] = liveCnt(k); return `Live: ${w}-${l} over ${w + l} of ${nLive} games`; };
+  const fillCnt = k => { let w = 0, l = 0; c.games.forEach(g => { if (g.kind === "backtest" || !(g.bt || []).includes(k)) return; const r = (g.d || {})[k]; if (r > 0) w++; else if (r < 0) l++; }); return [w, l]; };
+  const liveWL = k => { const [w, l] = liveCnt(k), [fw, fl] = k === "underdog" ? [0, 0] : fillCnt(k);
+    return fw + fl ? `${w - fw}-${l - fl} live + ${fw}-${fl} week 6 backtest = ${w}-${l} over ${w + l} of ${nLive} games` : `Live: ${w}-${l} over ${w + l} of ${nLive} games`; };
   const lnet = k => k === "underdog" ? -liveNetOf("favorite") : liveNetOf(k);
   const sw = (col, d, w) => `<svg viewBox="0 0 22 6" aria-hidden="true"><line x1="0" x2="22" y1="3" y2="3" stroke="${col}" stroke-width="${Math.max(2, w)}"${d ? ` stroke-dasharray="${d}"` : ""}/></svg>`;
   const GN = 200, rng = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
@@ -1124,7 +1126,7 @@ setLive(liveData);
     const show = i => {
       const gm = c.games[i], px = X(i), pxp = px / Wd * svg.getBoundingClientRect().width;
       cx.removeAttribute("hidden"); cx.setAttribute("x1", px); cx.setAttribute("x2", px);
-      tip.innerHTML = `<b>W${gm.week} · ${esc(gm.label)}</b>` + vis.map(([k, l, col]) => `<div class="tr2"><span><i style="background:${col}"></i>${esc(l)}</span><b style="display:inline;margin:0">${sg(c.cum[k][i])}</b></div>`).join("");
+      tip.innerHTML = `<b>W${gm.week} · ${esc(gm.label)}</b>` + vis.map(([k, l, col]) => `<div class="tr2"><span><i style="background:${col}"></i>${esc(l)}${(gm.bt || []).includes(k) ? " (backtest)" : ""}</span><b style="display:inline;margin:0">${sg(c.cum[k][i])}</b></div>`).join("");
       tip.hidden = false; const tw = tip.offsetWidth; tip.style.left = Math.max(0, Math.min(svg.getBoundingClientRect().width - tw, pxp - tw / 2)) + "px";
     };
     const hide = () => { tip.hidden = true; cx.setAttribute("hidden", ""); };
@@ -1149,23 +1151,26 @@ setLive(liveData);
   if (window.ResizeObserver) { let w0 = Wd; new ResizeObserver(es => { const w = Math.floor(es[0].contentRect.width); if (w >= 300 && Math.abs(w - w0) > 8) { w0 = w; draw(); } }).observe($("#curve")); }
   CASCADE.line = delay => { armed = false; startReveal(on.slice(), delay, 1300); };
   const bandOf = m => Math.round(1.96 * Math.sqrt(m));
-  $("#verdict").textContent = `Live games only (${nLive}): official ${sg(lnet("official"))} net wins; a coin-flipper would land within ±${bandOf(nLive)} about 95% of the time, so it is too early to tell skill from luck. The chart also includes ${nBt} backtest games (weeks 1–2, replays): ${sg(fin("official"))} over all ${n}.`;
+  $("#verdict").textContent = `Live games only (${nLive}): official ${sg(lnet("official"))} net wins; a coin-flipper would land within ±${bandOf(nLive)} about 95% of the time, so it is too early to tell skill from luck. The chart also includes ${nBt} backtest games (weeks 1–2 replays and missed locks): ${sg(fin("official"))} over all ${n}.`;
   const short = S.map(s => s[0]).filter(k => k !== "underdog" && liveCnt(k).reduce((a, b) => a + b, 0) < nLive);
-  $("#games-note").textContent = short.length ? "Games graded (of " + nLive + "): " + short.map(k => `${S.find(s => s[0] === k)[1]} ${liveCnt(k).reduce((a, b) => a + b, 0)}`).join(", ") + ". Those models made no pick on the rest, so net wins are over fewer games." : "";
+  const filled = S.map(s => s[0]).filter(k => k !== "underdog" && fillCnt(k).reduce((a, b) => a + b, 0));
+  $("#games-note").textContent = (filled.length ? "Week 6 backtest fills games a model had no live pick for (no market line at lock): " + filled.map(k => { const [w, l] = fillCnt(k); return `${S.find(s => s[0] === k)[1]} ${w}–${l}`; }).join(", ") + ". Hypothetical, counted in the chips and lines but not in the record. " : "")
+    + (short.length ? "Games graded (of " + nLive + "): " + short.map(k => `${S.find(s => s[0] === k)[1]} ${liveCnt(k).reduce((a, b) => a + b, 0)}`).join(", ") + ". Those models made no pick on the rest, so net wins are over fewer games." : "");
   if (c.cum.underdog) { const u = lnet("underdog"), inb = Math.abs(u) <= bandOf(nLive);
-    $("#baseline-note").textContent = `Chip numbers are live net wins. Always the underdog is ${sg(u)} to the official ${sg(lnet("official"))} over the same ${nLive} live games, ${inb ? "inside" : "outside"} the ±${bandOf(nLive)} coin-flip band. It is a no-skill rule, so a lead like this over a few dozen games is luck-sized, not a better strategy.`; }
+    $("#baseline-note").textContent = `Chip numbers are live net wins${filled.length ? ", with the week 6 backtest where a model had no pick" : ""}. Always the underdog is ${sg(u)} to the official ${sg(lnet("official"))} over the same ${nLive} live games, ${inb ? "inside" : "outside"} the ±${bandOf(nLive)} coin-flip band. It is a no-skill rule, so a lead like this over a few dozen games is luck-sized, not a better strategy.`; }
 })();
 
 /* Weeks: one dot per graded game, in game order. New results since your last visit start gray and pop in. */
 (function () {
-  const c = D.curve, by = new Map();
-  ((c && c.games) || []).forEach(g => { if (!by.has(g.week)) by.set(g.week, { kind: g.kind, items: [] }); by.get(g.week).items.push({ id: g.id, r: (g.d || {}).official }); });
-  const ok = D.season_tab.length && D.season_tab.every(w => {
+  const c = D.curve, by = new Map(), liveWk = new Set(((c && c.games) || []).filter(g => g.kind !== "backtest").map(g => g.week));
+  const WT = D.season_tab.filter(w => w.kind !== "backtest" || !liveWk.has(w.week));   // a week 6 backtest fill row is not an official week
+  ((c && c.games) || []).forEach(g => { if (g.kind === "backtest" && liveWk.has(g.week)) return; if (!by.has(g.week)) by.set(g.week, { kind: g.kind, items: [] }); by.get(g.week).items.push({ id: g.id, r: (g.d || {}).official }); });
+  const ok = WT.length && WT.every(w => {
     const b = by.get(w.week); if (!b) return false;
     return b.items.filter(x => x.r > 0).length === w.rec.official[0] && b.items.filter(x => x.r < 0).length === w.rec.official[1];
   });
   const isNew = (kind, id) => !REDUCED && kind !== "backtest" && (!PREV.ids || !PREV.ids.has(id));
-  $("#weeks").innerHTML = D.season_tab.map(w => {
+  $("#weeks").innerHTML = WT.map(w => {
     const [a, b] = w.rec.official, bk = by.get(w.week);
     const dots = ok ? bk.items.filter(x => x.r).map(x => `<i class="${x.r < 0 ? "x" : ""}${isNew(bk.kind, x.id) ? " nw" : ""}"></i>`).join("")
                     : "<i></i>".repeat(a) + '<i class="x"></i>'.repeat(b);
@@ -1384,7 +1389,7 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
   $("#season-tab").innerHTML = `<thead><tr><th>Week</th>${SM.map(([, l]) => `<th class="r">${esc(l)}</th>`).join("")}</tr></thead><tbody>` +
     ST.map(r => `<tr class="${r.kind === "backtest" ? "bt" : ""}"><td>${r.week}${r.kind === "backtest" ? ' <span class="tag">backtest</span>' : ""}</td>${SM.map(([k]) => cell(r.rec[k])).join("")}</tr>`).join("") +
     `<tr class="tot"><td>Live total</td>${sum(live).map(cell).join("")}</tr><tr class="tot bt"><td>With backtest</td>${sum(ST).map(cell).join("")}</tr></tbody>`;
-  $("#season-note").textContent = "Wins–losses against the pool line, green above .500 and red below. Backtest weeks (faded) were not picked live: each model was re-run as it would have been at lock on the real pool lines, so only live weeks count toward the record. Player (v3) skips games where the injury report was not out at the pick.";
+  $("#season-note").textContent = "Wins–losses against the pool line, green above .500 and red below. Backtest weeks (faded) were not picked live: each model was re-run as it would have been at lock on the real pool lines, so only live weeks count toward the record. Player (v3) skips games where the injury report was not out at the pick. The week 6 backtest row fills games where a model had no live pick (ARI@LA had no pick at all; nine games had no market line at lock), so every model is compared on the same week 6 games.";
 })();
 
 $("#foot").textContent = `Week ${D.week}, ${D.season}. Data as of ${D.updated}.`;
