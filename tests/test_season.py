@@ -24,6 +24,7 @@ def test_week6_fill_only_for_models_without_a_live_pick(monkeypatch):
     graded = [{"game_id": "g1", "season": "2026", "week": "6", "result": "W", "shadow_result": "",
                "proj_proj-poisson-v1": "", "proj_proj-players-v3": "", "hybrid": "NO W"}]
     t = season.build(graded, 2026)
-    assert [(w["week"], w["kind"]) for w in t] == [(6, "backtest"), (6, "live")]
-    assert t[0]["rec"] == {"official": [1, 0], "keynum": [2, 0], "v3": [0, 2], "v1": [1, 1], "hybrid": [1, 0]}
-    assert t[1]["rec"] == {"official": [1, 0], "keynum": [0, 0], "v3": [0, 0], "v1": [0, 0], "hybrid": [1, 0]}
+    assert [(w["week"], w["kind"]) for w in t] == [(6, "backtest"), (6, "fill"), (6, "live")]
+    assert t[0]["rec"] == {"official": [1, 0], "keynum": [1, 0], "v3": [0, 1], "v1": [1, 0], "hybrid": [1, 0]}
+    assert t[1]["rec"] == {"official": [0, 0], "keynum": [1, 0], "v3": [0, 1], "v1": [0, 1], "hybrid": [0, 0]}
+    assert t[2]["rec"] == {"official": [1, 0], "keynum": [0, 0], "v3": [0, 0], "v1": [0, 0], "hybrid": [1, 0]}
