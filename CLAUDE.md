@@ -46,6 +46,10 @@ Against-the-spread pick engine for the CBS "Bonsai Pool 2026". The goal is to wi
 - OddsPapi (secret `ODDS_PAPI`, passed as env `ODDSPAPI_API_KEY`; 250 requests a month, maybe shared with kmodel): read the `oddspapi-api` skill (`.claude/skills/oddspapi-api/SKILL.md`) first. Not used by the pick pipeline. NFL ids, spread markets and sign verified 2026-10-18 (skill has details).
 - As of 2026-10-15, the odds provider's feed has often lacked Pinnacle (since 2026-10-08), so most picks use the median. Check the `MARKET_MEDIAN_FALLBACK` share of recent rows in `data/predictions/predictions.csv` before assuming this still holds.
 
+## Game simulator (research only)
+
+- `src/engine/gamesim/`: play-by-play simulator and Elo baseline ported from nfl-betting-model (2026-11-05). Read `docs/HANDOFF_game_simulator.md` before using it: constants are frozen, only 2022-2025 are out of sample, and the hybrid-with-simulator test still needs its pre-registration. Not used by the pick pipeline.
+
 ## Branches
 
 - `claude/nfl-ats-league-engine-q5vkbf`: research (FTN shadow model, bettable record, skip filters). Unmerged, and conflicts with `main` (its Pinnacle retry is already on `main`). Remaining live-pipeline changes (strength tag in ntfy alerts, bettable/strength dashboard sections) are on hold by owner decision 2026-10-29. Holds two one-off probe workflows (`parlay-pinnacle-probe.yml`, `openmarkets-auth-probe.yml`) to remove before any merge.
