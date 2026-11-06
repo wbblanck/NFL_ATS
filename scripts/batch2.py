@@ -16,6 +16,7 @@ from pathlib import Path
 import numpy as np
 import polars as pl
 
+from engine.data import league_lines
 from engine.gamesim import elo as EL, engine as E, personnel as P, run as R, teams as TM
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -106,7 +107,8 @@ def forecasts(d: Path, season: int, weeks) -> pl.DataFrame:
     er = EL.run(eg, ek["k"], ek["h"], ek["c"]).join(EL.scoring_level(eg), on="game_id")
     mh, ma = EL.means(er["d"], er["level"], ek["b"])
     er = er.select("game_id", pl.Series("elo", mh - ma))
-    lines = pl.read_csv(ROOT / "data" / "lines" / "league_lines.csv").select("game_id", pl.col("spread").alias("pool"))
+    lines = pl.DataFrame([{"game_id": r["game_id"], "pool": float(r["spread"]), "at": r["recorded_at"]}
+                          for r in league_lines.load()]).sort("at").unique("game_id", keep="last").drop("at")
     picks = pl.read_csv(ROOT / "data" / "predictions" / "predictions.csv", infer_schema_length=0) \
         .filter(pl.col("supersedes").is_null() | (pl.col("supersedes") == "")) \
         .select("game_id", "pick").unique("game_id", keep="last")
