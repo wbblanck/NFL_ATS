@@ -50,3 +50,13 @@ About 9 weeks × 14-15 games ≈ 130 games.
 Weeks 1-9 and 10-18 of 2026: Elo's, the simulator's and the average's record against the pool line and margin MAE;
 agreement between Elo's side and the official pick; the pool line's own MAE. 2022-2025: the average's MAE next to
 Elo's (9.964) and the simulator's (9.983), plus the per-game SDs used for power above.
+
+## Addendum after the known-answer checks (2026-11-06, before any week 10 game)
+Check 3 failed as written: with only nine week clusters, the week-clustered bootstrap put a no-edge 50% record above
+50% in 18 of 200 synthetic seasons (9%), not about 5%. Changed before any test data exists:
+- **A2** uses an exact one-sided binomial test of the cover count against 50% (games as units; Clopper-Pearson lower
+  bound reported at the Holm level). In 200 null seasons of 130 picks it crossed in no more than 7%, as the check
+  requires (the exact test is valid by construction).
+- **C1** uses a game-level bootstrap (2,000 draws) for each paired difference; in 200 null samples of 130 games it
+  crossed in no more than 8%.
+Everything else stands.
