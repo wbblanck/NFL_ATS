@@ -21,8 +21,8 @@ dependencies = [
 
 [project.optional-dependencies]
 # Modeling stack (Phase 2+). Not needed for Phase 0/1 capture jobs.
-model = ["scipy>=1.11", "statsmodels>=0.14", "scikit-learn>=1.4"]
-dev = ["pytest>=8"]
+model = ["scipy>=1.11", "statsmodels>=0.14", "scikit-learn>=1.4", "xgboost>=2.0"]
+dev = ["pytest>=8", "xgboost>=2.0"]  # xgboost: the ported batch 4 model and its tests
 
 [tool.setuptools.packages.find]
 where = ["src"]
