@@ -49,6 +49,7 @@ Against-the-spread pick engine for the CBS "Bonsai Pool 2026". The goal is to wi
 ## Game simulator (research only)
 
 - `src/engine/gamesim/`: play-by-play simulator and Elo baseline ported from nfl-betting-model (2026-11-05). Read `docs/HANDOFF_game_simulator.md` before using it: constants are frozen, only 2022-2025 are out of sample, and the hybrid-with-simulator test still needs its pre-registration. Not used by the pick pipeline.
+- Batch 3-5 models from nfl-betting-model (TD/FG, Kalman, XGBoost, S1/K1 in `src/engine/gamesim/`) were ported 2026-11-08 with frozen constants; `docs/batch6_preregistration.md` tests Elo + expected-starter QB and XGBoost against the pool line on 2026 weeks 10-18, run once after week 18 (`python scripts/batch6.py test <cache>`, needs `pip install -e .[model]` for xgboost).
 
 ## Branches
 
