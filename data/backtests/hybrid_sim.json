@@ -1,0 +1,219 @@
+{
+ "test_2022_2024": {
+  "games": 426,
+  "low_move_games": 157,
+  "live_on_low_move": {
+   "W": 84,
+   "N": 157
+  },
+  "live_all": {
+   "W": 242,
+   "N": 426
+  },
+  "sim": {
+   "N": 157,
+   "rule_W": 81,
+   "base_W": 84,
+   "differ": 81,
+   "rule_only": 39,
+   "base_only": 42,
+   "z": -0.3333333333333333,
+   "p_one_sided": 0.6305586598182363,
+   "pass_z_1645": false,
+   "model_on_low_move": {
+    "W": 81,
+    "N": 157
+   },
+   "hybrid_all": {
+    "W": 239,
+    "N": 426
+   },
+   "by_season": {
+    "2022": {
+     "N": 48,
+     "rule_W": 29,
+     "base_W": 23,
+     "differ": 24,
+     "rule_only": 15,
+     "base_only": 9,
+     "z": 1.2247448713915892,
+     "p_one_sided": 0.11033568095992338,
+     "model_W": 29,
+     "live_W": 23,
+     "low_move_games": 48
+    },
+    "2023": {
+     "N": 53,
+     "rule_W": 24,
+     "base_W": 36,
+     "differ": 28,
+     "rule_only": 8,
+     "base_only": 20,
+     "z": -2.2677868380553634,
+     "p_one_sided": 0.9883288989935546,
+     "model_W": 24,
+     "live_W": 36,
+     "low_move_games": 53
+    },
+    "2024": {
+     "N": 56,
+     "rule_W": 28,
+     "base_W": 25,
+     "differ": 29,
+     "rule_only": 16,
+     "base_only": 13,
+     "z": 0.5570860145311556,
+     "p_one_sided": 0.28873433121364983,
+     "model_W": 28,
+     "live_W": 25,
+     "low_move_games": 56
+    }
+   }
+  },
+  "elo": {
+   "N": 157,
+   "rule_W": 86,
+   "base_W": 84,
+   "differ": 78,
+   "rule_only": 40,
+   "base_only": 38,
+   "z": 0.22645540682891913,
+   "p_one_sided": 0.41042361927096427,
+   "pass_z_1645": false,
+   "model_on_low_move": {
+    "W": 86,
+    "N": 157
+   },
+   "hybrid_all": {
+    "W": 244,
+    "N": 426
+   },
+   "by_season": {
+    "2022": {
+     "N": 48,
+     "rule_W": 30,
+     "base_W": 23,
+     "differ": 23,
+     "rule_only": 15,
+     "base_only": 8,
+     "z": 1.4596008983995234,
+     "p_one_sided": 0.07219989610653571,
+     "model_W": 30,
+     "live_W": 23,
+     "low_move_games": 48
+    },
+    "2023": {
+     "N": 53,
+     "rule_W": 22,
+     "base_W": 36,
+     "differ": 28,
+     "rule_only": 7,
+     "base_only": 21,
+     "z": -2.6457513110645903,
+     "p_one_sided": 0.9959245142032487,
+     "model_W": 22,
+     "live_W": 36,
+     "low_move_games": 53
+    },
+    "2024": {
+     "N": 56,
+     "rule_W": 34,
+     "base_W": 25,
+     "differ": 27,
+     "rule_only": 18,
+     "base_only": 9,
+     "z": 1.7320508075688772,
+     "p_one_sided": 0.04163225833177522,
+     "model_W": 34,
+     "live_W": 25,
+     "low_move_games": 56
+    }
+   }
+  }
+ },
+ "desc_2025": {
+  "games": 194,
+  "low_move_games": 54,
+  "live_on_low_move": {
+   "W": 26,
+   "N": 54
+  },
+  "live_all": {
+   "W": 103,
+   "N": 194
+  },
+  "sim": {
+   "N": 54,
+   "rule_W": 35,
+   "base_W": 26,
+   "differ": 37,
+   "rule_only": 23,
+   "base_only": 14,
+   "z": 1.4795908857482156,
+   "p_one_sided": 0.06949123014659278,
+   "pass_z_1645": false,
+   "model_on_low_move": {
+    "W": 35,
+    "N": 54
+   },
+   "hybrid_all": {
+    "W": 112,
+    "N": 194
+   },
+   "by_season": {
+    "2025": {
+     "N": 54,
+     "rule_W": 35,
+     "base_W": 26,
+     "differ": 37,
+     "rule_only": 23,
+     "base_only": 14,
+     "z": 1.4795908857482156,
+     "p_one_sided": 0.06949123014659278,
+     "model_W": 35,
+     "live_W": 26,
+     "low_move_games": 54
+    }
+   }
+  },
+  "elo": {
+   "N": 54,
+   "rule_W": 29,
+   "base_W": 26,
+   "differ": 27,
+   "rule_only": 15,
+   "base_only": 12,
+   "z": 0.5773502691896257,
+   "p_one_sided": 0.28185143082538655,
+   "pass_z_1645": false,
+   "model_on_low_move": {
+    "W": 29,
+    "N": 54
+   },
+   "hybrid_all": {
+    "W": 106,
+    "N": 194
+   },
+   "by_season": {
+    "2025": {
+     "N": 54,
+     "rule_W": 29,
+     "base_W": 26,
+     "differ": 27,
+     "rule_only": 15,
+     "base_only": 12,
+     "z": 0.5773502691896257,
+     "p_one_sided": 0.28185143082538655,
+     "model_W": 29,
+     "live_W": 26,
+     "low_move_games": 54
+    }
+   }
+  }
+ },
+ "test": {
+  "candidate": "sim",
+  "z": -0.3333333333333333,
+  "pass": false
+ }
+}
