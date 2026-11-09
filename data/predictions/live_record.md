@@ -1,16 +1,16 @@
 # Live record vs the league line
 
-Updated 2026-11-08T21:05:19+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+Updated 2026-11-09T01:00:30+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
 
-**44-38** (82 graded), win rate 0.537 ± 0.055 (SE). Pending: 10. Ungradable (no league line recorded): 0. Late picks included: 0.
+**47-45** (92 graded), win rate 0.511 ± 0.052 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
 
 No skill claim is made: fewer than 256 graded games (pre-registered).
 
-Shadow key-number estimator (recorded, not used to pick): 43-30; it disagreed with the live pick 15 times and won 10 of those.
+Shadow key-number estimator (recorded, not used to pick): 45-38; it disagreed with the live pick 16 times and won 10 of those.
 
-Score-projection models (tracked comparisons, not used to pick): proj-players-v3 38-34 (3 excluded: injury statuses not yet published); proj-poisson-v1 42-33.
+Score-projection models (tracked comparisons, not used to pick): proj-players-v3 43-37 (3 excluded: injury statuses not yet published); proj-poisson-v1 47-36.
 
-Hybrid (tracked, docs/hybrid_tracking.md): 45-37; it picked differently from the live pick 17 times: hybrid right 9, live right 8.
+Hybrid (tracked, docs/hybrid_tracking.md): 48-44; it picked differently from the live pick 17 times: hybrid right 9, live right 8.
 
 | Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |
 |---|---|---|---|---|---|---|---|
@@ -95,4 +95,14 @@ Hybrid (tracked, docs/hybrid_tracking.md): 45-37; it picked differently from the
 | 2026 | 8 | 2026_08_CHI_SEA | CHI | -3.5 | 34-17 | W | CHI W |
 | 2026 | 9 | 2026_09_JAX_BAL | BAL | +9.5 | 33-10 | L | BAL L |
 | 2026 | 9 | 2026_09_CIN_ATL | CIN | +3.5 | 34-17 | W | ATL L |
+| 2026 | 9 | 2026_09_DEN_CAR | DEN | +2.5 | 26-21 | W | DEN W |
+| 2026 | 9 | 2026_09_DAL_IND | IND | +6.5 | 27-23 | W | IND W |
+| 2026 | 9 | 2026_09_NYJ_KC | NYJ | -9.5 | 12-35 | L | NYJ L |
 | 2026 | 9 | 2026_09_DET_MIA | MIA | +7.5 | 19-9 | L | MIA L |
+| 2026 | 9 | 2026_09_CLE_NO | NO | -2.5 | 22-23 | L | NO L |
+| 2026 | 9 | 2026_09_NYG_PHI | PHI | +3.5 | 19-11 | L | PHI L |
+| 2026 | 9 | 2026_09_LA_WAS | WAS | +5.5 | 20-13 | L | WAS L |
+| 2026 | 9 | 2026_09_HOU_LAC | HOU | +4.5 | 44-22 | W | LAC L |
+| 2026 | 9 | 2026_09_LV_SF | LV | -9.5 | 17-38 | L | LV L |
+| 2026 | 9 | 2026_09_GB_NE | NE | -2.5 | 45-27 | L | NE L |
+| 2026 | 9 | 2026_09_ARI_SEA | ARI | -10.5 | 3-17 | L | ARI L |
