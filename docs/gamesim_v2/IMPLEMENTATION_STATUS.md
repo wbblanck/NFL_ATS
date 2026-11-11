@@ -16,3 +16,4 @@ Open items: the OL and DB repeat failures (V7) say individual line and coverage 
 Locked: 2022-2025 plays and snapshots. No change to the live pipeline, G1, or recorded picks.
 
 Update 2026-11-11: the game-level lineup test on 2021 failed its preregistered rule (`GAME_LEVEL_2021.md`); recommendation is not to build the drive and game engine on these inputs without a new reason.
+Update 2026-11-11: 2019-2020 development diagnostics (`LINEUP_DEV_2019_2020.md`) point to noisy player estimates, not the snapshots or zero-imputation, as the main limit. Full engine stays on hold per Will.
