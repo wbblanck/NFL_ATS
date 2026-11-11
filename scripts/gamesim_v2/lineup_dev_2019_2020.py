@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import itertools
 import json
+import os
 import math
 from pathlib import Path
 
@@ -18,6 +19,10 @@ FEAT, MAN = ROOT / "data/gamesim_v2/features", ROOT / "data/gamesim_v2/manifests
 LAST, SEASONS, SEED = 2020, (2019, 2020), 7
 THIN = {"pressure": 300, "completion": 150}
 OUTC = {"epa": "n_db", "press": "n_db", "comp": "n_att"}
+
+
+# estimation v2 re-runs this script with other tables: G2_PRES / G2_COMP name the feature files (default = the frozen v1 tables)
+STEM = {"pressure": os.environ.get("G2_PRES", "abilities_pressure"), "completion": os.environ.get("G2_COMP", "abilities_completion")}
 
 
 def load():
@@ -92,7 +97,7 @@ def components(g, d, pos):
     snap = {s: pl.read_parquet(ROOT / f"data/gamesim_v2/snapshots/pregame_players_{s}.parquet").filter(pl.col("p_active") >= 0.5).partition_by("game_id", "team", as_dict=True) for s in SEASONS}
     ab = {}
     for k in ("pressure", "completion"):
-        t = pl.read_parquet(FEAT / f"abilities_{k}.parquet").filter(pl.col("season").is_in(SEASONS) & pl.col("key").str.contains(":"))
+        t = pl.read_parquet(FEAT / f"{STEM[k]}.parquet").filter(pl.col("season").is_in(SEASONS) & pl.col("key").str.contains(":"))
         for s, w, key, b, se, nr in zip(t["season"], t["week"], t["key"], t["beta"], t["se"], t["n_raw"]):
             ab.setdefault((k, s, w), {})[key] = (b, se, nr)
     pos_d = d.select("game_id", "posteam", "defteam", "qb", "offense_players", "defense_players", "season").partition_by("game_id", "posteam", as_dict=True)
@@ -295,7 +300,7 @@ def main():
     for s in SEASONS:
         u = set()
         for k in ("pressure", "completion"):
-            t = pl.read_parquet(FEAT / f"abilities_{k}.parquet").filter((pl.col("season") == s) & pl.col("key").str.contains(":") & (pl.col("n_raw") >= THIN[k]))
+            t = pl.read_parquet(FEAT / f"{STEM[k]}.parquet").filter((pl.col("season") == s) & pl.col("key").str.contains(":") & (pl.col("n_raw") >= THIN[k]))
             u |= set(t["key"].to_list())
         res["players_with_effect_in_lineups_by_season"][str(s)] = len(u)
     var_s = float(np.nanvar(comp_shift / sd_c)) if True else 0
@@ -304,7 +309,7 @@ def main():
                           "sd_completion_shift": float(np.std(comp_shift)), "mean_se_completion_shift": float(np.nanmean(sd_c)),
                           "sd_pressure_shift": float(np.std(pres_shift)), "mean_se_pressure_shift": float(np.nanmean(sd_p))}
     res["corr_components"] = {k: float(np.corrcoef(T[k].to_numpy(), T[k + "_act"].to_numpy())[0, 1]) for k in ("ol", "rush", "qb", "cov", "recv")}
-    (MAN / "lineup_dev_2019_2020.json").write_text(json.dumps(res, indent=1, default=float))
+    (MAN / os.environ.get("G2_OUT", "lineup_dev_2019_2020.json")).write_text(json.dumps(res, indent=1, default=float))
     print(json.dumps({k: res[k] for k in ("team_games", "slot_totals", "players_with_effect_in_lineups_by_season", "reliability", "corr_components")}, indent=1))
     for r in rows:
         if r["scope"] == "pooled" and r["form"] == "cal":
