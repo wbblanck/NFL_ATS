@@ -1,0 +1,15 @@
+{
+  "model_version": "g2-onfield-ridge-v1",
+  "selected_on": "2020 season only (data/gamesim_v2/manifests/dev_grid_2020.json): lowest walk-forward log loss per variant",
+  "population": {"pressure": "regular-season dropbacks 2018+, label was_pressure or sack", "completion": "regular-season pass attempts (no sack or scramble) 2016+, label complete_pass"},
+  "train_from": {"pressure": 2018, "completion": 2016},
+  "variants": {
+    "ctx": {"pressure": {"half_life_days": 365}, "completion": {"half_life_days": 365}},
+    "team": {"pressure": {"half_life_days": 365, "lam_team": 100}, "completion": {"half_life_days": 365, "lam_team": 100}},
+    "player": {"pressure": {"half_life_days": 730, "lam_player": 100}, "completion": {"half_life_days": 730, "lam_player": 100}},
+    "both": {"pressure": {"half_life_days": 730, "lam_player": 100, "lam_team": 100}, "completion": {"half_life_days": 730, "lam_player": 100, "lam_team": 100}}
+  },
+  "ctx_penalty": 0.001,
+  "validation_seasons": [2021],
+  "locked_holdout_seasons": [2022, 2023, 2024, 2025]
+}
