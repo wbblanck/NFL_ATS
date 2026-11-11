@@ -1,9 +1,6 @@
 import shutil
 
-import pytest
-
 from engine.data import league_lines
-from engine.picks.grading import InvalidLeagueLine
 from tests.conftest import REPO
 
 
@@ -18,8 +15,9 @@ def test_whole_number_league_line_rejected(tmp_root):
     p = tmp_root / "data" / "lines" / "league_lines.csv"
     p.parent.mkdir(parents=True)
     p.write_text(",".join(league_lines.FIELDS) + "\n2026_03_NE_JAX,2026,3,JAX,NE,-3.0,JAX,test,x\n")
-    with pytest.raises(InvalidLeagueLine):
-        league_lines.load()
+    assert league_lines.load() == []                        # skipped, not raised
+    ls = league_lines.load_checked()
+    assert ls.status("2026_03_NE_JAX") == league_lines.INVALID and "whole-number" in ls.issues[0]["message"]
 
 
 def test_check_against_schedule_and_missing(week3_schedule):

@@ -370,14 +370,15 @@ def main(argv=None) -> int:
         return 0
     if a.cmd == "check-league-lines":
         from engine.data import league_lines
-        rows = league_lines.load()
-        probs = league_lines.check_against_schedule(rows, sched)
-        for p in probs:
-            print("PROBLEM:", p)
+        ls = league_lines.load_checked(sched)
+        rows = list(ls.valid.values())
+        for i in ls.issues:
+            print("INFO:" if i["kind"] in league_lines.INFO_KINDS else "PROBLEM:", league_lines.format_issue(i))
+        probs = ls.problems()
         if a.season and a.week:
             miss = league_lines.missing_games(rows, sched, a.season, a.week)
             print(f"{a.season} week {a.week}: {len(miss)} games missing a league line", *miss, sep="\n  ")
-        print(f"{len(rows)} league lines OK" if not probs else f"{len(probs)} problems")
+        print(f"{len(rows)} league lines OK" if not probs else f"{len(rows)} usable, {len(probs)} problems (rows skipped)")
         return 1 if probs else 0
     if a.cmd == "capture-cbs":
         rows = cbs_lines.capture(sched)

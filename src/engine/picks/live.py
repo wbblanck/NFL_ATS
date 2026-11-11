@@ -4,13 +4,14 @@ from __future__ import annotations
 
 import datetime as dt
 import math
+import sys
 
 import polars as pl
 
 from engine import config
 from engine.data import league_lines, store
 from engine.picks import final
-from engine.picks.grading import Result, grade_league
+from engine.picks.grading import Result, grade_league, is_half_point
 
 MIN_GAMES_FOR_CLAIM = 256
 
@@ -22,24 +23,74 @@ def grade(sched: pl.DataFrame) -> dict:
     return summary
 
 
+def unique_predictions(preds: list[dict]) -> tuple[list[dict], list[dict]]:
+    """One official prediction per game_id: the earliest created_at (file order breaks ties) is kept.
+    Returns (kept, duplicates); a duplicate row is reported and never graded, so it cannot inflate W-L or the
+    256-game count. Rows with `supersedes` set stay excluded, as everywhere else."""
+    kept: dict[str, dict] = {}
+    dups: list[dict] = []
+    for p in sorted((p for p in preds if not p.get("supersedes")), key=lambda p: p.get("created_at") or ""):
+        if p["game_id"] in kept:
+            dups.append({"game_id": p["game_id"], "kept": kept[p["game_id"]]["prediction_id"],
+                         "ignored": p["prediction_id"]})
+        else:
+            kept[p["game_id"]] = p
+    return list(kept.values()), dups
+
+
+def resolve_line(p: dict, lines) -> tuple[float | None, str, dict | None]:
+    """The pool line to grade one prediction against, and where it came from.
+
+    'frozen': the line stored in the prediction when it was made. Never replaced by a later edit of
+    league_lines.csv; if the file now shows a different valid line, that is returned as a mismatch for the
+    report, not used to grade.
+    'file_after_pick': the prediction had no pool line (it was picked without one), so the line recorded
+    afterwards is used, since that is what the pool graded.
+    Returns (line, source, mismatch) with line None when the game cannot be graded (source says why)."""
+    raw = (p.get("league_line") or "").strip()
+    cur = lines.valid.get(p["game_id"])
+    if raw:
+        frozen = float(raw)
+        if not is_half_point(frozen):
+            return None, "frozen_line_invalid", None
+        mm = None
+        if cur is not None and float(cur["spread"]) != frozen:
+            mm = {"game_id": p["game_id"], "frozen": frozen, "file": float(cur["spread"]), "file_line_id": cur["line_id"]}
+        elif cur is None and lines.status(p["game_id"]) == league_lines.CONFLICTING:
+            mm = {"game_id": p["game_id"], "frozen": frozen, "file": None, "file_line_id": "CONFLICT"}
+        return frozen, "frozen", mm
+    if cur is not None:
+        return float(cur["spread"]), "file_after_pick", None
+    return None, {league_lines.INVALID: "invalid_line", league_lines.CONFLICTING: "conflicting_lines"}.get(
+        lines.status(p["game_id"]), "no_line"), None
+
+
 def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
     """The graded summary and one row per graded game, with no file written (the dashboard reads this)."""
-    preds = store.read_rows(final.predictions_path())
-    ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
+    all_preds = store.read_rows(final.predictions_path())
+    preds, dups = unique_predictions(all_preds)
+    lines = league_lines.load_checked(sched)
+    problems = lines.problems()
+    for i in problems:
+        print("LEAGUE LINE PROBLEM, row skipped:", league_lines.format_issue(i), file=sys.stderr)
     scores = {r["game_id"]: r for r in sched.filter(pl.col("result").is_not_null()).select(
         "game_id", "home_score", "away_score").to_dicts()}
     rows, pending, no_line = [], 0, 0
+    ungradable: dict[str, list[str]] = {}
+    mismatches, sources = [], {"frozen": 0, "file_after_pick": 0}
     for p in preds:
-        if p.get("supersedes"):
-            continue
         g = scores.get(p["game_id"])
-        line = ll.get(p["game_id"])
         if g is None:
             pending += 1
             continue
+        line, src, mm = resolve_line(p, lines)
+        if mm:
+            mismatches.append(mm)
         if line is None:
             no_line += 1
+            ungradable.setdefault(src, []).append(p["game_id"])
             continue
+        sources[src] += 1
         res = grade_league(g["home_score"], g["away_score"], line)
         won = (p["pick"] == "home") == (res is Result.HOME_COVER)
         sh = p.get("shadow_pick_keynum") or ""
@@ -47,13 +98,19 @@ def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
         sh_won = None if not sh else ((sh == home) == (res is Result.HOME_COVER))
         rows.append({"season": p["season"], "week": p["week"], "game_id": p["game_id"], "pick": p["pick_team"],
                      "shadow_pick": sh, "shadow_result": "" if sh_won is None else ("W" if sh_won else "L"),
-                     "league_line": line, "score": f"{g['away_score']}-{g['home_score']}",
+                     "league_line": line, "line_source": src, "score": f"{g['away_score']}-{g['home_score']}",
                      "result": "W" if won else "L", "late": "LATE_AFTER_LOCK" in (p["flags"] or "")})
     w = sum(r["result"] == "W" for r in rows); n = len(rows)
     rate = w / n if n else float("nan")
     se = math.sqrt(rate * (1 - rate) / n) if n else float("nan")
     summary = {"W": w, "L": n - w, "N": n, "win_rate": rate, "se": se, "pending": pending,
                "ungradable_no_league_line": no_line,
+               "ungradable_by_reason": ungradable,
+               "duplicate_predictions": dups,
+               "line_reconciliation": {"graded_on_frozen_line": sources["frozen"],
+                                       "graded_on_line_recorded_after_pick": sources["file_after_pick"],
+                                       "frozen_vs_file_mismatches": mismatches},
+               "league_line_problems": [league_lines.format_issue(i) for i in problems],
                "late_picks": sum(r["late"] for r in rows),
                "claim_allowed": n >= MIN_GAMES_FOR_CLAIM}
     dis = [r for r in rows if r["shadow_pick"] and r["shadow_pick"] != r["pick"]]
@@ -86,7 +143,7 @@ def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
     summary["projection_model"] = summary["projection_models"].get("proj-poisson-v1", {"W": 0, "L": 0})
     # Hybrid (tracked, docs/hybrid_tracking.md): live pick on 1+ pt moves, v1's pick otherwise.
     from engine.picks import hybrid
-    by_pred = {p["game_id"]: p for p in preds if not p.get("supersedes")}
+    by_pred = {p["game_id"]: p for p in preds}
     v1 = projs.get("proj-poisson-v1", {})
     hw = hl = h_only = l_only = 0
     for r in rows:
@@ -102,6 +159,25 @@ def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
         r["hybrid_source"] = src
     summary["hybrid"] = {"W": hw, "L": hl, "differ": h_only + l_only, "hybrid_only": h_only, "live_only": l_only}
     return summary, rows
+
+
+def _integrity_note(s: dict) -> str:
+    rec, dups, probs = s["line_reconciliation"], s["duplicate_predictions"], s["league_line_problems"]
+    out = [f"\nGrading integrity: each game is graded once. {rec['graded_on_frozen_line']} graded on the pool line stored in "
+           f"its prediction at pick time; {rec['graded_on_line_recorded_after_pick']} had no pool line at pick time and use "
+           "the line recorded afterwards."]
+    if rec["frozen_vs_file_mismatches"]:
+        out.append("**LINE MISMATCH** (graded on the frozen line; league_lines.csv now differs): " + "; ".join(
+            f"{m['game_id']} frozen {m['frozen']:+.1f}, file {m['file'] if m['file'] is None else format(m['file'], '+.1f')}"
+            for m in rec["frozen_vs_file_mismatches"]) + ".")
+    if dups:
+        out.append("**DUPLICATE PREDICTIONS** (first row graded, the rest ignored): " + "; ".join(
+            f"{d['game_id']}" for d in dups) + ".")
+    if s["ungradable_by_reason"]:
+        out.append("Ungradable by reason: " + "; ".join(f"{k}: {', '.join(v)}" for k, v in s["ungradable_by_reason"].items()) + ".")
+    if probs:
+        out.append("**LEAGUE LINE PROBLEMS** (rows skipped): " + " | ".join(probs))
+    return "\n".join(out)
 
 
 def _write(rows, s):
@@ -123,6 +199,7 @@ def _write(rows, s):
          (f"\nHybrid (tracked, docs/hybrid_tracking.md): {s['hybrid']['W']}-{s['hybrid']['L']}; it picked "
           f"differently from the live pick {s['hybrid']['differ']} times: hybrid right {s['hybrid']['hybrid_only']}, "
           f"live right {s['hybrid']['live_only']}.") if s.get("hybrid") else "",
+         _integrity_note(s),
          "\n| Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |", "|---|---|---|---|---|---|---|---|"]
     L += [f"| {r['season']} | {r['week']} | {r['game_id']} | {r['pick']} | {r['league_line']:+.1f} | {r['score']} | "
           f"{r['result']}{' (late)' if r['late'] else ''} | {r['shadow_pick']} {r['shadow_result']} |" for r in rows]

@@ -78,6 +78,14 @@ def predictions_path():
     return config.path("predictions") / "predictions.csv"
 
 
+FREEZE_FIELDS = ["prediction_id", "game_id", "line_status", "line_id", "spread", "line_source", "line_recorded_at"]
+
+
+def line_freeze_path():
+    """Append-only: which recorded pool line (immutable line_id) each prediction was made against."""
+    return config.path("predictions") / "line_freeze.csv"
+
+
 def existing_game_ids() -> set[str]:
     return {r["game_id"] for r in store.read_rows(predictions_path())}
 
@@ -303,7 +311,10 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
     caps = retry_missing_pinnacle(caps, due, events=events)
     caps = oddspapi_pinnacle_fallback(caps, due, now)
     caps = oddslink_pinnacle_fallback(caps, due, now)
-    ll = {r["game_id"]: float(r["spread"]) for r in league_lines.load()}
+    lines = league_lines.load_checked(sched)
+    for i in lines.problems():
+        print("LEAGUE LINE PROBLEM, row skipped:", league_lines.format_issue(i), file=sys.stderr)
+    ll = lines.spreads()
     cbs = _cbs_frozen()
     dist, period = fit_dist(sched, now)
     tdist = fit_total_dist(sched, now)
@@ -334,6 +345,11 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
             flags.append("LATE_AFTER_LOCK")
         elif mtl > EARLY_PICK_MIN:
             flags.append("EARLY_PICK")
+        line_status = lines.status(g["game_id"])
+        if line_status == league_lines.INVALID:
+            flags.append("LEAGUE_LINE_INVALID")
+        elif line_status == league_lines.CONFLICTING:
+            flags.append("LEAGUE_LINE_CONFLICT")
         if mkt_in is not None and not use_ref:
             flags.append("MARKET_MEDIAN_FALLBACK")
         if use_ref and any(r.get("book") == MARKET_BOOK and r.get("reason") == "oddspapi" for r in rows):
@@ -374,13 +390,27 @@ def run(sched: pl.DataFrame, now: dt.datetime | None = None, window_minutes: int
             "shadow_p_home_keynum": sh_p, "shadow_pick_keynum": sh_pick,
             "market_total": total if total is not None else "", "market_total_books": t_books,
         })
-    store.append_rows(predictions_path(), FIELDS, out)
+    # One official prediction per game: the file is re-checked under a lock at write time. A game already
+    # written by another run is dropped here, so it is neither duplicated nor reported as a new pick.
+    out, dup = store.append_unique(predictions_path(), FIELDS, out, key="game_id")
+    for r in dup:
+        print(f"DUPLICATE PREDICTION REJECTED: {r['game_id']} already has an official prediction", file=sys.stderr)
+    store.append_rows(line_freeze_path(), FREEZE_FIELDS, [_freeze_row(r, lines) for r in out])
     if proj_games is not None:
         _record_projections(out, proj_games, now, v3)
     if dist is not None:
         _append_sensitivity(out, dist)
     write_slates({(r["season"], r["week"]) for r in out})
     return out
+
+
+def _freeze_row(pred: dict, lines) -> dict:
+    """Provenance of the pool line a prediction used: the line_id of the exact recorded row (blank if none)."""
+    lr = lines.valid.get(pred["game_id"])
+    return {"prediction_id": pred["prediction_id"], "game_id": pred["game_id"],
+            "line_status": lines.status(pred["game_id"]), "line_id": lr["line_id"] if lr else "",
+            "spread": lr["spread"] if lr else "", "line_source": lr["source"] if lr else "",
+            "line_recorded_at": lr["recorded_at"] if lr else ""}
 
 
 def _append_sensitivity(preds: list[dict], dist: MarginDist) -> None:
@@ -401,7 +431,6 @@ def _append_sensitivity(preds: list[dict], dist: MarginDist) -> None:
 
 def write_slates(weeks: set[tuple]) -> None:
     rows = store.read_rows(predictions_path())
-    ll = {r["game_id"]: r for r in league_lines.load()}
     for season, week in weeks:
         wk = [r for r in rows if str(r["season"]) == str(season) and str(r["week"]) == str(week)]
         wk.sort(key=lambda r: r["kickoff_utc"])
