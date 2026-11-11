@@ -14,7 +14,7 @@ What they did show is why: the player estimates are mostly shrinkage and noise, 
 |---|---|---|
 | Snapshot lineups wrong | The expected-lineup components correlate 0.84 to 0.95 with the same components computed from who actually played (OL 0.90, rush 0.86, QB 0.88, coverage 0.84, receivers 0.95). Using the actual lineup (D10) gives +0.025 per SD (z 1.79, error change -0.00017, interval spans zero) against +0.014 for the expected lineup | Small loss at most; not the main cause |
 | Zero for unseen players hides signal | Only 0.07% of 31,570 lineup slots have no effect in that week's table. Zeroing the thin and unseen slots (D5) gives +0.012 against +0.014 | Not the cause |
-| Estimates too noisy | Per slot, the median standard error is 0.067 to 0.096 on the logit scale against a ridge prior with standard deviation 0.1, so estimates are largely the prior. 34% of slots are thin (under 300 pressure or 150 completion plays): receivers 70%, OL 15%, rushers about 25%, QB 6%, DB 4%. Lineup-score reliability (variance of the score over variance plus summed squared standard error) is 0.34 for the completion shift and 0.37 for the pressure shift | **Main cause**: roughly two thirds of the variance in the scores is estimation noise by the model's own standard errors |
+| Estimates too noisy | Per slot, the median standard error is 0.06 to 0.10 on the logit scale against a ridge prior with standard deviation 0.1, so estimates are largely the prior. 34% of slots are thin (under 300 pressure or 150 completion plays): receivers 70%, OL 15%, rushers about 25%, QB 6%, DB 4%. Lineup-score reliability (variance of the score over variance plus summed squared standard error) is 0.34 for the completion shift and 0.37 for the pressure shift | **Main cause**: roughly two thirds of the variance in the scores is estimation noise by the model's own standard errors |
 | Uncertainty weighting helps | D4 (shifts divided by their own standard error) +0.015 against +0.014 | No |
 | More evidence, more signal | Team-games with an above-median share of evidenced slots: +0.021 per SD (z 1.43, 535 games); below median: +0.005 (z 0.25, 489 games). The gap is in the hoped-for direction but not itself significant | Suggestive, untested |
 | Effects genuinely small | Best case one standard deviation of lineup shift is about 0.01 to 0.03 EPA per dropback, 0.4 to 1.0 points per team-game. Interval widths here cannot exclude zero or one point | Cannot be separated from "noisy" with this data |
@@ -44,7 +44,7 @@ Calibrated form chose half-life 6 games and 2 pseudo-games for EPA (3 and 8 for 
 
 - **The strongest directional hints are the ones the play-level test found reliable**: receivers (D8) and the quarterback (D7) on completion rate, and the actual lineup (D10) on EPA. Offensive line only (D6, wrong sign on pressure) and opponent coverage only (D9b, zero on EPA) show nothing, which matches the play-level finding that individual OL and DB effects do not repeat.
 - **Adding OL-only or coverage-only scores makes out-of-sample error worse** with intervals above zero: unreliable components subtract value.
-- Player effects number 1,265 (2019) and 1,505 (2020) with at least the thin-evidence threshold, out of about 2,000 players seen in lineups each season.
+- Player-group effects at or above the thin-evidence threshold by the end of each season: 1,265 (2019) and 1,505 (2020).
 
 ## What I would do next (not started)
 
