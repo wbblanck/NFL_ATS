@@ -1,0 +1,146 @@
+{
+ "cutoff": "kickoff - 20 min",
+ "identity_version": "identity-v1",
+ "seasons": {
+  "2016": {
+   "games": 256,
+   "injury_rows": 4928,
+   "injury_ts_verified_share_of_report_rows": 1.0,
+   "mean_p_active_in_pool": 0.7265,
+   "missing_share": {
+    "injury_ts": 0.8038,
+    "pos_grp": 0.0026,
+    "position": 0.0,
+    "status": 0.0
+   },
+   "p_active_base_brier": 0.2003,
+   "p_active_brier": 0.1339,
+   "played_rate_in_pool": 0.7228,
+   "pool_players_per_team_game": 49.1,
+   "pool_recall_of_players_who_played": 0.9924,
+   "regulars_mean_p_active": 0.7662,
+   "regulars_n": 18176,
+   "regulars_p_active_brier": 0.1081,
+   "regulars_played_rate": 0.7894,
+   "rows": 25114,
+   "sha256": "5684fb80e3552e394a2f25b668caf0a1f83d15c655d4dbf8532f6a00860292b5"
+  },
+  "2017": {
+   "games": 256,
+   "injury_rows": 4949,
+   "injury_ts_verified_share_of_report_rows": 1.0,
+   "mean_p_active_in_pool": 0.7359,
+   "missing_share": {
+    "injury_ts": 0.8037,
+    "pos_grp": 0.0018,
+    "position": 0.0,
+    "status": 0.0
+   },
+   "p_active_base_brier": 0.2028,
+   "p_active_brier": 0.1334,
+   "played_rate_in_pool": 0.7173,
+   "pool_players_per_team_game": 49.2,
+   "pool_recall_of_players_who_played": 0.9929,
+   "regulars_mean_p_active": 0.7778,
+   "regulars_n": 18541,
+   "regulars_p_active_brier": 0.1119,
+   "regulars_played_rate": 0.7825,
+   "rows": 25210,
+   "sha256": "a2bf3c2e0ac5bd575f6f543b7b5463068fd9d6564193bc627ad64ff23e5f17c0"
+  },
+  "2018": {
+   "games": 256,
+   "injury_rows": 4959,
+   "injury_ts_verified_share_of_report_rows": 1.0,
+   "mean_p_active_in_pool": 0.731,
+   "missing_share": {
+    "injury_ts": 0.8034,
+    "pos_grp": 0.0029,
+    "position": 0.0,
+    "status": 0.0
+   },
+   "p_active_base_brier": 0.206,
+   "p_active_brier": 0.133,
+   "played_rate_in_pool": 0.7098,
+   "pool_players_per_team_game": 49.3,
+   "pool_recall_of_players_who_played": 0.9924,
+   "regulars_mean_p_active": 0.7738,
+   "regulars_n": 18681,
+   "regulars_p_active_brier": 0.1097,
+   "regulars_played_rate": 0.773,
+   "rows": 25221,
+   "sha256": "bef17e1319ba7f3524eb4c8807645e84d404af5724d21d4ffa88fae6640a7101"
+  },
+  "2019": {
+   "games": 256,
+   "injury_rows": 5197,
+   "injury_ts_verified_share_of_report_rows": 1.0,
+   "mean_p_active_in_pool": 0.7234,
+   "missing_share": {
+    "injury_ts": 0.7957,
+    "pos_grp": 0.008,
+    "position": 0.0,
+    "status": 0.0
+   },
+   "p_active_base_brier": 0.2082,
+   "p_active_brier": 0.1334,
+   "played_rate_in_pool": 0.7044,
+   "pool_players_per_team_game": 49.7,
+   "pool_recall_of_players_who_played": 0.9926,
+   "regulars_mean_p_active": 0.772,
+   "regulars_n": 18587,
+   "regulars_p_active_brier": 0.11,
+   "regulars_played_rate": 0.7765,
+   "rows": 25432,
+   "sha256": "33035e98fb33ff0653395551d45fe8f940927b58d165fc0ba47cc41849b7ae7c"
+  },
+  "2020": {
+   "games": 256,
+   "injury_rows": 5401,
+   "injury_ts_verified_share_of_report_rows": 1.0,
+   "mean_p_active_in_pool": 0.7076,
+   "missing_share": {
+    "injury_ts": 0.7982,
+    "pos_grp": 0.0103,
+    "position": 0.0,
+    "status": 0.0
+   },
+   "p_active_base_brier": 0.2163,
+   "p_active_brier": 0.1463,
+   "played_rate_in_pool": 0.6836,
+   "pool_players_per_team_game": 52.3,
+   "pool_recall_of_players_who_played": 0.9921,
+   "regulars_mean_p_active": 0.7589,
+   "regulars_n": 19194,
+   "regulars_p_active_brier": 0.1233,
+   "regulars_played_rate": 0.7579,
+   "rows": 26763,
+   "sha256": "0ed698f53e85953259210dcf69dc97be0077cd77a3fd0994406cd8a7f8e72af4"
+  },
+  "2021": {
+   "games": 272,
+   "injury_rows": 5345,
+   "injury_ts_verified_share_of_report_rows": 1.0,
+   "mean_p_active_in_pool": 0.6963,
+   "missing_share": {
+    "injury_ts": 0.8145,
+    "pos_grp": 0.0033,
+    "position": 0.0,
+    "status": 0.0
+   },
+   "p_active_base_brier": 0.2212,
+   "p_active_brier": 0.1526,
+   "played_rate_in_pool": 0.6696,
+   "pool_players_per_team_game": 53.0,
+   "pool_recall_of_players_who_played": 0.993,
+   "regulars_mean_p_active": 0.7479,
+   "regulars_n": 20781,
+   "regulars_p_active_brier": 0.1314,
+   "regulars_played_rate": 0.7476,
+   "rows": 28815,
+   "sha256": "a3536afa2cbf8c8cf4855bde323c2783355957ee35ac613f233c5ce562e16c07"
+  }
+ },
+ "snapshot_version": "snapshot-v1",
+ "window_games": 4
+}

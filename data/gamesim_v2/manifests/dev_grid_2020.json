@@ -1,0 +1,438 @@
+{
+ "pressure": [
+  {
+   "half_life": 365.0,
+   "variant": "ctx",
+   "lam_player": null,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.6131975672212434
+  },
+  {
+   "half_life": 365.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 30.0,
+   "n": 18899,
+   "logloss": 0.6117518371735516
+  },
+  {
+   "half_life": 365.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 100.0,
+   "n": 18899,
+   "logloss": 0.6117297210933184
+  },
+  {
+   "half_life": 365.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 300.0,
+   "n": 18899,
+   "logloss": 0.612120458409903
+  },
+  {
+   "half_life": 365.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 1000.0,
+   "n": 18899,
+   "logloss": 0.6126941427408095
+  },
+  {
+   "half_life": 365.0,
+   "variant": "player",
+   "lam_player": 30.0,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.6117669179184025
+  },
+  {
+   "half_life": 365.0,
+   "variant": "player",
+   "lam_player": 100.0,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.6104772043951353
+  },
+  {
+   "half_life": 365.0,
+   "variant": "player",
+   "lam_player": 300.0,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.6106991698645492
+  },
+  {
+   "half_life": 365.0,
+   "variant": "player",
+   "lam_player": 1000.0,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.6115899858533173
+  },
+  {
+   "half_life": 730.0,
+   "variant": "ctx",
+   "lam_player": null,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.6132364141306175
+  },
+  {
+   "half_life": 730.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 30.0,
+   "n": 18899,
+   "logloss": 0.6119409806684705
+  },
+  {
+   "half_life": 730.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 100.0,
+   "n": 18899,
+   "logloss": 0.611841967003771
+  },
+  {
+   "half_life": 730.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 300.0,
+   "n": 18899,
+   "logloss": 0.6120884667578281
+  },
+  {
+   "half_life": 730.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 1000.0,
+   "n": 18899,
+   "logloss": 0.6126381922060158
+  },
+  {
+   "half_life": 730.0,
+   "variant": "player",
+   "lam_player": 30.0,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.6119746989402007
+  },
+  {
+   "half_life": 730.0,
+   "variant": "player",
+   "lam_player": 100.0,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.6103618060982943
+  },
+  {
+   "half_life": 730.0,
+   "variant": "player",
+   "lam_player": 300.0,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.610499045381844
+  },
+  {
+   "half_life": 730.0,
+   "variant": "player",
+   "lam_player": 1000.0,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.6113923224927712
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "ctx",
+   "lam_player": null,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.6132706029999826
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 30.0,
+   "n": 18899,
+   "logloss": 0.6120902508760369
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 100.0,
+   "n": 18899,
+   "logloss": 0.6119496102099602
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 300.0,
+   "n": 18899,
+   "logloss": 0.6121022914123929
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 1000.0,
+   "n": 18899,
+   "logloss": 0.6126147302418532
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "player",
+   "lam_player": 30.0,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.6122224539359018
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "player",
+   "lam_player": 100.0,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.6103606737739518
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "player",
+   "lam_player": 300.0,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.610406815461875
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "player",
+   "lam_player": 1000.0,
+   "lam_team": null,
+   "n": 18899,
+   "logloss": 0.6112840156372739
+  }
+ ],
+ "completion": [
+  {
+   "half_life": 365.0,
+   "variant": "ctx",
+   "lam_player": null,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5870278800670066
+  },
+  {
+   "half_life": 365.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 30.0,
+   "n": 17769,
+   "logloss": 0.5866577870897266
+  },
+  {
+   "half_life": 365.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 100.0,
+   "n": 17769,
+   "logloss": 0.5864791746852346
+  },
+  {
+   "half_life": 365.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 300.0,
+   "n": 17769,
+   "logloss": 0.5865435256922374
+  },
+  {
+   "half_life": 365.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 1000.0,
+   "n": 17769,
+   "logloss": 0.5867808521377081
+  },
+  {
+   "half_life": 365.0,
+   "variant": "player",
+   "lam_player": 30.0,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5868424865656803
+  },
+  {
+   "half_life": 365.0,
+   "variant": "player",
+   "lam_player": 100.0,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5861412248273046
+  },
+  {
+   "half_life": 365.0,
+   "variant": "player",
+   "lam_player": 300.0,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5862927042583422
+  },
+  {
+   "half_life": 365.0,
+   "variant": "player",
+   "lam_player": 1000.0,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5866137098193615
+  },
+  {
+   "half_life": 730.0,
+   "variant": "ctx",
+   "lam_player": null,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5872117828141364
+  },
+  {
+   "half_life": 730.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 30.0,
+   "n": 17769,
+   "logloss": 0.5870582656657813
+  },
+  {
+   "half_life": 730.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 100.0,
+   "n": 17769,
+   "logloss": 0.5868592373380144
+  },
+  {
+   "half_life": 730.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 300.0,
+   "n": 17769,
+   "logloss": 0.5867757000646829
+  },
+  {
+   "half_life": 730.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 1000.0,
+   "n": 17769,
+   "logloss": 0.5869234571724854
+  },
+  {
+   "half_life": 730.0,
+   "variant": "player",
+   "lam_player": 30.0,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5867703190332363
+  },
+  {
+   "half_life": 730.0,
+   "variant": "player",
+   "lam_player": 100.0,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5860240377034767
+  },
+  {
+   "half_life": 730.0,
+   "variant": "player",
+   "lam_player": 300.0,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5862196772854147
+  },
+  {
+   "half_life": 730.0,
+   "variant": "player",
+   "lam_player": 1000.0,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5866488552084401
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "ctx",
+   "lam_player": null,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5873808475764815
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 30.0,
+   "n": 17769,
+   "logloss": 0.5874017168357916
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 100.0,
+   "n": 17769,
+   "logloss": 0.58720103490661
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 300.0,
+   "n": 17769,
+   "logloss": 0.5870314018412257
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "team",
+   "lam_player": null,
+   "lam_team": 1000.0,
+   "n": 17769,
+   "logloss": 0.5870820020762645
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "player",
+   "lam_player": 30.0,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5869138390668586
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "player",
+   "lam_player": 100.0,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5860523102227818
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "player",
+   "lam_player": 300.0,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5862128420143072
+  },
+  {
+   "half_life": 1460.0,
+   "variant": "player",
+   "lam_player": 1000.0,
+   "lam_team": null,
+   "n": 17769,
+   "logloss": 0.5866888729964147
+  }
+ ]
+}

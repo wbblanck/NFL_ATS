@@ -13,3 +13,7 @@ data/cache/
 # AusSportsBetting data is personal-use only: never commit it
 **/aussportsbetting_*
 data/gamesim/g3_2022_2025.parquet
+# gamesim v2: re-derivable from nflverse; only manifests and small processed tables are committed
+data/gamesim_v2/raw/
+data/gamesim_v2/features/
+data/gamesim_v2/snapshots/*.parquet

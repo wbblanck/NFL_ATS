@@ -1,0 +1,80 @@
+{
+ "by_source": {
+  "pfr_only": 28,
+  "players": 24867,
+  "roster_only": 1656
+ },
+ "duplicate_uid": 0,
+ "gsis_with_multiple_pfr_in_rosters": [
+  {
+   "gsis_id": "00-0035944",
+   "pfr_id": [
+    "WillJo10",
+    "WillJo16"
+   ]
+  },
+  {
+   "gsis_id": "00-0040317",
+   "pfr_id": [
+    "JoneJa15",
+    "JoneJa16"
+   ]
+  },
+  {
+   "gsis_id": "00-0038978",
+   "pfr_id": [
+    "YounBy00",
+    "YounBy01"
+   ]
+  },
+  {
+   "gsis_id": "00-0034270",
+   "pfr_id": [
+    "ConkTy00",
+    "IzzoRy00"
+   ]
+  }
+ ],
+ "identity_rows": 26551,
+ "identity_sha256": "90cbd4ce6e17eba77573d93a4d1fc10402b3fdf663a24b61291d3c6df903efcd",
+ "legacy_ids_merged_into_gsis": [
+  {
+   "canonical_uid": "00-0040793",
+   "display_name": "Paschal Ekeji",
+   "uid": "EKE080143"
+  }
+ ],
+ "names_shared_by_different_people": 905,
+ "people": 26551,
+ "pfr_id_on_multiple_uids": [],
+ "pfr_with_multiple_gsis_in_rosters": [
+  {
+   "gsis_id": [
+    "00-0039137",
+    "00-0038978"
+   ],
+   "pfr_id": "YounBy01"
+  },
+  {
+   "gsis_id": [
+    "00-0034439",
+    "00-0034270"
+   ],
+   "pfr_id": "IzzoRy00"
+  }
+ ],
+ "same_name_birthdate_multiple_uids": [
+  {
+   "birth_date": "1992-06-25",
+   "display_name": "Kevin White",
+   "uid": [
+    "00-0031545",
+    "00-0031683"
+   ]
+  }
+ ],
+ "snap_rows_null_id": 0,
+ "snap_rows_unmapped": 0,
+ "team_history_rows": 702029,
+ "version": "identity-v1"
+}

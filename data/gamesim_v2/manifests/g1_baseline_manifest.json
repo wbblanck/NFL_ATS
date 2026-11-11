@@ -1,0 +1,292 @@
+{
+ "constants": {
+  "gamesim_constants.json": {
+   "explore": 2021,
+   "fit_seasons": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020
+   ],
+   "grid": [
+    {
+     "h": 4.0,
+     "k": 4.0,
+     "mae": 11.215013029490365,
+     "r": 0.5
+    },
+    {
+     "h": 4.0,
+     "k": 4.0,
+     "mae": 11.284921881815535,
+     "r": 0.7
+    },
+    {
+     "h": 4.0,
+     "k": 8.0,
+     "mae": 11.372395832257098,
+     "r": 0.5
+    },
+    {
+     "h": 4.0,
+     "k": 8.0,
+     "mae": 11.240794281493436,
+     "r": 0.7
+    },
+    {
+     "h": 4.0,
+     "k": 16.0,
+     "mae": 11.633880206660251,
+     "r": 0.5
+    },
+    {
+     "h": 4.0,
+     "k": 16.0,
+     "mae": 11.356679684482515,
+     "r": 0.7
+    },
+    {
+     "h": 8.0,
+     "k": 4.0,
+     "mae": 11.34635416222045,
+     "r": 0.5
+    },
+    {
+     "h": 8.0,
+     "k": 4.0,
+     "mae": 11.258398444882914,
+     "r": 0.7
+    },
+    {
+     "h": 8.0,
+     "k": 8.0,
+     "mae": 11.368125006803893,
+     "r": 0.5
+    },
+    {
+     "h": 8.0,
+     "k": 8.0,
+     "mae": 11.159427087595759,
+     "r": 0.7
+    },
+    {
+     "h": 8.0,
+     "k": 16.0,
+     "mae": 11.457877607783303,
+     "r": 0.5
+    },
+    {
+     "h": 8.0,
+     "k": 16.0,
+     "mae": 11.36819010569161,
+     "r": 0.7
+    },
+    {
+     "h": 16.0,
+     "k": 4.0,
+     "mae": 11.352721356379334,
+     "r": 0.5
+    },
+    {
+     "h": 16.0,
+     "k": 4.0,
+     "mae": 11.31346353799745,
+     "r": 0.7
+    },
+    {
+     "h": 16.0,
+     "k": 8.0,
+     "mae": 11.427278645991464,
+     "r": 0.5
+    },
+    {
+     "h": 16.0,
+     "k": 8.0,
+     "mae": 11.197903644526377,
+     "r": 0.7
+    },
+    {
+     "h": 16.0,
+     "k": 16.0,
+     "mae": 11.49601562740645,
+     "r": 0.5
+    },
+    {
+     "h": 16.0,
+     "k": 16.0,
+     "mae": 11.237005216331454,
+     "r": 0.7
+    }
+   ],
+   "h": 8.0,
+   "hfa": 0.045234375,
+   "hfa_first_fit": 0.03167654794874659,
+   "hfa_refit": {
+    "check_mean_margin": 1.552295,
+    "steps": [
+     [
+      0.03,
+      0.642
+     ],
+     [
+      0.045,
+      1.505
+     ],
+     [
+      0.0525,
+      1.901
+     ],
+     [
+      0.04875,
+      1.695
+     ],
+     [
+      0.04688,
+      1.624
+     ],
+     [
+      0.04594,
+      1.521
+     ],
+     [
+      0.04547,
+      1.524
+     ]
+    ],
+    "target": 1.5063492063492063
+   },
+   "k": 8.0,
+   "league": {
+    "comp": 0.6551168598027596,
+    "comp_n": 33.944921875,
+    "int": 0.023255552558223182,
+    "int_n": 34.753125,
+    "sack": 0.06079439630739331,
+    "sack_n": 38.590625,
+    "scr": 0.04114844911947923,
+    "scr_n": 36.24453125,
+    "ypc": 11.297405540234326,
+    "ypc_n": 22.237890625,
+    "ypr": 4.4452750739938365,
+    "ypr_n": 25.60390625
+   },
+   "personnel": {
+    "D_days": 365.0,
+    "KQ": 200.0,
+    "coefs": {
+     "comp": {
+      "const": -0.0002537003204043504,
+      "ol": 0.03631977272889461,
+      "opp_db": 0.018221526526683015,
+      "opp_dl": -0.008956085094553746,
+      "opp_lb": 0.010801140877837246,
+      "qb_delta": 0.6155053004228338,
+      "skill": -0.038028670951406406
+     },
+     "int": {
+      "const": 0.2687388085901744,
+      "ol": 0.051196205815395204,
+      "opp_db": -0.03952695219223641,
+      "opp_dl": 0.1233606729044644,
+      "opp_lb": 0.05224134879469536,
+      "qb_delta": -0.5551478713841195,
+      "skill": -0.037003047759565866
+     },
+     "sack": {
+      "const": -0.009270666562029064,
+      "ol": 0.09503068869472951,
+      "opp_db": -0.04354216223479279,
+      "opp_dl": 0.017878291866700122,
+      "opp_lb": -0.003827535647603531,
+      "qb_delta": -0.6854671610906025,
+      "skill": -0.0016739517755264381
+     },
+     "ypc": {
+      "const": -0.030433616261216326,
+      "ol": -0.009494342690960394,
+      "opp_db": 0.012710451898969504,
+      "opp_dl": 0.029444869227646935,
+      "opp_lb": 0.01994698047935604,
+      "qb_delta": 0.3098494197821343,
+      "skill": 0.0009132780368314241
+     },
+     "ypr": {
+      "const": -0.022059374335390472,
+      "ol": -0.016292842856679216,
+      "opp_db": -0.009664235635303348,
+      "opp_dl": 0.061379975066191174,
+      "opp_lb": 0.0523224709747651,
+      "qb_delta": 0.15843005683869305,
+      "skill": -0.04714352438211027
+     }
+    },
+    "replacement": -0.06649501539924688,
+    "window": 4
+   },
+   "r": 0.7
+  },
+  "note": "frozen in nfl-betting-model; not refit on 2022+ data"
+ },
+ "created_utc": "2026-11-11T15:42:15+00:00",
+ "environment": {
+  "nflreadpy": "0.1.5",
+  "numpy": "2.5.3",
+  "platform": "Linux-6.18.44-fc-v378-x86_64-with-glibc2.39",
+  "polars": "2.1.0",
+  "pyarrow": "26.0.1",
+  "pytest": "9.2.0",
+  "python": "3.13.18"
+ },
+ "files": {
+  "data/gamesim/batch1_constants.json": "b47ffecf89112f6a3868fc2c7bc3f9e60aac8860f185367a2f96aa2fff05a707",
+  "data/gamesim/batch2_describe.json": "b838279cc914ce93ce45ce3bfef4deb0571f589f6585b43abc021f434f95deff",
+  "data/gamesim/batch3_constants.json": "5cd0af1f2d0b43f1ae3fa2b3d2e7859712e4a3cfe684ea74a4cc7cc07495b2fb",
+  "data/gamesim/batch4_model.json": "6090f040dc91a7b96cfb99833fea8e57468c974516d71baea873a9bdae704818",
+  "data/gamesim/batch5_constants.json": "657813c235a5458fbe676445972111eef01de07eb4be1691f41d2f4111d3c635",
+  "data/gamesim/batch6_reproduce.json": "aa90fc73f8219d87481aede3347b74e11c637a492231e81cbda48f8c9c59acc5",
+  "data/gamesim/elo_constants.json": "2069ef301fe10307c286081b118051d9050fc56fb09b7ff7ad079447b7aeb85b",
+  "data/gamesim/gamesim_constants.json": "669a6b26315eb0ae33046b1c7838c8db8ffa7a33e6db638f23674e16ade219b1",
+  "data/gamesim/gamesim_league.json": "6ec99abdb52a458b25a5ffb959f44a3871cf462c207ed192367a5bc043eae338",
+  "scripts/gamesim_reproduce.py": "3cacdf5d98b3945c336c4b1a830b817dff27dda34a7ce1a6524f9e7722e50623",
+  "src/engine/gamesim/__init__.py": "78b12569e47df381d2f43b83b7f58b203a833f6a43fffe03ebd8b6cb23b3be8d",
+  "src/engine/gamesim/batch5.py": "79bc517737b6a1bf4ed94de47104a155c4393267dc27be232d6c3fcf70b019f9",
+  "src/engine/gamesim/coverage.py": "21fd3bdeff5b2fe1f8f1232c7a25ab538a0d41f0c462e650eb8cd94d2436c1f4",
+  "src/engine/gamesim/elo.py": "d99cc477bf200e2ae1e5a8e3bfd79dae34e713c1676ab1d56ab395c4574eb7a5",
+  "src/engine/gamesim/engine.py": "8633380a826c718acc4870dc30efc28e4e2d86e2a03b5fa08b69fa6ed3ec916e",
+  "src/engine/gamesim/kalman.py": "41fd5acce507e100196d7c0eab8008d7442aa44f3679020f2603ec10e8dbac9d",
+  "src/engine/gamesim/league.py": "48afaaada0269b9706dc87823aaed6cd3ad1086ab1df08fd3620afc5140c75d3",
+  "src/engine/gamesim/personnel.py": "a58ff9cea085ae019c20964869d2cb35272f6b2080d7b763f2703c1ab958aed8",
+  "src/engine/gamesim/run.py": "628982bc4ef6ef241b356963c69def8d2fe71c32e083fb98137985ca7ac5dbab",
+  "src/engine/gamesim/tdfg.py": "b1b2d3ca14b6d17c2924cf87e30763ba321c7607fb20a4e0c70f3ddc9afe8050",
+  "src/engine/gamesim/teams.py": "13798adb3ee6b4a8351131555c80e57d51293adc4366117d546bb8a689b14e8c",
+  "src/engine/gamesim/xgb.py": "7179c1c17003335b2524071804dfefd8f1e42099e4a113dafd1ff159ecfcf590",
+  "tests/test_gamesim.py": "eb08eb36c39a9f0043eec9b4147f605d748eab48d83533c6471b0a22fd34a360",
+  "tests/test_gamesim_batch5.py": "98d6034eb8dc273aba4a69100c815813b19c6be0677ea9b2ba1570f42a6f4837",
+  "tests/test_gamesim_elo.py": "b2dddb18b6183d301ca09a1a23584f4bdd1c71f5d4f9c11432d66481c3b8b5a8",
+  "tests/test_gamesim_kalman.py": "aec24ff1b8d4fde75387ef11012a06aa42fef9776bfdc234f9e20142baff8db9",
+  "tests/test_gamesim_tdfg.py": "9019290b021735a7fdc305800f139c194ddfac8f85f7be29c2710a20abf2d120",
+  "tests/test_gamesim_xgb.py": "655005c5184367f63a48bf0254633c353dbf7b3b3512d1502791e0e08c85545d"
+ },
+ "g1_tests": {
+  "command": "pytest tests/test_gamesim*.py",
+  "result": "30 passed in 26.74s",
+  "returncode": 0
+ },
+ "git_commit": "bb9fd09a11e348eed4e44bba7c8fce1357419dad",
+ "label": "gamesim-g1-baseline",
+ "reproduction": {
+  "close_margin_mae": 9.5367,
+  "elo_margin_mae": 9.964,
+  "game_ids_sha256": "9045f1e6e535243ea99e9055b4aeabe5a5774edd206405ec07c6ee9501123e91",
+  "games": 1023,
+  "output_sha256": "9f4c2d344b610f634e23f6a040aca6a02a65b84d292a2eaf41ef1803cefb6c99",
+  "output_tracked_in_git": false,
+  "registered_g3_margin_mae": 9.983,
+  "reproduced_g3_margin_mae": 9.9827,
+  "script": "scripts/gamesim_reproduce.py <cache>",
+  "seasons": "2022-2025 regular season, weeks 2-18",
+  "seed": 101,
+  "sims_per_game": 1000
+ }
+}
