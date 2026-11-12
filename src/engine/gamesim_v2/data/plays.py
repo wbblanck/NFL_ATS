@@ -36,3 +36,20 @@ def build_dropbacks(pbp: pl.DataFrame, part: pl.DataFrame) -> pl.DataFrame:
                     "defense_man_zone_type", "defense_coverage_type", "offense_formation").unique(["game_id", "play_id"])
     j = d.join(p, on=["game_id", "play_id"], how="left").with_columns(pl.col("offense_players").is_not_null().alias("has_part"))
     return j.sort("game_date", "game_id", "play_id")
+
+
+def build_runs(pbp: pl.DataFrame, part: pl.DataFrame) -> pl.DataFrame:
+    """Designed runs (full-game test): regular season, play_type run, not a dropback (scrambles are dropbacks), no kneel-downs, two-point tries,
+    penalty or aborted plays. Same participation join as dropbacks."""
+    d = pbp.filter(pl.col("season_type") == "REG", pl.col("play_type") == "run", pl.col("qb_dropback").fill_null(0) == 0,
+                   pl.col("qb_kneel").fill_null(0) == 0, pl.col("two_point_attempt").fill_null(0) == 0,
+                   pl.col("penalty").fill_null(0) == 0, pl.col("aborted_play").fill_null(0) == 0).select(
+        "game_id", pl.col("play_id").cast(pl.Int64), "season", "week", "game_date", "posteam", "defteam",
+        pl.col("rusher_player_id").alias("rusher"), pl.col("yards_gained"), pl.col("epa"),
+        pl.col("down"), pl.col("ydstogo"), pl.col("yardline_100"), pl.col("score_differential"), pl.col("shotgun"),
+        pl.col("no_huddle"), pl.col("game_seconds_remaining")).with_columns(
+        pl.col("posteam").replace(FRANCHISE), pl.col("defteam").replace(FRANCHISE))
+    p = part.select(pl.col("nflverse_game_id").alias("game_id"), pl.col("play_id").cast(pl.Int64), "offense_players", "defense_players",
+                    "defenders_in_box", "offense_formation").unique(["game_id", "play_id"])
+    j = d.join(p, on=["game_id", "play_id"], how="left").with_columns(pl.col("offense_players").is_not_null().alias("has_part"))
+    return j.sort("game_date", "game_id", "play_id")

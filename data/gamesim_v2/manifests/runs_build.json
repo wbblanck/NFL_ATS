@@ -1,0 +1,38 @@
+[
+ {
+  "season": 2016,
+  "runs": 12033,
+  "part_share": 1.0,
+  "epa_null": 0
+ },
+ {
+  "season": 2017,
+  "runs": 12296,
+  "part_share": 1.0,
+  "epa_null": 0
+ },
+ {
+  "season": 2018,
+  "runs": 11797,
+  "part_share": 1.0,
+  "epa_null": 0
+ },
+ {
+  "season": 2019,
+  "runs": 11916,
+  "part_share": 1.0,
+  "epa_null": 0
+ },
+ {
+  "season": 2020,
+  "runs": 12273,
+  "part_share": 1.0,
+  "epa_null": 0
+ },
+ {
+  "season": 2021,
+  "runs": 12902,
+  "part_share": 1.0,
+  "epa_null": 0
+ }
+]
