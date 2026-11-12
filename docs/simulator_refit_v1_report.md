@@ -46,7 +46,7 @@ The 3-point shortfall (11.5% simulated vs 15.2% actual) sits in close games, not
 | Games that went to overtime | 59 | 57.6% | 11.7% |
 | Games decided in regulation | 964 | 12.6% | 11.6% |
 
-Guess, not yet verified: much of the shortfall looks like overtime. Real overtime games end by 3 about 58% of the time,
+Guess at the time (checked below, about half right): much of the shortfall looks like overtime. Real overtime games end by 3 about 58% of the time,
 and the 59 overtime games alone account for about 2.7 of the 3.7 percentage-point gap. This comparison is unfair to the simulator
 (it conditions on real overtime, not the simulator's own), so the next check is the simulator's own overtime rate and
 how its overtime games end. Neither refit moved any key-margin frequency by more than 0.2 points.
@@ -66,3 +66,27 @@ better (close 9.54 vs simulator 9.99), and the play-level tables are stable acro
 the one with a concrete measured defect is the endgame/overtime engine (V5): the 3-point and 7-point frequencies are off
 in a structured way. That could improve the shape of the distribution (useful for teaser, total and key-number questions)
 without any promise of a better side against the spread.
+
+## Addendum 2026-11-12: overtime check (V0, 2022-2025, 1,023 games, descriptive)
+`scripts/sim_ot_diag.py` -> `data/gamesim/refit/ot_diag.json`, using the simulator's own end-of-regulation score.
+
+| | Actual | Simulator |
+|---|---|---|
+| Games reaching overtime | 5.8% | 4.5% |
+| Overtime games ending by exactly 3 | 57.6% (of 59) | 34.0% |
+| Overtime games ending by 6 or more | 33.9% | 53.1% |
+| Overtime ties | 3.4% | 6.7% |
+
+Share of all games, split by how they were decided (actual vs simulator):
+- 3-point margins: regulation 11.8% vs 9.9%, overtime 3.3% vs 1.5%. The 3.7-point gap is about half regulation, half overtime.
+- 6-point margins: overtime 1.9% vs 0.1%. 7-point margins: overtime 0.1% vs 2.2%. In regulation both match (6: 4.8 vs 4.7; 7: 8.0 vs 8.0).
+
+**Engine bug found:** after a touchdown in overtime the engine scores the extra point or two-point try before checking
+whether the game is over (`engine.py`, touchdown block: try added, then `check_ot`). In the NFL a game-ending overtime
+touchdown has no try, so those games end by 6, not 7. This alone explains the simulator's surplus of 7s and shortage of
+6s. The 2025 both-possessions overtime rule (`both_poss = season >= 2025`) and the 10-minute overtime from 2017 are coded correctly.
+
+Remaining gaps after that bug: too few games reach overtime, too few overtime games end on a field goal, and too few
+regulation games end by 3 (with too many 4s and 10s). These point at late-game field-goal and clock decisions.
+Candidate V5 (not yet pre-registered): (a) no try after a game-ending overtime touchdown (a rules fix, no fitting);
+(b) any endgame decision changes, fitted on 2016-2020 only.
