@@ -45,7 +45,7 @@ Total effect = group-bucket term plus player deviation. Receivers: 41 players. C
 | DB, EPA (190) | 0.033 | 0.070 | 0.031 |
 | QB, EPA (35) | 0.422 | 0.291 | 0.433 |
 
-The receiver rise from 0.24 to 0.39 on completion comes from the group-level pedigree and experience term; the player-specific deviation repeats no better (0.245). It did not produce better out-of-sample completion log loss (M1). The receiver prior terms are 0.21 to 0.32 logit for drafted rounds vs undrafted, which I have not independently explained; I am treating it as unverified.
+The receiver rise from 0.24 to 0.39 on completion comes from the group-level experience and draft terms, not from the player-specific deviation, which repeats no better (0.245). With 41 players the two intervals overlap almost entirely (-0.08 to 0.51 vs 0.09 to 0.62), so the rise is within noise. It did not produce better out-of-sample completion log loss (M1). Correction (2026-11-12): an earlier version of this paragraph and of the summary said the receiver draft terms were 0.21 to 0.32 logit; those numbers came from the leaked first-run population. On the clean population the receiver terms are small (draft round 1 -0.04, 2 +0.06, 3 +0.03, 4-7 +0.00; experience 0 years -0.09, 1 year -0.05, 2-3 years +0.00 logit). See `RECEIVER_AND_D5_DIAGNOSIS.md`.
 
 ## M4: lineup-score reliability and thin slots (1,024 team-games, 2019-2020, 31,570 lineup slots)
 
@@ -72,7 +72,7 @@ D1 by season with EPA passing shift: 2019 +0.0078 (z 0.87), 2020 +0.0271 (z 1.76
 
 Reasons not to read this as evidence:
 - Out-of-sample CV error change for the combined scores is about zero with intervals spanning zero (D1 EPA -0.000105; D4 -0.000168).
-- The evidenced-only score (D5) shows z 6.9 from a standard error of 0.0027, a third of its neighbours' and inconsistent with its CV change (-0.000112, interval -0.00069 to +0.00050). I do not trust that standard error and have not diagnosed it.
+- The evidenced-only score (D5) shows z 6.9 from a standard error of 0.0027, a third of its neighbours' and inconsistent with its CV change (-0.000112, interval -0.00069 to +0.00050). Diagnosed 2026-11-12 (`RECEIVER_AND_D5_DIAGNOSIS.md`): the two-way cluster formula (team plus week minus their intersection) nearly cancels to 7e-6 variance; every other method gives 0.009 to 0.0135 (z 1.4 to 2.1). The two-way z-statistics in this table are overstated, D1 included.
 - Two-way clustering with two seasons is unstable: D1 2019 SE was 0.0206 with v1 tables and 0.0090 with v2.
 - 2020 was used to tune the player models; EPA tables inherit those settings; and I looked at three variants.
 - The play-level EPA model is itself worse than team factors out of sample (M2).
@@ -84,6 +84,6 @@ Under the preregistered interpretation key (improvement means higher reliability
 1. Draft and experience priors are not the missing ingredient. Pressure and completion are flat; receivers show a group-level pedigree effect with no individual gain.
 2. EPA per attempt is too noisy for player-level fits at this sample size; it underperforms team factors.
 3. The only constructive lead is the 2020 lineup coefficient (+0.027 per SD, z 1.76, EPA tables). If pursued, it needs a new preregistration with fixed score definitions and a scoring period not yet used (2021 was spent for play and game level; 2022-2025 is locked and needs Will's explicit release).
-4. Unresolved: why drafted receivers complete about 5 points more often than undrafted receivers in the fitted models (raw completion by group is 65.2% vs 64.6%, so most of the fitted gap is not in raw rates).
+4. Resolved (2026-11-12): the large drafted-receiver effect existed only in the leaked fit. On clean data drafted receivers complete +0.02 logit (about 0.5 points) more often than undrafted, matching raw rates (65.2% vs 64.6%).
 
 Files: `scripts/gamesim_v2/estimation_v2.py`, `src/engine/gamesim_v2/players/abilities_v2.py`, `src/engine/gamesim_v2/validation/play_validation_v2.py`; `lineup_dev_2019_2020.py` now takes `G2_PRES`, `G2_COMP`, `G2_OUT` environment variables (defaults reproduce the earlier run). Manifests: `estimation_v2.json`, `lineup_dev_v2_completion.json`, `lineup_dev_v2_epa.json`.

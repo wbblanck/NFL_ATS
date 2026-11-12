@@ -1,0 +1,64 @@
+{
+ "n": 85972,
+ "raw_completion": {
+  "drafted": 0.6517205875955278,
+  "undrafted": 0.6463292776112385
+ },
+ "share": {
+  "drafted": 0.8021099892988415
+ },
+ "raw_completion_by_position": {
+  "WR": {
+   "n": 50723,
+   "drafted_share": 0.7937621986081265,
+   "cr_drafted": 0.6113208484427003,
+   "cr_undrafted": 0.6137080585030111,
+   "mean_air_drafted": 11.077879287104988,
+   "mean_air_undrafted": 10.611388515459957
+  },
+  "TE": {
+   "n": 17766,
+   "drafted_share": 0.8201058201058201,
+   "cr_drafted": 0.6659574468085107,
+   "cr_undrafted": 0.6533166458072591,
+   "mean_air_drafted": 7.568255501138166,
+   "mean_air_undrafted": 7.382510223340673
+  },
+  "RB": {
+   "n": 17308,
+   "drafted_share": 0.8100878206609661,
+   "cr_drafted": 0.7527280507809714,
+   "cr_undrafted": 0.7426224520839672,
+   "mean_air_drafted": 0.9530278115392865,
+   "mean_air_undrafted": 1.1185094685400123
+  }
+ },
+ "drafted_coefficient_logit_by_step": {
+  "1 drafted only": 0.023666288812830453,
+  "2 + air yards, pressure, down, distance, shotgun": 0.024169353197639385,
+  "3 + target position (TE, RB, other vs WR)": 0.022439948078474863,
+  "4 + quarterback fixed effects (QBs with 300+ attempts)": 0.01821831005175351,
+  "5 + offense team and season dummies": 0.015491501720649935
+ },
+ "drafted_within_position_with_context": {
+  "WR only": {
+   "n": 50723,
+   "coef": -0.0008236396499019019
+  },
+  "TE only": {
+   "n": 17766,
+   "coef": 0.06938996903339711
+  },
+  "RB only": {
+   "n": 17308,
+   "coef": 0.043530158454516285
+  }
+ },
+ "drafted_with_context_by_season": {
+  "2016": -0.036514776311478994,
+  "2017": 0.07938087518163423,
+  "2018": -0.010435330549942334,
+  "2019": 0.08263624311333721,
+  "2020": -0.02106352417854141
+ }
+}
