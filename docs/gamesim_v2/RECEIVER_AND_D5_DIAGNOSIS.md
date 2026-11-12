@@ -29,7 +29,7 @@ Implications:
 - D1's z of 2.46 (coefficient 0.0197) is 1.55 with the game bootstrap, 1.60 with HC0, 1.86 with team clustering and 2.0 with the week bootstrap. The reported two-way z-statistics for the v2 EPA score are overstated. The same estimator gave an SE of 0.0124 for the v1 score, so the apparent improvement in significance between v1 and v2 is partly this artifact. D4's z of 3.06 was not recomputed.
 - Each game contributes two team-games that share weather, pace and game script, so the game cluster is the natural one. Proposal for confirmation: game-cluster bootstrap as primary, week-block bootstrap as a check, and no multiway subtraction estimator.
 
-Power consequence (rough, my arithmetic): with a game-bootstrap SE of about 0.0127 at 1,024 team-games, 2022-2025 (about 2,150 team-games) gives an SE near 0.0088. For a true effect of +0.020 per SD that is about 60% power, and about 35% power at +0.014. The earlier statement that about 1,300 team-games would reach 80% power used the optimistic two-way SE and should be dropped.
+Power consequence (rough, my arithmetic): with a game-bootstrap SE of about 0.0127 at 1,024 team-games, 2022-2025 weeks 2-18 (2,046 team-games, twice the 1,023 registered games) gives an SE near 0.009. For a true effect of +0.020 per SD that is about 60% power, and about 35% power at +0.014. With the week-block bootstrap SE (0.0098 at 1,024) the power at +0.020 would be about 83%, so the realistic range at +0.020 is roughly 60% to 80%. The earlier statement that about 1,300 team-games would reach 80% power used the optimistic two-way SE and should be dropped.
 
 ## 3. Tuning audit: which decisions used which seasons
 

@@ -6,9 +6,13 @@ Status: research only, not validated. This draft is not in force until Will appr
 
 Does a pregame lineup score built from the frozen estimation-v2 player ratings reduce out-of-sample squared error for team-game EPA per dropback, beyond the strongest team-only baseline?
 
+## Open decision before this can be frozen: which score is primary
+
+The 2026-11-12 audit changed the evidence (see `ERRATA.md`). With a game-cluster bootstrap, the EPA lineup score on team-game EPA has z 1.57 pooled (2019-2020), while the v2 completion table's QB and receiver shifts on team-game completion rate have z 3.2 to 3.5 (Holm 0.01 to 0.02 within 18 tests; about 0.03 to 0.06 if multiplied by the three variants examined). Options: (A) EPA score on EPA per dropback, as drafted below; (B) completion shift on completion rate; (C) both, with Holm over two. My recommendation is (C). Not decided; Will to choose. The draft below is written for (A) and would be adapted.
+
 ## Data (decision needed)
 
-- Primary: 2022-2025 regular season, about 2,150 team-games, loaded once. These seasons are locked; this needs Will's explicit release.
+- Primary: 2022-2025 regular season weeks 2-18, about 2,050 team-games (twice the 1,023 registered games), loaded once. These seasons are locked; this needs Will's explicit release.
 - Secondary, if wanted: 2026 weeks 10-18 prospective, with the configuration frozen before those games. 2026 participation is not published, so ratings would stay as of the end of 2025. About 270 team-games, so it can only be a consistency check.
 - 2019-2021 are used and are not scored again for confirmation.
 
@@ -39,7 +43,7 @@ Players with meaningful pregame evidence per season; share of unseen and thin li
 
 ## Power (rough, my arithmetic)
 
-With 2022-2025 and an SE near 0.009, power is about 60% for a true +0.020 per SD and about 35% for +0.014. A fail therefore cannot rule out small effects; it would say the effect is not large enough to detect with four seasons. Will should decide whether that is an acceptable test before releasing the seasons.
+With 2022-2025 and an SE near 0.009, power is about 60% for a true +0.020 per SD (up to about 80% with the week-block SE) and about 35% for +0.014. A fail therefore cannot rule out small effects; it would say the effect is not large enough to detect with four seasons. Will should decide whether that is an acceptable test before releasing the seasons.
 
 ## Not tested here
 

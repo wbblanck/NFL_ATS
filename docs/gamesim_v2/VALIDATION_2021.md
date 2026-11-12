@@ -1,5 +1,7 @@
 # Generation 2 play-level validation, 2021 (preregistered tests V1-V8)
 
+**Erratum, 2026-11-12:** the completion population here (18,489 attempts) includes 558 attempts with no recorded target (all incomplete); the preregistration called it "with a target". Pressure results and the gate (V1, V2, V5 on pressure) do not use the target and are unaffected. For completion, the saved 2021 predictions evaluated only on the 17,931 attempts with a target give player vs context -0.00163 (interval -0.00262 to -0.00059) and player vs team -0.00081 (interval -0.00165 to +0.00001). So V3 still passes, but the V4 statement that the interval excludes zero does not hold on that subset, and the headline sentence "for completion also beyond team factors" should read "for completion, a small gain over team factors whose interval just includes zero once no-target attempts are removed". Models were not refit. See `ERRATA.md`.
+
 Run 2026-11-11 with the settings frozen in `data/gamesim_v2/manifests/g2_frozen_config.json` (committed before this run, `PREREGISTRATION.md`).
 Script `scripts/gamesim_v2/validate_plays.py`; numbers in `data/gamesim_v2/manifests/validation_2021.json`. Validation season 2021 only: 19,724 dropbacks (pressure)
 and 18,489 pass attempts with participation (completion). 2022-2025 were not loaded. Walk-forward: every week is predicted by a model fit on plays dated before it.

@@ -66,5 +66,5 @@ for name, x in scores.items():
     # team-level persistence of the score: share of variance explained by team identity
     tm = {t: xs[team == t].mean() for t in np.unique(team)}
     out[name]["share_var_by_team"] = float(np.var([tm[t] for t in team]) / np.var(xs))
-Path(L.MAN / "d5_diagnosis.json").write_text(json.dumps(out, indent=1))
+Path(L.MAN / os.environ.get("G2_D5_OUT", "d5_diagnosis.json")).write_text(json.dumps(out, indent=1))
 print(json.dumps(out, indent=1))
