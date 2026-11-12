@@ -16,6 +16,8 @@ Will asked for a full accuracy check. Frozen preregistrations are not edited; co
 | 8 | Pressure M1 interval compared priors with the frozen v1 prediction file; completion and EPA used a no-prior control | Pressure rerun with the control: +0.000127 (-0.00040 to +0.00065); split-half numbers identical | `ESTIMATION_V2_DEV.md` |
 | 9 | Receiver 0.24 to 0.39 split-half rise described as a pedigree effect | Within noise (41 players, overlapping intervals) and the clean prior terms are tiny | `ESTIMATION_V2_DEV.md` |
 | 10 | Leak ablation numbers came from a scratch script outside the repo | Reproduced by `scripts/gamesim_v2/prior_ablation.py` (same numbers) | this file |
+| 12 | Said every out-of-sample error interval in the 2019-2020 lineup tests includes zero | Of the 54 pooled error tests (3 variants x 18), none is significantly better and 5 are significantly worse (v1 D6 pressure, v1 D6 EPA, v1 D9b EPA, v2-completion D3 EPA, v2-EPA D3 EPA; the last two are the same pressure table). Found by the independent review, verified against the manifests | this file |
+| 13 | Draft confirmation preregistration quoted about 60% power | That figure is for the coefficient; for its pass rule 1 (out-of-sample error difference) power is roughly 20-30% at +0.020 per SD and about 5% at +0.014 (rough) | draft marked withdrawn |
 | 11 | Commit messages on this branch carry a model-named `Co-Authored-By` line, against the repo rule | Not fixed: removing it needs a history rewrite and force-push, which was blocked and needs Will's say-so. New commits carry only `Claude-Session:` | open |
 
 ## Verified correct

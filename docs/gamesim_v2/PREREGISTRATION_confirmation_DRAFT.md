@@ -1,3 +1,5 @@
+**WITHDRAWN 2026-11-12.** Will agreed to close the lineup track; this draft will not be run and 2022-2025 stay locked. Correction kept for the record: the power figures below (about 60%) refer to the coefficient test; for pass rule 1 (out-of-sample error difference) the power is roughly 20-30% at +0.020 per SD and about 5% at +0.014 (rough arithmetic from the independent review).
+
 # Preregistration (DRAFT, not frozen): does the pregame EPA lineup score add out-of-sample accuracy beyond team form?
 
 Status: research only, not validated. This draft is not in force until Will approves it, releases data, and the frozen configuration file below is written and committed before any confirmation data is loaded. Nothing in it touches the live pipeline, G1, or picks.
