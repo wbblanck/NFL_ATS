@@ -80,8 +80,11 @@ def main(d):
     m = np.clip(np.rint(margins[idx]).astype(int), -60, 60)
     dist = np.stack([(m == v).mean(1) for v in range(-60, 61)], axis=1)
     cols = {f"m_{v}": dist[:, i] for i, v in enumerate(range(-60, 61))}
-    res = x.join(er, on="game_id").with_columns((-pl.col("spread_line")).alias("close_spread")) \
-        .rename({"result": "margin"}).drop("spread_line").with_columns(**{c: pl.Series(v) for c, v in cols.items()})
+    # attach the distributions while rows are still in x's order (a later join may reorder rows; fixed 2026-11-12,
+    # before this the m_* columns were attached after the Elo join and did not line up with their games)
+    x = x.with_columns(**{c: pl.Series(v) for c, v in cols.items()})
+    res = x.join(er, on="game_id", how="left").with_columns((-pl.col("spread_line")).alias("close_spread")) \
+        .rename({"result": "margin"}).drop("spread_line")
     res.write_parquet(K / "g3_2022_2025.parquet")
     print(f"Elo margin MAE {float((res['elo_fair'] - res['margin']).abs().mean()):.4f}; "
           f"close MAE {float((res['close_spread'] + res['margin']).abs().mean()):.4f}; wrote {res.height} rows")

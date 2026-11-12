@@ -9,7 +9,14 @@ Three separate questions, each with its own evidence: (1) realism (does it repro
 (is it better than its previous version out of sample), (3) betting value (does it beat the market after vig).
 Improving (1) does not imply (2) or (3).
 
-## V0 baseline (reproduced 2026-11-11)
+## V0 baseline (reproduced 2026-11-11, distribution figures corrected 2026-11-12)
+Correction 2026-11-12: the first version of this table used `g3_2022_2025.parquet` as written by the ported
+`scripts/gamesim_reproduce.py`, whose margin-distribution columns (m_-60..m_60) were attached after a join that reordered
+the rows, so each game carried another game's distribution (correlation of the distribution mean with the game's own fair
+margin was 0.15). The script is fixed and the file regenerated (correlation 1.0). Figures that pool over all games
+(margin MAE, records, key-margin frequencies) were unaffected; log loss, ATS Brier and calibration changed (first version:
+4.064, 0.289, ECE 0.168). Only the m_* columns were wrong: sim_fair and elo_fair, which batch 2 and the hybrid-with-simulator
+test use, were correct.
 `scripts/gamesim_reproduce.py` reproduces the registered G3 margin MAE (9.9827 vs registered 9.983, 1,023 games, 2022-2025
 regular season, weeks 2-18). Diagnostics: `scripts/sim_baseline_v0.py` -> `data/gamesim/v0_baseline.json`.
 
@@ -22,16 +29,17 @@ Per season margin MAE, simulator / Elo / close: 2022 9.06 / 8.99 / 8.72; 2023 10
 
 | Distribution and betting diagnostics | Simulator V0 |
 |---|---|
-| Margin-distribution log loss (smoothed, 121 integer cells) | 4.064, versus 3.936 for a plain normal centred on the close with sd 12.38 |
-| ATS Brier of the simulator's cover probability vs the close (994 non-push games) | 0.289, versus 0.250 for always saying 50% |
+| Margin-distribution log loss (smoothed, 121 integer cells) | 3.904, versus 3.936 for a plain normal centred on the close with sd 12.38 |
+| ATS Brier of the simulator's cover probability vs the close (994 non-push games) | 0.261, versus 0.250 for always saying 50% |
 | ATS record picking the simulator's side vs the close | 495-499 (all), 330-335 when it disagrees by 1.5+ points |
 | Elo, same | 484-510 (all), 293-319 at 1.5+ |
-| Calibration error (ECE, 6 bins) | 0.168 |
+| Calibration error (ECE, 6 bins) | 0.088 |
 | 3-point margins | 11.5% simulated vs 15.2% actual (every season 11.2-11.7% vs 14.1-16.9%) |
 
-Reading: the simulator's raw cover probabilities are badly overconfident against the market. Games it rates at 65%+ to cover
-(265 games) covered 50.6%, and games it rates under 35% (177 games) covered 55.4%. They cannot be used as bet probabilities
-without calibration against the line. The benchmark sd was fit on the same games, so its log loss is slightly flattering;
+Reading: the simulator's raw cover probabilities are overconfident against the market. Games it rates at 65%+ to cover
+(126 games) covered 50.0%, games at 55-65% (298) covered 50.7%, and games under 35% (54) covered 44.4%. They cannot be used
+as bet probabilities without calibration against the line. Its margin distribution shape scores better than a plain normal
+on the close (3.904 vs 3.936), mostly because it puts extra mass on 3 and 7. The benchmark sd was fit on the same games, so its log loss is slightly flattering;
 a normal centred on the close is a hard benchmark because the close already contains most of the information.
 
 Other margin frequencies (actual vs simulated): 1: 5.0 vs 4.7; 2: 5.1 vs 4.2; 4: 5.4 vs 6.5; 6: 6.6 vs 4.8; 7: 8.1 vs 10.2; 8: 4.5 vs 3.6; 10: 4.7 vs 6.0; 14: 4.6 vs 4.3 (%). The simulator over-produces 7s and 4s and under-produces 3s and 6s.
