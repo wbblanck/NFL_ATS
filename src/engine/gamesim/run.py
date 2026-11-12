@@ -67,7 +67,7 @@ def chunk_inputs(gg: pl.DataFrame, sims: int, shift: dict | None):
 
 def simulate_games(games: pl.DataFrame, fac: pl.DataFrame, tb: E.Tables, kicks, xps, hfa: float, sims: int = 400,
                    seed: int = 0, chunk: int = 60000, shift: dict | None = None,
-                   want_counts: bool = False, cover: tuple | None = None):
+                   want_counts: bool = False, cover: tuple | None = None, return_totals: bool = False):
     """games: season, week, game_id, home_team, away_team, neutral. fac: per team-game factors (o*/d*).
     shift: optional extra per-team-game factor shifts {(game_id, team): {factor: value}} (personnel layer).
     cover: optional (coverage dict from engine.gamesim.coverage.pregame, k_cov) for the coverage layer.
@@ -102,6 +102,8 @@ def simulate_games(games: pl.DataFrame, fac: pl.DataFrame, tb: E.Tables, kicks, 
         pl.Series("fair", margins.mean(1).astype(float)), pl.Series("sim_total", totals.mean(1).astype(float)))
     if want_counts:
         return out, margins, att, car
+    if return_totals:
+        return out, margins, totals
     return out, margins
 
 
