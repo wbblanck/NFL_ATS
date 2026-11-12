@@ -148,7 +148,7 @@ def pick(team_games: dict, day: int, season: int, week: int, team: str, out_ids:
     if not prev:
         return recorded
     last = team_games[max(prev)]
-    e = max(last, key=last.get)
+    e = top_qb(last)
     if (season, week, team, e) not in out_ids:
         return e
     tot: dict = {}
@@ -156,4 +156,11 @@ def pick(team_games: dict, day: int, season: int, week: int, team: str, out_ids:
         for q, n in team_games[d].items():
             if q != e:
                 tot[q] = tot.get(q, 0) + n
-    return max(tot, key=tot.get) if tot else "UNKNOWN"
+    return top_qb(tot) if tot else "UNKNOWN"
+
+
+def top_qb(counts: dict):
+    """The QB with the most dropbacks; a tie goes to the smallest id, so the result never depends on row order.
+    (Audit 2026-11-09: `max(counts, key=counts.get)` broke ties by dict insertion order, which followed an
+    unordered group_by, so the batch 6 reproduce check moved by up to 0.005 MAE from run to run.)"""
+    return min(counts, key=lambda q: (-counts[q], q))

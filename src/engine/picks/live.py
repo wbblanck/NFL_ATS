@@ -99,7 +99,8 @@ def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
         rows.append({"season": p["season"], "week": p["week"], "game_id": p["game_id"], "pick": p["pick_team"],
                      "shadow_pick": sh, "shadow_result": "" if sh_won is None else ("W" if sh_won else "L"),
                      "league_line": line, "line_source": src, "score": f"{g['away_score']}-{g['home_score']}",
-                     "result": "W" if won else "L", "late": "LATE_AFTER_LOCK" in (p["flags"] or "")})
+                     "result": "W" if won else "L", "late": "LATE_AFTER_LOCK" in (p["flags"] or ""),
+                     "no_market": "NO_MARKET" in (p["flags"] or "").split(";")})
     w = sum(r["result"] == "W" for r in rows); n = len(rows)
     rate = w / n if n else float("nan")
     se = math.sqrt(rate * (1 - rate) / n) if n else float("nan")
@@ -113,6 +114,12 @@ def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
                "league_line_problems": [league_lines.format_issue(i) for i in problems],
                "late_picks": sum(r["late"] for r in rows),
                "claim_allowed": n >= MIN_GAMES_FOR_CLAIM}
+    # Picks made with no market line at all are blind "always away" fallbacks (rule missing_input_fallback_away); the
+    # headline record includes them, so the split is reported next to it (audit 2026-11-09, finding M1).
+    nm = [r for r in rows if r["no_market"]]
+    mk = [r for r in rows if not r["no_market"]]
+    summary["by_market"] = {"no_market": {"W": sum(r["result"] == "W" for r in nm), "N": len(nm)},
+                            "with_market": {"W": sum(r["result"] == "W" for r in mk), "N": len(mk)}}
     dis = [r for r in rows if r["shadow_pick"] and r["shadow_pick"] != r["pick"]]
     summary["shadow_keynum"] = {"W": sum(r["shadow_result"] == "W" for r in rows if r["shadow_result"]),
                                 "L": sum(r["shadow_result"] == "L" for r in rows if r["shadow_result"]),
@@ -180,6 +187,15 @@ def _integrity_note(s: dict) -> str:
     return "\n".join(out)
 
 
+def _market_split(s) -> str:
+    bm = s.get("by_market") or {}
+    nm, mk = bm.get("no_market"), bm.get("with_market")
+    if not nm or not nm["N"]:
+        return ""
+    return (f"\nOf these, {nm['N']} were picked with no market line (blind fallback to the away team, flag NO_MARKET): "
+            f"{nm['W']}-{nm['N'] - nm['W']}. The {mk['N']} picks made with a market line: {mk['W']}-{mk['N'] - mk['W']}.")
+
+
 def _write(rows, s):
     L = ["# Live record vs the league line\n",
          f"Updated {dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')} by `python -m engine grade`. "
@@ -189,6 +205,7 @@ def _write(rows, s):
            f"Late picks included: {s['late_picks']}.\n",
          ("No skill claim is made: fewer than 256 graded games (pre-registered)." if not s["claim_allowed"]
           else "256+ games graded: the record can be compared with 50% and the 51.37% bar."),
+         _market_split(s),
          f"\nShadow key-number estimator (recorded, not used to pick): {s['shadow_keynum']['W']}-"
          f"{s['shadow_keynum']['L']}; it disagreed with the live pick {s['shadow_keynum']['disagreements']} times "
          f"and won {s['shadow_keynum']['keynum_wins_in_disagreements']} of those.",

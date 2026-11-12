@@ -209,3 +209,40 @@ def test_game_with_only_an_invalid_line_is_ungradable_with_a_reason(tmp_root, we
     s, _ = live.compute(played)
     assert s["N"] == 0 and s["ungradable_by_reason"] == {"invalid_line": ["2026_03_ATL_GB"]}
     assert len(s["league_line_problems"]) == 1
+
+
+def test_row_with_an_unquoted_comma_is_quarantined_not_silently_shifted(tmp_root):
+    # an unquoted comma in `source` pushes recorded_at into an extra field (audit 2026-11-09, finding L1)
+    bad = "2026_03_NE_JAX,2026,3,JAX,NE,-3.5,JAX,screenshot (sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z\n"
+    quoted = '2026_03_CAR_CLE,2026,3,CLE,CAR,2.5,CAR,"screenshot (sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z\n'
+    _lines(tmp_root, GB + bad + quoted)
+    ls = LL.load_checked()
+    assert set(ls.valid) == {"2026_03_ATL_GB", "2026_03_CAR_CLE"}
+    assert ls.status("2026_03_NE_JAX") == LL.INVALID
+    assert ls.valid["2026_03_CAR_CLE"]["recorded_at"] == "2026-11-03T19:16:00Z"
+
+
+def test_committed_league_lines_file_has_no_malformed_rows():
+    import csv
+    from pathlib import Path
+    with open(Path(__file__).resolve().parents[1] / "data" / "lines" / "league_lines.csv", newline="") as f:
+        rows = list(csv.reader(f))
+    assert {len(r) for r in rows} == {len(rows[0])}
+
+
+def test_record_splits_blind_no_market_picks_from_market_picks(tmp_root, week3_schedule):
+    played = _one_pick(tmp_root, week3_schedule)
+    s = live.compute(played)[0]
+    assert s["by_market"] == {"no_market": {"W": 0, "N": 0}, "with_market": {"W": s["W"], "N": 1}}
+    live.grade(played)
+    assert "picked with no market line" not in (tmp_root / "data/predictions/live_record.md").read_text()
+    rows = store.read_rows(final.predictions_path())
+    rows[0]["flags"] = "NO_MARKET;TOTAL_FROM_SCHEDULE"
+    with open(final.predictions_path(), "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=final.FIELDS)
+        w.writeheader()
+        w.writerows(rows)
+    s = live.compute(played)[0]
+    assert (s["W"] + s["L"], s["by_market"]["no_market"]["N"], s["by_market"]["with_market"]["N"]) == (1, 1, 0)
+    live.grade(played)
+    assert "1 were picked with no market line" in (tmp_root / "data/predictions/live_record.md").read_text()

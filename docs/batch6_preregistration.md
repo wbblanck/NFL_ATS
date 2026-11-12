@@ -51,6 +51,21 @@ About 9 weeks × 14-15 games ≈ 130 graded picks; one pick's SD is 0.5, so the 
   about 0.04 nats or more; a perfectly calibrated 55% edge gives about 0.005. A test would be close to powerless, so
   their pool-line log loss is reported with a 90% interval as description only.
 
+## Amendment 2026-11-12: deterministic expected-starter tie-break (before any week 10 kickoff)
+An audit found that the expected starter was not reproducible. When two QBs had the same dropbacks in a team's previous
+game, `max(counts, key=counts.get)` took whichever came first in an unordered group-by, so Elo + QB and XGBoost moved from run
+to run (XGBoost MAE over a range of 0.0053, Elo + QB 0.0023, against the 0.0006 gate). A re-run on 2026-11-09 passed 9 of 11
+checks; the "all eleven within rounding" result below was one draw of that tie. The injury-report start years do not explain
+the first miss (moving Elo + QB's injury start from 2022 to 2015 changes its MAE by 0.0001); this was the tie.
+- Rule now: most dropbacks, ties to the smallest QB id (`tdfg.top_qb`), and `qb_games` is sorted by (day, game_id, qb). No
+  constant, model or test rule changes. About 0.16% of team-games have a tie and none of 2026 so far, so a week 10-18 pick is
+  expected to be affected in at most one game.
+- The rule was chosen before its numbers were looked at. It gives Elo + QB 9.92322 and XGBoost 10.00478 on the 1,023 games
+  (the other nine numbers are unchanged). `scripts/batch6.py reproduce` now checks those two against the registered 9.921 and
+  10.003 within 0.006 (the spread across tie resolutions) and against the pinned values within 0.00002, which makes it a
+  determinism check. Two consecutive runs gave identical values.
+- Nothing else in this pre-registration changes: same test weeks, line, model set, Holm family and minimum picks.
+
 ## Known answers first (done before this commit)
 1. `scripts/batch6.py reproduce` reproduces all eleven registered 2022-2025 numbers within rounding
    (`data/gamesim/batch6_reproduce.json`): 1,023 games; MAE Elo 9.964, Elo + QB (expected) 9.921, XGBoost 10.003;

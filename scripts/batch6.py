@@ -28,6 +28,9 @@ K = ROOT / "data" / "gamesim"
 SEASONS = list(range(1999, 2027))
 B, ALPHA, MIN_GAMES = 2000, 0.05, 100
 TEST_WEEKS, DESC_WEEKS = range(10, 19), range(2, 10)
+# Values the deterministic tie-break (smallest QB id) gives on 2022-2025 weeks 2-18 vs the close, pinned 2026-11-12 before any
+# week 10-18 result (the rule was chosen first; the numbers are what it produced, not tuned toward the registered ones).
+TIE_SENSITIVE = {"mae_eloqb_expected": 9.92322, "mae_xgb": 10.00478}
 FAMILY = ("Q", "X")
 COLS = ["season_type", "qb_dropback", "qb_epa", "passer_player_id", "rusher_player_id", "posteam", "defteam",
         "game_id", "game_date", "season", "week", "epa", "play_type"]
@@ -195,7 +198,16 @@ def reproduce(d, refresh: bool = True):
            "ll_s1": sc["s1"]["cover_logloss"], "ll_k1": sc["k1"]["cover_logloss"],
            "share3_tdfg": share[3]["tdfg"], "share3_s1": share[3]["s1"], "share3_k1": share[3]["k1"]}
     tol = {k: (0 if k == "games" else 0.0006) for k in reg}  # registered numbers are rounded
+    # The expected-starter QB depended on an arbitrary tie-break when two QBs had the same dropbacks in the previous game
+    # (audit 2026-11-09). Ties now go to the smallest id. The two MAEs that read the expected starter therefore (a) must
+    # still be near the numbers registered in nfl-betting-model (within 0.006, the spread seen across tie resolutions) and
+    # (b) must equal the pinned values the fixed rule produces, which makes this check deterministic. See the amendment
+    # in docs/batch6_preregistration.md.
+    for k in TIE_SENSITIVE:
+        tol[k] = 0.006
     check = {k: {"registered": reg[k], "here": got[k], "ok": abs(got[k] - reg[k]) <= tol[k]} for k in reg}
+    for k, v in TIE_SENSITIVE.items():
+        check[k + "_pinned"] = {"registered": v, "here": got[k], "ok": abs(got[k] - v) <= 0.00002}
     power = {n: {"sd_gain": sc[n]["sd_gain"], "se_130": sc[n]["sd_gain"] / math.sqrt(130)} for n in ("tdfg", "s1", "k1", "nb")}
     res = {"check": check, "all_ok": all(v["ok"] for v in check.values()), "margin_share": share,
            "power": power, "vs_close": strip(sc)}

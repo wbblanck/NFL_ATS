@@ -89,3 +89,10 @@ def test_expected_starter_rule():
     assert T.pick(g, 114, 2024, 3, "X", set(), "R") == "A"  # Questionable or healthy: keep the previous starter
     assert T.pick({107: {"A": 35}}, 114, 2024, 3, "X", {(2024, 3, "X", "A")}, "R") == "UNKNOWN"
     assert T.pick({}, 114, 2024, 1, "X", set(), "R") == "R"
+
+
+def test_expected_starter_tie_goes_to_smallest_id_whatever_the_row_order():
+    a = {"Q2": 30, "Q1": 30, "Q3": 5}
+    b = {"Q3": 5, "Q1": 30, "Q2": 30}
+    assert T.top_qb(a) == T.top_qb(b) == "Q1"
+    assert T.top_qb({"Q9": 31, "Q1": 30}) == "Q9"
