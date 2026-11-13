@@ -66,6 +66,8 @@ class LineSet:
 
 def _check_row(r: dict) -> str | None:
     """Reason the row is unusable, or None."""
+    if None in r:   # csv.DictReader puts surplus fields under None: an unquoted comma in `source` shifts recorded_at
+        return "more fields than the header (an unquoted comma in a field?)"
     if not (r.get("game_id") or "").strip():
         return "missing game_id"
     raw = (r.get("spread") or "").strip()

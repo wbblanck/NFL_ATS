@@ -120,21 +120,21 @@ game_id,season,week,home_team,away_team,spread,favorite,source,recorded_at
 2026_08_NE_MIA,2026,8,MIA,NE,7.5,NE,user screenshot of pool Picks screen (full week 8; phone clock 4:53-4:54 PM ET),2026-10-27T20:54:00Z
 2026_08_PHI_WAS,2026,8,WAS,PHI,-3.5,WAS,user screenshot of pool Picks screen (full week 8; phone clock 4:53-4:54 PM ET),2026-10-27T20:54:00Z
 2026_08_CHI_SEA,2026,8,SEA,CHI,-3.5,SEA,user screenshot of pool Picks screen (full week 8; phone clock 4:53-4:54 PM ET),2026-10-27T20:54:00Z
-2026_09_JAX_BAL,2026,9,BAL,JAX,9.5,JAX,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_CIN_ATL,2026,9,ATL,CIN,3.5,CIN,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_DEN_CAR,2026,9,CAR,DEN,2.5,DEN,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_DAL_IND,2026,9,IND,DAL,6.5,DAL,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_NYJ_KC,2026,9,KC,NYJ,-9.5,KC,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_DET_MIA,2026,9,MIA,DET,7.5,DET,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_CLE_NO,2026,9,NO,CLE,-2.5,NO,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_NYG_PHI,2026,9,PHI,NYG,3.5,NYG,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_LA_WAS,2026,9,WAS,LA,5.5,LA,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_HOU_LAC,2026,9,LAC,HOU,4.5,HOU,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_LV_SF,2026,9,SF,LV,-9.5,SF,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_GB_NE,2026,9,NE,GB,-2.5,NE,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_ARI_SEA,2026,9,SEA,ARI,-10.5,SEA,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_TB_CHI,2026,9,CHI,TB,-6.5,CHI,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
-2026_09_BUF_MIN,2026,9,MIN,BUF,3.5,BUF,user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible),2026-11-03T19:16:00Z
+2026_09_JAX_BAL,2026,9,BAL,JAX,9.5,JAX,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_CIN_ATL,2026,9,ATL,CIN,3.5,CIN,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_DEN_CAR,2026,9,CAR,DEN,2.5,DEN,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_DAL_IND,2026,9,IND,DAL,6.5,DAL,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_NYJ_KC,2026,9,KC,NYJ,-9.5,KC,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_DET_MIA,2026,9,MIA,DET,7.5,DET,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_CLE_NO,2026,9,NO,CLE,-2.5,NO,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_NYG_PHI,2026,9,PHI,NYG,3.5,NYG,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_LA_WAS,2026,9,WAS,LA,5.5,LA,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_HOU_LAC,2026,9,LAC,HOU,4.5,HOU,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_LV_SF,2026,9,SF,LV,-9.5,SF,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_GB_NE,2026,9,NE,GB,-2.5,NE,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_ARI_SEA,2026,9,SEA,ARI,-10.5,SEA,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_TB_CHI,2026,9,CHI,TB,-6.5,CHI,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
+2026_09_BUF_MIN,2026,9,MIN,BUF,3.5,BUF,"user screenshot of pool Picks screen (full week 9; sent 2:16 PM ET, phone clock not visible)",2026-11-03T19:16:00Z
 2026_10_WAS_NYG,2026,10,NYG,WAS,-2.5,NYG,user screenshot of pool Picks screen (full week 10; phone clock 5:29 PM ET per screenshot timestamp),2026-11-10T22:29:00Z
 2026_10_NE_DET,2026,10,DET,NE,-3.5,DET,user screenshot of pool Picks screen (full week 10; phone clock 5:29 PM ET per screenshot timestamp),2026-11-10T22:29:00Z
 2026_10_KC_ATL,2026,10,ATL,KC,3.5,KC,user screenshot of pool Picks screen (full week 10; phone clock 5:29 PM ET per screenshot timestamp),2026-11-10T22:29:00Z

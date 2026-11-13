@@ -36,7 +36,7 @@ def qb_games(pbp: pl.DataFrame) -> pl.DataFrame:
         .with_columns(pl.coalesce("passer_player_id", "rusher_player_id").alias("qb"), pl.col("posteam").replace(FRANCHISE).alias("team"))
     g = d.filter(pl.col("qb").is_not_null()).group_by("qb", "game_id", "game_date", "season", "week", "team") \
         .agg(pl.len().alias("n"), pl.col("qb_epa").sum().alias("s"))
-    return g.with_columns(pl.col("game_date").map_elements(_day, return_dtype=pl.Int64).alias("day")).sort("day")
+    return g.with_columns(pl.col("game_date").map_elements(_day, return_dtype=pl.Int64).alias("day")).sort("day", "game_id", "qb")
 
 
 def replacement(qg: pl.DataFrame, pbp: pl.DataFrame, fit: list[int], first_n: int = 100) -> float:
