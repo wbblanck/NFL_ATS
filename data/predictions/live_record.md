@@ -1,16 +1,18 @@
 # Live record vs the league line
 
-Updated 2026-11-10T00:56:24+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+Updated 2026-11-13T00:56:17+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
 
-**48-45** (93 graded), win rate 0.516 ± 0.052 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
+**48-46** (94 graded), win rate 0.511 ± 0.052 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
 
 No skill claim is made: fewer than 256 graded games (pre-registered).
 
-Shadow key-number estimator (recorded, not used to pick): 46-38; it disagreed with the live pick 16 times and won 10 of those.
+Shadow key-number estimator (recorded, not used to pick): 46-39; it disagreed with the live pick 16 times and won 10 of those.
 
-Score-projection models (tracked comparisons, not used to pick): proj-players-v3 44-37 (3 excluded: injury statuses not yet published); proj-poisson-v1 48-36.
+Score-projection models (tracked comparisons, not used to pick): proj-players-v3 44-38 (3 excluded: injury statuses not yet published); proj-poisson-v1 48-37.
 
-Hybrid (tracked, docs/hybrid_tracking.md): 49-44; it picked differently from the live pick 17 times: hybrid right 9, live right 8.
+Hybrid (tracked, docs/hybrid_tracking.md): 49-45; it picked differently from the live pick 17 times: hybrid right 9, live right 8.
+
+Grading integrity: each game is graded once. 94 graded on the pool line stored in its prediction at pick time; 0 had no pool line at pick time and use the line recorded afterwards.
 
 | Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |
 |---|---|---|---|---|---|---|---|
@@ -107,3 +109,4 @@ Hybrid (tracked, docs/hybrid_tracking.md): 49-44; it picked differently from the
 | 2026 | 9 | 2026_09_GB_NE | NE | -2.5 | 45-27 | L | NE L |
 | 2026 | 9 | 2026_09_ARI_SEA | ARI | -10.5 | 3-17 | L | ARI L |
 | 2026 | 9 | 2026_09_TB_CHI | TB | -6.5 | 24-27 | W | TB W |
+| 2026 | 9 | 2026_09_BUF_MIN | MIN | +3.5 | 23-6 | L | MIN L |
