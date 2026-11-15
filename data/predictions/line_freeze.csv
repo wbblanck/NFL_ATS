@@ -1,3 +1,10 @@
 prediction_id,game_id,line_status,line_id,spread,line_source,line_recorded_at
 e843a359-37b6-4c0e-9b23-1f14cb63e2ef,2026_10_WAS_NYG,VALID,LL-f0045d84b821,-2.5,user screenshot of pool Picks screen (full week 10; phone clock 5:29 PM ET per screenshot timestamp),2026-11-10T22:29:00Z
 ffadc507-76eb-494c-9fe9-20192e0bf244,2026_10_NE_DET,VALID,LL-f849f009bded,-3.5,user screenshot of pool Picks screen (full week 10; phone clock 5:29 PM ET per screenshot timestamp),2026-11-10T22:29:00Z
+cf2567ba-bb54-4c77-ab05-c3c087df3176,2026_10_KC_ATL,VALID,LL-3b2866769355,3.5,user screenshot of pool Picks screen (full week 10; phone clock 5:29 PM ET per screenshot timestamp),2026-11-10T22:29:00Z
+20865641-8824-427c-b7cf-357cf85eaa8c,2026_10_HOU_CLE,VALID,LL-23d62033a7ed,4.5,user screenshot of pool Picks screen (full week 10; phone clock 5:29 PM ET per screenshot timestamp),2026-11-10T22:29:00Z
+1db742ec-f4c1-41c9-8b8c-4eda36324e27,2026_10_MIN_GB,VALID,LL-c2df0628d1e0,-5.5,user screenshot of pool Picks screen (full week 10; phone clock 5:29 PM ET per screenshot timestamp),2026-11-10T22:29:00Z
+e8b1f3a2-1677-49a1-9c84-33f6b80103aa,2026_10_MIA_IND,VALID,LL-365ccbd3cd9b,-2.5,user screenshot of pool Picks screen (full week 10; phone clock 5:29 PM ET per screenshot timestamp),2026-11-10T22:29:00Z
+d39e6908-c195-4510-91ec-049e686ec463,2026_10_CAR_NO,VALID,LL-1d066e17af9b,-1.5,user screenshot of pool Picks screen (full week 10; phone clock 5:29 PM ET per screenshot timestamp),2026-11-10T22:29:00Z
+035ef72b-64ac-4541-887b-d8146a2e560b,2026_10_BUF_NYJ,VALID,LL-a6132837da26,8.5,user screenshot of pool Picks screen (full week 10; phone clock 5:29 PM ET per screenshot timestamp),2026-11-10T22:29:00Z
+f267c7a7-8d77-4d4f-a00c-c7a8df005c6a,2026_10_JAX_TEN,VALID,LL-79334c049e2a,10.5,user screenshot of pool Picks screen (full week 10; phone clock 5:29 PM ET per screenshot timestamp),2026-11-10T22:29:00Z
