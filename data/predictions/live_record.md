@@ -1,18 +1,20 @@
 # Live record vs the league line
 
-Updated 2026-11-13T00:56:17+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+Updated 2026-11-15T14:11:14+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
 
-**48-46** (94 graded), win rate 0.511 ± 0.052 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
+**49-46** (95 graded), win rate 0.516 ± 0.051 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
 
 No skill claim is made: fewer than 256 graded games (pre-registered).
 
-Shadow key-number estimator (recorded, not used to pick): 46-39; it disagreed with the live pick 16 times and won 10 of those.
+Of these, 9 were picked with no market line (blind fallback to the away team, flag NO_MARKET): 6-3. The 86 picks made with a market line: 43-43.
 
-Score-projection models (tracked comparisons, not used to pick): proj-players-v3 44-38 (3 excluded: injury statuses not yet published); proj-poisson-v1 48-37.
+Shadow key-number estimator (recorded, not used to pick): 47-39; it disagreed with the live pick 16 times and won 10 of those.
 
-Hybrid (tracked, docs/hybrid_tracking.md): 49-45; it picked differently from the live pick 17 times: hybrid right 9, live right 8.
+Score-projection models (tracked comparisons, not used to pick): proj-players-v3 45-38 (3 excluded: injury statuses not yet published); proj-poisson-v1 49-37.
 
-Grading integrity: each game is graded once. 94 graded on the pool line stored in its prediction at pick time; 0 had no pool line at pick time and use the line recorded afterwards.
+Hybrid (tracked, docs/hybrid_tracking.md): 50-45; it picked differently from the live pick 17 times: hybrid right 9, live right 8.
+
+Grading integrity: each game is graded once. 95 graded on the pool line stored in its prediction at pick time; 0 had no pool line at pick time and use the line recorded afterwards.
 
 | Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |
 |---|---|---|---|---|---|---|---|
@@ -110,3 +112,4 @@ Grading integrity: each game is graded once. 94 graded on the pool line stored i
 | 2026 | 9 | 2026_09_ARI_SEA | ARI | -10.5 | 3-17 | L | ARI L |
 | 2026 | 9 | 2026_09_TB_CHI | TB | -6.5 | 24-27 | W | TB W |
 | 2026 | 9 | 2026_09_BUF_MIN | MIN | +3.5 | 23-6 | L | MIN L |
+| 2026 | 10 | 2026_10_WAS_NYG | WAS | -2.5 | 24-21 | W | WAS W |
