@@ -1,0 +1,6 @@
+# Append-only capture logs are written by several workflows at once (lock-run, capture-market, capture-cbs).
+# When two runs both append, keep both sets of rows instead of stopping the rebase with a conflict.
+# Rows carry their own captured_at/capture_id, so row order within the file does not matter to readers.
+data/lines/api_usage.csv merge=union
+data/lines/market_captures.csv merge=union
+data/lines/cbs_open_captures.csv merge=union
