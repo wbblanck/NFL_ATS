@@ -1,20 +1,20 @@
 # Live record vs the league line
 
-Updated 2026-11-16T01:01:13+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+Updated 2026-11-17T00:56:14+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
 
-**55-48** (103 graded), win rate 0.534 ± 0.049 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
+**55-49** (104 graded), win rate 0.529 ± 0.049 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
 
 No skill claim is made: fewer than 256 graded games (pre-registered).
 
-Of these, 9 were picked with no market line (blind fallback to the away team, flag NO_MARKET): 6-3. The 94 picks made with a market line: 49-45.
+Of these, 9 were picked with no market line (blind fallback to the away team, flag NO_MARKET): 6-3. The 95 picks made with a market line: 49-46.
 
-Shadow key-number estimator (recorded, not used to pick): 49-45; it disagreed with the live pick 20 times and won 10 of those.
+Shadow key-number estimator (recorded, not used to pick): 49-46; it disagreed with the live pick 20 times and won 10 of those.
 
-Score-projection models (tracked comparisons, not used to pick): proj-players-v3 52-39 (3 excluded: injury statuses not yet published); proj-poisson-v1 55-39.
+Score-projection models (tracked comparisons, not used to pick): proj-players-v3 52-40 (3 excluded: injury statuses not yet published); proj-poisson-v1 55-40.
 
-Hybrid (tracked, docs/hybrid_tracking.md): 55-48; it picked differently from the live pick 18 times: hybrid right 9, live right 9.
+Hybrid (tracked, docs/hybrid_tracking.md): 55-49; it picked differently from the live pick 18 times: hybrid right 9, live right 9.
 
-Grading integrity: each game is graded once. 103 graded on the pool line stored in its prediction at pick time; 0 had no pool line at pick time and use the line recorded afterwards.
+Grading integrity: each game is graded once. 104 graded on the pool line stored in its prediction at pick time; 0 had no pool line at pick time and use the line recorded afterwards.
 
 | Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |
 |---|---|---|---|---|---|---|---|
@@ -121,3 +121,4 @@ Grading integrity: each game is graded once. 103 graded on the pool line stored 
 | 2026 | 10 | 2026_10_CAR_NO | CAR | -1.5 | 20-17 | W | NO L |
 | 2026 | 10 | 2026_10_BUF_NYJ | BUF | +8.5 | 31-12 | W | NYJ L |
 | 2026 | 10 | 2026_10_JAX_TEN | JAX | +10.5 | 40-23 | W | TEN L |
+| 2026 | 10 | 2026_10_PIT_CIN | PIT | -3.5 | 18-38 | L | PIT L |
