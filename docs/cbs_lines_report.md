@@ -2,7 +2,7 @@
 
 Rules: `docs/cbs_lines_preregistration.md`. Regenerate: `python -m engine cbs-lines`.
 
-Games with a recorded pool line: **150**. A source counts as identified only with ≥ 45 games and a match rate ≥ 90%.
+Games with a recorded pool line: **163**. A source counts as identified only with ≥ 45 games and a match rate ≥ 90%.
 
 ## Q1: which source and time the pool line copies
 
@@ -109,6 +109,14 @@ No market or CBS-page snapshot inside the Tuesday window for this week (captures
 | book:hardrock | 2026-11-10T16:21 | 14 | 12 | 5 | 7 | 0 | 86% |
 | cbs_page:MGM/SRADAR | 2026-11-10T19:39 | 6 | 5 | 3 | 2 | 0 | 83% |
 
+### 2026-w11: 13 pool lines; Tuesday window 2026-11-17T13:00 to 2026-11-17T22:00 UTC
+
+| Source | Snapshot (UTC) | Games | Matched | Exact | Hook to fav | Hook to dog | Rate |
+|---|---|---|---|---|---|---|---|
+| cbs_page:MGM/SRADAR | 2026-11-17T15:57 | 1 | 1 | 1 | 0 | 0 | 100% |
+| cbs_page:DraftKings/SRADAR | 2026-11-17T15:57 | 5 | 4 | 3 | 1 | 0 | 80% |
+| cbs_page:FanDuel/SRADAR | 2026-11-17T15:57 | 4 | 0 | 0 | 0 | 0 | 0% |
+
 ## Data limits
 
 - The market provider's historical endpoint cannot fill in snapshots before the first Tuesday capture. Tested 2026-09-29: it returned only games that had already kicked off, with book updates days older than the requested time and in-game or alternate lines, and no upcoming games. Those rows were removed.
@@ -132,4 +140,4 @@ If the market's whole number is fair, each side covers half of the non-push game
 
 ## Q4: market movement from the pool line to lock
 
-85 games: mean move -0.15, mean absolute move 0.84, moves of 1+ point 46%.
+96 games: mean move -0.10, mean absolute move 0.84, moves of 1+ point 46%.
