@@ -16,6 +16,11 @@ Nothing here needs an urgent change. Recommended changes are at the end, each ne
 
 ---
 
+## Corrections after follow-up work (2026-11-19, see `docs/audit_2026-11_B2_followups.md`)
+
+- The rule-of-thumb win rate of 52.4% (issue 1 and the headline) was too low. Using the out-of-sample win-rate table by move size, the follow-the-move rule's expected win rate on the live mix of moves is **53.6%**, interval 52.7% to 54.4%, one-sided 95% upper bound 54.2%, assuming an unbiased lock-time market.
+- Issue 5 said the key-number weights "misallocate mass" by pooling across spreads. That was too strong: weights on actual margins are the better-specified choice, spread-specific weights fit worse, and the coded fit matches maximum likelihood. What stands: it adds nothing measurable to cover probabilities or picks, and its weights drift with the era.
+
 ## How the Official pick works (verified)
 
 `final.decide` (`src/engine/picks/final.py:98-131`) takes the lock-time market home spread `c` and the frozen pool line `S`. It computes P(home covers S) and picks home when that is above 0.5 (`final.py:119-120`).
