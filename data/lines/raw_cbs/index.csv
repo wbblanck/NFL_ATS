@@ -253,3 +253,5 @@ capture_id,url,url_key,parsed_digest,file
 20261123T014012Z,https://www.cbssports.com/nfl/odds/,f3db15dfb0,ac6eb259abe056d5956128eb6730506004291d845c7a098cea14a79e38a43dea,20261123T014012Z_f3db15dfb0.html.gz
 20261123T014012Z,https://www.cbssports.com/nfl/odds/2026/regular/week-11/,f86968d52b,ac6eb259abe056d5956128eb6730506004291d845c7a098cea14a79e38a43dea,20261123T014012Z_f86968d52b.html.gz
 20261123T014012Z,https://www.cbssports.com/nfl/odds/2026/regular/week-12/,d8ef40d8c3,7bcb1884af62fc87d4536348d29fb57f89822f3b97b3d6a534406336d232f279,20261123T014012Z_d8ef40d8c3.html.gz
+20261123T123120Z,https://www.cbssports.com/nfl/odds/,f3db15dfb0,8119b2f960c52b0a84dc6ac5900c0d9e655783694c6ebdffa388f981d6c287ae,20261123T123120Z_f3db15dfb0.html.gz
+20261123T123120Z,https://www.cbssports.com/nfl/odds/2026/regular/week-11/,f86968d52b,8119b2f960c52b0a84dc6ac5900c0d9e655783694c6ebdffa388f981d6c287ae,20261123T123120Z_f86968d52b.html.gz
