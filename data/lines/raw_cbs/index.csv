@@ -255,3 +255,6 @@ capture_id,url,url_key,parsed_digest,file
 20261123T014012Z,https://www.cbssports.com/nfl/odds/2026/regular/week-12/,d8ef40d8c3,7bcb1884af62fc87d4536348d29fb57f89822f3b97b3d6a534406336d232f279,20261123T014012Z_d8ef40d8c3.html.gz
 20261123T123120Z,https://www.cbssports.com/nfl/odds/,f3db15dfb0,8119b2f960c52b0a84dc6ac5900c0d9e655783694c6ebdffa388f981d6c287ae,20261123T123120Z_f3db15dfb0.html.gz
 20261123T123120Z,https://www.cbssports.com/nfl/odds/2026/regular/week-11/,f86968d52b,8119b2f960c52b0a84dc6ac5900c0d9e655783694c6ebdffa388f981d6c287ae,20261123T123120Z_f86968d52b.html.gz
+20261124T021101Z,https://www.cbssports.com/nfl/odds/,f3db15dfb0,24aa9a0c2ec7c34481e81ce7bea24f15d20df9c7cff63947d96e06a14657275c,20261124T021101Z_f3db15dfb0.html.gz
+20261124T021101Z,https://www.cbssports.com/nfl/odds/2026/regular/week-12/,d8ef40d8c3,24aa9a0c2ec7c34481e81ce7bea24f15d20df9c7cff63947d96e06a14657275c,20261124T021101Z_d8ef40d8c3.html.gz
+20261124T021101Z,https://www.cbssports.com/nfl/odds/2026/regular/week-13/,f94035f0fb,2128936a8c15108bdb79127d1dec7a9c35f238606c6d910085bd84b267a92e68,20261124T021101Z_f94035f0fb.html.gz
