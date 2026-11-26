@@ -12,3 +12,12 @@ Before that it was the median of every book's spread (13–15 books).
 - **Recorded per pick:** `feature_version` is `market:pinnacle` or `market:median`. `market_at_lock` is the line actually used. Every book's line is still captured in `data/lines/market_captures.csv`, so the season can be re-scored with either input.
 - **Unchanged:** the margin model, the cover-probability rule, and the timing (pick 5 minutes before lock).
 - **Already locked:** the week 4 picks for PIT@CLE and IND@WAS used the median. Both Pinnacle and the median were captured for them.
+
+## What the pick is (added 2026-11-26, audit B)
+
+The Official pick equals "the side the market moved toward since the pool line was set, and the away team when it has not
+moved". On every one of the 95 live picks that had a market line, the margin-distribution model and this rule agreed. Out of
+sample, 2010-2025 (29,225 game-and-line pairs), the model's cover probability scored 0.68265 log loss against 0.68271 for a
+forecaster that uses only the offset between the pool line and the market (difference -0.00006, 95% interval -0.00020 to
++0.00007). So the market input (Pinnacle at lock, or the flagged fallback) and the pool line are the whole pick.
+Details: `docs/audit_2026-11_B2_followups.md`.
