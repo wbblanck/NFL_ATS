@@ -49,6 +49,8 @@ Win-loss is the noisiest possible measure of a small edge: at 256 games its stan
 Starts at the first lock run after this file is merged to main. The start time (UTC) is written in a one-line addendum commit
 immediately after the merge. Games picked before it are reported in the descriptive paragraph but do not count toward the test.
 
+**Recorded start: 2026-11-26T18:40:30Z** (PR #71 merged to main). Picks with `created_at` at or after this time count; the first is the next lock run (PHI@DAL, week 12).
+
 ## Limits
 
 - The nflverse close is not Pinnacle's own close. On 70 live Pinnacle picks the lock line minus the nflverse close had mean

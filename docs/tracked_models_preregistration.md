@@ -34,6 +34,8 @@ H_v1, H_v3, H_hybrid, H_keynum: on the games where the model's pick differs from
 Starts at the first lock run after this file is merged to main. The start time (UTC) is recorded in a one-line addendum commit
 immediately after the merge, before that lock run.
 
+**Recorded start: 2026-11-26T18:40:30Z** (PR #71 merged to main). Picks with `created_at` at or after this time count.
+
 ## Expected duration
 
 About 30 games differ per season for Hybrid and similar models, so 100 differing games takes several seasons. That slow
