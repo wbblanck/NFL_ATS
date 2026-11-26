@@ -299,6 +299,8 @@ td .note { display: block; font: 11px var(--mono); color: var(--ink-3); }
 .tally .tn { font: 700 20px/1.1 var(--display); text-transform: uppercase; letter-spacing: .05em; color: var(--ink); }
 .tally .tn small { display: block; font: 11px var(--mono); letter-spacing: 0; text-transform: none; color: var(--ink-3); margin-top: 3px; }
 .tally .tr.me .tn { color: var(--amber); }
+.tally .tr.sep { display: block; padding: 12px 0 4px; border-bottom: 0; font: 500 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.tally .tr.trk .tn { color: var(--ink-2); font-size: 16px; } .tally .tr.trk .tv { color: var(--ink-2); font-size: 20px; }
 .tally .tv { font: 700 26px/1 var(--display); color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .tally .tr.me .tv { color: var(--amber); }
 .tally .tv.net { font-size: 20px; }
@@ -691,10 +693,11 @@ footer { margin: 56px 0 0; border-top: 1px solid var(--line); padding: 20px 0 40
 
   <details class="pane fold howto" style="margin-top:40px"><summary>How to read this page</summary>
     <p><b>Pool line and spreads.</b> Each team shows its spread on the pool line, the number the pool grades on. A minus sign means that team is favored. "Market" is where the betting market stood at pick time, in the home team's spread.</p>
-    <p><b>The pick</b> is the side the market moved toward, with a cover chance from how games have finished relative to the closing spread since 1999. <b>Provisional</b> picks use the latest market snapshot and can change. The official pick is locked about 20 minutes before kickoff and never changes. If no market line is available at pick time, the pick falls back to the away team.</p>
+    <p><b>The pick</b> is the side the market moved toward since the pool line was set; when the market has not moved, it is the away team. That is the whole rule. The cover chance shown comes from how games have finished relative to the closing spread since 1999, and it is a readout of the size of the move, not a separate forecast: in out-of-sample testing it carried no information beyond the move itself (docs/audit_2026-11_B2_followups.md). <b>Provisional</b> picks use the latest market snapshot and can change. The official pick is locked about 20 minutes before kickoff and never changes. If no market line is available at pick time, the pick falls back to the away team.</p>
     <p><b>The market line</b> is Pinnacle's when the odds feed has it. Otherwise it comes from a backup source or the median of all books, and a pick made on fewer than five books is flagged.</p>
     <p><b>Historical win rates</b> are 2007–2021. The 2025 holdout was weaker, at 52% on 1+ point moves. No claim of skill is made before 256 graded games.</p>
     <p><b>Projections</b> are tracked for comparison and do not make the pick. The player projection adjusts team scoring strength for the starting quarterback, injured starters weighted by snaps, rest, travel and roof. Against the market it was a coin flip in 2022–2025 testing. When injury statuses were not yet published, injuries are not reflected and the pick is not counted in the record.</p>
+    <p><b>Hybrid and Key-number</b> are variants of the same move rule. They are followed for comparison only, listed below the contenders, and off by default on the season path.</p>
     <p><b>Hybrid (tracked)</b> keeps the pick when the market moved 1+ point off the pool line and uses the team-only projection when it moved ½ point or not at all. It is followed for comparison only and never makes the pick.</p>
     <p><b>Key-number (tracked)</b> reads the same market move but weights how often games land on 3, 7 and other common margins. It needs a market line, so it has no pick when there is none. It is followed for comparison only and never makes the pick.</p>
     <p><b>The season path</b> counts covers minus misses. Its first two weeks are backtest replays; the chips quote live games only.</p>
@@ -1062,7 +1065,7 @@ setLive(liveData);
     ["home", "Always the home team", "#8993A3", "1 3", 1.4]].filter(s => c.cum[s[0]]);
   let on = null; try { on = JSON.parse(localStorage.getItem("nfl_curve_on_v2")); } catch (e) {}
   on = Array.isArray(on) ? on.filter(k => S.some(s => s[0] === k)) : null;
-  if (!on || !on.length) on = ["official", "hybrid", "v1", "v3", "keynum", "underdog"].filter(k => S.some(s => s[0] === k));
+  if (!on || !on.length) on = ["official", "v1", "v3", "underdog"].filter(k => S.some(s => s[0] === k));   // Hybrid and Key-number: tracked variants, off until chosen
   let ghosts = false, armed = !REDUCED;   // armed: lines wait, unrevealed, for the cascade to reach them
   const fin = k => c.cum[k][n - 1], sg = v => v > 0 ? "+" + v : v < 0 ? "−" + (-v) : "0";
   // The path starts with the two backtest weeks (replays, not picked live); chips and notes quote live games only so they match the tally.
@@ -1198,9 +1201,13 @@ whenVisible($("#season .split"), () => { const e = CASCADE.dots ? CASCADE.dots()
 
 /* Model tally: an airport board that flips only the digits that changed */
 (function () {
-  const ms = D.models.map(m => ({ ...m, pct: m.W / (m.W + m.L), net: m.W - m.L }));
+  // Hybrid and Key-number are tracked variants of the same move rule, not contenders: listed below a divider (2026-11 audit).
+  const isTrk = m => m.tracked || /\(tracked\)/.test(m.label);
+  const all = D.models.map(m => ({ ...m, pct: m.W / (m.W + m.L), net: m.W - m.L }));
+  const ms = [...all.filter(m => !isTrk(m)), ...all.filter(isTrk)], firstTrk = ms.findIndex(isTrk);
   $("#standings").innerHTML = `<div class="tr th" role="row"><div role="columnheader">Model</div><div role="columnheader">W–L</div><div role="columnheader">Win %</div><div role="columnheader">Net</div></div>` +
-    ms.map((m, i) => `<div class="tr${i === 0 ? " me" : ""}" role="row"><div class="tn" role="cell">${esc(m.label)}${m.note ? `<small>${esc(m.note)}</small>` : ""}</div>
+    ms.map((m, i) => (i === firstTrk ? `<div class="tr sep" role="row"><div role="cell">Tracked variants of the same move rule, not contenders</div></div>` : "") +
+      `<div class="tr${i === 0 ? " me" : ""}${isTrk(m) ? " trk" : ""}" role="row"><div class="tn" role="cell">${esc(m.label)}${m.note ? `<small>${esc(m.note)}</small>` : ""}</div>
       <div class="tv" role="cell" data-k="wl${i}"></div><div class="tv" role="cell" data-k="pct${i}"></div><div class="tv net ${m.net > 0 ? "up" : m.net < 0 ? "dn" : ""}" role="cell" data-k="net${i}"></div></div>`).join("");
   const go = [];
   ms.forEach((m, i) => {

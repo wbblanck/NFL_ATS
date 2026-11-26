@@ -65,6 +65,29 @@ def resolve_line(p: dict, lines) -> tuple[float | None, str, dict | None]:
         lines.status(p["game_id"]), "no_line"), None
 
 
+def clv_points(pick: str, pool_line: float, ref_home_spread: float) -> float:
+    """Closing-line value of one pick, in points, from the pick's side (docs/clv_preregistration.md).
+    Both lines are home spreads (negative = home favored). A home pick gains when the pool line gives home more
+    points than the reference line (pool - ref > 0); an away pick gains in the opposite case (ref - pool > 0).
+    Descriptive only: it never changes a pick or a W-L grade."""
+    sign = 1.0 if pick == "home" else -1.0
+    return sign * (float(pool_line) - float(ref_home_spread))
+
+
+def _clv_summary(rows: list[dict]) -> dict:
+    """Mean closing-line value (vs the nflverse close) and lock-time line value (vs the Pinnacle or fallback market the
+    pick used), over the graded rows that have the reference line."""
+    out = {}
+    for key, col in (("close", "clv_close"), ("lock", "clv_lock")):
+        v = [r[col] for r in rows if r.get(col) is not None]
+        n = len(v)
+        mean = sum(v) / n if n else float("nan")
+        sd = math.sqrt(sum((x - mean) ** 2 for x in v) / (n - 1)) if n > 1 else float("nan")
+        out[key] = {"n": n, "mean": mean, "se": sd / math.sqrt(n) if n > 1 else float("nan"),
+                    "positive": sum(x > 0 for x in v), "zero": sum(x == 0 for x in v)}
+    return out
+
+
 def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
     """The graded summary and one row per graded game, with no file written (the dashboard reads this)."""
     all_preds = store.read_rows(final.predictions_path())
@@ -75,6 +98,10 @@ def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
         print("LEAGUE LINE PROBLEM, row skipped:", league_lines.format_issue(i), file=sys.stderr)
     scores = {r["game_id"]: r for r in sched.filter(pl.col("result").is_not_null()).select(
         "game_id", "home_score", "away_score").to_dicts()}
+    closes = {}
+    if "spread_line" in sched.columns:
+        closes = {r["game_id"]: -float(r["spread_line"]) for r in sched.filter(
+            pl.col("result").is_not_null(), pl.col("spread_line").is_not_null()).select("game_id", "spread_line").to_dicts()}
     rows, pending, no_line = [], 0, 0
     ungradable: dict[str, list[str]] = {}
     mismatches, sources = [], {"frozen": 0, "file_after_pick": 0}
@@ -95,12 +122,19 @@ def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
         won = (p["pick"] == "home") == (res is Result.HOME_COVER)
         sh = p.get("shadow_pick_keynum") or ""
         home = p["home_team"]
+        try:
+            lock_mkt = float(p.get("market_at_lock"))
+        except (TypeError, ValueError):
+            lock_mkt = None
+        clv_close = clv_points(p["pick"], line, closes[p["game_id"]]) if p["game_id"] in closes else None
+        clv_lock = clv_points(p["pick"], line, lock_mkt) if lock_mkt is not None else None
         sh_won = None if not sh else ((sh == home) == (res is Result.HOME_COVER))
         rows.append({"season": p["season"], "week": p["week"], "game_id": p["game_id"], "pick": p["pick_team"],
                      "shadow_pick": sh, "shadow_result": "" if sh_won is None else ("W" if sh_won else "L"),
                      "league_line": line, "line_source": src, "score": f"{g['away_score']}-{g['home_score']}",
                      "result": "W" if won else "L", "late": "LATE_AFTER_LOCK" in (p["flags"] or ""),
-                     "no_market": "NO_MARKET" in (p["flags"] or "").split(";")})
+                     "no_market": "NO_MARKET" in (p["flags"] or "").split(";"),
+                     "clv_close": clv_close, "clv_lock": clv_lock})
     w = sum(r["result"] == "W" for r in rows); n = len(rows)
     rate = w / n if n else float("nan")
     se = math.sqrt(rate * (1 - rate) / n) if n else float("nan")
@@ -120,6 +154,7 @@ def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
     mk = [r for r in rows if not r["no_market"]]
     summary["by_market"] = {"no_market": {"W": sum(r["result"] == "W" for r in nm), "N": len(nm)},
                             "with_market": {"W": sum(r["result"] == "W" for r in mk), "N": len(mk)}}
+    summary["clv"] = _clv_summary(rows)
     dis = [r for r in rows if r["shadow_pick"] and r["shadow_pick"] != r["pick"]]
     summary["shadow_keynum"] = {"W": sum(r["shadow_result"] == "W" for r in rows if r["shadow_result"]),
                                 "L": sum(r["shadow_result"] == "L" for r in rows if r["shadow_result"]),
@@ -187,6 +222,21 @@ def _integrity_note(s: dict) -> str:
     return "\n".join(out)
 
 
+def _clv_note(s) -> str:
+    c = s.get("clv") or {}
+    cl, lk = c.get("close"), c.get("lock")
+    if not cl or not cl["n"]:
+        return ""
+    f = lambda x: format(x, "+.2f")
+    out = (f"\nClosing-line value (docs/clv_preregistration.md), in points from the pick's side, positive means the "
+           f"pool line was better than the reference: against the nflverse close, mean {f(cl['mean'])} ± {cl['se']:.2f} (SE) "
+           f"over {cl['n']} graded games ({cl['positive']} positive, {cl['zero']} zero)")
+    if lk and lk["n"]:
+        out += (f"; against the lock-time market the pick used, mean {f(lk['mean'])} over {lk['n']} games "
+                f"(equal to the size of the move, since the pick follows it)")
+    return out + ". Descriptive: it does not change any pick or any win-loss grade."
+
+
 def _market_split(s) -> str:
     bm = s.get("by_market") or {}
     nm, mk = bm.get("no_market"), bm.get("with_market")
@@ -206,6 +256,7 @@ def _write(rows, s):
          ("No skill claim is made: fewer than 256 graded games (pre-registered)." if not s["claim_allowed"]
           else "256+ games graded: the record can be compared with 50% and the 51.37% bar."),
          _market_split(s),
+         _clv_note(s),
          f"\nShadow key-number estimator (recorded, not used to pick): {s['shadow_keynum']['W']}-"
          f"{s['shadow_keynum']['L']}; it disagreed with the live pick {s['shadow_keynum']['disagreements']} times "
          f"and won {s['shadow_keynum']['keynum_wins_in_disagreements']} of those.",

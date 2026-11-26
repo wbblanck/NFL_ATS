@@ -145,13 +145,15 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
             models.append(row(label, key, m["W"], m["L"]))
     if live.get("hybrid"):
         h = live["hybrid"]
-        models.append(row("Hybrid (tracked)", "hybrid", h["W"], h["L"],
-                          f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"))
+        models.append({**row("Hybrid (tracked)", "hybrid", h["W"], h["L"],
+                             f"differs {h['differ']}: hybrid right {h['hybrid_only']}, pick right {h['live_only']}"),
+                       "tracked": True})
     k = live.get("shadow_keynum") or {}
     if k.get("W", 0) + k.get("L", 0):
-        models.append(row("Key-number (tracked)", "keynum", k["W"], k["L"],
-                          f"differs {k['disagreements']}: key-number right {k['keynum_wins_in_disagreements']}, "
-                          f"pick right {k['disagreements'] - k['keynum_wins_in_disagreements']}"))
+        models.append({**row("Key-number (tracked)", "keynum", k["W"], k["L"],
+                             f"differs {k['disagreements']}: key-number right {k['keynum_wins_in_disagreements']}, "
+                             f"pick right {k['disagreements'] - k['keynum_wins_in_disagreements']}"),
+                       "tracked": True})
     nxt = min(upcoming) if upcoming else None
     from engine.picks.season import MODELS as _SM
     data = json.dumps({"flips": flips or {}, "slate": slate or {}, "loss_review": loss_review or {}, "tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,

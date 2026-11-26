@@ -17,23 +17,31 @@ complexity: the null model is the line itself, and anything more complex must be
 3. **Model** (`total-shifted-empirical-argmax`, config in `config/model.yaml`): the market spread is the predicted
    margin. The model fits the distribution of final margins around the market spread from regular-season games since
    2000, widens or narrows it with the game total, and computes P(home covers the pool line).
-4. **Pick:** the side with the higher cover probability. In practice that is the side the market has moved toward
-   since the pool line was set.
+4. **Pick:** the side with the higher cover probability. That is exactly the side the market has moved toward since the
+   pool line was set, and the away team when it has not moved. In out-of-sample testing (2010-2025, 29,225 game-and-line
+   pairs) the probability carried no information beyond the size of that move, and on all 95 live picks that had a market
+   line the model matched this rule (`docs/audit_2026-11_B2_followups.md`). Read the pick as the move rule, and the
+   cover chance as a readout of the move's size.
 5. One immutable row is appended to `data/predictions/predictions.csv`. Picks are never edited or backfilled, and a
    missed lock stays missed.
 
-Probabilities are raw: no calibrator improved out-of-sample results (Phase 5), and the extremes are overconfident.
+Probabilities are raw: no calibrator improved out-of-sample results (Phase 5). The Phase 5 "extremes are overconfident"
+finding used the SBRO open as the pool line; a fresh walk-forward check on closing lines found them calibrated within
+1-2 points (`docs/audit_2026-11_B2_followups.md`, section 2 and `docs/audit_2026-11_B_model_math.md`, issue 4).
 
 ### Tracked comparisons (they never make the pick)
 
-Recorded at lock and graded alongside the official pick in `live_record.md`:
+Recorded at lock and graded alongside the official pick in `live_record.md`. Hybrid and the key-number shadow are variants
+of the same move rule and are shown below the contenders on the dashboard. The four are tested as one Holm family
+against the official pick (`docs/tracked_models_preregistration.md`). The live record also reports closing-line value
+(`docs/clv_preregistration.md`).
 
 | Tracked | What it is | Notes |
 |---|---|---|
 | Key-number shadow | Margin distribution that keeps the mass at 3 and 7 | `docs/keynumber_report.md`; switch rule pre-registered for the end of 2026 |
 | `proj-poisson-v1` | Team-only score projection | `docs/projection_report.md` |
 | `proj-players-v3` | Player-based score projection | `docs/players_v3_report.md` |
-| Hybrid | Live pick on 1+ point moves, `proj-poisson-v1` otherwise | `docs/hybrid_tracking.md`; promotion needs z ≥ 1.645 |
+| Hybrid | Live pick on 1+ point moves, `proj-poisson-v1` otherwise | `docs/hybrid_tracking.md`; promotion bar replaced by the Holm family above |
 
 ## Dashboard
 
