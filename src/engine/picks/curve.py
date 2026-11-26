@@ -3,7 +3,11 @@ pick, the four tracked models (hybrid, team-only v1, player v3, key-number varia
 a coin-flipper lands in. Live games use the picks recorded at lock; 2026 weeks 1-2 use the backtest in
 data/backtests/early2026.json and are marked. In week 6, where a tracked model has no live pick (ARI@LA had no pick row,
 nine games had no market line at lock), the hypothetical backtest in data/backtests/week6_fill.json fills it in; each
-game lists the filled models under 'bt'. None of this touches the official or live record."""
+game lists the filled models under 'bt'. None of this touches the official or live record.
+
+Owner rule (2026-11-26, audit A): the official series and the verdict use only picks actually recorded at lock. A game
+with no live official pick (weeks 1-2, a missed game) leaves the official line flat, is never filled from a backtest,
+and does not count toward the verdict's game count or luck band. Backtests only fill the tracked (shadow) models."""
 from __future__ import annotations
 
 import json
@@ -76,7 +80,8 @@ def build(sched: pl.DataFrame, season: int, live_rows: list[dict]) -> dict:
         else:
             b = bt.get(gid, {})
             picks = {k: b.get(k) for k in MODELS}
-        filled = [k for k in MODELS if picks.get(k) is None and fl.get(gid, {}).get(k)]
+            picks["official"] = None                                 # official: live picks only, never a backtest
+        filled = [k for k in MODELS if k != "official" and picks.get(k) is None and fl.get(gid, {}).get(k)]
         for k in filled:
             picks[k] = fl[gid][k]
         picks["favorite"] = g["home_team"] if line < 0 else g["away_team"]
@@ -93,9 +98,14 @@ def build(sched: pl.DataFrame, season: int, live_rows: list[dict]) -> dict:
     n = len(games)
     band = [round(1.96 * math.sqrt(i + 1), 2) for i in range(n)]
     out = {"games": games, "cum": cum, "band": band}
-    if n:
-        z = tot["official"] / math.sqrt(n)
+    n_live = sum("official" in g["d"] for g in games)          # graded live official picks only
+    if n_live:
+        w = sum(g["d"].get("official") == 1 for g in games)
+        z = tot["official"] / math.sqrt(n_live)
         out["verdict"] = ("Above the luck band" if z > 1.96 else "Below the luck band" if z < -1.96 else
                           "Inside the luck band: too early to tell skill from luck") + \
-            f" ({n} games, official {tot['official']:+d} net wins, a coin-flipper would be within ±{round(1.96 * math.sqrt(n))})"
+            (f" (live official picks only: {w}-{n_live - w} on {n_live} graded, {tot['official']:+d} net wins; "
+             f"a coin-flipper would be within ±{round(1.96 * math.sqrt(n_live))}. Backtest games are shown for the "
+             "tracked models only and never count here.)")
+    out["live_official_graded"] = n_live
     return out
