@@ -23,6 +23,8 @@
   features           Phase 6: residual feature ablation -> docs/phase6_results.md
   backtest           Phase 7: full-system walk-forward -> docs/phase7_results.md
   grade              grade final predictions vs league line -> data/predictions/live_record.md
+  coverage [--alert] one class per locked game, missed picks, and upcoming games no
+                     recurring lock-run job covers (needs a one-off job)
   run --game ID      manual fallback: final pick for one game now (flagged
                      LATE_AFTER_LOCK if run after its lock)
 """
@@ -83,6 +85,12 @@ def main(argv=None) -> int:
     pe.add_argument("--cache", required=True)
     pv6 = sub.add_parser("projection-v6")
     pv6.add_argument("--cache", required=True)
+    cv = sub.add_parser("coverage", help="one class per locked game, missed picks, upcoming games with no recurring job")
+    cv.add_argument("--season", type=int, default=None)
+    cv.add_argument("--ahead-days", type=int, default=4)
+    cv.add_argument("--since-hours", type=float, default=24, help="with --alert: report misses this recent")
+    cv.add_argument("--alert", action="store_true", help="send the misses and needed one-off jobs to ntfy (never fails)")
+    cv.add_argument("--csv", default=None, help="write one row per locked game to this path")
     r = sub.add_parser("run")
     r.add_argument("--game", required=True)
     a = ap.parse_args(argv)
@@ -367,6 +375,34 @@ def main(argv=None) -> int:
                                               details, season_tab, market.credits_left(), epa_tab, curve_data, tb_rows,
                                               lr_data, flips_data, slate_data))
         print(out)
+        return 0
+    if a.cmd == "coverage":
+        import csv as _csv
+        import datetime as _dt
+        from engine.data import store
+        from engine.picks import alerts, coverage, final
+        now = _dt.datetime.now(_dt.timezone.utc)
+        preds = [p for p in store.read_rows(final.predictions_path()) if not p.get("supersedes")]
+        season = a.season or max((int(p["season"]) for p in preds), default=now.year)
+        rep = coverage.report(sched, preds, now, season=season, ahead_days=a.ahead_days)
+        print(coverage.summary_line(rep))
+        for r in rep["rows"]:
+            if r["class"] == coverage.MISSING_PICK:
+                print("MISSING_PICK", r["game_id"], r["kickoff_utc"])
+        for u in rep["needs_one_off_job"]:
+            print("NEEDS_ONE_OFF_JOB", u["game_id"], "kickoff", u["kickoff_et"], "ET; fire ~", u["suggested_fire_et"],
+                  "ET, window_minutes", u["window_minutes"])
+        if a.csv:
+            with open(a.csv, "w", newline="") as fh:
+                w = _csv.DictWriter(fh, fieldnames=["game_id", "week", "kickoff_utc", "prediction_id", "class"])
+                w.writeheader(); w.writerows(rep["rows"])
+        if a.alert:
+            txt = coverage.alert_text(rep, now, a.since_hours)
+            if txt:
+                try:
+                    print("alert sent" if alerts.send("CHECK PICKS: " + txt) else "alert not sent")
+                except Exception as e:                     # an alert must never fail a run
+                    print("alert failed:", type(e).__name__, file=sys.stderr)
         return 0
     if a.cmd == "check-league-lines":
         from engine.data import league_lines
