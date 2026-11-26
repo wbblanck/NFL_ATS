@@ -44,6 +44,7 @@ jobs:
           ODDSLINK_API_KEY: ${{ secrets.ODDS_LINK }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           GH_TOKEN: ${{ github.token }}
+          LOCK_RUN_SYNC_REF: ${{ github.ref_name }}   # waiting runs pull data merged during the wait, just before picking
         run: |
           git config user.name "nfl-ats-engine"
           git config user.email "nfl-ats-engine@users.noreply.github.com"
