@@ -92,6 +92,12 @@ jobs:
       - name: Grade finished games (live record)
         if: always()
         run: python -m engine grade || true
+      - name: Coverage check (missed picks, games needing a one-off job)
+        # Alert only; never fails the run and never writes a pick (audit A, owner decision 2026-11-26).
+        if: always()
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python -m engine coverage --alert --since-hours 24 --ahead-days 4 || true
       - name: Commit predictions
         if: always()
         run: |

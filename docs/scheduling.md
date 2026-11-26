@@ -39,6 +39,11 @@ it commits them. It does not depend on any Claude session. Without the secret it
 - **The text:** one line of at most 200 characters listing each pick with its spread on the pool line, for example
   `Picks locked (Sun 1:00 PM): CLE +2.5 · PIT +3.5 · JAX −2.5 · SEA −7.5`. A pick made after its lock ends with
   `LATE`. If more picks do not fit, it ends with `· +N more`.
+- **Coverage alert (2026-11-26):** after grading, every lock run runs `python -m engine coverage --alert`. It sends
+  one CHECK PICKS message naming any game whose lock passed in the last 24 h with no pick, and any game in the next
+  4 days that no recurring job covers (with a suggested fire time for a one-off job). It never writes a pick and never
+  fails the run. Run `python -m engine coverage` any time for the full list and one class per locked game
+  (`engine/picks/coverage.py`).
 - **Not covered:** the "PICK MISSING" warning exists only in `alert --watch` (prints from a Claude session,
   which cannot reach a phone). A game that gets no pick sends nothing.
 
