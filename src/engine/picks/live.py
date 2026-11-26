@@ -10,7 +10,7 @@ import polars as pl
 
 from engine import config
 from engine.data import league_lines, store
-from engine.picks import final
+from engine.picks import coverage, final
 from engine.picks.grading import Result, grade_league, is_half_point
 
 MIN_GAMES_FOR_CLAIM = 256
@@ -134,7 +134,7 @@ def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
                      "league_line": line, "line_source": src, "score": f"{g['away_score']}-{g['home_score']}",
                      "result": "W" if won else "L", "late": "LATE_AFTER_LOCK" in (p["flags"] or ""),
                      "no_market": "NO_MARKET" in (p["flags"] or "").split(";"),
-                     "clv_close": clv_close, "clv_lock": clv_lock})
+                     "clv_close": clv_close, "clv_lock": clv_lock, "class": coverage.classify(p)})
     w = sum(r["result"] == "W" for r in rows); n = len(rows)
     rate = w / n if n else float("nan")
     se = math.sqrt(rate * (1 - rate) / n) if n else float("nan")
@@ -155,6 +155,15 @@ def compute(sched: pl.DataFrame) -> tuple[dict, list[dict]]:
     summary["by_market"] = {"no_market": {"W": sum(r["result"] == "W" for r in nm), "N": len(nm)},
                             "with_market": {"W": sum(r["result"] == "W" for r in mk), "N": len(mk)}}
     summary["clv"] = _clv_summary(rows)
+    # One class per pick (engine.picks.coverage), so every subset record ties back to prediction ids; plus the
+    # scheduled games whose lock passed with no pick at all (owner decision 2026-11-26, audit A).
+    summary["by_class"] = {c: {"W": sum(r["result"] == "W" for r in rows if r["class"] == c),
+                               "N": sum(r["class"] == c for r in rows)} for c in coverage.CLASSES if c != coverage.MISSING_PICK}
+    summary["coverage"] = None
+    if "kickoff_utc" in sched.columns:
+        season = max((int(p["season"]) for p in preds), default=None)
+        rep = coverage.report(sched, preds, dt.datetime.now(dt.timezone.utc), season=season)
+        summary["coverage"] = {k: v for k, v in rep.items() if k != "rows"}   # rows: python -m engine coverage
     dis = [r for r in rows if r["shadow_pick"] and r["shadow_pick"] != r["pick"]]
     summary["shadow_keynum"] = {"W": sum(r["shadow_result"] == "W" for r in rows if r["shadow_result"]),
                                 "L": sum(r["shadow_result"] == "L" for r in rows if r["shadow_result"]),
@@ -246,6 +255,21 @@ def _market_split(s) -> str:
             f"{nm['W']}-{nm['N'] - nm['W']}. The {mk['N']} picks made with a market line: {mk['W']}-{mk['N'] - mk['W']}.")
 
 
+def _class_split(s) -> str:
+    bc = s.get("by_class") or {}
+    if not bc:
+        return ""
+    names = {"LIVE_MARKET": "live Pinnacle", "LIVE_MEDIAN": "live median", "STALE_MARKET": "stale market (picked more "
+             "than 15 min before lock)", "LATE_PICK": "after lock", "BLIND_FALLBACK": "blind away fallback",
+             "INVALID_INPUT": "no usable pool line at pick time"}
+    out = "\nBy pick class (one per pick): " + "; ".join(
+        f"{names[c]} {x['W']}-{x['N'] - x['W']}" for c, x in bc.items() if x["N"]) + "."
+    cov = s.get("coverage")
+    if cov:
+        out += "\n" + coverage.summary_line(cov) + " Missed games are not graded and are not in the record."
+    return out
+
+
 def _write(rows, s):
     L = ["# Live record vs the league line\n",
          f"Updated {dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')} by `python -m engine grade`. "
@@ -257,6 +281,7 @@ def _write(rows, s):
           else "256+ games graded: the record can be compared with 50% and the 51.37% bar."),
          _market_split(s),
          _clv_note(s),
+         _class_split(s),
          f"\nShadow key-number estimator (recorded, not used to pick): {s['shadow_keynum']['W']}-"
          f"{s['shadow_keynum']['L']}; it disagreed with the live pick {s['shadow_keynum']['disagreements']} times "
          f"and won {s['shadow_keynum']['keynum_wins_in_disagreements']} of those.",
