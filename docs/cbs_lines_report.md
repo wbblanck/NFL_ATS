@@ -2,7 +2,7 @@
 
 Rules: `docs/cbs_lines_preregistration.md`. Regenerate: `python -m engine cbs-lines`.
 
-Games with a recorded pool line: **163**. A source counts as identified only with ≥ 45 games and a match rate ≥ 90%.
+Games with a recorded pool line: **179**. A source counts as identified only with ≥ 45 games and a match rate ≥ 90%.
 
 ## Q1: which source and time the pool line copies
 
@@ -113,9 +113,27 @@ No market or CBS-page snapshot inside the Tuesday window for this week (captures
 
 | Source | Snapshot (UTC) | Games | Matched | Exact | Hook to fav | Hook to dog | Rate |
 |---|---|---|---|---|---|---|---|
+| cbs_page:DraftKings/SRADAR | 2026-11-17T20:48 | 3 | 3 | 3 | 0 | 0 | 100% |
 | cbs_page:MGM/SRADAR | 2026-11-17T15:57 | 1 | 1 | 1 | 0 | 0 | 100% |
 | cbs_page:DraftKings/SRADAR | 2026-11-17T15:57 | 5 | 4 | 3 | 1 | 0 | 80% |
-| cbs_page:FanDuel/SRADAR | 2026-11-17T15:57 | 4 | 0 | 0 | 0 | 0 | 0% |
+| book:betrivers | 2026-11-17T17:32 | 13 | 10 | 5 | 4 | 1 | 77% |
+| book:parx | 2026-11-17T17:32 | 13 | 10 | 5 | 4 | 1 | 77% |
+| book:betonline | 2026-11-17T17:32 | 11 | 8 | 2 | 3 | 3 | 73% |
+| book:draftkings | 2026-11-17T17:32 | 13 | 9 | 6 | 3 | 0 | 69% |
+| book:hardrock | 2026-11-17T17:32 | 13 | 9 | 2 | 5 | 2 | 69% |
+
+### 2026-w12: 16 pool lines; Tuesday window 2026-11-24T13:00 to 2026-11-24T22:00 UTC
+
+| Source | Snapshot (UTC) | Games | Matched | Exact | Hook to fav | Hook to dog | Rate |
+|---|---|---|---|---|---|---|---|
+| book:betmgm | 2026-11-24T19:27 | 16 | 16 | 7 | 3 | 6 | 100% |
+| book:draftkings | 2026-11-24T19:27 | 16 | 16 | 10 | 2 | 4 | 100% |
+| book:hardrock | 2026-11-24T19:27 | 16 | 16 | 9 | 2 | 5 | 100% |
+| book:bovada | 2026-11-24T19:27 | 16 | 16 | 10 | 2 | 4 | 100% |
+| cbs_page:DraftKings/SRADAR | 2026-11-24T13:39 | 5 | 5 | 4 | 0 | 1 | 100% |
+| cbs_page:MGM/SRADAR | 2026-11-24T13:39 | 4 | 4 | 3 | 1 | 0 | 100% |
+| cbs_page:FanDuel/SRADAR | 2026-11-24T13:39 | 1 | 1 | 0 | 1 | 0 | 100% |
+| book:bet365 | 2026-11-24T19:27 | 16 | 15 | 15 | 0 | 0 | 94% |
 
 ## Data limits
 
@@ -140,4 +158,4 @@ If the market's whole number is fair, each side covers half of the non-push game
 
 ## Q4: market movement from the pool line to lock
 
-96 games: mean move -0.10, mean absolute move 0.84, moves of 1+ point 46%.
+108 games: mean move -0.05, mean absolute move 0.84, moves of 1+ point 46%.
