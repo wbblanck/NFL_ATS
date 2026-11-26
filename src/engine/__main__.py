@@ -256,6 +256,8 @@ def main(argv=None) -> int:
             rest = (target - _now()).total_seconds()
             if rest > 0:
                 _time.sleep(rest)
+            from engine.picks import sync_inputs
+            print(sync_inputs.sync_before_pick(), flush=True)   # pool lines merged during the wait (2026-11-26)
         out = final.run(sched, window_minutes=run_window, snapshot_id=sid,
                         game_id=getattr(a, "game", None), proj_games=proj_games,
                         v3=_v3_live.loader(sched, _all))
