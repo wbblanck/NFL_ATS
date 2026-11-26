@@ -1,20 +1,22 @@
 # Live record vs the league line
 
-Updated 2026-11-24T00:56:15+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+Updated 2026-11-26T21:11:18+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
 
-**63-53** (116 graded), win rate 0.543 ± 0.046 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
+**64-53** (117 graded), win rate 0.547 ± 0.046 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
 
 No skill claim is made: fewer than 256 graded games (pre-registered).
 
-Of these, 9 were picked with no market line (blind fallback to the away team, flag NO_MARKET): 6-3. The 107 picks made with a market line: 57-50.
+Of these, 9 were picked with no market line (blind fallback to the away team, flag NO_MARKET): 6-3. The 108 picks made with a market line: 58-50.
 
-Shadow key-number estimator (recorded, not used to pick): 55-52; it disagreed with the live pick 22 times and won 10 of those.
+Closing-line value (docs/clv_preregistration.md), in points from the pick's side, positive means the pool line was better than the reference: against the nflverse close, mean +0.75 ± 0.10 (SE) over 117 graded games (74 positive, 36 zero); against the lock-time market the pick used, mean +0.84 over 108 games (equal to the size of the move, since the pick follows it). Descriptive: it does not change any pick or any win-loss grade.
 
-Score-projection models (tracked comparisons, not used to pick): proj-players-v3 56-47 (4 excluded: injury statuses not yet published); proj-poisson-v1 59-48.
+Shadow key-number estimator (recorded, not used to pick): 56-52; it disagreed with the live pick 22 times and won 10 of those.
 
-Hybrid (tracked, docs/hybrid_tracking.md): 60-56; it picked differently from the live pick 21 times: hybrid right 9, live right 12.
+Score-projection models (tracked comparisons, not used to pick): proj-players-v3 56-48 (4 excluded: injury statuses not yet published); proj-poisson-v1 59-49.
 
-Grading integrity: each game is graded once. 116 graded on the pool line stored in its prediction at pick time; 0 had no pool line at pick time and use the line recorded afterwards.
+Hybrid (tracked, docs/hybrid_tracking.md): 61-56; it picked differently from the live pick 21 times: hybrid right 9, live right 12.
+
+Grading integrity: each game is graded once. 117 graded on the pool line stored in its prediction at pick time; 0 had no pool line at pick time and use the line recorded afterwards.
 
 | Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |
 |---|---|---|---|---|---|---|---|
@@ -134,3 +136,4 @@ Grading integrity: each game is graded once. 116 graded on the pool line stored 
 | 2026 | 11 | 2026_11_NYJ_LAC | NYJ | -3.5 | 27-24 | W | NYJ W |
 | 2026 | 11 | 2026_11_LV_DEN | DEN | -10.5 | 24-38 | W | LV L |
 | 2026 | 11 | 2026_11_MIN_SF | MIN | -3.5 | 10-35 | L | MIN L |
+| 2026 | 11 | 2026_11_CIN_WAS | WAS | +7.5 | 20-22 | W | WAS W |
