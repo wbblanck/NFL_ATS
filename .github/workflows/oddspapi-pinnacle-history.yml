@@ -1,0 +1,32 @@
+name: OddsPapi Pinnacle history (one-off)
+# Research only (audit B block M). Fetches Pinnacle's timestamped NFL spread history for finished 2026
+# games into data/lines/oddspapi_pinnacle_history.csv. About 14 metered requests (/fixtures) of the
+# key's 250 a month, shared with kmodel; /historical-odds is free. workflow_dispatch only, never on
+# push or a schedule. Changes no capture job and no pick.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -e .
+      - run: python scripts/fetch/oddspapi_pinnacle_history.py
+        env:
+          ODDSPAPI_API_KEY: ${{ secrets.ODDS_PAPI }}
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name "nfl-ats-engine"
+          git config user.email "nfl-ats-engine@users.noreply.github.com"
+          git add data/lines/oddspapi_pinnacle_history.csv docs/evidence/pinnacle_history 2>/dev/null || true
+          git commit -m "evidence: OddsPapi Pinnacle NFL history" || exit 0
+          for i in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break; sleep 5; done
