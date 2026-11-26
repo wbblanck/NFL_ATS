@@ -117,8 +117,8 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                       "hs": r.get("home_score"), "as": r.get("away_score"), "res": g.get("result"), "pres": pres,
                       "xp": r.get("proj_why"), "hy": hy, "hysrc": hysrc, "hres": _result_char(g.get("hybrid")),
                       "kn": r.get("keynum_pick"), "kres": _result_char(g.get("shadow_result"))})
-    # Week 6 games a tracked model has no live pick for are filled from the backtest (engine.picks.curve, 'bt'), so the
-    # standings compare every model on the same games, as the Season Drive chips do. The official pick is never filled.
+    # Week 6 games a tracked model has no live pick for have a backtest pick (engine.picks.curve, 'bt'). Owner rule
+    # (2026-11-26, audit A): standings show live picks only; the backtest fill is named in the note and never added.
     fill = {}
     for g in (curve or {}).get("games", []):
         if g.get("kind") == "backtest":
@@ -131,9 +131,9 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
 
     def row(label: str, key: str, w: int, l_: int, note: str | None = None) -> dict:
         fw, fl = fill.get(key, (0, 0))
-        out = {"label": label, "W": w + fw, "L": l_ + fl}
+        out = {"label": label, "W": w, "L": l_}
         if fw + fl:
-            note = f"incl. week 6 backtest {fw}-{fl} (live {w}-{l_})" + (f"; {note}" if note else "")
+            note = f"live only; week 6 backtest {fw}-{fl} not counted" + (f"; {note}" if note else "")
         if note:
             out["note"] = note
         return out
@@ -155,6 +155,9 @@ def render(rows: list[dict], season: int, week: int, live: dict, updated: dt.dat
                              f"pick right {k['disagreements'] - k['keynum_wins_in_disagreements']}"),
                        "tracked": True})
     nxt = min(upcoming) if upcoming else None
+    if curve and live.get("coverage"):            # coverage and pick classes next to the live verdict (audit A)
+        from engine.picks.coverage import summary_line
+        curve = {**curve, "verdict": (curve.get("verdict", "") + " " + summary_line(live["coverage"])).strip()}
     from engine.picks.season import MODELS as _SM
     data = json.dumps({"flips": flips or {}, "slate": slate or {}, "loss_review": loss_review or {}, "tiebreak": tiebreak or [], "curve": curve or {}, "epa": epa or {}, "credits": credits, "season_tab": season_table or [], "season_models": _SM, "games": games, "slots": slots, "details": details or {}, "season": season, "week": week, "record": rec, "models": models,
                        "graded": live.get("N", 0), "claim_at": live.get("claim_at", 256),
