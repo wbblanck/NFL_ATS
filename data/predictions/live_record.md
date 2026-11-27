@@ -1,25 +1,25 @@
 # Live record vs the league line
 
-Updated 2026-11-27T01:01:26+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
+Updated 2026-11-27T19:41:17+00:00 by `python -m engine grade`. Every final prediction is graded; nothing is filtered.
 
-**64-53** (117 graded), win rate 0.547 ± 0.046 (SE). Pending: 2. Ungradable (no league line recorded): 0. Late picks included: 0.
+**65-54** (119 graded), win rate 0.546 ± 0.046 (SE). Pending: 1. Ungradable (no league line recorded): 0. Late picks included: 0.
 
 No skill claim is made: fewer than 256 graded games (pre-registered).
 
-Of these, 9 were picked with no market line (blind fallback to the away team, flag NO_MARKET): 6-3. The 108 picks made with a market line: 58-50.
+Of these, 9 were picked with no market line (blind fallback to the away team, flag NO_MARKET): 6-3. The 110 picks made with a market line: 59-51.
 
-Closing-line value (docs/clv_preregistration.md), in points from the pick's side, positive means the pool line was better than the reference: against the nflverse close, mean +0.75 ± 0.10 (SE) over 117 graded games (74 positive, 36 zero); against the lock-time market the pick used, mean +0.84 over 108 games (equal to the size of the move, since the pick follows it). Descriptive: it does not change any pick or any win-loss grade.
+Closing-line value (docs/clv_preregistration.md), in points from the pick's side, positive means the pool line was better than the reference: against the nflverse close, mean +0.74 ± 0.10 (SE) over 119 graded games (75 positive, 37 zero); against the lock-time market the pick used, mean +0.83 over 110 games (equal to the size of the move, since the pick follows it). Descriptive: it does not change any pick or any win-loss grade.
 
-By pick class (one per pick): live Pinnacle 43-39; live median 6-6; stale market (picked more than 15 min before lock) 9-5; blind away fallback 6-3.
-Coverage: 134 scheduled games past lock, 118 picks recorded, 16 missed. Classes: live Pinnacle 82, live median 12, stale market 14, late 0, blind fallback 9, invalid input 1. Missed games are not graded and are not in the record.
+By pick class (one per pick): live Pinnacle 44-39; live median 6-6; stale market (picked more than 15 min before lock) 9-5; blind away fallback 6-3; no usable pool line at pick time 0-1.
+Coverage: 135 scheduled games past lock, 119 picks recorded, 16 missed. Classes: live Pinnacle 83, live median 12, stale market 14, late 0, blind fallback 9, invalid input 1. Missed games are not graded and are not in the record.
 
-Shadow key-number estimator (recorded, not used to pick): 56-52; it disagreed with the live pick 22 times and won 10 of those.
+Shadow key-number estimator (recorded, not used to pick): 57-53; it disagreed with the live pick 22 times and won 10 of those.
 
-Score-projection models (tracked comparisons, not used to pick): proj-players-v3 56-48 (4 excluded: injury statuses not yet published); proj-poisson-v1 59-49.
+Score-projection models (tracked comparisons, not used to pick): proj-players-v3 56-49 (4 excluded: injury statuses not yet published); proj-poisson-v1 59-50.
 
-Hybrid (tracked, docs/hybrid_tracking.md): 61-56; it picked differently from the live pick 21 times: hybrid right 9, live right 12.
+Hybrid (tracked, docs/hybrid_tracking.md): 61-58; it picked differently from the live pick 22 times: hybrid right 9, live right 13.
 
-Grading integrity: each game is graded once. 117 graded on the pool line stored in its prediction at pick time; 0 had no pool line at pick time and use the line recorded afterwards.
+Grading integrity: each game is graded once. 118 graded on the pool line stored in its prediction at pick time; 1 had no pool line at pick time and use the line recorded afterwards.
 
 | Season | Week | Game | Pick | League line (home) | Score (away-home) | Result | Shadow pick |
 |---|---|---|---|---|---|---|---|
@@ -140,3 +140,5 @@ Grading integrity: each game is graded once. 117 graded on the pool line stored 
 | 2026 | 11 | 2026_11_LV_DEN | DEN | -10.5 | 24-38 | W | LV L |
 | 2026 | 11 | 2026_11_MIN_SF | MIN | -3.5 | 10-35 | L | MIN L |
 | 2026 | 11 | 2026_11_CIN_WAS | WAS | +7.5 | 20-22 | W | WAS W |
+| 2026 | 12 | 2026_12_PHI_DAL | DAL | -8.5 | 39-38 | L | DAL L |
+| 2026 | 12 | 2026_12_KC_BUF | BUF | -2.5 | 10-13 | W | BUF W |
