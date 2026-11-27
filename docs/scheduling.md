@@ -47,6 +47,15 @@ it commits them. It does not depend on any Claude session. Without the secret it
 - **Not covered:** the "PICK MISSING" warning exists only in `alert --watch` (prints from a Claude session,
   which cannot reach a phone). A game that gets no pick sends nothing.
 
+## Data merged while a run waits
+
+A waiting run checks out the branch when it starts and picks up to an hour later. On 2026-11-26 the week 12 pool lines
+(PR #70) merged during that wait, so PHI@DAL was picked with no pool line and fell back to the CBS open (-1.5 instead of
+-8.5). Just before each pick the run now fetches the branch and fast-forwards, but only when everything that changed is
+under `data/`, `docs/` or `site/` (`src/engine/picks/sync_inputs.py`). If code or a workflow changed, it leaves the
+checkout alone and prints `SYNC skipped: ...` in the run log. It never blocks a pick. Still merge pool-line PRs before a
+waiting run starts when you can.
+
 ## Immediate mode (retired)
 
 Without `wait`, a call picks at once every game whose lock is within `window_minutes` (default 25). It was run from
